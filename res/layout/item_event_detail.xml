@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:padding="8dp"
+    > 
+  <ImageView android:id="@+id/event_img" 
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/lable"
+            android:layout_margin="5dp"
+            android:src="@drawable/course_temp"/>
+   <TextView android:id="@+id/event_detail" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:padding="2dp"
+            android:textColor="#333333"  
+            android:textSize="14sp" />   
+</LinearLayout>

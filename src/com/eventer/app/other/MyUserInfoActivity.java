@@ -1,0 +1,559 @@
+package com.eventer.app.other;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.ChatType;
+import com.easemob.chat.ImageMessageBody;
+import com.eventer.app.Constant;
+import com.eventer.app.MyApplication;
+import com.eventer.app.R;
+import com.eventer.app.http.HttpUnit;
+import com.eventer.app.main.MainActivity;
+import com.eventer.app.task.LoadDataFromHTTP;
+import com.eventer.app.task.LoadDataFromServer;
+import com.eventer.app.task.LoadDataFromServer.DataCallBack;
+import com.eventer.app.task.LoadUserAvatar;
+import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.util.BitmapCache;
+import com.eventer.app.util.FileUtil;
+import com.eventer.app.util.LocalUserInfo;
+
+@SuppressLint("SdCardPath")
+public class MyUserInfoActivity extends Activity {
+
+    private RelativeLayout re_avatar;
+    private RelativeLayout re_name;
+    private RelativeLayout re_sex;
+    private RelativeLayout re_region;
+
+    private ImageView iv_avatar;
+    private TextView tv_name;
+    private TextView tv_sex;
+    private TextView tv_sign;
+
+    private String imageName;
+    private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
+    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
+    private static final int PHOTO_REQUEST_CUT = 3;// 结果
+    private static final int UPDATE_FXID = 4;// 结果
+    private static final int UPDATE_NICK = 5;// 结果
+    private LoadUserAvatar avatarLoader;
+    String hxid;
+    String sex;
+    String sign;
+    String nick;
+    String avatar;
+    private Context context;
+    public static MyUserInfoActivity instance;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_myinfo);
+        avatarLoader = new LoadUserAvatar(this, Constant.IMAGE_PATH);
+        context=this;
+        instance=this;
+        initView();
+        initData();
+
+    }
+
+    private void initView() {
+        
+        re_avatar = (RelativeLayout) this.findViewById(R.id.re_avatar);
+        re_name = (RelativeLayout) this.findViewById(R.id.re_name);
+        re_sex = (RelativeLayout) this.findViewById(R.id.re_sex);
+        re_region = (RelativeLayout) this.findViewById(R.id.re_region);
+        iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
+        tv_name = (TextView) this.findViewById(R.id.tv_name);
+        tv_sex = (TextView) this.findViewById(R.id.tv_sex);
+        tv_sign = (TextView) this.findViewById(R.id.tv_sign);
+        
+        re_avatar.setOnClickListener(new MyListener());
+        re_name.setOnClickListener(new MyListener());
+        re_sex.setOnClickListener(new MyListener());
+        re_region.setOnClickListener(new MyListener());
+        iv_avatar.setOnClickListener(new MyListener());    
+        
+        
+        
+    }
+    
+    private void initData(){
+    	hxid = LocalUserInfo.getInstance(context).getUserInfo(
+                "hxid");
+        nick = LocalUserInfo.getInstance(context).getUserInfo(
+                "nick");
+        sex = LocalUserInfo.getInstance(context).getUserInfo(
+                "sex");
+        sign = LocalUserInfo.getInstance(context).getUserInfo(
+                "sign");
+        avatar = LocalUserInfo.getInstance(context)
+                .getUserInfo("avatar");
+        Log.e("1", avatar);
+        tv_name.setText(nick);
+        
+        if (sex.equals("1")) {
+            tv_sex.setText("男");
+
+        } else if (sex.equals("2")) {
+            tv_sex.setText("女");
+
+        } else {
+            tv_sex.setText("");
+        }
+
+        if (sign.equals("0")) {
+            tv_sign.setText("未填写");
+        } else {
+            tv_sign.setText(sign);
+        }
+
+        showUserAvatar(iv_avatar, avatar);
+    }
+
+    class MyListener implements OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.re_avatar:
+                showPhotoDialog();
+                break;
+            case R.id.re_name:
+                startActivityForResult(new Intent(context,
+                        UpdateNickActivity.class),UPDATE_NICK);
+                break;
+            case R.id.re_sex:
+                showSexDialog();
+                break;
+            case R.id.re_region:
+
+                break;
+            case R.id.iv_avatar:
+            	 avatar = LocalUserInfo.getInstance(context)
+                 .getUserInfo("avatar");
+            	Intent intent = new Intent(context, ShowBigImage.class);
+                intent.putExtra("avatar", avatar);
+                startActivity(intent);
+            	break;
+
+            }
+        }
+
+    }
+
+    private void showPhotoDialog() {
+        final AlertDialog dlg = new AlertDialog.Builder(this).create();
+        dlg.show();
+        Window window = dlg.getWindow();
+        // *** 主要就是在这里实现这种效果的.
+        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+        window.setContentView(R.layout.alertdialog);
+        // 为确认按钮添加事件,执行退出应用操作
+        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
+        tv_paizhao.setText("拍一张照片");
+        tv_paizhao.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
+            public void onClick(View v) {
+            	imageName = getNowTime() + ".png";
+                File cameraFile = new File(Constant.IMAGE_PATH,
+                		imageName);
+                
+                 cameraFile.getParentFile().mkdirs();
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // 指定调用相机拍照后照片的储存路径
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(cameraFile));
+                startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
+                dlg.cancel();
+            }
+        });
+        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
+        tv_xiangce.setText("从相册中选择照片");
+        tv_xiangce.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imageName = getNowTime() + ".png";
+                Intent intent = new Intent(Intent.ACTION_PICK, null);
+                intent.setDataAndType(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
+
+                dlg.cancel();
+            }
+        });
+
+    }
+
+    private void showSexDialog() {
+        final AlertDialog dlg = new AlertDialog.Builder(this).create();
+        dlg.show();
+        Window window = dlg.getWindow();
+        // *** 主要就是在这里实现这种效果的.
+        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+        window.setContentView(R.layout.alertdialog);
+        LinearLayout ll_title = (LinearLayout) window
+                .findViewById(R.id.ll_title);
+        ll_title.setVisibility(View.VISIBLE);
+        TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
+        tv_title.setText("性别");
+        // 为确认按钮添加事件,执行退出应用操作
+        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
+        tv_paizhao.setText("男");
+        tv_paizhao.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
+            public void onClick(View v) {
+                if (!sex.equals("1")) {
+                    tv_sex.setText("男");
+                    updateSex("1");
+                }
+                dlg.cancel();
+            }
+        });
+        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
+        tv_xiangce.setText("女");
+        tv_xiangce.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                if (!sex.equals("2")) {
+
+                    tv_sex.setText("女");
+                    updateSex("2");
+                }
+
+                dlg.cancel();
+            }
+        });
+
+    }
+
+    @SuppressLint("SdCardPath")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+            case PHOTO_REQUEST_TAKEPHOTO:
+
+                startPhotoZoom(
+                        Uri.fromFile(new File(Constant.IMAGE_PATH, imageName)),
+                        480);
+                break;
+
+            case PHOTO_REQUEST_GALLERY:
+                if (data != null)
+                    startPhotoZoom(data.getData(), 480);
+                break;
+
+            case PHOTO_REQUEST_CUT:
+                // BitmapFactory.Options options = new BitmapFactory.Options();
+                //
+                // /**
+                // * 最关键在此，把options.inJustDecodeBounds = true;
+                // * 这里再decodeFile()，返回的bitmap为空
+                // * ，但此时调用options.outHeight时，已经包含了图片的高了
+                // */
+                // options.inJustDecodeBounds = true;
+                Bitmap bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
+                        + imageName);
+                iv_avatar.setImageBitmap(bitmap);
+                updateAvatarInServer(imageName);
+                break;
+
+            }
+            super.onActivityResult(requestCode, resultCode, data);
+
+        }
+    }
+
+    @SuppressLint("SdCardPath")
+    private void startPhotoZoom(Uri uri1, int size) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri1, "image/*");
+        // crop为true是设置在开启的intent中设置显示的view可以剪裁
+        intent.putExtra("crop", "true");
+
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+
+        // outputX,outputY 是剪裁图片的宽高
+        intent.putExtra("outputX", size);
+        intent.putExtra("outputY", size);
+        intent.putExtra("return-data", false);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(new File(Constant.IMAGE_PATH, imageName)));
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        intent.putExtra("noFaceDetection", true); // no face detection
+        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private String getNowTime() {
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSS");
+        return dateFormat.format(date);
+    }
+
+    public void back(View view) {
+        finish();
+    }
+
+    private void showUserAvatar(final ImageView iamgeView, String avatar) {
+        final String url_avatar = avatar;
+        iamgeView.setTag(url_avatar);
+        if (url_avatar != null && !url_avatar.equals("")&&!avatar.equals("default")) {
+            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
+                    new ImageDownloadedCallBack() {
+
+                        @Override
+                        public void onImageDownloaded(ImageView imageView,
+                                Bitmap bitmap,int status) {
+                        	if(status==-1){
+                        		if (imageView.getTag() == url_avatar) {
+	                                imageView.setImageBitmap(bitmap);
+	                            }
+                        	}else{
+                        	   LocalUserInfo.getInstance(context).setUserInfo("avatar", null);
+                           }
+                            
+                        }
+
+                    });
+            if (bitmap != null)
+                iamgeView.setImageBitmap(bitmap);
+        }else if(avatar.equals("default")){
+        	 iamgeView.setBackgroundResource(R.drawable.default_avatar);
+        }else{
+        	Map<String, String> map = new HashMap<String, String>();           
+            map.put("uid", Constant.UID+"");
+            GetAvatar(map);
+        }
+    }
+
+    @SuppressLint("SdCardPath")
+    private void updateAvatarInServer(final String image) {
+        Map<String, String> map = new HashMap<String, String>();
+        if ((new File(Constant.IMAGE_PATH + image)).exists()) {
+            map.put("upload", Constant.IMAGE_PATH + image);
+           // map.put("image", image);
+        } else {
+            return;
+        }
+        map.put("uid", Constant.UID+"");
+        map.put("token", Constant.TOKEN);
+
+        LoadDataFromServer task = new LoadDataFromServer(
+                context, Constant.URL_UPDATE_Avatar, map,Constant.IMAGE_PATH + image,"upload");
+
+        task.getData(new DataCallBack() {
+
+            @SuppressLint("ShowToast")
+            @Override
+            public void onDataCallBack(JSONObject data) {
+                try {
+                    int code = data.getInteger("status");
+                    Log.e("1", code+"");
+                    if (code == 0) {
+                    	JSONObject json=data.getJSONObject("user_action");
+                    	String avatar=json.getString("avatar");
+                        LocalUserInfo.getInstance(context)
+                                .setUserInfo("avatar", avatar);
+                        if(avatar!=null){
+                        	  String filename = avatar
+                                      .substring(avatar.lastIndexOf("/") + 1);
+                        	  Bitmap bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
+                                      + imageName);
+                        	  BitmapFactory.Options options = new BitmapFactory.Options();
+                              options.inJustDecodeBounds = false;
+                              options.inSampleSize = 5; // width，hight设为原来的十分一
+                              bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
+                                      + imageName, options);
+                              File f = new File(Constant.IMAGE_PATH, filename);
+                              f.mkdirs();
+                              if (f.exists()) {
+                                 f.delete();
+                              }
+                              try {
+	                               FileOutputStream out = new FileOutputStream(f);
+	                               bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+	                               out.flush();
+	                               out.close();
+                              } catch (FileNotFoundException e) {
+                               // TODO Auto-generated catch block
+                               e.printStackTrace();
+                              } catch (IOException e) {
+                               // TODO Auto-generated catch block
+                               e.printStackTrace();
+                              }
+                              if (bitmap != null) {
+                            	  BitmapCache bitmapCache = new BitmapCache();
+                            	  FileUtil fileUtil = new FileUtil(context, Constant.IMAGE_PATH);
+                                  // 先缓存到内存
+                                  bitmapCache.putBitmap(avatar, bitmap);
+                                  // 缓存到文件系统
+                                  fileUtil.saveBitmap(filename, bitmap);
+                              }
+                              File file = new File(Constant.IMAGE_PATH, imageName);
+                              if (file.exists()) {
+                                  file.delete();
+                               }
+                             MyApplication.getInstance().setValueByKey("set_avatar", true);
+                        }
+                      
+                    } else if (code == 2) {
+
+                        Toast.makeText(context, "更新失败...",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (code == 3) {
+
+                        Toast.makeText(context, "图片上传失败...",
+                                Toast.LENGTH_SHORT).show();
+
+                    } else {
+
+                        Toast.makeText(context, "服务器繁忙请重试...",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(context, "数据解析错误...",
+                            Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+
+    }
+    
+ 
+	public void GetAvatar(final Object... params) {
+		new AsyncTask<Object, Object,Map<String, Object>>() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Map<String, Object> doInBackground(Object... params) {
+				Map<String, Object> status=new HashMap<String, Object>();
+			  try {
+		    	        status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
+		    	        return status;
+					
+				} catch (Throwable e) {
+					// TODO Auto-generated catch block
+					Log.e("1", e.toString());
+					return null;
+				}
+			}
+			protected void onPostExecute(Map<String, Object> result) {
+				 if(result!=null){
+					 int status=(int)result.get("status");
+					 String info=(String)result.get("info");
+					 if(status==0){
+				        	Log.e("1", "获取头像地址成功！");
+	                        LocalUserInfo.getInstance(context)
+                          .setUserInfo("avatar", info);
+				        	showUserAvatar(iv_avatar, info);		        					        	
+				        }else {
+				        	Toast.makeText(context, "头像获取失败！", Toast.LENGTH_LONG)
+							.show();
+				        	
+				        }
+				  }	 				
+			    };
+			    
+		}.execute(params);}
+    
+    
+
+    public void updateSex(final String sexnum) {
+        Map<String, String> map = new HashMap<String, String>();
+
+        map.put("sex", sexnum);
+        map.put("uid", Constant.UID+"");
+	    map.put("token", Constant.TOKEN);
+	    map.put("name","");
+	    map.put("email", "");
+	    map.put("grade","");
+	    map.put("school", "");
+	    map.put("major", "");
+	    map.put("class", "");
+	    map.put("user_rank", "0");
+        LoadDataFromHTTP task = new LoadDataFromHTTP(
+                context, Constant.URL_UPDATE_SELFINFO, map);
+
+        task.getData(new com.eventer.app.task.LoadDataFromHTTP.DataCallBack() {
+
+            @SuppressLint("ShowToast")
+            @Override
+            public void onDataCallBack(JSONObject data) {
+                try {
+                	int code = data.getInteger("status");
+                    if (code == 0) {
+                    	Toast.makeText(context, "更新成功...",
+                                Toast.LENGTH_SHORT).show();
+                        LocalUserInfo.getInstance(context)
+                                .setUserInfo("sex", sexnum);
+                    } else if (code == 17) {
+
+                        Toast.makeText(context, "更新失败,请稍后重试！",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Toast.makeText(context, "服务器繁忙请重试...",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(context, "数据解析错误...",
+                            Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+    }
+
+	public void refreshNick() {
+		// TODO Auto-generated method stub
+		nick = LocalUserInfo.getInstance(context).getUserInfo(
+                "nick");
+		tv_name.setText(nick);
+	}
+
+}

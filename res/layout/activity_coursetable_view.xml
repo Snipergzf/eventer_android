@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/caldroid_holo_blue_light" >
+
+ 
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="40dp"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentLeft="true"
+	            android:layout_centerVertical="true"
+	            android:onClick="back"
+	            android:paddingBottom="5dp"
+	            android:paddingLeft="5dp"
+	            android:paddingRight="5dp"
+	            android:paddingTop="5dp"
+	            android:scaleType="centerInside"
+	            android:background="@drawable/ib_bg"
+	            android:src="@drawable/back"  />
+
+
+
+            <TextView
+                android:id="@+id/add_popdownmenu_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_centerInParent="true"            
+                android:text="@string/course_table_detail"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+      
+
+
+
+            <TextView
+                android:id="@+id/tv_add_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:background="@drawable/ib_bg"
+                android:gravity="center"
+                android:text="@string/course_table_add"
+                android:textColor="@color/white" />
+
+    </RelativeLayout>
+    <TextView 
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:background="#F5DEB3"
+        android:textSize="12sp" 
+        android:textColor="#CD853F"/>
+
+        <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:footerDividersEnabled="false"
+                android:descendantFocusability="afterDescendants"   
+                android:fastScrollEnabled="false" />
+
+</LinearLayout>

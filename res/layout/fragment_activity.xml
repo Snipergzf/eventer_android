@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#eee"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/caldroid_holo_blue_light"
+        android:gravity="center_vertical" >
+
+        
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/tab_activity"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/ib_bg"
+            android:text="清空"
+            android:textColor="#fff"
+            android:textSize="13sp" />   
+    </RelativeLayout>
+
+    <!-- 
+
+    <TableLayout
+        android:id="@+id/tableLayout02"
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
+        android:clickable="true"
+        android:onClick="dailytop" >
+
+
+		<android.support.v4.view.ViewPager
+		android:id="@+id/adv_pager"
+		android:layout_width="fill_parent"
+		android:layout_height="160dp" >
+		</android.support.v4.view.ViewPager> 
+		
+		<LinearLayout
+		android:id="@+id/viewGroup"
+		android:layout_below="@id/adv_pager"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="-25dp"
+		android:gravity="right"
+		android:orientation="horizontal" > 
+		</LinearLayout>
+    </TableLayout>
+   
+ -->
+     <ListView 
+        android:id="@+id/listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="6dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp" 
+        />
+ 
+ 
+</LinearLayout>

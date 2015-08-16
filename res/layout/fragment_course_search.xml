@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    android:orientation="vertical" >
+    <Button
+	        android:id="@+id/btn_add_table"
+	        android:layout_width="wrap_content"
+	        android:layout_height="30dp" 
+		    android:layout_gravity="center" 
+		    android:background="@drawable/edit_normal"   
+		    android:paddingLeft="25dp"
+		    android:paddingRight="25dp"
+	        android:text="@string/add_table"
+	        android:textSize="13sp"
+	        android:layout_margin="5dp"
+	        android:textColor="@color/orange"
+	     />
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="20dp"
+        android:background="#fff" >
+     
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/wp"
+            android:gravity="bottom"
+            android:paddingBottom="10dp"
+            android:paddingLeft="46dp"
+            android:paddingRight="46dp"
+            android:singleLine="true"
+            android:hint="@string/course_search_hint"
+            android:textColorHint="@color/caldroid_darker_gray"
+            android:textColor="#484c4c"
+            android:textSize="16sp" />
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignBottom="@id/et_search"
+            android:layout_alignLeft="@id/et_search"
+            android:layout_margin="8dp"
+            android:src="@drawable/ar5" />
+          <Button 
+            android:id="@+id/btn_search"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button"
+            android:textSize="14sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:textColor="#FFFFFF"
+            android:text="@string/search"/>
+    </RelativeLayout>
+
+        <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:footerDividersEnabled="false"
+                android:descendantFocusability="afterDescendants"   
+                android:fastScrollEnabled="false" />
+
+</LinearLayout>
