@@ -137,11 +137,12 @@ public class SchedualDao {
 //	}
 //	
 
-	public void deleteContact(String username){
+	public void deleteSchedual(String ID){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		if(db.isOpen()){
-			db.delete(TABLE_NAME, COLUMN_NAME_ID + " = ?", new String[]{username});
+			db.delete(TABLE_NAME, COLUMN_NAME_ID + " = ?", new String[]{ID});
 		}
+		db.close();
 	}
 	
 	public void delSchedualByEventId(String eventId){

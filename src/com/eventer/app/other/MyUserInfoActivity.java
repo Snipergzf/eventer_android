@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +50,7 @@ import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.util.PreferenceUtils;
 
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends Activity {
@@ -56,12 +58,14 @@ public class MyUserInfoActivity extends Activity {
     private RelativeLayout re_avatar;
     private RelativeLayout re_name;
     private RelativeLayout re_sex;
-    private RelativeLayout re_region;
+    private RelativeLayout re_exit;
+    private RelativeLayout re_grade,re_school,re_major,re_class;
+    
+    private TextView tv_grade,tv_school,tv_major,tv_class;
 
     private ImageView iv_avatar;
     private TextView tv_name;
     private TextView tv_sex;
-    private TextView tv_sign;
 
     private String imageName;
     private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// ≈ƒ’’
@@ -75,6 +79,7 @@ public class MyUserInfoActivity extends Activity {
     String sign;
     String nick;
     String avatar;
+    String grade,school,major,mclass;
     private Context context;
     public static MyUserInfoActivity instance;
     @Override
@@ -94,16 +99,27 @@ public class MyUserInfoActivity extends Activity {
         re_avatar = (RelativeLayout) this.findViewById(R.id.re_avatar);
         re_name = (RelativeLayout) this.findViewById(R.id.re_name);
         re_sex = (RelativeLayout) this.findViewById(R.id.re_sex);
-        re_region = (RelativeLayout) this.findViewById(R.id.re_region);
+        re_exit=(RelativeLayout)findViewById(R.id.re_exit);
+        re_grade=(RelativeLayout)findViewById(R.id.re_grade);
+        re_school=(RelativeLayout)findViewById(R.id.re_school);
+        re_class=(RelativeLayout)findViewById(R.id.re_class);
+        re_major=(RelativeLayout)findViewById(R.id.re_major);
         iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
         tv_name = (TextView) this.findViewById(R.id.tv_name);
         tv_sex = (TextView) this.findViewById(R.id.tv_sex);
-        tv_sign = (TextView) this.findViewById(R.id.tv_sign);
+        tv_grade = (TextView) this.findViewById(R.id.tv_grade);
+        tv_school = (TextView) this.findViewById(R.id.tv_school);
+        tv_major = (TextView) this.findViewById(R.id.tv_major);
+        tv_class = (TextView) this.findViewById(R.id.tv_class);
         
         re_avatar.setOnClickListener(new MyListener());
         re_name.setOnClickListener(new MyListener());
         re_sex.setOnClickListener(new MyListener());
-        re_region.setOnClickListener(new MyListener());
+        re_exit.setOnClickListener(new MyListener());
+        re_class.setOnClickListener(new MyListener());
+        re_major.setOnClickListener(new MyListener());
+        re_school.setOnClickListener(new MyListener());
+        re_grade.setOnClickListener(new MyListener());
         iv_avatar.setOnClickListener(new MyListener());    
         
         
@@ -111,8 +127,6 @@ public class MyUserInfoActivity extends Activity {
     }
     
     private void initData(){
-    	hxid = LocalUserInfo.getInstance(context).getUserInfo(
-                "hxid");
         nick = LocalUserInfo.getInstance(context).getUserInfo(
                 "nick");
         sex = LocalUserInfo.getInstance(context).getUserInfo(
@@ -121,6 +135,10 @@ public class MyUserInfoActivity extends Activity {
                 "sign");
         avatar = LocalUserInfo.getInstance(context)
                 .getUserInfo("avatar");
+        grade=LocalUserInfo.getInstance(context).getUserInfo("grade");
+        school=LocalUserInfo.getInstance(context).getUserInfo("school");
+        major=LocalUserInfo.getInstance(context).getUserInfo("major");
+        mclass=LocalUserInfo.getInstance(context).getUserInfo("class");
         Log.e("1", avatar);
         tv_name.setText(nick);
         
@@ -133,12 +151,28 @@ public class MyUserInfoActivity extends Activity {
         } else {
             tv_sex.setText("");
         }
-
-        if (sign.equals("0")) {
-            tv_sign.setText("Œ¥ÃÓ–¥");
-        } else {
-            tv_sign.setText(sign);
+         
+        if(!TextUtils.isEmpty(grade)){
+        	tv_grade.setText(grade);
+        }else{
+        	tv_grade.setText("");
         }
+        if(!TextUtils.isEmpty(school)){
+        	tv_school.setText(school);
+        }else{
+        	tv_school.setText("");
+        }
+        if(!TextUtils.isEmpty(major)){
+        	tv_major.setText(major);
+        }else{
+        	tv_major.setText("");
+        }
+        if(!TextUtils.isEmpty(mclass)){
+        	tv_class.setText(mclass);
+        }else{
+        	tv_class.setText("");
+        }
+
 
         showUserAvatar(iv_avatar, avatar);
     }
@@ -158,9 +192,15 @@ public class MyUserInfoActivity extends Activity {
             case R.id.re_sex:
                 showSexDialog();
                 break;
-            case R.id.re_region:
-
-                break;
+            case R.id.re_exit:
+            	PreferenceUtils.getInstance().setLoginPwd("");
+    			System.exit(0);
+            	break;
+            case R.id.re_grade:
+            case R.id.re_school:
+            case R.id.re_major:
+            case R.id.re_class:
+            	break;
             case R.id.iv_avatar:
             	 avatar = LocalUserInfo.getInstance(context)
                  .getUserInfo("avatar");

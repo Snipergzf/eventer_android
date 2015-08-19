@@ -69,6 +69,7 @@ public class BrowserHistoryActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				dao.delOperation(Constant.UID, "4");
+				mData=new ArrayList<Event>();
 				adapter.notifyDataSetChanged();
 			}
 		});

@@ -752,9 +752,11 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
     	        WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
     	// 为确认按钮添加事件,执行退出应用操作
     	Button ok = (Button) window.findViewById(R.id.btn_ok);
+    	TextView content=(TextView)window.findViewById(R.id.tv_info);
     	TextView title=(TextView)window.findViewById(R.id.tv_title);
-    	title.setText("你们还不是好友，是否添加该好友?");
-    	ok.setText("添加");
+    	title.setText(getResources().getString(R.string.prompt));
+    	content.setText(getResources().getString(R.string.not_friend_hint));
+    	ok.setText(getResources().getString(R.string.add));
     	ok.setOnClickListener(new View.OnClickListener() {
     	    @SuppressLint("ShowToast")
     	    public void onClick(View v) {

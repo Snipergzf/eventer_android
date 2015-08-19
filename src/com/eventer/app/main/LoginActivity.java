@@ -211,9 +211,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			    	        toast.show(); 
 			        } else{
 			        	dialog.dismiss();
-			        	Toast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
+			        	Toast.makeText(context, status+"登录失败，请稍后重试！！"+PreferenceUtils.getInstance().getDeviceId(), Toast.LENGTH_LONG)
 						.show();
 			        } 
+				 //status=23,同时在线
 				
 			    };
 			    

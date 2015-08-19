@@ -72,7 +72,6 @@ public class SchedualAdapter extends BaseAdapter {
 	        holder = (ViewHolder)convertView.getTag();  
 	   } 
 		String place=item.getPlace();
-		String eid=item.getEventId();
 		String time=item.getStarttime();
 		int status=item.getStatus();
 		holder.tv_title.setText(item.getTitle());
@@ -80,11 +79,6 @@ public class SchedualAdapter extends BaseAdapter {
 			holder.tv_info.setText(place);
 		}else{
 			holder.tv_info.setText("");
-		}
-		if(!TextUtils.isEmpty(eid)){
-			holder.tv_type.setText("活动");
-		}else{
-			holder.tv_type.setText("日程");
 		}
 		if(!TextUtils.isEmpty(time)&&!time.equals("00:00")){
 			holder.tv_time.setText(time);

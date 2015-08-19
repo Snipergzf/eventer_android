@@ -172,7 +172,6 @@ public  class ActivityFragment extends Fragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		this.visibleItemCount = visibleItemCount;  
         visibleLastIndex = firstVisibleItem + visibleItemCount - 1;  
-
         //如果所有的记录选项等于数据集的条数，则出现列表底部视图  
         if(totalItemCount == datasize+1){  
             listView.addFooterView(loadMoreView);  

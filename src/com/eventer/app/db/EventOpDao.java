@@ -66,6 +66,29 @@ public class EventOpDao {
 		return -1;
 	}
 	
+	public boolean getIsCollect(String eid) {
+		 dbHelper.openDatabase();		 
+		 //dbHelper.deleteDatabase(context);
+		 Cursor c=dbHelper.findList(true, TABLE_NAME, null,
+				 COLUMN_NAME_ID+"=? and "+COLUMN_NAME_OPERATOR+"=?", new String[]{eid,Constant.UID+""}, null, null,
+				 null,null);
+	        while (c.moveToNext()) {
+	        	int id = c.getInt(c.getColumnIndex(COLUMN_NAME_OPERATION));	 
+	        	if(id==1){
+	        		return true;
+	        	}
+	        }
+	     dbHelper.closeDatabase();	
+		return false;
+	}
+	
+	public void cancelCollect(String eid) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		if(db.isOpen()){
+			db.delete(TABLE_NAME, COLUMN_NAME_ID+ " = ? and "+COLUMN_NAME_OPERATOR+ " = ? and "+COLUMN_NAME_OPERATION+"=?" , new String[]{eid,Constant.UID,"1"});
+		}
+	}
+	
 	public boolean deleteRecord(){
 		dbHelper.openDatabase();
 		boolean result=dbHelper.delete(TABLE_NAME, null, null);   

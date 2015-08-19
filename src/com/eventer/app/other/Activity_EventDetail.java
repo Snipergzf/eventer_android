@@ -12,7 +12,11 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -51,12 +55,13 @@ import com.eventer.app.http.HTTPService;
 import com.eventer.app.task.LoadDataFromHTTP;
 import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
+import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 
 public class Activity_EventDetail  extends SwipeBackActivity  implements OnClickListener {
 	
 	private ImageView iv_collect,iv_share,iv_comment;
-	private TextView tv_theme,tv_title,tv_time,tv_source,tv_pubtime;
+	private TextView tv_theme,tv_title,tv_time,tv_source,tv_pubtime,tv_place;
 	private TextView tv;
 	private ImageView[] ivlist;
     private Event event;
@@ -76,7 +81,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		fileUtil = new FileUtil(context, Constant.IMAGE_PATH);
 		initView();
 	}
-
+	
 	private void initView() {
 		// TODO Auto-generated method stub
 		iv_collect=(ImageView)findViewById(R.id.iv_collect);
@@ -86,6 +91,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		tv_source=(TextView)findViewById(R.id.tv_source);
 		tv_theme=(TextView)findViewById(R.id.tv_tag);
 		tv_time=(TextView)findViewById(R.id.tv_time);
+		tv_place=(TextView)findViewById(R.id.tv_place);
 		tv=(TextView)findViewById(R.id.tv);
 		tv_title=(TextView)findViewById(R.id.tv_title);
 		iv_collect.setOnClickListener(this);
@@ -104,14 +110,8 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			initData();
 		}else{
 			loadevent();
-		}
-	
-		
+		}		
 	}
-	
-	
-
-	
 
 	private void initData() {
 		// TODO Auto-generated method stub
@@ -134,6 +134,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 					
 			}, null);
 		    long pubtime=event.getIssueTime();
+		    String place=event.getPlace();
 		    
 //		    int len=(new Long(pubtime)).toString().length();
 		    if(pubtime>0)
@@ -146,9 +147,15 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		    String timeString="";
 			try {
 				time1 = new JSONArray(time);
-				long begin_time=time1.getLong(1);
-				long end_time=time1.getLong(2);
-				timeString=getTime(begin_time*1000)+"~~"+getTime(end_time*1000);
+				
+				for(int i=0;i<time1.length()/2;i++){
+				long begin_time=time1.getLong(2*i);
+				long end_time=time1.getLong(2*i+1);
+				timeString+=getTimeSpan(begin_time,end_time);
+				if(i!=time1.length()/2-1){
+					timeString+="\n";
+				}
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -160,7 +167,9 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		       tv_theme.setText(event.getTheme());
 		    tv_source.setText(event.getPublisher());
 		    tv_title.setText(event.getTitle());
-		    		    
+		    if(!TextUtils.isEmpty(place)){
+		    	tv_place.setText(place);
+		    }		    
 		    tv.setText(sp);
 //		    tv.setAutoLinkMask(Linkify.ALL); 
 		    tv.setMovementMethod(LinkMovementMethod.getInstance()); 
@@ -187,6 +196,21 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}
 	}
 	
+	private String getTimeSpan(long begin_time, long end_time) {
+		// TODO Auto-generated method stub
+		String begin=getTime(begin_time*1000);
+		String end=getTime(end_time*1000);
+		String beginString=begin.substring(0, 10);
+		String endString=end.substring(0, 10);
+		String time="";
+		if(beginString.equals(endString)){
+			time=begin+" ~"+end.substring(10);
+		}else{
+			time=begin+" ~ "+end;
+		}
+		return time;
+	}
+
 	private void loadevent() {
 		// TODO Auto-generated method stub
 		Map<String,String> map=new HashMap<String, String>();
@@ -320,7 +344,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}.execute(params);}
 
 	public String getTime(long now) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String date = sdf.format(new Date(now));
 		return date;
 	}
@@ -424,8 +448,8 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							Schedual s=new Schedual();
 							s.setSchdeual_ID(System.currentTimeMillis()/1000);
 							s.setEventId(event.getEventID());
-							String starttime=getFullTime(json.getLong(2*i+1)*1000);
-							String endtime=getFullTime(json.getLong(2*i+2)*1000);
+							String starttime=getFullTime(json.getLong(2*i)*1000);
+							String endtime=getFullTime(json.getLong(2*i+1)*1000);
 							s.setStarttime(starttime);
 							s.setEndtime(endtime);
 							s.setRemindtime(starttime);

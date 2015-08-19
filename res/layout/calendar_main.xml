@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFAFA"
@@ -21,9 +22,15 @@
         android:layout_marginTop="1dp"
         android:background="@color/caldroid_holo_blue_light"
         android:layout_height="wrap_content"/>
-    <ListView 
+    <com.baoyz.swipemenulistview.SwipeMenuListView 
         android:id="@+id/calendar_lv"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" 
+        android:cacheColorHint="@color/transparent"
+        android:divider="@drawable/bg_cut_line"
+        android:dividerHeight="1px"
+        android:fadingEdge="none"
+        android:listSelector="@color/transparent_background"
+        android:scrollbars="none"
         />
 </LinearLayout>

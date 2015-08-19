@@ -32,7 +32,6 @@ public class MyApplication extends Application{
 		context=this;
 		instance=this;
 		PreferenceUtils.init(context);
-//		DBManager.initializeInstance(getApplicationContext());
 		Log.e("1", "app-start");
 		
 	}

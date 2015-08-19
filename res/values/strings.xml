@@ -132,7 +132,6 @@
     <string name="location_message">位置信息</string>
     <string name="recording_video">录制视频</string>
     <string name="location_prefix">[我的位置]</string>
-    <string name="voice">[语音]</string>
     <string name="picture">[图片]</string>
     <string name="video">[视频]</string>
     <string name="file">[文件]</string>
@@ -164,7 +163,8 @@
     <string name="theme">主题</string>
     <string name="pubtime">发布时间</string>
     <string name="publiser">发布者:</string>
-    <string name="a_time">活动时间</string>
+    <string name="a_time">活动时间:</string>
+    <string name="a_place">活动地点:</string>
     <string name="comment">评论</string>
     <string name="commenter">匿名</string>
     <string name="comment_et">你怎么看</string>
@@ -188,10 +188,34 @@
     <string name="browser_history">浏览历史</string>
     <string name="clear">清空</string>
     <string name="nick">昵称</string>
-    <string name="collect">收藏</string>
+    <string name="collect">参加</string>
     <string name="add_more">添加其他信息</string>
     <string name="todo">待办</string>
     <string name="todo_time">截止</string>
-    
+    <string name="version_info">检查更新</string>
+    <string name="feedback">意见反馈</string>
+    <string name="about">关于我们</string>
+    <string name="msg_alert">消息提醒</string>
+    <string name="assist">辅助功能</string>
+    <string name="title_activity_feedback">FeedbackActivity</string>
+    <string name="feedback_title_hint">标题(可选填)</string>
+    <string name="feedback_contact_hint">请输入联系方式(可选填，QQ/手机号/邮箱！)</string>
+    <string name="feedback_content_hint">请输入您的宝贵意见，以便我们改进</string>
+    <string name="title_activity_msg_alert">MsgAlertActivity</string>
+    <string name="voice">声音</string>
+    <string name="shake">振动</string>
+    <string name="new_msg_alert">接收新消息通知</string>
+    <string name="new_msg_detail">通知显示新消息详情</string>
+    <string name="new_msg_detail_hint">若关闭，当收到新消息时，通知中将不显示消息的发送人和内容摘要。</string>
+    <string name="title_activity_assist_function">AssistFunctionActivity</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="tell_friend">告诉朋友</string>
+    <string name="our_team">我们的团队</string>
+    <string name="copyright">©2015 eventer, all rights reserved</string>
+    <string name="tell_friend_msg">推荐给你一款比较好用的APP，你可以试用一下~</string>
+    <string name="title_activity_our_team">OurTeamActivity</string>
+    <string name="not_friend_hint">你们还不是好友，是否添加该好友?</string>
+    <string name="title_activity_version">VersionActivity</string>
 
 </resources>

@@ -35,6 +35,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -68,6 +69,7 @@ import com.eventer.app.socket.Activity_Chat;
 import com.eventer.app.socket.SocketService;
 import com.eventer.app.task.LoadDataFromHTTP;
 import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.widget.calendar.AlarmReceiver;
 
 @SuppressLint("SimpleDateFormat")
@@ -97,6 +99,7 @@ public class MainActivity extends FragmentActivity{
     private EventReceiver eventReceiver; 
     private NotificationManager manager;
     private static boolean isExit=false;
+    private boolean alert,alert_detail,alert_shake,alert_voice;
     private static Handler mHandler=new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -112,14 +115,12 @@ public class MainActivity extends FragmentActivity{
 		setContentView(R.layout.activity_main);		
 		context=this;
 		instance=this;
+		if(TextUtils.isEmpty(Constant.UID)){
+			System.exit(0);
+		}
+		initData();
 //		DBManager db=new DBManager(context);
 //		db.deleteDatabase(context);
-		EventDao dao=new EventDao(context);
-	    List<String> list=dao.getEventIDList();
-	    MyApplication.getInstance().setCacheByKey("EventList", list);
-	    loadFriendList();
-	    
-	    
 		
 		fm=getSupportFragmentManager();
 		if(savedInstanceState != null) {
@@ -130,6 +131,13 @@ public class MainActivity extends FragmentActivity{
             msgfragment = (MessageFragment) fm.findFragmentByTag(FRAGMENT_TAG[2]);
             profilefragment = (ProfileFragment) fm.findFragmentByTag(FRAGMENT_TAG[3]);
         }
+	}
+	private void initData() {
+		// TODO Auto-generated method stub
+		EventDao dao=new EventDao(context);
+	    List<String> list=dao.getEventIDList();
+	    MyApplication.getInstance().setCacheByKey("EventList", list);
+	    loadFriendList();	
 		bindService(new Intent(this, SocketService.class),
 	            internetServiceConnection, Context.BIND_AUTO_CREATE);
 		 msgReceiver = new MsgReceiver();  
@@ -333,12 +341,12 @@ public class MainActivity extends FragmentActivity{
 						Log.e("1", provider);
 						String content=recvJs.getString("cEvent_content");
 						String theme=recvJs.getString("cEvent_theme");
-						String place=recvJs.getString("cEvent_place");
-						
+						String place=recvJs.getString("cEvent_place");						
 						String name=recvJs.getString("cEvent_name");						
 						String time=recvJs.getString("cEvent_time");//时间成对，可能有多个时间
 						String pubtime=recvJs.getString("cEvent_publish");
 						long issuetime=Long.parseLong(pubtime);
+						time=time.replace("null,", "");
 						Event event=new Event();
 						event.setEventID(id);
 						event.setContent(content);
@@ -645,46 +653,22 @@ public class MainActivity extends FragmentActivity{
 								}
 								
 								UserDao dao1=new UserDao(context);
-								dao1.saveUser(u);
-								
+								dao1.saveUser(u);								
 								InviteMessgeDao dao=new InviteMessgeDao(context);
 								dao.saveMessage(invite);
-								Notification.Builder mBuilder = new Notification.Builder(context);
 								Intent intent1=new Intent(context,Activity_NewFriends.class);
 								intent1.putExtra("userId", id);
-								PendingIntent pendingIntent=PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT); 
-								mBuilder.setSmallIcon(R.drawable.ic_launcher)
-								.setTicker(ticker)
-								.setContentTitle(title)
-								.setContentText(msgBody)
-								.setContentIntent(pendingIntent)
-								;
-								final Notification mNotification = mBuilder.build();							
-								mNotification.flags = Notification.FLAG_AUTO_CANCEL;//FLAG_ONGOING_EVENT 在顶部常驻，可以调用下面的清除方法去除  FLAG_AUTO_CANCEL  点击和清理可以去调
-								mNotification.defaults= Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS;
-								mNotification.when=System.currentTimeMillis(); 									
-								manager.notify(33, mNotification);
+								
+								notifyMsg(ticker, title, msgBody, intent1,33);
 							}
 						else if(mid.indexOf("@")!=-1&&!chat_talker.equals(mid)){
 							recvJs = JSONObject.parseObject(msg);
 							String bodyString = recvJs.getString("data");
 							Log.e("1","main:msgRecv+"+bodyString);
-							Notification.Builder mBuilder = new Notification.Builder(context);
 							Intent intent1=new Intent(context,Activity_Chat.class);
 							intent1.putExtra("groupId", mid);
 							intent1.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
-							PendingIntent pendingIntent=PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT); 
-							mBuilder.setSmallIcon(R.drawable.ic_launcher)
-							.setTicker("收到来自好友的消息！")
-							.setContentTitle("消息通知")
-							.setContentText(id+"发送消息:"+bodyString)
-							.setContentIntent(pendingIntent)
-							;
-							final Notification mNotification = mBuilder.build();						
-							mNotification.flags = Notification.FLAG_AUTO_CANCEL;//FLAG_ONGOING_EVENT 在顶部常驻，可以调用下面的清除方法去除  FLAG_AUTO_CANCEL  点击和清理可以去调
-							mNotification.defaults= Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS;
-							mNotification.when=System.currentTimeMillis(); 									
-							manager.notify(49, mNotification);
+							notifyMsg("收到来自群组的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,49);
 							long time=intent.getLongExtra("time",-1); 
 							ChatEntity entity = new ChatEntity();						
 							entity.setType(1);
@@ -707,25 +691,13 @@ public class MainActivity extends FragmentActivity{
 							delFriend.add(id);							
 							MyApplication.getInstance().clearContact();							
 							dao.updateUsers(delFriend);
-						}else if(m.matches()&&mid.length()==1&&!chat_talker.equals(id)){
+						}else if(m.matches()&&mid.length()==1&&!chat_talker.equals(id)&&MyApplication.getInstance().getContactIDList().contains(id)){
 							recvJs = JSONObject.parseObject(msg);
 							String bodyString = recvJs.getString( "data");
-							Log.e("1","main:msgRecv+"+bodyString);
-							Notification.Builder mBuilder = new Notification.Builder(context);
+							Log.e("1","main:msgRecv+"+bodyString);						
 							Intent intent1=new Intent(context,Activity_Chat.class);
 							intent1.putExtra("userId", id);
-							PendingIntent pendingIntent=PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT); 
-							mBuilder.setSmallIcon(R.drawable.ic_launcher)
-							.setTicker("收到来自群组的消息！")
-							.setContentTitle("消息通知")
-							.setContentText(id+"发送消息:"+bodyString)
-							.setContentIntent(pendingIntent);
-							final Notification mNotification = mBuilder.build();
-						
-							mNotification.flags = Notification.FLAG_AUTO_CANCEL;//FLAG_ONGOING_EVENT 在顶部常驻，可以调用下面的清除方法去除  FLAG_AUTO_CANCEL  点击和清理可以去调
-							mNotification.defaults= Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS;
-							mNotification.when=System.currentTimeMillis(); 									
-							manager.notify(33, mNotification);
+							 notifyMsg("收到来自好友的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,33);						
 							long time=intent.getLongExtra("time",-1); 
 							ChatEntity entity = new ChatEntity();						
 							entity.setType(Integer.parseInt(mid));
@@ -761,6 +733,43 @@ public class MainActivity extends FragmentActivity{
 //				MessageFragment.instance.refreshView();
 //			}   	
 //	    }
+		@SuppressLint("NewApi")
+		private void notifyMsg(String ticker,String title,String content,Intent intent,int notify){
+			 alert=PreferenceUtils.getInstance().getMsgAlert();
+			 if(alert){
+				 alert_detail=PreferenceUtils.getInstance().getMsgAlertDetail();
+				 alert_shake=PreferenceUtils.getInstance().getMsgAlertShake();
+				 alert_voice=PreferenceUtils.getInstance().getMsgAlertVoice();
+				 if(!alert_detail){
+					 content="";
+				 }
+				PendingIntent pendingIntent=PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				Notification.Builder mBuilder = new Notification.Builder(context);
+				mBuilder.setSmallIcon(R.drawable.ic_launcher)
+				.setTicker(ticker)
+				.setContentTitle(title)
+				.setContentText(content)
+				.setContentIntent(pendingIntent);
+				
+				final Notification mNotification = mBuilder.build();		
+				mNotification.flags = Notification.FLAG_AUTO_CANCEL;//FLAG_ONGOING_EVENT 在顶部常驻，可以调用下面的清除方法去除  FLAG_AUTO_CANCEL  点击和清理可以去调
+				if(alert_voice){
+					if(alert_shake){
+						mNotification.defaults= Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS;
+					}else{
+						mNotification.defaults= Notification.DEFAULT_SOUND|Notification.DEFAULT_LIGHTS;
+					}	
+				}else{
+					if(alert_shake){
+						mNotification.defaults= Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS;
+					}else{
+						mNotification.defaults= Notification.DEFAULT_LIGHTS;
+					}
+				}
+				mNotification.when=System.currentTimeMillis(); 									
+				manager.notify(notify, mNotification);
+			 }	
+		}
 	    
 		 class SaveMsg  implements Runnable{
 				@Override

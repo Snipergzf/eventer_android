@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eventer.app"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -35,6 +35,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".MyApplication"
@@ -208,9 +209,31 @@
             android:label="@string/title_activity_collect" >
         </activity>
         <activity
-            android:name="com.eventer.app.other.BrowserHistoryActivity"
+            android:name=".other.BrowserHistoryActivity"
             android:label="@string/title_activity_browser_history" >
         </activity>
+        <activity
+            android:name=".other.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity
+            android:name=".other.MsgAlertActivity"
+            android:label="@string/title_activity_msg_alert" >
+        </activity>
+        <activity
+            android:name=".other.AssistFunctionActivity"
+            android:label="@string/title_activity_assist_function" >
+        </activity>
+        <activity
+            android:name=".other.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name=".other.OurTeamActivity"
+            android:label="@string/title_activity_our_team" >
+        </activity>
+ 
     </application>
 
 </manifest>

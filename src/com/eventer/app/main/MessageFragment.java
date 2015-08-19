@@ -295,8 +295,6 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		refresh();
 		adapter = new ConversationAdapter(context,mData);
         listView.setAdapter(adapter);
-//		adapter.setData(mData);
-//		adapter.notifyDataSetChanged();
 	}
 
 	@Override

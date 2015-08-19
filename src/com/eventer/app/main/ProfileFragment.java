@@ -5,6 +5,9 @@ import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,8 +28,12 @@ import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.http.HttpUnit;
+import com.eventer.app.other.AboutActivity;
+import com.eventer.app.other.AssistFunctionActivity;
 import com.eventer.app.other.BrowserHistoryActivity;
 import com.eventer.app.other.CollectActivity;
+import com.eventer.app.other.FeedbackActivity;
+import com.eventer.app.other.MsgAlertActivity;
 import com.eventer.app.other.MyUserInfoActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
@@ -36,9 +43,9 @@ import com.eventer.app.util.PreferenceUtils;
 
 public  class ProfileFragment extends Fragment implements OnClickListener {
    
-	private Button btn_exit;
 	private RelativeLayout re_myinfo;
-	private TextView clear_message,tv_collect,tv_history;
+	private RelativeLayout re_collect,re_history,re_msg_alert;
+	private RelativeLayout re_assist,re_version,re_about,re_feedback;
 	private Context context;
 	private TextView tv_name;
 	private ImageView iv_avatar;
@@ -63,25 +70,30 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 
 	private void initView(View rootView) {
 		// TODO Auto-generated method stub
-		btn_exit=(Button)rootView.findViewById(R.id.btn_exit);
-		clear_message=(TextView)rootView.findViewById(R.id.clear_massage);
 		tv_name=(TextView)rootView.findViewById(R.id.tv_name);
 		iv_avatar=(ImageView)rootView.findViewById(R.id.iv_avatar);
 		re_myinfo=(RelativeLayout)rootView.findViewById(R.id.re_myinfo);
-		tv_collect=(TextView)rootView.findViewById(R.id.tv_collect);
-		tv_history=(TextView)rootView.findViewById(R.id.tv_history);
+		re_collect=(RelativeLayout)rootView.findViewById(R.id.re_collect);
+		re_history=(RelativeLayout)rootView.findViewById(R.id.re_history);
+		re_about=(RelativeLayout)rootView.findViewById(R.id.re_about);
+		re_assist=(RelativeLayout)rootView.findViewById(R.id.re_assist);
+		re_feedback=(RelativeLayout)rootView.findViewById(R.id.re_feedback);
+		re_msg_alert=(RelativeLayout)rootView.findViewById(R.id.re_msg_alert);
+		re_version=(RelativeLayout)rootView.findViewById(R.id.re_version_info);
 		String name = LocalUserInfo.getInstance(context)
                 .getUserInfo("nick");
 		if(name!=null){
 			tv_name.setText(name);
 		}
-		
-		
-		btn_exit.setOnClickListener(this);
-		tv_collect.setOnClickListener(this);
-		clear_message.setOnClickListener(this);
+	
+		re_collect.setOnClickListener(this);
 		re_myinfo.setOnClickListener(this);
-		tv_history.setOnClickListener(this);
+		re_history.setOnClickListener(this);
+		re_about.setOnClickListener(this);
+		re_assist.setOnClickListener(this);
+		re_feedback.setOnClickListener(this);
+		re_msg_alert.setOnClickListener(this);
+		re_version.setOnClickListener(this);
 		String avatar = LocalUserInfo.getInstance(context)
                 .getUserInfo("avatar");
 		showUserAvatar(iv_avatar, avatar);
@@ -99,36 +111,55 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.btn_exit:
-			PreferenceUtils.getInstance().setLoginPwd("");
-			System.exit(0);
-			break;
-		case R.id.clear_massage:
-			ChatEntityDao dao=new ChatEntityDao(context);
-			if(dao.deleteAllMsg()){
-				Toast.makeText(context, "已经清空所有数据", Toast.LENGTH_LONG).show();
-			}else{
-				Toast.makeText(context, "操作失败！", Toast.LENGTH_LONG).show();
-			}
-			
-			break;
 		case R.id.re_myinfo:
 			Intent intent=new Intent();
 			intent.setClass(context, MyUserInfoActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.tv_collect:
+		case R.id.re_collect:
 			startActivity(new Intent().setClass(context, CollectActivity.class));
 			break;
-		case R.id.tv_history:
+		case R.id.re_history:
 			startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));
+			break;
+		case R.id.re_about:
+			startActivity(new Intent().setClass(context, AboutActivity.class));
+			break;
+		case R.id.re_assist:
+			startActivity(new Intent().setClass(context, AssistFunctionActivity.class));
+			break;
+		case R.id.re_version_info:
+		    checkVersion();	
+			break;
+		case R.id.re_feedback:
+			startActivity(new Intent().setClass(context, FeedbackActivity.class));
+			break;
+		case R.id.re_msg_alert:
+			startActivity(new Intent().setClass(context, MsgAlertActivity.class));
 			break;
 		default:
 			break;
 		}
 	}
 	
-	 private void showUserAvatar(final ImageView iamgeView, String avatar) {
+	 private void checkVersion() {
+		// TODO Auto-generated method stub
+		 PackageManager pm = context.getPackageManager();//context为当前Activity上下文 
+		 PackageInfo pi;
+		 String version="";
+		 int versionCode=0;
+		try {
+			pi = pm.getPackageInfo(context.getPackageName(), 0);
+		    version = pi.versionName;
+		    versionCode=pi.versionCode;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void showUserAvatar(final ImageView iamgeView, String avatar) {
 	        final String url_avatar = avatar;
 	        iamgeView.setTag(url_avatar);
 	        

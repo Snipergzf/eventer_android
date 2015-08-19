@@ -20,6 +20,10 @@ public class PreferenceUtils {
 	private static SharedPreferences.Editor editor;
 	private String SHARED_KEY_USER = "shared_key_user";
 	private String SHARED_KEY_PWD= "shared_key_pwd";
+	private String SHARED_KEY_ALERT= "shared_key_alert";
+	private String SHARED_KEY_ALERT_DETAIL= "shared_key_alert_detail";
+	private String SHARED_KEY_ALERT_VOICE= "shared_key_alert_voice";
+	private String SHARED_KEY_ALERT_SHAKE= "shared_key_alert_shake";
 	private Context context;
 	private String deviceId;
 	private PreferenceUtils() {
@@ -73,7 +77,37 @@ public class PreferenceUtils {
     	editor.putString(SHARED_KEY_PWD, paramString).commit();
     }
     
+    public boolean getMsgAlert(){
+    	return mSharedPreferences.getBoolean(SHARED_KEY_ALERT, true);
+    }
+    
+    public void setMsgAlert(boolean param){
+    	editor.putBoolean(SHARED_KEY_ALERT, param).commit();
+    }
+    
 
+    public void setMsgAlertDetail(boolean param){
+    	editor.putBoolean(SHARED_KEY_ALERT_DETAIL, param).commit();
+    }
+    public boolean getMsgAlertDetail(){
+    	return mSharedPreferences.getBoolean(SHARED_KEY_ALERT_DETAIL, true);
+    }
+    
+    public void setMsgAlertVoice(boolean param){
+    	editor.putBoolean(SHARED_KEY_ALERT_VOICE, param).commit();
+    }
+    public boolean getMsgAlertVoice(){
+    	return mSharedPreferences.getBoolean(SHARED_KEY_ALERT_VOICE, true);
+    }
+    
+    public void setMsgAlertShake(boolean param){
+    	editor.putBoolean(SHARED_KEY_ALERT_SHAKE, param).commit();
+    }
+ 
+    public boolean getMsgAlertShake(){
+    	return mSharedPreferences.getBoolean(SHARED_KEY_ALERT_SHAKE, true);
+    }
+    
     public  boolean hasKey(final String key) {
         return mSharedPreferences.contains(key);
     }
@@ -87,14 +121,24 @@ public class PreferenceUtils {
     }
     
     String getuniqueId(){
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-		String imei=tm.getDeviceId();	
-		String simSerialNumber=tm.getSimSerialNumber();		
-		String androidId =android.provider.Settings.Secure.getString(		
-		context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);		
-		UUID deviceUuid =new UUID(androidId.hashCode(), ((long)imei.hashCode() << 32) |simSerialNumber.hashCode());		
-		String uniqueId= deviceUuid.toString();		
-		return uniqueId;
+    	try{
+    		 TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    			String imei=tm.getDeviceId();	
+    			String simSerialNumber=tm.getSimSerialNumber();		
+    			String androidId =android.provider.Settings.Secure.getString(		
+    			context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);		
+    			UUID deviceUuid =new UUID(androidId.hashCode(), ((long)imei.hashCode() << 32) |simSerialNumber.hashCode());		
+    			String uniqueId= deviceUuid.toString();	
+    			if(!TextUtils.isEmpty(uniqueId)){
+    				return uniqueId;
+    			}else{
+    				return "";
+    			}
+    			
+    	}catch(Exception e){
+    		return "";
+    	}
+       
 }
 
     public  void clearPreference() {

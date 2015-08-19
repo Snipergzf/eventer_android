@@ -58,7 +58,7 @@
             android:text="取消"
             android:textSize="18sp"
             android:textColor="#4ca0eb" />
- <View
+     <View
         android:layout_width="0.3dp"
         android:layout_height="fill_parent"
         android:background="#dfdfdf" />

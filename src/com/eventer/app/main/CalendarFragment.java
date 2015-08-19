@@ -13,31 +13,44 @@ import java.util.Map;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.adapter.SchedualAdapter;
+import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.db.DBManager;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.Event;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.other.Activity_EventDetail;
 import com.eventer.app.other.Calendar_AddSchedual;
 import com.eventer.app.other.Calendar_ViewSchedual;
+import com.eventer.app.socket.Activity_Chat;
 import com.eventer.app.widget.calendar.CaldroidFragment;
 import com.eventer.app.widget.calendar.CaldroidListener;
 
@@ -53,7 +66,7 @@ public  class CalendarFragment extends Fragment  {
 	private TextView eventlist_time;
 	private Date select_date=new Date();
 	final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	private ListView eventList;
+	private SwipeMenuListView eventList;
 	private SchedualAdapter mAdapter;
 	private List<Schedual> sList=new ArrayList<Schedual>();
 	public static String eventdate="";
@@ -84,9 +97,6 @@ public  class CalendarFragment extends Fragment  {
 			args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
 			args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, false);
 
-			// Uncomment this to customize startDayOfWeek
-			// args.putInt(CaldroidFragment.START_DAY_OF_WEEK,
-			// CaldroidFragment.TUESDAY); // Tuesday
 			caldroidFragment.setArguments(args);
 	
 			
@@ -100,7 +110,7 @@ public  class CalendarFragment extends Fragment  {
 
 		caldroidFragment.setCaldroidListener(listener);
 		IsRefresh=false;
-		eventList=(ListView)rootView.findViewById(R.id.calendar_lv);
+		eventList=(SwipeMenuListView)rootView.findViewById(R.id.calendar_lv);
 		mAdapter=new SchedualAdapter(context, sList);	
 		eventList.setAdapter(mAdapter);
 		eventList.setOnItemClickListener(new OnItemClickListener(){	      
@@ -133,7 +143,86 @@ public  class CalendarFragment extends Fragment  {
 			}	    
 	      });
 		Log.e("1","create____________________________________1");
+		
+		
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+ 			@Override
+ 			public void create(SwipeMenu menu) {
+				SwipeMenuItem openItem = new SwipeMenuItem(
+						context);
+				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+						0xCE)));
+				openItem.setWidth(dp2px(60));
+				openItem.setTitle("Íê³É");
+				openItem.setTitleSize(18);
+				openItem.setTitleColor(Color.WHITE);
+				menu.addMenuItem(openItem);
+ 				// create "delete" item
+ 				SwipeMenuItem deleteItem = new SwipeMenuItem(
+ 						context);
+ 				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+ 						0x3F, 0x25)));
+ 				deleteItem.setWidth(dp2px(60));
+ 				// set a icon
+ 				deleteItem.setIcon(R.drawable.ic_delete);
+ 				menu.addMenuItem(deleteItem);
+ 			}
+ 		};
+ 		// set creator
+ 	eventList.setMenuCreator(creator);
+
+ 	eventList.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+ 			@Override
+ 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+ 				Schedual item = sList.get(position);
+ 				switch (index) {
+ 				case 0:
+ 					item.setStatus(0);
+	                SchedualDao dao=new SchedualDao(context);
+	                dao.update(item);
+	                sList.remove(position);
+	                sList.add(position, item);
+	                mAdapter.notifyDataSetChanged();
+ 					break;
+     			case 1:
+ 					// delete
+     			    delete(item);
+                    refreshView();
+	                caldroidFragment.SetScheduleDates();
+	        		caldroidFragment.refreshView();
+ 					break;
+ 				}
+ 				return false;
+ 			}
+ 		});
+
+	eventList.setOnItemLongClickListener(new OnItemLongClickListener() {
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view,
+				int position, long id) {
+			return true;
+		}
+	});		
 		return rootView;
+	}
+	
+	public void refreshView() {
+		// TODO Auto-generated method stub
+		SetEventListData();
+	    mAdapter=new SchedualAdapter(context, sList);
+		eventList.setAdapter(mAdapter);
+	}
+
+	private int dp2px(int dp) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+				getResources().getDisplayMetrics());
+	}
+	
+
+	private void delete(Schedual item) {
+		SchedualDao dao=new SchedualDao(context);
+		dao.deleteSchedual(item.getSchdeual_ID()+"");
 	}
 	
 	public void addCourse(){
@@ -390,8 +479,9 @@ public  class CalendarFragment extends Fragment  {
 		super.onResume();
         if(IsRefresh){						
 		}
-//		caldroidFragment.SetScheduleDates();
-//		caldroidFragment.refreshView();
+        Log.e("1", "resume--------------calendar");
+        caldroidFragment.SetScheduleDates();
+		caldroidFragment.refreshView();
 		SetEventListData();
 		mAdapter=new SchedualAdapter(context, sList);
 		eventList.setAdapter(mAdapter);
