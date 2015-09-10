@@ -1,6 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -57,7 +56,7 @@ public class ChatRoomActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-            	startActivity(new Intent(context,CreatChatRoomActivity.class));  
+            	startActivity(new Intent(context,ChatRoomCreatActivity.class));  
             }
 
         });
@@ -67,10 +66,6 @@ public class ChatRoomActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // grouplist = EMGroupManager.getInstance().getAllGroups();
-        // groupAdapter = new MyChatRoomAdapter(this, 1, grouplist);
-        // groupListView.setAdapter(groupAdapter);
-        // groupAdapter.notifyDataSetChanged();
     }
 
     @Override

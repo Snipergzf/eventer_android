@@ -28,9 +28,9 @@ import com.eventer.app.R;
 import com.eventer.app.db.ClassInfoDao;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.ClassInfo;
-import com.eventer.app.other.Course_View;
-import com.eventer.app.other.Course_edit;
-import com.eventer.app.other.Course_setting;
+import com.eventer.app.other.Activity_Course_View;
+import com.eventer.app.other.Activity_Course_Edit;
+import com.eventer.app.other.Activity_Course_Setting;
 import com.eventer.app.view.CourseView;
 import com.eventer.app.view.CourseView.OnItemClassClickListener;
 import com.eventer.app.view.PopMenu;
@@ -82,7 +82,7 @@ public  class CourseFragment extends Fragment{
 								"您点击的课程是：" + classInfo.getClassname(),
 								Toast.LENGTH_SHORT).show();
 						Intent intent = new Intent();
-						intent.setClass(getActivity(), Course_View.class);
+						intent.setClass(getActivity(), Activity_Course_View.class);
 						intent.putExtra("CourseID", classInfo.getClassid());
 						startActivity(intent);
 
@@ -94,7 +94,9 @@ public  class CourseFragment extends Fragment{
 
 		return rootView;
 	}
-	
+	/***
+	 * 初始化课表设置
+	 */
 	private void initSetting(){
 		DBManager dbHelper;
 		dbHelper = new DBManager(getActivity());
@@ -151,13 +153,17 @@ public  class CourseFragment extends Fragment{
 		}
 	    dbHelper.closeDatabase();
 	}
-	
+	/***
+	 * 获取所有课程
+	 */
 	private void initClassData() {
 		AllClassList = new ArrayList<ClassInfo>();
 		ClassInfoDao dao =new ClassInfoDao(getActivity());
 		AllClassList=dao.getClassInfoList();
 	}
-
+	/***
+	 * 获取当前选中的周数的课程
+	 */
 	private void getClassData(){
 		classList= new ArrayList<ClassInfo>();
 		for (ClassInfo cinfo : AllClassList) {
@@ -167,6 +173,10 @@ public  class CourseFragment extends Fragment{
 		}
 	}
 	
+	/***
+	 * 切换课表的周次
+	 * @param week
+	 */
 	public void changeWeek(int week){
 		courseView.setWeek(week);
 		if(week==NowWeek){
@@ -213,7 +223,7 @@ public  class CourseFragment extends Fragment{
 			courseView.setWeek(NowWeek);
 			showWeek=NowWeek;
 			courseView.setClassList(classList);// 将课程信息导入到课表中
-	    }
+	}
 }
   		
      

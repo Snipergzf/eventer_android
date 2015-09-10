@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.entity.Schedual;
 
 public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 	
@@ -41,6 +43,7 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 	private List<Map<String, Object>> mData;
 	public static final String ARGUMENT_ID = "id";
 	public static final String ARGUMENT_DATE = "date";
+	public static final String ARGUMENT_TYPE = "type";
 	public static final String ARGUMENT_LOC = "position";
 	public static final String RESPONSE = "response";
 	public static final int REQUEST_EDIT = 0x120;
@@ -48,15 +51,27 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 	private String date;
 	private Dialog mDialog;
 	private Context context;
+	private Schedual s=new Schedual();
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_viewschedual);
 		setTitle("详情");
 		context=this;
+		id=getIntent().getStringExtra(ARGUMENT_ID);
+		SchedualDao dao=new SchedualDao(context);
+		s=dao.getSchedual(id);
+		if(s.getType()==2){
+			setTitle("日程详情");
+		}else if(s.getType()==3){
+			setTitle("待办事件详情");
+		}
 		initView();		
         init();
 	}
-	
+	/***
+	 * 初始化控件
+	 */
 	private void initView() {
 		// TODO Auto-generated method stub
 		viewevent_back=(ImageView)findViewById(R.id.viewevent_back);
@@ -73,12 +88,13 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 		iv_finish.setOnClickListener(this);
 		iv_share.setOnClickListener(this);
 	}
-
+   /***
+    * 加载数据
+    */
 	@SuppressLint("SimpleDateFormat")
 	public void init(){	
 		SimpleDateFormat  sDateFormat  = new   SimpleDateFormat("yyyy年MM月dd日"); 
-		SimpleDateFormat  DateFormat  = new   SimpleDateFormat("yyyy-MM-dd");  	
-		
+		SimpleDateFormat  DateFormat  = new   SimpleDateFormat("yyyy-MM-dd");  			
 		date=getIntent().getStringExtra(ARGUMENT_DATE);
 		Log.e("1", date);
 		String time =date;
@@ -89,52 +105,28 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		id=getIntent().getStringExtra(ARGUMENT_ID);
 		mData=new ArrayList<Map<String,Object>>();
-		DBManager dbHelper;
-		dbHelper = new DBManager(this);
-        dbHelper.openDatabase();	 
-    	Cursor c=dbHelper.findList(true, "dbSchedule", null,
-    			"scheduleID=?", new String[]{id}, null, null,null,null);
-        while (c.moveToNext()) {
-        	if(c.getInt(c.getColumnIndex("frequency"))==0){
-	             String _time = c.getString(c.getColumnIndex("startTime")).substring(10); 
-	             Log.e("1", _time);           
-            }
         	
-        	String start=c.getString(c.getColumnIndex("startTime"));
-        	String end=c.getString(c.getColumnIndex("endTime"));
-        	String timespan=c.getString(c.getColumnIndex("timeSpan"));
-        	String title=c.getString(c.getColumnIndex("title"));
-        	String place=c.getString(c.getColumnIndex("place"));
-        	String detail =c.getString(c.getColumnIndex("detail"));
-        	String remind=c.getString(c.getColumnIndex("remind"));
-        	String _f=c.getString(c.getColumnIndex("frequency"));
- 	        String friend= c.getString(c.getColumnIndex("companion"));
+        	String start=s.getStarttime();
+        	String end=s.getEndtime();
+        	String title=s.getTitle();
+        	String place=s.getPlace();
+        	String detail =s.getDetail();
+        	int remind=s.getRemind();
+        	int _f=s.getFrequency();
+// 	        String friend= c.getString(c.getColumnIndex("companion"));
             Map<String, Object> map = new HashMap<String, Object>();
             if(title.trim().length() != 0&&title!=null){
         	     eventtitle.setText(title);
         	}else{
         		 eventtitle.setText("(无标题)");
         	}
-//            if(timespan.trim().length() != 0&&timespan!=null){
-//       	        if(!timespan.equals("4")){
-//       	        	map.clear();
-//			        map.put("info", time+" "+start.substring(11)+"-"+end.substring(11));
-//			        map.put("id", 1);
-//			        mData.add(map);
-//       	        }else{
-//       	            map = new HashMap<String, Object>();
-//			        map.put("info", time+" "+"全天");
-//			        map.put("id", 1);
-//			        mData.add(map);
-//       	        }
-//	       	}else{
+
 	       		map = new HashMap<String, Object>();
 		        map.put("info", time);
 		        map.put("id", 1);
 		        mData.add(map);
-//	       	}
+
             
 	        if(place.trim().length() != 0&&place!=null){
 		        map = new HashMap<String, Object>();
@@ -149,36 +141,26 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 		        mData.add(map);
 	        }
 	      
-	        if(_f.trim().length() != 0&&_f!=null){
-	        	if(!_f.equals("0")){
-	        		int loc=Integer.parseInt(_f);
+	        	if(_f==0){	        		
 	        		TypedArray imgCountry = getResources().obtainTypedArray(R.array.eventrepeat);  
 	        		//imgCountry.getResourceId(0,0) ;
-	        		String frequncy=imgCountry.getString(loc);	        		
+	        		String frequncy=imgCountry.getString(_f);	        		
 	        		map = new HashMap<String, Object>();
 			        map.put("info", frequncy);
 			        map.put("id", 4);
 			        mData.add(map);
 	        	} 
-	        }
-	        if(remind.trim().length() != 0&&remind!=null){
-//		        int loc=Integer.parseInt(remind);
-//		        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.eventalarm,R.layout.simple_spinner_item);
-//				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//				eventalarm.setAdapter(adapter);
-//				eventalarm.setSelection(loc);
-				int loc=Integer.parseInt(remind);
+
         		TypedArray imgCountry = getResources().obtainTypedArray(R.array.eventalarm);  
         		//imgCountry.getResourceId(0,0) ;
-        		String alarm=imgCountry.getString(loc);	        		
+        		String alarm=imgCountry.getString(remind);	        		
         		map = new HashMap<String, Object>();
 		        map.put("info", alarm+"提醒");
 		        map.put("id", 5);
 		        mData.add(map);
-	        }
 
-        }  
-        dbHelper.closeDatabase();
+//        }  
+//        dbHelper.closeDatabase();
         MyAdapter adapter=new MyAdapter(this);
 		listview.setAdapter(adapter);
 		
@@ -198,6 +180,7 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 			  intent.setClass(Calendar_ViewSchedual.this, Calendar_AddSchedual.class);
 			  Bundle bundle = new Bundle();                           //创建Bundle对象   
 			  bundle.putLong(ARGUMENT_ID, Long.parseLong(id));     //装入数据  
+			  bundle.putInt(ARGUMENT_TYPE, s.getType());
 			  bundle.putString(ARGUMENT_DATE, date);  
 			  intent.putExtras(bundle); 
 		      startActivityForResult(intent,REQUEST_EDIT);

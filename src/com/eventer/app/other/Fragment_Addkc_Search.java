@@ -83,7 +83,7 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 				// TODO Auto-generated method stub
 				Intent intent=new Intent();
 				intent.putExtra("c_detail", mData.get(position));
-				intent.setClass(getActivity(), Course_edit.class);
+				intent.setClass(getActivity(), Activity_Course_Edit.class);
 				startActivityForResult(intent, 11);
 				
 			}

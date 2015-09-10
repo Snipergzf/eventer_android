@@ -105,9 +105,7 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:padding="10dp"
-         android:layout_marginLeft="5dp"
-         android:layout_marginRight="5dp"
-         android:background="@drawable/shape_gray_round_frame_n"
+         android:background="@color/white"
          android:layout_below="@+id/tv_line">
        <TextView
             android:id="@+id/tv_source_notice"
@@ -208,7 +206,7 @@
                 android:src="@drawable/comment_selector" />
 
             <TextView
-                android:id="@+id/article_comment_num"
+                android:id="@+id/tv_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/iv_comment"
@@ -216,8 +214,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
-                android:text="23"
-                android:visibility="gone"
                 android:textColor="#fe6c6c"
                 android:textSize="14sp" />
 
@@ -229,6 +225,17 @@
                 android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@+id/iv_comment"
                 android:src="@drawable/share_selector" />
+            <TextView
+                android:id="@+id/tv_share_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/iv_share"
+                android:layout_alignTop="@+id/iv_share"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:textColor="#fe6c6c"
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/iv_collect"
@@ -242,7 +249,7 @@
              
 
             <TextView
-                android:id="@+id/article_collection_num"
+                android:id="@+id/tv_collection_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/iv_collect"
@@ -250,8 +257,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
-                android:text="23"
-                android:visibility="gone"
                 android:textColor="#fe6c6c"
                 android:textSize="14sp" />
         

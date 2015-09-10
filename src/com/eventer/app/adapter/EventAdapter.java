@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.crypto.spec.IvParameterSpec;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -16,15 +14,14 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.WindowManager.LayoutParams;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
@@ -32,7 +29,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.easemob.util.DateUtils;
 import com.eventer.app.Constant;
@@ -43,11 +39,11 @@ import com.eventer.app.entity.Event;
 import com.eventer.app.entity.EventOp;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.main.CalendarFragment;
-import com.eventer.app.other.EventCommentActivity;
+import com.eventer.app.other.Activity_EventComment;
 import com.eventer.app.other.ShareToGroupActivity;
 import com.eventer.app.other.ShareToSingleActivity;
 
-@SuppressLint("ViewHolder")
+@SuppressLint({ "ViewHolder", "SimpleDateFormat" })
 public class EventAdapter extends BaseAdapter {   
 		    private Context context;                        //运行上下文   
 		    private List<Event> listItems;      
@@ -73,34 +69,29 @@ public class EventAdapter extends BaseAdapter {
 		  
 		@Override
 		public int getCount() {
-			// TODO 自动生成的方法存根
 			return  listItems.size();
 		}
 		
 
 		public void addItem(Event e) {
-			// TODO 自动生成的方法存根
 			listItems.add(0,e);
 		}
 		
 		public void clearItem() {
-			// TODO 自动生成的方法存根
 			listItems=new ArrayList<Event>();
 		}
 		
 		
 		@Override
 		public Object getItem(int position) {
-			// TODO 自动生成的方法存根
 			return listItems.get(position);
 		}
 		
 		@Override
 		public long getItemId(int position) {
-			// TODO 自动生成的方法存根
 			return position;
 		}
-		//提取出来方便点  
+		
 		public final class ViewHolder {   
 		     TextView content;
 		     TextView time;
@@ -169,19 +160,19 @@ public class EventAdapter extends BaseAdapter {
 			}else{
 				holder.iv_collect.setSelected(false);
 			}
-			
+			//活动评论
 			holder.li_comment.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent=new Intent();
-					intent.setClass(context, EventCommentActivity.class);
+					intent.setClass(context, Activity_EventComment.class);
 					intent.putExtra("event_id", card.getEventID());
 	                context.startActivity(intent);
 				}
 			});
-			
+			//活动收藏
 			holder.li_collect.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -226,9 +217,7 @@ public class EventAdapter extends BaseAdapter {
 								s.setPlace(card.getPlace());
 								int status=getStatus(endtime,starttime);								
 								s.setStatus(status);
-								if(status!=0){
-									s.setStatus(1);
-								}
+								s.setType(1);
 								s.setFrequency(0);
 								sdao.saveSchedual(s);
 								CalendarFragment.instance.refreshView();
@@ -242,8 +231,8 @@ public class EventAdapter extends BaseAdapter {
 					
 				}
 			});
-			holder.li_share.setOnClickListener(new OnClickListener() {
-				
+			//活动分享
+			holder.li_share.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
 					if (mDialog == null) {
@@ -326,7 +315,7 @@ public class EventAdapter extends BaseAdapter {
 			}else if(now.lt(remind)){
 				status=0;
 			}else if(now.gt(finish)){
-				status=2;
+				status=1;
 			}
 			return status;
 		}

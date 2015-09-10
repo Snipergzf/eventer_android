@@ -87,7 +87,7 @@ public  class Fragment_AddManually extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
-	
+	//将课程保存数据库
 	public void saveCourse(){
 		List<Course> list=adapter.getData();
 		// TODO Auto-generated method stub

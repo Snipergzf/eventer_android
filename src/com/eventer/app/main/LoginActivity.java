@@ -1,15 +1,15 @@
 package com.eventer.app.main;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import org.apache.http.conn.HttpHostConnectException;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,12 +25,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
-import com.eventer.app.MyApplication;
 import com.eventer.app.R;
-import com.eventer.app.db.EventDao;
-import com.eventer.app.http.HttpUnit;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
@@ -57,7 +54,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		tv_login_help=(TextView)findViewById(R.id.tv_login_help);
 		tv_newuser=(TextView)findViewById(R.id.tv_login_newuser);
 		
-		
+		/***
+		 * 监听账号输入框的输入
+		 * 不为空时，显示清除按钮，否则，隐藏
+		 */
 		edit_user.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -84,6 +84,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}			
 		});
 		
+		/***
+		 * 监听密码输入框的输入
+		 * 不为空时，显示清除按钮，否则，隐藏
+		 */	
      edit_pwd.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -113,9 +117,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     	  edit_user.setText(user);
     	  edit_pwd.setFocusable(true);
     	  edit_pwd.requestFocus();
-//    	  if(pwd!=null&&pwd!=""){
-//        	  edit_user.setText(pwd);
-//          }
+    	  if(pwd!=null&&pwd!=""){
+        	  edit_pwd.setText(pwd);
+          }
       }
       btn_pwd_clear.setOnClickListener(this);
       btn_user_clear.setOnClickListener(this);
@@ -124,7 +128,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
       tv_newuser.setOnClickListener(this);
       dialog = new ProgressDialog(context);
 	}
-
+   /***
+    * 各个控件的点击事件
+    */
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -133,24 +139,24 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			dialog.setMessage("正在登录...");
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             dialog.show();
-			Map<String, String> params = new HashMap<String, String>();  
-	        params.put("pwd", edit_pwd.getText().toString());
-	        params.put("phone", edit_user.getText().toString());
-	        params.put("imei", PreferenceUtils.getInstance().getDeviceId());
-			UserLogin(params);	
+            UserLogin();	
 			break;
+		//清除密码输入框
         case R.id.btn_pwd_clear:
 			edit_pwd.setText("");
 			break;
+		//清除账号输入框
 		case R.id.btn_user_clear:
 			edit_user.setText("");
 			edit_pwd.setText("");
 			break;
+		//"无法登陆"按钮？
 		case R.id.tv_login_help:
 			Uri uri = Uri.parse("http://baidu.com");
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			startActivity(intent);
 			break;
+		//"新用户"按钮，跳转至注册界面
 		case R.id.tv_login_newuser:
 			Intent intent1=new Intent();
 			intent1.setClass(context, RegisterActivity.class);
@@ -163,67 +169,75 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     
 	/**
 	 * 执行异步任务
-	 * 
-	 * @param params
-	 *      
+	 * 登录系统
+	 *  参数为“phone”,“pwd”  ,"imei"  
 	 */
-	public void UserLogin(final Object... params) {
-		new AsyncTask<Object, Object,Integer>() {
-
-			@SuppressWarnings("unchecked")
+	public void UserLogin() {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("phone", edit_user.getText().toString());
+        params.put("pwd", edit_pwd.getText().toString());	
+        params.put("imei", PreferenceUtils.getInstance().getDeviceId());
+        LoadDataFromHTTP task = new LoadDataFromHTTP(
+                context, Constant.URL_LOGIN, params);
+        task.getData(new DataCallBack() {
+			
 			@Override
-			protected Integer doInBackground(Object... params) {
-				int status=-1;
-			  try {
-		    	        status=HttpUnit.sendLoginRequest((Map<String, String>) params[0]);
-		    	        Constant.isLogin=false;
-		    	        return status;
-					
-				} catch (Throwable e) {
-					// TODO Auto-generated catch block
-					Log.e("1", e.toString());
-					return -1;
-//					e.printStackTrace();
-				}
-			}
-			protected void onPostExecute(Integer status) {
-				 if(status==0){
-			        	Log.e("1", "登录成功！");
-			        	PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
-			        	PreferenceUtils.getInstance().setLoginPwd(edit_pwd.getText().toString());
-			        	//PreferenceUtils.getInstance().clearPreference();
-			        	Constant.isLogin=true;
-			        	Constant.LoginTime=System.currentTimeMillis()/1000;
-			        	loadFriendInfo();			        	
-			        }else if(status==1){
-			        	dialog.dismiss();
-			        	Toast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
-						.show();
-			        }else if(status==2){
-			        	dialog.dismiss();
-			        	Toast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
-						.show();
-			        	
-			        }else  if(status==-1){
-			        	dialog.dismiss();
-			    			Toast toast=Toast.makeText(context, "登录失败，请稍后再试", Toast.LENGTH_LONG);
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				 try {
+	                    int code = data.getInteger("status");
+	                    switch (code) {
+						case 0:
+							Log.e("1", "登录成功！");
+							PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
+				        	PreferenceUtils.getInstance().setLoginPwd(edit_pwd.getText().toString());
+				        	Constant.isLogin=true;
+				        	Constant.LoginTime=System.currentTimeMillis()/1000;
+				        	JSONObject jsonLogin= data.getJSONObject("user_action");
+				        	Constant.UID=jsonLogin.getInteger("uid")+"";
+				        	Constant.TOKEN=jsonLogin.getString("token");
+				        	initSelfInfo();
+							break;
+						case 1:
+							dialog.dismiss();
+				        	Toast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
+							.show();
+							break;
+						case 2:
+							dialog.dismiss();
+				        	Toast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
+							.show();
+						case 23:
+							dialog.dismiss();
+			    			Toast toast=Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
 			    			//toast.setGravity(Gravity.CENTER, 0, 0);   
 			    	        toast.show(); 
-			        } else{
-			        	dialog.dismiss();
-			        	Toast.makeText(context, status+"登录失败，请稍后重试！！"+PreferenceUtils.getInstance().getDeviceId(), Toast.LENGTH_LONG)
-						.show();
-			        } 
-				 //status=23,同时在线
-				
-			    };
-			    
-		}.execute(params);}
-	       
-	
-	
-	
-	private void loadFriendInfo(){
+							break;
+						case -1:
+							dialog.dismiss();
+							Toast.makeText(context, "无法连接到服务器？网络不稳定？！", Toast.LENGTH_LONG)
+							.show();
+							break;
+						default:
+							dialog.dismiss();
+				        	Toast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
+							.show();
+						}
+
+	                } catch (JSONException e) {
+
+	                    Toast.makeText(context, "数据解析错误...",
+	                            Toast.LENGTH_SHORT).show();
+	                    e.printStackTrace();
+	                } 
+			}
+		});
+	}
+	/***
+	 * 从服务器获取个人信息，
+	 * 将信息写入LocalUserInfo
+	 */
+	private void initSelfInfo(){
 		 Map<String, String> maps = new HashMap<String, String>();		 
 	     maps.put("uid", Constant.UID+"");
 		 LoadDataFromHTTP task = new LoadDataFromHTTP(

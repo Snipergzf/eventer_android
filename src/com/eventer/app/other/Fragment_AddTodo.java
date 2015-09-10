@@ -84,9 +84,10 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		instance=this;
 		initView(rootView);
 		id=getActivity().getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
+		int type=getActivity().getIntent().getIntExtra(Calendar_ViewSchedual.ARGUMENT_TYPE, -1);
 		if(id==-1){
 			IsNew=true;
-        }else{
+        }else if(type==3){
         	setData();
         	IsNew=false;
         }
@@ -114,7 +115,7 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd HH:mm");     
 		String   time =sDateFormat.format(new   Date());
 		String[] nowtime=time.split(" ");	
-		String date=getActivity().getIntent().getStringExtra(Calendar_AddSchedual.ARGUMENT);
+		String date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
 		eventdate.setText(date);
 		eventtime.setText(nowtime[1]);		
 		
@@ -240,10 +241,8 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
         cv.put("frequency", 0);  
         cv.put("StartTime",getTime());  
         cv.put("EndTime", start);
-        cv.put("Status", 3);
-//        if(status!=0){
-//        	cv.put("Status", 3);
-//        }
+        cv.put("Status", status);
+        cv.put("type",3);
         cv.put("RemindTime", remindtime);
         cv.put("Remind", 1);
         if(IsNew){
@@ -312,9 +311,9 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		if(now.gteq(remind)&&now.lteq(finish)){
 			status=1;
 		}else if(now.lt(remind)){
-			status=0;
+			status=1;
 		}else if(now.gt(finish)){
-			status=2;
+			status=0;
 		}
 		return status;
 	}

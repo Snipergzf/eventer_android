@@ -460,13 +460,14 @@ public class UserDao {
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		Map<String, UserInfo> users = new HashMap<String, UserInfo>();
 		if(db.isOpen()){
-			Cursor cursor=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_ID,COLUMN_NAME_NICK,COLUMN_NAME_AVATAR,COLUMN_NAME_BEIZHU},
+			Cursor cursor=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_ID,COLUMN_NAME_NICK,COLUMN_NAME_AVATAR,COLUMN_NAME_BEIZHU,COLUMN_NAME_IS_STRANGER},
 					"userId=?", new String[]{userId}, null, null,null,null);			
 			while (cursor.moveToNext()) {
 				String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
 				String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
 				String avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
 				String beizhu = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_BEIZHU));
+				int type=cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_IS_STRANGER));
 				if (beizhu!=null&&!beizhu.equals("")) {
 					nick = beizhu;
 				}	
@@ -474,6 +475,7 @@ public class UserDao {
 				user.setUsername(username);
 				user.setNick(nick);
 				user.setAvatar(avatar);
+				user.setType(type);
 				users.put(username, user);
 			}
 			cursor.close();

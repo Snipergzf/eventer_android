@@ -16,19 +16,22 @@ import com.eventer.app.entity.User;
 @SuppressLint("DefaultLocale")
 public class SchedualDao {
 	public static final String TABLE_NAME = "dbSchedule";
-	public static final String COLUMN_NAME_ID = "ScheduleID";
-	public static final String COLUMN_NAME_START = "StartTime";
-    public static final String COLUMN_NAME_END = "EndTime";
+	public static final String COLUMN_NAME_ID = "scheduleID";
+	public static final String COLUMN_NAME_START = "startTime";
+    public static final String COLUMN_NAME_END = "endTime";
     public static final String COLUMN_NAME_TITLE = "title";
     public static final String COLUMN_NAME_PLACE = "place";
-    public static final String COLUMN_NAME_DETAIL = "Detail";
-    public static final String COLUMN_NAME_REMIND = "Remind";
-    public static final String COLUMN_NAME_REMINDTIME = "RemindTime";
-    public static final String COLUMN_NAME_STATUS = "Status";
+    public static final String COLUMN_NAME_DETAIL = "detail";
+    public static final String COLUMN_NAME_REMIND = "remind";
+    public static final String COLUMN_NAME_REMINDTIME = "remindTime";
+    public static final String COLUMN_NAME_STATUS = "status";
 	public static final String COLUMN_NAME_FREQUENCY = "frequency";
-	public static final String COLUMN_NAME_IS_TIMESPAN = "TimeSpan";
-	public static final String COLUMN_NAME_IS_COMPANION = "Companion";
+//	public static final String COLUMN_NAME_IS_TIMESPAN = "TimeSpan";
+	public static final String COLUMN_NAME_IS_COMPANION = "companion";
 	public static final String COLUMN_NAME_EVENTID = "eventID";
+	public static final String COLUMN_NAME_TYPE="type";
+	public static final String COLUMN_NAME_SHARE="shareId";
+	
 
 	//private DbOpenHelper dbHelper;
 	private DBManager dbHelper;
@@ -161,7 +164,6 @@ public class SchedualDao {
 		cv.put(COLUMN_NAME_FREQUENCY,s.getFrequency());
 		cv.put(COLUMN_NAME_ID,s.getSchdeual_ID());
 		cv.put(COLUMN_NAME_IS_COMPANION,s.getFriend());
-		cv.put(COLUMN_NAME_IS_TIMESPAN,s.getTimespan());
 		cv.put(COLUMN_NAME_PLACE,s.getPlace());
 		cv.put(COLUMN_NAME_REMIND,s.getRemind());
 		cv.put(COLUMN_NAME_REMINDTIME,s.getRemindtime());
@@ -169,6 +171,8 @@ public class SchedualDao {
 		cv.put(COLUMN_NAME_STATUS,s.getStatus());
 		cv.put(COLUMN_NAME_TITLE, s.getTitle());
 		cv.put(COLUMN_NAME_EVENTID, s.getEventId());
+		cv.put(COLUMN_NAME_TYPE, s.getType());
+		cv.put(COLUMN_NAME_SHARE, s.getShareId());
 	    dbHelper.insert(TABLE_NAME, cv);     
 	    dbHelper.closeDatabase();
 	}
@@ -196,7 +200,7 @@ public class SchedualDao {
 	public void update(Schedual schedual){
         dbHelper.openDatabase();
         ContentValues cv=new ContentValues();
-        cv.put("Status", schedual.getStatus());
+        cv.put(COLUMN_NAME_STATUS, schedual.getStatus());
        Log.e("1",""+ dbHelper.update("dbSchedule", cv, "scheduleID=?", new String[]{schedual.getSchdeual_ID()+""}));
     	dbHelper.closeDatabase();
 	}
@@ -215,6 +219,8 @@ public class SchedualDao {
 	    	String place=c.getString(c.getColumnIndex(COLUMN_NAME_PLACE));
 	    	int f=c.getInt(c.getColumnIndex(COLUMN_NAME_FREQUENCY));
 	    	String eid =c.getString(c.getColumnIndex(COLUMN_NAME_EVENTID));
+	    	int type=c.getInt(c.getColumnIndex(COLUMN_NAME_TYPE));
+	    	String shareId=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
 	    	schedual.setStarttime(start); 
 	    	schedual.setEndtime(end);
 	    	schedual.setTitle(title);
@@ -223,8 +229,51 @@ public class SchedualDao {
 	    	schedual.setEventId(eid);
 	    	schedual.setFrequency(f);
 	    	schedual.setPlace(place);
+	    	schedual.setType(type);
+	    	schedual.setShareId(shareId);
 	    	return schedual;
     	}
-		return schedual;
+		return null;
+	}
+	
+	public Schedual getSchedualByShare(String shareId) {
+		// TODO Auto-generated method stub
+		Schedual schedual=new Schedual();
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, "dbSchedule", null,
+    			COLUMN_NAME_SHARE+"=?", new String[]{shareId}, null, null,null,null);
+        while (c.moveToNext()) {
+        	long sid=c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
+	    	String start=c.getString(c.getColumnIndex("startTime"));
+	    	String end=c.getString(c.getColumnIndex("endTime"));
+	    	String title=c.getString(c.getColumnIndex("title"));
+	    	String detail =c.getString(c.getColumnIndex("detail"));
+	    	String place=c.getString(c.getColumnIndex(COLUMN_NAME_PLACE));
+	    	int f=c.getInt(c.getColumnIndex(COLUMN_NAME_FREQUENCY));
+	    	String eid =c.getString(c.getColumnIndex(COLUMN_NAME_EVENTID));
+	    	int type=c.getInt(c.getColumnIndex(COLUMN_NAME_TYPE));
+	    	String friend=c.getString(c.getColumnIndex(COLUMN_NAME_IS_COMPANION));
+	    	schedual.setStarttime(start); 
+	    	schedual.setEndtime(end);
+	    	schedual.setTitle(title);
+	    	schedual.setDetail(detail);
+	    	schedual.setSchdeual_ID(sid);
+	    	schedual.setEventId(eid);
+	    	schedual.setFrequency(f);
+	    	schedual.setPlace(place);
+	    	schedual.setType(type);
+	    	schedual.setShareId(shareId);
+	    	schedual.setFriend(friend);
+	    	return schedual;
+    	}
+		return null;
+	}
+
+	public void delSchedualByShareId(String shareId) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		if(db.isOpen()){
+			db.delete(TABLE_NAME, COLUMN_NAME_SHARE + "=?", new String[]{shareId});
+		}
 	}
 }

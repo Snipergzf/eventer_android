@@ -29,11 +29,11 @@ import com.eventer.app.R;
 import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.ShareToGroupActivity;
-import com.eventer.app.socket.Activity_Chat;
-import com.eventer.app.task.LoadDataFromHTTP;
 import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 

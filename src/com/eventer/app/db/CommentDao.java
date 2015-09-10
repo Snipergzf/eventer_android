@@ -23,16 +23,12 @@ public class CommentDao {
     public static final String COLUMN_NAME_CONTENT = "content";
     public static final String COLUMN_NAME_SPEAKER = "userId";
 
-
-
-	//private DbOpenHelper dbHelper;
 	private DBManager dbHelper;
 	private Context context;
 
 	public CommentDao(Context context) {
-		dbHelper = DBManager.getInstance();
+		dbHelper = new DBManager(context);
 		this.context= context;
-		//dbHelper = DbOpenHelper.getInstance(context);
 	}
 	
 	

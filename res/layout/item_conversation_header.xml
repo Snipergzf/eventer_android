@@ -55,7 +55,7 @@
         android:background="#d9d9d9" />
 
     <RelativeLayout
-        android:id="@+id/re_activityshare"
+        android:id="@+id/re_contact"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:background="@drawable/btn_list_item_bg"
@@ -78,7 +78,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/iv_activityshare"
-            android:text="@string/ActivityShareBoard"
+            android:text="@string/contact"
             android:textColor="#353535"
             android:textSize="16sp" />
     </RelativeLayout>

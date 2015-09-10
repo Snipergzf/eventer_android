@@ -36,10 +36,10 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.UploadPicToServer;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.MyUserInfoActivity;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.task.LoadDataFromServer;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
 import com.eventer.app.widget.SpinerPopWindow;
@@ -151,7 +151,7 @@ public class FillInUserInfoActivity extends Activity {
 	                showSexDialog();
 	                break;
 	            case R.id.btn_register:
-	            	updateFriendInfo();
+	            	updateSelfInfo();
 	            	
 	            	break;
 	            case R.id.iv_photo:
@@ -217,10 +217,7 @@ public class FillInUserInfoActivity extends Activity {
 	        final AlertDialog dlg = new AlertDialog.Builder(context).create();
 	        dlg.show();
 	        Window window = dlg.getWindow();
-	        // *** 主要就是在这里实现这种效果的.
-	        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
 	        window.setContentView(R.layout.alertdialog);
-	        // 为确认按钮添加事件,执行退出应用操作
 	        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
 	        tv_paizhao.setText("拍一张照片");
 	        tv_paizhao.setOnClickListener(new View.OnClickListener() {
@@ -291,7 +288,11 @@ public class FillInUserInfoActivity extends Activity {
 
 	        }
 	    }
-
+        /***
+         * 对图片进行剪切
+         * @param uri1
+         * @param size
+         */
 	    @SuppressLint("SdCardPath")
 	    private void startPhotoZoom(Uri uri1, int size) {
 	        Intent intent = new Intent("com.android.camera.action.CROP");
@@ -321,20 +322,20 @@ public class FillInUserInfoActivity extends Activity {
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSS");
 	        return dateFormat.format(date);
 	    }
-	 
+	/***
+	 * 弹出消息框
+	 * 选择些别
+	 */
 	private void showSexDialog() {
         final AlertDialog dlg = new AlertDialog.Builder(context).create();
         dlg.show();
         Window window = dlg.getWindow();
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
         window.setContentView(R.layout.alertdialog);
         LinearLayout ll_title = (LinearLayout) window
                 .findViewById(R.id.ll_title);
         ll_title.setVisibility(View.VISIBLE);
         TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
         tv_title.setText("性别");
-        // 为确认按钮添加事件,执行退出应用操作
         TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
         tv_paizhao.setText("男");
         tv_paizhao.setOnClickListener(new View.OnClickListener() {
@@ -356,8 +357,10 @@ public class FillInUserInfoActivity extends Activity {
         });
     }
 	
-	
-	private void updateFriendInfo(){
+	/***
+	 * 上传个人信息
+	 */
+	private void updateSelfInfo(){
 		 Map<String, String> maps = new HashMap<String, String>();
 		 email=et_emial.getText().toString();
 		 name=et_usernick.getText().toString();
@@ -383,6 +386,7 @@ public class FillInUserInfoActivity extends Activity {
 	                    int code = data.getInteger("status");
 	                    Log.e("1", code+"");
 	                    if (code == 0) {
+	                    	//将个人信息写入LocalUserInfo
 	                    	LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
 	                    	LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("sex", sex);
 	                    	LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("email", email);
@@ -416,7 +420,11 @@ public class FillInUserInfoActivity extends Activity {
 
 	        });
 	}
-	
+	/***
+	 * 上传头像到服务器
+	 * @param image 
+	 * 图片地址
+	 */
 	@SuppressLint("SdCardPath")
     private void updateAvatarInServer(final String image) {
         Map<String, String> map = new HashMap<String, String>();
@@ -429,10 +437,10 @@ public class FillInUserInfoActivity extends Activity {
         map.put("uid", Constant.UID+"");
         map.put("token", Constant.TOKEN);
 
-        LoadDataFromServer task = new LoadDataFromServer(
+        UploadPicToServer task = new UploadPicToServer(
                context, Constant.URL_UPDATE_Avatar, map,Constant.IMAGE_PATH + image,"upload");
 
-        task.getData(new  com.eventer.app.task.LoadDataFromServer.DataCallBack() {
+        task.getData(new  com.eventer.app.http.UploadPicToServer.DataCallBack() {
 
             @SuppressLint("ShowToast")
             @Override

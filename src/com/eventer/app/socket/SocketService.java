@@ -8,15 +8,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.security.cert.X509Certificate;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import android.app.Service;
 import android.content.Intent;
@@ -25,9 +24,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.eventer.app.Constant;
-import com.eventer.app.MyApplication;
-import com.eventer.app.db.ChatEntityDao;
-import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.Msg.Container;
 
 public class SocketService extends Service{
@@ -37,24 +33,37 @@ public class SocketService extends Service{
 	private DataOutputStream output;
 	private InputStream input;
 	private static Queue<Container> taskQueue = new LinkedList<Container>();
-	private static SocketActivity currentActivity;
-	private Thread send,recv,auth_,heart_msg;
+	private Thread send,recv;
 	private Intent intent = new Intent("com.eventer.app.socket.RECEIVER"); 
 	private Intent intent_a = new Intent("com.eventer.app.activity");
-	private int i=0;
-	private int error=0;
-
+	private int index=0;
+	private int total=50;
+	private myX509TrustManager xtm = new myX509TrustManager();  
 	
 	public class SocketSendBinder extends Binder{
-		public void setCurrentActivity (SocketActivity s){
-			currentActivity = s;
-		}
-		
 		public boolean sendOne(Container msg){
 			taskQueue.add(msg);
 			return true;
 		}
 	}
+	 class myX509TrustManager implements X509TrustManager  
+	    {  
+	  
+	        public void checkClientTrusted(X509Certificate[] chain, String authType)  
+	        {  
+	        }  
+	  
+	        public void checkServerTrusted(X509Certificate[] chain, String authType)  
+	        {  
+	             System.out.println("cert: " + chain[0].toString() + ", authType: "  
+	                    + authType);  
+	        }  
+	  
+	        public X509Certificate[] getAcceptedIssuers()  
+	        {  
+	            return null;  
+	        }  
+	    }  
 	@Override
 	public IBinder onBind(Intent intent) {
 		return binder;
@@ -62,32 +71,22 @@ public class SocketService extends Service{
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.e("SocketService", "onCreate");
-		auth_ = new Thread(){
-			@Override
-			public void run() {
-				super.run();
-				
-				SSLContext context;
-				try {
-					context = SSLContext.getInstance("SSL");
-					context.init(null, new TrustManager[] { }, null); 
-			        SSLSocketFactory factory = context.getSocketFactory();  
-			        socket = (SSLSocket) factory.createSocket(Constant.DomainName, 1430);
-			        
-				} catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		};
-		auth_.start();
-		
+		Log.e("SocketService", "onCreate");	
 		send = new Thread(){
 			@Override
 			public void run() {
 				super.run();
 				try {
+					SSLContext context;
+					try {
+						context = SSLContext.getInstance("SSL");
+						context.init(null, new X509TrustManager[]{xtm}, null); 
+				        SSLSocketFactory factory = context.getSocketFactory();  
+				        socket = (SSLSocket) factory.createSocket(Constant.DomainName, 1430);
+				        
+					} catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
+						e.printStackTrace();
+					}
 					String msgBody="{\"token\":\""+Constant.TOKEN+"\"}";
 		            long time=System.currentTimeMillis()/1000;
 		            Container msg = Container.newBuilder()
@@ -97,7 +96,7 @@ public class SocketService extends Service{
 		            taskQueue.add(msg);					
 					while (!quit){
 						Thread.sleep(1000);
-						i++;
+						index++;
 						try {
 							if(socket!=null){
 								 output = new DataOutputStream(socket.getOutputStream());
@@ -117,8 +116,8 @@ public class SocketService extends Service{
 							         output.write(smsg, 0, m_len+4);
 							         output.flush();
 							         Log.e("1", "send:" +(m_len+4)+"dddd");
-							         i=0;
-								}else if(i>24){
+							         index=0;
+								}else if(index>total){
 									msgBody="{\"token\":\""+Constant.TOKEN+"\"}";
 						            time=System.currentTimeMillis()/1000;
 						            Container msg1 = Container.newBuilder()
@@ -126,7 +125,8 @@ public class SocketService extends Service{
 						               		.setTYPE(1|4).setSTIME(time).setBODY(msgBody)
 						               		.build();
 						            taskQueue.add(msg1);
-						            i=0;
+						            index=0;
+						            total=50+(int)((Math.random())*7-3);
 								}
 							}
 					        
@@ -153,7 +153,26 @@ public class SocketService extends Service{
 							input = socket.getInputStream();
 							int buff=socket.getReceiveBufferSize();
 							byte[] buf=new byte[(buff<1?1:buff)];        
-					        int len = input.read(buf);
+					        int len = input.read(buf); 
+					        if(len==-1){
+					        	SSLContext context;
+								try {
+									context = SSLContext.getInstance("SSL");
+									context.init(null, new X509TrustManager[]{xtm}, null); 
+							        SSLSocketFactory factory = context.getSocketFactory();  
+							        socket = (SSLSocket) factory.createSocket(Constant.DomainName, 1430);
+							        
+								} catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
+									e.printStackTrace();
+								}
+								String msgBody="{\"token\":\""+Constant.TOKEN+"\"}";
+					            long time=System.currentTimeMillis()/1000;
+					            Container msg = Container.newBuilder()
+					               		.setMID("1").setSID(Constant.UID+"").setRID(Constant.UID+"")
+					               		.setTYPE(2).setSTIME(time).setBODY(msgBody)
+					               		.build();
+					            taskQueue.add(msg);
+							}
 							if (len>=4) {
 								byte[] rece_len = new byte[4];
 						        byte[] rece_data = new byte[len-4];
@@ -201,13 +220,12 @@ public class SocketService extends Service{
 								   intent.putExtra("mid", rmsg.getMID());
 								   intent.putExtra("time", rmsg.getSTIME());
 			                       sendBroadcast(intent);
-									   
-								  
-									  
+									   	  
 								} 
 								 Log.e("socket", "received:MID="+rmsg.getMID()+"; RID=" + rmsg.getRID()+"; SID="+rmsg.getSID()+"; Type="+rmsg.getTYPE()+"; Time="+rmsg.getSTIME()+"; Body="+rmsg.getBODY());
-								 
+								
 							}
+							
 						}
 //						else {						
 //							if(error>1&&!auth_.isAlive()){
@@ -220,6 +238,7 @@ public class SocketService extends Service{
 					
 					} catch (IOException | InterruptedException e) {
 						e.printStackTrace();
+						
 						
 					}  
 				}
@@ -263,6 +282,7 @@ public class SocketService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		return super.onStartCommand(intent, flags, startId);
 	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -283,7 +303,6 @@ public class SocketService extends Service{
 			
 		
 	}
-	
 	
 
 }

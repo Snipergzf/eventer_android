@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,21 +31,23 @@ import android.widget.Toast;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
-import com.eventer.app.http.HttpUnit;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
-import com.eventer.app.task.MyCountTimer;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.view.MyCountTimer;
 import com.eventer.app.view.TitleBar;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class RegisterActivity extends BaseActivity implements OnClickListener, Callback {
     private EditText edit_tel,edit_code,edit_pwd;
-    private TextView tv_protocol,btn_send_code;
+    private TextView btn_send_code;
     private ImageButton btn_tel_clear,btn_code_clear,btn_pwd_clear;
     private Button btn_next;
     private boolean IsUserCheck=false;
@@ -61,7 +62,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		TitleBar.setTitleBar(this,"填写手机号码");
+		TitleBar.setTitleBar(this,"注册");
 		setContentView(R.layout.activity_register);
 		
 		edit_tel=(EditText)findViewById(R.id.edit_tel);
@@ -71,7 +72,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 		btn_tel_clear=(ImageButton)findViewById(R.id.btn_tel_clear);
 		btn_code_clear=(ImageButton)findViewById(R.id.btn_security_code_clear);
 		btn_pwd_clear=(ImageButton)findViewById(R.id.btn_pwd_clear);
-		tv_protocol=(TextView)findViewById(R.id.tv_protocol);
+		
 		btn_send_code=(TextView)findViewById(R.id.btn_send_code);
 		context=RegisterActivity.this;
 		
@@ -79,15 +80,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 		initSMSSDK();
 		
 	}
-	
+	/***
+	 * 给控件添加事件响应
+	 */
 	public void init(){
-			
-		String protocol = "<font color=" + "\"" + "#AAAAAA" + "\">"   + "我已阅读并同意" + "</font>" 
-                + "<font color=" + "\"" + "#576B95" + "\">" + "Eventer的软件许可及服务协议"
-                + "</font>" ;
-
-		tv_protocol.setText(Html.fromHtml(protocol));
-		
+		/***
+		 * 监听账号输入框的输入
+		 */
 		edit_tel.addTextChangedListener(new TextWatcher() {
 			
 			@SuppressLint("NewApi")
@@ -129,7 +128,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 				
 			}
 		});
-		
+		/***
+		 * 监听验证码输入框的输入
+		 */
 		edit_code.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -172,7 +173,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 			}
 		});
 		
-		
+		/***
+		 * 监听密码输入框的输入
+		 */
 		edit_pwd.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -214,48 +217,46 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 				}
 			}
 		});
-			
+	    //注册点击监听器
 		btn_next.setOnClickListener(this);
 		btn_tel_clear.setOnClickListener(this);
 		btn_code_clear.setOnClickListener(this);
 		btn_pwd_clear.setOnClickListener(this);
-		tv_protocol.setOnClickListener(this);
 		btn_send_code.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		//"注册"按钮
 		case R.id.btn_next:
-			//SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("phone", edit_tel.getText().toString());
-	        params.put("pwd", edit_pwd.getText().toString());
-			UserRegister(params);
+			//发送验证码确认
+			SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
+//			Map<String, String> params = new HashMap<String, String>();
+//			params.put("phone", edit_tel.getText().toString());
+//	        params.put("pwd", edit_pwd.getText().toString());
+//			UserRegister(params);
 			break;
         case R.id.btn_tel_clear:
         	edit_tel.setText("");
 			break;
-			
-        case R.id.tv_protocol:
-        	Uri uri = Uri.parse("http://baidu.com");
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			startActivity(intent);
-        	break;
         case R.id.btn_security_code_clear:
         	edit_code.setText("");
         	break;
         case R.id.btn_pwd_clear:
         	edit_pwd.setText("");
         	break;
+        //"发送验证码"按钮
         case R.id.btn_send_code:
         	if(IsUserCheck){
         		MyCountTimer timeCount = new MyCountTimer(btn_send_code, 0xff33b5e5, 0xff969696);//传入了文字颜色值
         	    timeCount.start();
         	    if(mSMSBroadcastReceiver==null){
+        	    	//注册短信接收的BroadcastReceiver
     				initSMSReceiver();
     			}
         	    TelString=edit_tel.getText().toString();
+        	   //发送验证码请求
     			SMSSDK.getVerificationCode("86",TelString);
     			
         	}else{
@@ -272,100 +273,108 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	
 	
 	/**
-	 * 执行异步任务
-	 * 
-	 * @param params
+	 * 注册账号
+	 * 参数为“phone”和“pwd”
 	 *      
 	 */
-	public void UserRegister(final Object... params) {
-		new AsyncTask<Object, Object,Integer>() {
-
+	public void UserRegister() {
+		Map<String, String> params = new HashMap<String, String>();
+		pwd=edit_pwd.getText().toString();
+		params.put("phone", TelString);
+        params.put("pwd", pwd);	
+        LoadDataFromHTTP task = new LoadDataFromHTTP(
+                context, Constant.URL_REGISTER, params);
+        task.getData(new DataCallBack() {
+			
 			@Override
-			protected Integer doInBackground(Object... params) {
-			  try {
-		    	        @SuppressWarnings("unchecked")
-						int status=com.eventer.app.http.HttpUnit.sendRegisterRequest((Map<String, String>) params[0]);
-		    	        return status;					
-				} catch (Throwable e) {
-					// TODO Auto-generated catch block
-					Log.e("1", e.toString());
-					e.printStackTrace();
-					return -1;
-				}
-			}
-			protected void onPostExecute(Integer status) {
-				 if(status==0){
-			        	Log.e("1", "注册成功！");
-			        	PreferenceUtils.getInstance().setLoginUser(TelString);
-			        	Toast.makeText(context, "注册成功！", Toast.LENGTH_LONG)
-						.show();
-			        	Map<String, String> params = new HashMap<String, String>();
-						params.put("phone", TelString);
-				        params.put("pwd", pwd);
-				        UserLogin(params);
-			        }else if(status==3){
-			        	Toast.makeText(context, "该用户名已存在！", Toast.LENGTH_LONG)
-						.show();
-			        }else  if(status==-1){	
-		    			Toast toast=Toast.makeText(context, "网络不稳定，请稍后再试", Toast.LENGTH_LONG);
-		    			//toast.setGravity(Gravity.CENTER, 0, 0);   
-		    	        toast.show(); 
-		            }else{
-			        	Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
-						.show();
-			        } 
-			};
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				 try {
+	                    int code = data.getInteger("status");
+	                    switch (code) {
+						case 0:
+							Log.e("1", "注册成功！");
+				        	PreferenceUtils.getInstance().setLoginUser(TelString);
+				        	Toast.makeText(context, "注册成功！", Toast.LENGTH_LONG)
+							.show();
+					        UserLogin();
+							break;
+						case 3:
+							Toast.makeText(context, "该用户名已存在！", Toast.LENGTH_LONG)
+							.show();
+                    	   break;
+						default:
+							Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
+							.show();
+							break;
+						}
 
-		}.execute(params);}
+	                } catch (JSONException e) {
+
+	                    Toast.makeText(context, "数据解析错误...",
+	                            Toast.LENGTH_SHORT).show();
+	                    e.printStackTrace();
+	                }
+			}
+		});
+	}
+	
 	
 	/**
 	 * 执行异步任务
-	 * 
-	 * @param params
-	 *      
+	 * 登录系统
+	 *  参数为“phone”,“pwd”  ,"imei"  
 	 */
-	public void UserLogin(final Object... params) {
-		new AsyncTask<Object, Object,Integer>() {
-
-			@SuppressWarnings("unchecked")
+	public void UserLogin() {
+		Map<String, String> params = new HashMap<String, String>();
+		pwd=edit_pwd.getText().toString();
+		params.put("phone", TelString);
+        params.put("pwd", pwd);	
+        params.put("imei", PreferenceUtils.getInstance().getDeviceId());
+        LoadDataFromHTTP task = new LoadDataFromHTTP(
+                context, Constant.URL_LOGIN, params);
+        task.getData(new DataCallBack() {
+			
 			@Override
-			protected Integer doInBackground(Object... params) {
-				int status=-1;
-			  try {
-		    	        status=HttpUnit.sendLoginRequest((Map<String, String>) params[0]);
-		    	        
-		    	        Constant.isLogin=false;
-		    	        return status;
-					
-				} catch (Throwable e) {
-					// TODO Auto-generated catch block
-					Log.e("1", e.toString());
-					return -1;
-//					e.printStackTrace();
-				}
-			}
-			protected void onPostExecute(Integer status) {
-				 if(status==0){
-			        	Log.e("1", "登录成功！");
-			        	PreferenceUtils.getInstance().setLoginUser(user);
-			        	PreferenceUtils.getInstance().setLoginPwd(pwd);
-			        	Constant.isLogin=true;
-			        	Constant.LoginTime=System.currentTimeMillis()/1000;
-			        	Intent intent = new Intent();
-			    		intent.setClass(context, FillInUserInfoActivity.class);
-			    		startActivity(intent);
-			        }
-			        else{
-			        	Toast.makeText(context, "发生异常！", Toast.LENGTH_LONG)
-						.show();	
-			        	finish();
-			        }
-				
-			    };
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				 try {
+	                    int code = data.getInteger("status");
+	                    switch (code) {
+						case 0:
+							Log.e("1", "登录成功！");
+				        	PreferenceUtils.getInstance().setLoginUser(user);
+				        	PreferenceUtils.getInstance().setLoginPwd(pwd);
+				        	Constant.isLogin=true;
+				        	Constant.LoginTime=System.currentTimeMillis()/1000;
+				        	String userinfo=data.getString("user_action");
+				        	JSONObject jsonLogin= JSONObject.parseObject(userinfo);;
+				        	Constant.UID=jsonLogin.getInteger("uid")+"";
+				        	Constant.TOKEN=jsonLogin.getString("token");
+				        	Intent intent = new Intent();
+				    		intent.setClass(context, FillInUserInfoActivity.class);
+				    		startActivity(intent);
+							break;
+						default:
+							Toast.makeText(context, "发生异常！", Toast.LENGTH_LONG)
+							.show();	
+				        	finish();
+						}
 
-		}.execute(params);}
+	                } catch (JSONException e) {
+
+	                    Toast.makeText(context, "数据解析错误...",
+	                            Toast.LENGTH_SHORT).show();
+	                    e.printStackTrace();
+	                }
+			}
+		});
+	}
 	
-	
+	/**
+	 * 初始化短信短信接收的BroadcastReceiver
+	 * 通过该BroadcastReceiver，接收验证短信，并获取验证码，自动填写验证码
+	 */
 	private void initSMSReceiver(){
 		mSMSBroadcastReceiver = new SMSBroadcastReceiver();
 
@@ -374,7 +383,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
         intentFilter.setPriority(Integer.MAX_VALUE);
         //注册广播
         this.registerReceiver(mSMSBroadcastReceiver, intentFilter);
-
         mSMSBroadcastReceiver.setOnReceivedMessageListener(new SMSBroadcastReceiver.MessageListener() {
             @Override
             public void onReceived(String message) {
@@ -398,15 +406,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 			// 注册回调监听接口
 			SMSSDK.registerEventHandler(eventHandler);
 	    }
-	// 提交用户信息
-//		private void registerUser(String country, String phone) {
-//			Random rnd = new Random();
-//			int id = Math.abs(rnd.nextInt());
-//			String uid = String.valueOf(id);
-//			String nickName = "SmsSDK_User_" + uid;
-////			String avatar = AVATARS[id % 12];
-//			SMSSDK.submitUserInfo(uid, nickName, null, country, phone);
-//		}
 
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -417,14 +416,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 			Object data = msg.obj;
 			Log.e("event", "event="+event);
 			if (result == SMSSDK.RESULT_COMPLETE) {
-				//短信注册成功后，返回MainActivity,然后提示新好友
-				if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//提交验证码成功
-					Map<String, String> params = new HashMap<String, String>();
-					pwd=edit_pwd.getText().toString();
-					params.put("phone", TelString);
-			        params.put("pwd", pwd);
-			        
-					UserRegister(params);
+				if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//验证码验证成功		        
+					UserRegister();
 				} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
 					Toast.makeText(getApplicationContext(), "验证码已经发送", Toast.LENGTH_SHORT).show();
 				}else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){//返回支持发送验证码的国家列表
@@ -433,7 +426,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 				}
 			} else {
 				((Throwable) data).printStackTrace();
-//				int resId = getStringRes(context, "smssdk_network_error");
 				try{
 					String jsonString=data.toString().replace("java.lang.Throwable:", "").trim();
 					JSONObject json= JSONObject.parseObject(jsonString);
@@ -458,6 +450,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 		protected void onDestroy()
 		{
 			super.onDestroy();
+			//注销验证码SDK，和短信接收的BroadcastReceiver
 			SMSSDK.unregisterEventHandler(eventHandler);
 			if(mSMSBroadcastReceiver!=null){
 				this.unregisterReceiver(mSMSBroadcastReceiver);
@@ -465,7 +458,11 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 			Log.e("1", "注册Destroy");
 
 		}
-		
+		/***
+		 * 获取短信中的验证码
+		 * @param str
+		 * @return
+		 */
 		public  String getStringNum(String str) {
 			String regEx="[^0-9]";   
 			Pattern p = Pattern.compile(regEx);   

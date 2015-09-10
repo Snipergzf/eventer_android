@@ -167,7 +167,7 @@ public class Activity_AddCourseTable extends Activity implements
 	
 	/**
 	 * 执行异步任务
-	 * 
+	 * 通过Http请求获取课表信息
 	 * @param params
 	 *      
 	 */

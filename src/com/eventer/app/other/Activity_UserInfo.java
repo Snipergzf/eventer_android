@@ -42,10 +42,9 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserDetail;
 import com.eventer.app.http.HttpUnit;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.socket.Activity_Chat;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
@@ -186,7 +185,6 @@ public class Activity_UserInfo extends Activity {
 		        
 		        
 		        btn_sendmsg.setOnClickListener(new OnClickListener() {
-
 		            @Override
 		            public void onClick(View v) {
 		                if (is_friend) {
@@ -202,7 +200,7 @@ public class Activity_UserInfo extends Activity {
 		                    intent.putExtra("avatar", user.getAvatar());
 		                    intent.putExtra("nick", user.getNick());
 		                    intent.setClass(Activity_UserInfo.this,
-		                            AddFriendsFinalActivity.class);
+		                            Activity_Friends_Add.class);
 		                    startActivity(intent);
 
 		                }
@@ -390,9 +388,7 @@ public class Activity_UserInfo extends Activity {
 	                    
 	                }
 	                
-	            } );
-	            
-	     
+	            } );     
 	        }
 
 	        /**

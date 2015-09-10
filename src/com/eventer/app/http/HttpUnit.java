@@ -42,20 +42,8 @@ public class HttpUnit {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static int sendRegisterRequest( Map<String, String> params) throws Exception{
-		String jsonString= HttpUnit.sendGetRequest(Constant.WEB_SERVICE_URL+"v1/user/register", params);
-		if(jsonString!=null){
-			 JSONObject jsonObject=new  JSONObject(jsonString);
-             Log.e("1", jsonString);
-             int status=jsonObject.getInt("status");
-             return status;
-		}else{
-			return -2;
-		}   		
-	}
-	
 	public static int sendLoginRequest( Map<String, String> params) throws Exception{
-		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/user/login", params);
+		String jsonString= sendPostRequest(Constant.URL_LOGIN, params);
         JSONObject jsonObject= new  JSONObject(jsonString);
         int status=jsonObject.getInt("status");
         if(status==0){

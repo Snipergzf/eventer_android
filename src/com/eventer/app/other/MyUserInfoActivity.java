@@ -33,18 +33,14 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.EMMessage.ChatType;
-import com.easemob.chat.ImageMessageBody;
 import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.http.HttpUnit;
-import com.eventer.app.main.MainActivity;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromServer;
-import com.eventer.app.task.LoadDataFromServer.DataCallBack;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.UploadPicToServer;
+import com.eventer.app.http.UploadPicToServer.DataCallBack;
+import com.eventer.app.main.ProfileFragment;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.BitmapCache;
@@ -71,7 +67,6 @@ public class MyUserInfoActivity extends Activity {
     private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
     private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
-    private static final int UPDATE_FXID = 4;// 结果
     private static final int UPDATE_NICK = 5;// 结果
     private LoadUserAvatar avatarLoader;
     String hxid;
@@ -120,9 +115,7 @@ public class MyUserInfoActivity extends Activity {
         re_major.setOnClickListener(new MyListener());
         re_school.setOnClickListener(new MyListener());
         re_grade.setOnClickListener(new MyListener());
-        iv_avatar.setOnClickListener(new MyListener());    
-        
-        
+        iv_avatar.setOnClickListener(new MyListener());       
         
     }
     
@@ -194,7 +187,9 @@ public class MyUserInfoActivity extends Activity {
                 break;
             case R.id.re_exit:
             	PreferenceUtils.getInstance().setLoginPwd("");
-    			System.exit(0);
+            	Constant.isLogin=false;
+            	setResult(ProfileFragment.IS_EXIT, new Intent().putExtra("exit", true));
+    			finish();
             	break;
             case R.id.re_grade:
             case R.id.re_school:
@@ -255,7 +250,9 @@ public class MyUserInfoActivity extends Activity {
         });
 
     }
-
+   /***
+    * 设置性别的对话框
+    */
     private void showSexDialog() {
         final AlertDialog dlg = new AlertDialog.Builder(this).create();
         dlg.show();
@@ -312,7 +309,7 @@ public class MyUserInfoActivity extends Activity {
 
             case PHOTO_REQUEST_GALLERY:
                 if (data != null)
-                    startPhotoZoom(data.getData(), 480);
+                    startPhotoZoom(data.getData(), 480); 
                 break;
 
             case PHOTO_REQUEST_CUT:
@@ -335,7 +332,11 @@ public class MyUserInfoActivity extends Activity {
 
         }
     }
-
+   /***
+    * 对图片进行剪裁
+    * @param uri1 图片地址
+    * @param size 图片剪裁尺寸
+    */
     @SuppressLint("SdCardPath")
     private void startPhotoZoom(Uri uri1, int size) {
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -369,7 +370,11 @@ public class MyUserInfoActivity extends Activity {
     public void back(View view) {
         finish();
     }
-
+    /***
+     * 显示头像
+     * @param iamgeView 显示头像的容器
+     * @param avatar    图片地址
+     */
     private void showUserAvatar(final ImageView iamgeView, String avatar) {
         final String url_avatar = avatar;
         iamgeView.setTag(url_avatar);
@@ -401,7 +406,11 @@ public class MyUserInfoActivity extends Activity {
             GetAvatar(map);
         }
     }
-
+    
+	/****
+	 * 将头像上传至服务器
+	 * @param image 图片的名字
+	 */
     @SuppressLint("SdCardPath")
     private void updateAvatarInServer(final String image) {
         Map<String, String> map = new HashMap<String, String>();
@@ -414,7 +423,7 @@ public class MyUserInfoActivity extends Activity {
         map.put("uid", Constant.UID+"");
         map.put("token", Constant.TOKEN);
 
-        LoadDataFromServer task = new LoadDataFromServer(
+        UploadPicToServer task = new UploadPicToServer(
                 context, Constant.URL_UPDATE_Avatar, map,Constant.IMAGE_PATH + image,"upload");
 
         task.getData(new DataCallBack() {
@@ -500,7 +509,10 @@ public class MyUserInfoActivity extends Activity {
 
     }
     
- 
+   /***
+    * 从服务器端获取头像
+    * @param params 
+    */
 	public void GetAvatar(final Object... params) {
 		new AsyncTask<Object, Object,Map<String, Object>>() {
 
@@ -538,7 +550,10 @@ public class MyUserInfoActivity extends Activity {
 		}.execute(params);}
     
     
-
+	  /***
+	    * 修改性别
+	    * @param params 
+	    */
     public void updateSex(final String sexnum) {
         Map<String, String> map = new HashMap<String, String>();
 
@@ -555,7 +570,7 @@ public class MyUserInfoActivity extends Activity {
         LoadDataFromHTTP task = new LoadDataFromHTTP(
                 context, Constant.URL_UPDATE_SELFINFO, map);
 
-        task.getData(new com.eventer.app.task.LoadDataFromHTTP.DataCallBack() {
+        task.getData(new com.eventer.app.http.LoadDataFromHTTP.DataCallBack() {
 
             @SuppressLint("ShowToast")
             @Override

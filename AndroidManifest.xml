@@ -44,6 +44,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
+        
         android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         <activity
             android:name=".main.MainActivity"
@@ -58,6 +59,7 @@
         <activity
             android:name=".main.LoadActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:theme="@style/horizontal_slide" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,20 +73,20 @@
             android:theme="@style/TitleTheme" >
         </activity>
         <activity
-            android:name=".socket.Activity_Chat"
+            android:name="com.eventer.app.other.Activity_Chat"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name=".other.Course_View"
+            android:name=".other.Activity_Course_View"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".other.Course_edit"
+            android:name=".other.Activity_Course_Edit"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".other.Course_setting"
+            android:name=".other.Activity_Course_Setting"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -105,7 +107,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".other.Activity_NewFriends"
+            android:name=".other.Activity_Friends_New"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
@@ -118,7 +120,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".other.Activity_SearchFriends"
+            android:name=".other.Activity_Friends_Search"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -130,7 +132,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".other.AddFriendsFinalActivity"
+            android:name=".other.Activity_Friends_Add"
             android:screenOrientation="portrait" >
         </activity>
         <activity android:name=".other.AlarmAlert" >
@@ -160,7 +162,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".other.CreatChatRoomActivity"
+            android:name=".other.ChatRoomCreatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
@@ -188,16 +190,18 @@
             android:label="@string/title_activity_fill_in_user_info" >
         </activity>
         <activity
-            android:name=".other.EventCommentActivity"
+            android:name=".other.Activity_EventComment"
             android:label="@string/title_activity_event_comment"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
         <activity
             android:name=".other.ShareToSingleActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:label="@string/title_activity_share_to_single" >
         </activity>
         <activity
             android:name=".other.ShareToGroupActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:label="@string/title_activity_share_to_single" >
         </activity>
         <activity
@@ -222,6 +226,10 @@
             android:label="@string/title_activity_msg_alert" >
         </activity>
         <activity
+            android:name=".other.ShareSchedualActivity"
+            android:label="@string/title_activity_msg_alert" >
+        </activity>
+        <activity
             android:name=".other.AssistFunctionActivity"
             android:label="@string/title_activity_assist_function" >
         </activity>
@@ -233,7 +241,18 @@
             android:name=".other.OurTeamActivity"
             android:label="@string/title_activity_our_team" >
         </activity>
- 
+        <activity
+            android:name=".other.ShareEventActivity"
+            android:label="@string/title_activity_share_event" >
+        </activity>
+        <activity
+            android:name="com.eventer.app.other.GroupSchedualActivity"
+            android:label="@string/title_activity_group_share" >
+        </activity>
+        <activity
+            android:name="com.eventer.app.other.ShareSingleShecdualActivity"
+            android:label="@string/title_activity_share_single_shecdual" >
+        </activity>
     </application>
 
 </manifest>

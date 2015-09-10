@@ -74,6 +74,7 @@ public class SchedualAdapter extends BaseAdapter {
 		String place=item.getPlace();
 		String time=item.getStarttime();
 		int status=item.getStatus();
+		int type=item.getType();
 		holder.tv_title.setText(item.getTitle());
 		if(!TextUtils.isEmpty(place)){
 			holder.tv_info.setText(place);
@@ -85,35 +86,36 @@ public class SchedualAdapter extends BaseAdapter {
 		}else{
 			holder.tv_time.setText("");
 		}
-		
-		switch (status) {
-		case 0:
+		if(status==0){
 			holder.tv_type.setText("完成");
 			holder.tv_type.setTextColor(colorRes[0]);
 			holder.view_temp.setBackgroundColor(colorRes[0]);
 			holder.iv_status.setVisibility(View.VISIBLE);
-			break;
-		case 1:
-			holder.tv_type.setText("活动");
-			holder.tv_type.setTextColor(colorRes[1]);
-			holder.view_temp.setBackgroundColor(colorRes[1]);
-			holder.iv_status.setVisibility(View.GONE);
-			break;
-		case 2:
-			holder.tv_type.setText("日程");
-			holder.tv_type.setTextColor(colorRes[2]);
-			holder.view_temp.setBackgroundColor(colorRes[2]);
-			holder.iv_status.setVisibility(View.GONE);
-			break;
-		case 3:
-			holder.tv_type.setText("待办");
-			holder.tv_type.setTextColor(colorRes[3]);
-			holder.view_temp.setBackgroundColor(colorRes[3]);
-			holder.iv_status.setVisibility(View.GONE);
-            break;
-		default:
-			break;
+		}else{
+			switch (type) {
+			case 1:
+				holder.tv_type.setText("活动");
+				holder.tv_type.setTextColor(colorRes[1]);
+				holder.view_temp.setBackgroundColor(colorRes[1]);
+				holder.iv_status.setVisibility(View.GONE);
+				break;
+			case 2:
+				holder.tv_type.setText("日程");
+				holder.tv_type.setTextColor(colorRes[2]);
+				holder.view_temp.setBackgroundColor(colorRes[2]);
+				holder.iv_status.setVisibility(View.GONE);
+				break;
+			case 3:
+				holder.tv_type.setText("待办");
+				holder.tv_type.setTextColor(colorRes[3]);
+				holder.view_temp.setBackgroundColor(colorRes[3]);
+				holder.iv_status.setVisibility(View.GONE);
+	            break;
+			default:
+				break;
+			}
 		}
+		
 		
 		
 		return convertView;

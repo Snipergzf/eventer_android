@@ -35,12 +35,8 @@ public class Activity_Contact extends Activity implements OnClickListener{
     private List<User> contactList;
     private ListView listView;
     private boolean hidden;
-    private Sidebar sidebar;
-    
+    private Sidebar sidebar;   
     private ImageView iv_back;
- 
-    private List<String> blackList;
-    private TextView tv_unread;
     private TextView tv_total;
     private LayoutInflater infalter;
     public Context context;
@@ -57,9 +53,7 @@ public class Activity_Contact extends Activity implements OnClickListener{
 	       
 	        // 黑名单列表
 	       // blackList = EMContactManager.getInstance().getBlackListUsernames();
-	        blackList=new ArrayList<String>();
-	        blackList.add("和");
-	        blackList.add("两个");
+	       
 	        contactList = new ArrayList<User>();
 	        // 获取设置contactlist
 	        getContactList();
@@ -72,10 +66,9 @@ public class Activity_Contact extends Activity implements OnClickListener{
 	        listView.addFooterView(footerView);
 	        sidebar = (Sidebar) findViewById(R.id.sidebar);
 	        sidebar.setListView(listView);
-	        tv_unread = (TextView) headView.findViewById(R.id.tv_unread);
 	        
 	        tv_total = (TextView) footerView.findViewById(R.id.tv_total);
-	        // 设置adapter
+	        // 设置通讯录的adapter
 	        adapter = new ContactAdapter(this, R.layout.item_contact_list,
 	                contactList);
 	        listView.setAdapter(adapter);
@@ -86,7 +79,6 @@ public class Activity_Contact extends Activity implements OnClickListener{
 	                    int position, long id) {
 	                if(position!=0&&position!=contactList.size()+1){	                    
 	                	   User user=contactList.get(position-1);
-		                    String username = user.getUsername();  
 		                    Intent intent=new Intent();
 		                    intent.setClass(Activity_Contact.this,Activity_UserInfo.class);
 		                    intent.putExtra("user", user.getUsername());
@@ -105,7 +97,7 @@ public class Activity_Contact extends Activity implements OnClickListener{
 
 	            @Override
 	            public void onClick(View v) {
-	                startActivity(new Intent(Activity_Contact.this,Activity_NewFriends.class)); 
+	                startActivity(new Intent(Activity_Contact.this,Activity_Friends_New.class)); 
 	                
 	            }
 	            
@@ -142,13 +134,6 @@ public class Activity_Contact extends Activity implements OnClickListener{
                     getContactList();
                     adapter.notifyDataSetChanged();
                     tv_total.setText(String.valueOf(contactList.size())+"位联系人");
-//                    if(((MainActivity)getActivity()).unreadAddressLable.getVisibility()==View.VISIBLE){
-//                        tv_unread.setVisibility(View.VISIBLE);
-//                        tv_unread.setText(((MainActivity)getActivity()).unreadAddressLable.getText());
-//                        
-//                    }else{
-//                        tv_unread.setVisibility(View.GONE);
-//                    }
                 }
             });
         } catch (Exception e) {
@@ -162,64 +147,23 @@ public class Activity_Contact extends Activity implements OnClickListener{
     private void getContactList() {
         contactList.clear();
         // 获取本地好友列表
-//        Map<String, User> users = DemoApplication.getInstance().getContactList();
-//        Iterator<Entry<String, User>> iterator = users.entrySet().iterator();
-//        while (iterator.hasNext()) {
-//            Entry<String, User> entry = iterator.next();
-//            if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME)
-//                    && !entry.getKey().equals(Constant.GROUP_USERNAME)
-//                    && !blackList.contains(entry.getKey()))
-//                contactList.add(entry.getValue());
-//        }
         UserDao dao=new UserDao(context);
         List<User> users=dao.getFriendList();
         for (User user : users) {
         	 contactList.add(user);
-		}
- 
-       
+		}   
         // 对list进行排序
         Collections.sort(contactList, new FullPinyinComparator() {
         });
 
  
     }
-
-    @SuppressLint("DefaultLocale")
-    public class PinyinComparator implements Comparator<User> {
-
-        @SuppressLint("DefaultLocale")
-        @Override
-        public int compare(User o1, User o2) {
-            // TODO Auto-generated method stub
-            String py1 = o1.getHeader();
-            String py2 = o2.getHeader();
-            //Log.e("1",py1+py2);
-            // 判断是否为空""
-            if (isEmpty(py1) && isEmpty(py2))
-                return 0;
-            if (isEmpty(py1))
-                return -1;
-            if (isEmpty(py2))
-                return 1;
-            String str1 = "";
-            String str2 = "";
-            try {
-                str1 = (o1.getHeader()).toUpperCase();
-                str2 = (o2.getHeader()).toUpperCase();
-            } catch (Exception e) {
-                System.out.println("某个str为\" \" 空");
-            }
-            return str1.compareTo(str2);
-        }
-
-        private boolean isEmpty(String str) {
-            return "".equals(str.trim());
-        }
-    }
     
-    
-
+    /***
+     * 通过拼音对用户进行排序
+     * @author LiuNana
+     *
+     */
     @SuppressLint("DefaultLocale")
     public class FullPinyinComparator implements Comparator<User> {
 
@@ -253,6 +197,11 @@ public class Activity_Contact extends Activity implements OnClickListener{
         }
     }
 
+    /***
+     * 获取字符串的拼音
+     * @param input
+     * @return
+     */
     public static String getPinYin(String input) {  
         ArrayList<Token> tokens = HanziToPinyin.getInstance().get(input);  
         

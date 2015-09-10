@@ -39,8 +39,6 @@ public class Activity_AddCourse extends FragmentActivity implements
 	private int index;
     private int currentIndex;
     private String[] views;
-	// //////////////////////////////////////////////
-	// 下面是弹出菜单的文本textview
 	private TextView shoudong_add, search_add;
 	private ProgressDialog Webdowndialog;
 	private List<Map<String, Object>> receiveList;
@@ -59,7 +57,6 @@ public class Activity_AddCourse extends FragmentActivity implements
         instance=this;
         views=getResources().getStringArray(R.array.add_course);
 		
-		// ///////////////////////////////////////////////////////////////
 		RecevierMainActivityIntent();
 
 	}
@@ -97,8 +94,6 @@ public class Activity_AddCourse extends FragmentActivity implements
 		Intent FS_searchIntent = getIntent();
 		if (FS_searchIntent != null) {
 			Bundle bundlesao = FS_searchIntent.getExtras();
-			// Log.i("search", "----RecevierMainActivityIntent----->>" +
-			// search);
 			if (bundlesao != null) {
 				String search = bundlesao.getString("search");
 				if (search != null && search.equals("openscanR")) {
@@ -187,7 +182,7 @@ public class Activity_AddCourse extends FragmentActivity implements
 	class onpopchicklistener implements OnClickListener {
 
 		@Override
-		public void onClick(View v) {
+		public void onClick(View v) {//选择选课方式
 			// TODO Auto-generated method stub
 			switch (v.getId()) {
 			case R.id.pop_search:
@@ -206,6 +201,7 @@ public class Activity_AddCourse extends FragmentActivity implements
 		}
 	}
 	
+	//切换视图
 	private void changeView(int index2){
 		FragmentTransaction trx = getSupportFragmentManager()
                 .beginTransaction();

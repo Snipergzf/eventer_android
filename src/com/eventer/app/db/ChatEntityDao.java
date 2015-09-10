@@ -2,12 +2,15 @@
 package com.eventer.app.db;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.eventer.app.entity.ChatEntity;
@@ -22,6 +25,7 @@ public class ChatEntityDao {
     public static final String COLUMN_NAME_CONTENT= "MsgContent";
     public static final String COLUMN_NAME_PATH = "ImgPath";
     public static final String COLUMN_NAME_TIME = "addTime";
+    public static final String COLUMN_NAME_SHARE="shareId";
 
 
 	//private DbOpenHelper dbHelper;
@@ -49,6 +53,7 @@ public class ChatEntityDao {
 		       	String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
 		        String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
 		        String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+		        String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
 		        int temp=c.getColumnIndex("NotRead");
 		        int unread=0;
 		        if(temp>-1){
@@ -60,6 +65,7 @@ public class ChatEntityDao {
 				cinfo.setFrom(talker);
 				cinfo.setMsgID(id);//id为空时返回0值
                 cinfo.setNotRead(unread);
+                cinfo.setShareId(share);
 				if(status!=null){
 					cinfo.setStatus(Integer.parseInt(status));
 				}else{
@@ -98,6 +104,7 @@ public class ChatEntityDao {
 		       	String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
 		        String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
 		        String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+		        String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
 		        int temp=c.getColumnIndex("NotRead");
 		        int unread=0;
 		        if(temp>-1){
@@ -109,6 +116,7 @@ public class ChatEntityDao {
 				cinfo.setFrom(talker);
 				cinfo.setMsgID(id);//id为空时返回0值
                 cinfo.setNotRead(unread);
+                cinfo.setShareId(share);
 				if(status!=null){
 					cinfo.setStatus(Integer.parseInt(status));
 				}else{
@@ -166,6 +174,7 @@ public class ChatEntityDao {
         }
         values.put(COLUMN_NAME_STATUS, msg.getStatus());
         values.put(COLUMN_NAME_TYPE, msg.getType());
+        values.put(COLUMN_NAME_SHARE, msg.getShareId());
         long result=dbHelper.insert(TABLE_NAME, values);
         
         dbHelper.closeDatabase();
@@ -234,6 +243,7 @@ public class ChatEntityDao {
 		       	String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
 		        String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
 		        String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+		        String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
 		        int temp=c.getColumnIndex("NotRead");
 		        int unread=0;
 		        if(temp>-1){
@@ -245,6 +255,7 @@ public class ChatEntityDao {
 				Log.e("1",id+"");
 				cinfo.setMsgID(id);//id为空时返回0值
                 cinfo.setNotRead(unread);
+                cinfo.setShareId(share);
 				if(status!=null){
 					cinfo.setStatus(Integer.parseInt(status));
 				}else{
@@ -268,6 +279,91 @@ public class ChatEntityDao {
 		return list;
 	}
 
+
+	public ChatEntity getLatestMsg(String shareId) {
+		// TODO Auto-generated method stub
+		ChatEntity cinfo=new ChatEntity();
+		SQLiteDatabase db=dbHelper.getWritableDatabase();
+		if(db.isOpen()){
+			Cursor c=db.query(true, TABLE_NAME, null,COLUMN_NAME_SHARE+"=?", new String[]{shareId}, null, null, COLUMN_NAME_TIME+" desc", "0,1");
+			while (c.moveToNext()) {
+				long id = c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
+				String talkto = c.getString(c.getColumnIndex(COLUMN_NAME_FROM));				
+				String path = c.getString(c.getColumnIndex(COLUMN_NAME_PATH));
+		       	String status=c.getString(c.getColumnIndex(COLUMN_NAME_STATUS));
+		       	String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
+		        String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
+		        String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+		        String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+		        int temp=c.getColumnIndex("NotRead");
+		        int unread=0;
+		        if(temp>-1){
+		    	   unread=c.getInt(temp);
+		        }   
+				cinfo.setContent(content);
+				cinfo.setFrom(talkto);
+				Log.e("1",id+"");
+				cinfo.setMsgID(id);//id为空时返回0值
+                cinfo.setNotRead(unread);
+                cinfo.setShareId(share);
+				if(status!=null){
+					cinfo.setStatus(Integer.parseInt(status));
+				}else{
+					cinfo.setStatus(-1);
+				}
+				if(cType!=null){
+					cinfo.setType(Integer.parseInt(cType));
+				}else{
+					cinfo.setType(-1);
+				}
+				if(time!=null){
+					cinfo.setMsgTime(Long.parseLong(time));
+				}else{
+					cinfo.setMsgTime(-1);
+				}			
+				cinfo.setImgPath(path);
+				c.close();
+				return cinfo;
+			}
+		}
+		db.close();
+		return null;
+	}
+
+	
+	public List<String> getShareList(String groupId) {
+		// TODO Auto-generated method stub
+		List<String> list=new ArrayList<String>();
+		SQLiteDatabase db=dbHelper.getWritableDatabase();
+		if(db.isOpen()){
+			Cursor c=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_CONTENT},COLUMN_NAME_SHARE+">? and "+ COLUMN_NAME_FROM+"=?" , new String[]{"0",groupId}, COLUMN_NAME_SHARE, null, null, null);
+			while (c.moveToNext()) {
+		        String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+		        list.add(content);
+			}
+		}
+		db.close();
+		return list;
+	}
+	
+	public List<Map<String,String>> getShareScheduals(String groupId) {
+		// TODO Auto-generated method stub
+		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		SQLiteDatabase db=dbHelper.getWritableDatabase();
+		if(db.isOpen()){
+			Cursor c=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_CONTENT,COLUMN_NAME_SHARE},COLUMN_NAME_SHARE+">? and "+ COLUMN_NAME_FROM+"=?" , new String[]{"0",groupId}, COLUMN_NAME_SHARE, null, null, null);
+			while (c.moveToNext()) {
+				Map<String,String> map=new HashMap<String, String>();
+		        String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+		        String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+		        map.put("shareId", share);
+		        map.put("content", content);
+		        list.add(map);
+			}
+		}
+		db.close();
+		return list;
+	}
 
 
 }

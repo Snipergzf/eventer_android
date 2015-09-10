@@ -63,6 +63,7 @@
                 android:padding="5dp"
                 android:background="@drawable/ib_bg"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/finish"
                 android:textColor="@color/white" />
 

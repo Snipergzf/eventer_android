@@ -23,13 +23,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,19 +35,14 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
-import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.adapter.SchedualAdapter;
-import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.db.SchedualDao;
-import com.eventer.app.entity.ChatEntity;
-import com.eventer.app.entity.Event;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.other.Activity_EventDetail;
 import com.eventer.app.other.Calendar_AddSchedual;
 import com.eventer.app.other.Calendar_ViewSchedual;
-import com.eventer.app.socket.Activity_Chat;
 import com.eventer.app.widget.calendar.CaldroidFragment;
 import com.eventer.app.widget.calendar.CaldroidListener;
 
@@ -87,10 +79,9 @@ public  class CalendarFragment extends Fragment  {
 					"CALDROID_SAVED_STATE");
 			
 		}
-		// If activity is created from fresh
 		else {
 			Bundle args = new Bundle();
-			
+			//设置日历的初始参数
 			Calendar cal = Calendar.getInstance();
 			args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
 			args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
@@ -102,8 +93,6 @@ public  class CalendarFragment extends Fragment  {
 			
 		}
 		
-
-		// Attach to the activity
 		FragmentTransaction t = getFragmentManager().beginTransaction();
 		t.replace(R.id.calendar1, caldroidFragment);
 		t.commit();
@@ -111,6 +100,7 @@ public  class CalendarFragment extends Fragment  {
 		caldroidFragment.setCaldroidListener(listener);
 		IsRefresh=false;
 		eventList=(SwipeMenuListView)rootView.findViewById(R.id.calendar_lv);
+		//日程列表的适配器
 		mAdapter=new SchedualAdapter(context, sList);	
 		eventList.setAdapter(mAdapter);
 		eventList.setOnItemClickListener(new OnItemClickListener(){	      
@@ -144,7 +134,7 @@ public  class CalendarFragment extends Fragment  {
 	      });
 		Log.e("1","create____________________________________1");
 		
-		
+		//日程列表左滑，显示菜单，实现“完成”和“删除”
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
  			@Override
@@ -171,7 +161,7 @@ public  class CalendarFragment extends Fragment  {
  		};
  		// set creator
  	eventList.setMenuCreator(creator);
-
+    //为日程列表的左滑菜单中的按钮，设置点击事件
  	eventList.setOnMenuItemClickListener(new OnMenuItemClickListener() {
  			@Override
  			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
@@ -206,26 +196,26 @@ public  class CalendarFragment extends Fragment  {
 	});		
 		return rootView;
 	}
-	
+	//刷新界面
 	public void refreshView() {
 		// TODO Auto-generated method stub
 		SetEventListData();
 	    mAdapter=new SchedualAdapter(context, sList);
 		eventList.setAdapter(mAdapter);
 	}
-
+    //dp转化成px
 	private int dp2px(int dp) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				getResources().getDisplayMetrics());
 	}
 	
-
+    //删除日程
 	private void delete(Schedual item) {
 		SchedualDao dao=new SchedualDao(context);
 		dao.deleteSchedual(item.getSchdeual_ID()+"");
 	}
-	
-	public void addCourse(){
+	//跳转至添加日程界面
+	public void addSchedual(){
 		Intent intent = new Intent();
 		intent.setClass(getActivity(), Calendar_AddSchedual.class);
 		if(eventdate != null && eventdate.length() != 0){            	
@@ -233,7 +223,7 @@ public  class CalendarFragment extends Fragment  {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         	eventdate= formatter.format(new Date());
 		}
-		intent.putExtra(Calendar_AddSchedual.ARGUMENT, eventdate);
+		intent.putExtra(Calendar_ViewSchedual.ARGUMENT_DATE, eventdate);
 		startActivityForResult(intent, 122);
 	}
 
@@ -268,7 +258,7 @@ public  class CalendarFragment extends Fragment  {
 	{		
 		super.onStart();
 	}
-	
+	//从数据库中获取日程列表的数据
 	public void SetEventListData(){
 		sList.clear();
 		DBManager dbHelper;
@@ -346,11 +336,13 @@ public  class CalendarFragment extends Fragment  {
             	String title=c.getString(c.getColumnIndex("title"));
             	String place=c.getString(c.getColumnIndex("place"));
             	int status=c.getInt(c.getColumnIndex("status"));
+            	int type=c.getInt(c.getColumnIndex("type"));
             	s.setSchdeual_ID(id);
 			    s.setEventId(eid);
 			    s.setTitle(title);
 			    s.setPlace(place);
 			    s.setStatus(status);
+			    s.setType(type);
 			    Map<String,String> map=new HashMap<String, String>();
         		if(start_time[0].equals(end_time[0])){       			    
  			        s.setStarttime(StartTime.substring(11));  
@@ -370,8 +362,8 @@ public  class CalendarFragment extends Fragment  {
         }  
         dbHelper.closeDatabase();
 	}
-	//setCustomResourceForDates();
-			// Setup listener
+	
+	//日历中的cell的事件监听
 	public	CaldroidListener listener = new CaldroidListener() {
 				@Override
 	            public void onSelectDate(Date date, View view) {
@@ -387,7 +379,7 @@ public  class CalendarFragment extends Fragment  {
 				@Override
 				public void onLongClickDate(Date date, View view) {
 					setSelectDate(date);
-					addCourse();
+					addSchedual();
 				}
 
 				@Override
@@ -400,7 +392,8 @@ public  class CalendarFragment extends Fragment  {
 				}
 
 			};
-			
+	//设置日历的选中日期
+    //根据选中日期，刷新日程列表
 	public void setSelectDate(Date date){
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();

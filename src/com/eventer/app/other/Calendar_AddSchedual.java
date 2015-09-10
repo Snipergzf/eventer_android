@@ -37,6 +37,8 @@ import android.widget.TimePicker;
 
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.entity.Schedual;
 
 @SuppressLint("SimpleDateFormat")
 public class Calendar_AddSchedual extends FragmentActivity implements OnClickListener {
@@ -52,13 +54,14 @@ public class Calendar_AddSchedual extends FragmentActivity implements OnClickLis
 	private boolean IsNew=true;
 	public static final String ARGUMENT = "argument";
 	public static final String RESPONSE = "response";
+	private Context context;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_addschedual);
-		initView();
+		context=this;		
 		id=getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
+		initView();
 		Log.e("1",id+"");
-		
 	}
 	
 	private void initView() {
@@ -82,12 +85,28 @@ public class Calendar_AddSchedual extends FragmentActivity implements OnClickLis
 		
 			
 		iv_back=(ImageView)findViewById(R.id.event_back);
-		event_finish=(TextView)findViewById(R.id.event_finish);
-		
-
-		
+		event_finish=(TextView)findViewById(R.id.event_finish);	
 		iv_back.setOnClickListener(this);
 		event_finish.setOnClickListener(this); 
+		if(id!=-1){
+			SchedualDao dao=new SchedualDao(context);
+			Schedual s=dao.getSchedual(id+"");
+			if(s!=null){
+				int type=s.getType();
+				if(type==3){
+					if(currentIndex!=1){
+						FragmentTransaction trx = getSupportFragmentManager()
+				                .beginTransaction();
+				        trx.hide(fragments[currentIndex]);
+				        trx.show(fragments[1]).commit();	           
+						currentIndex=1;
+						btn_schedual.setSelected(false);
+						btn_todo.setSelected(true);
+					}
+				}
+			}
+			IsNew=true;
+        }
 
 	}
 
@@ -131,7 +150,10 @@ public class Calendar_AddSchedual extends FragmentActivity implements OnClickLis
 			break;
 		}
 	}
-	
+	/***
+	 * ÇÐ»»Fragment
+	 * @param index2
+	 */
 	private void changeView(int index2){
 		FragmentTransaction trx = getSupportFragmentManager()
                 .beginTransaction();

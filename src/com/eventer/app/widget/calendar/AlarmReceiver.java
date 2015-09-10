@@ -25,19 +25,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
-import com.eventer.app.http.HttpUnit;
-import com.eventer.app.main.LoadActivity;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.main.LoginActivity;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.other.Calendar_ViewSchedual;
 import com.eventer.app.util.PreferenceUtils;
@@ -49,7 +51,7 @@ import com.eventer.app.util.PreferenceUtils;
  */
 @SuppressLint({ "NewApi", "UseSparseArrays", "SimpleDateFormat" })
 public class AlarmReceiver extends BroadcastReceiver { 
-	private Context context1;
+	private Context context;
 	private Map<String, Schedual> Alarmlist= new HashMap<String, Schedual>();
 	public static List<String> notify_id_list=new ArrayList<String>();
 	private NotificationManager manager;
@@ -64,19 +66,14 @@ public class AlarmReceiver extends BroadcastReceiver {
     	//Log.e("1","clock----");
 //    	String msg=intent.getStringExtra("msg");
 //        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        context1=context;
+        this.context=context;
         
         long now=System.currentTimeMillis()/1000;
         if(now-Constant.LoginTime>3200){
         	String user=PreferenceUtils.getInstance().getLoginUser();
 			String pwd=PreferenceUtils.getInstance().getLoginPwd();
 			if (user!=null&&user!=""&&pwd!=null&&pwd!="") {
-				Map<String, String> params = new HashMap<String, String>();  
-		        params.put("pwd", pwd);
-		        params.put("phone", user);    
-		        params.put("imei", PreferenceUtils.getInstance().getDeviceId());
-				UserLogin(params);
-				Constant.LoginTime=now;
+				UserLogin();
 			}else{
 				Constant.isLogin=false;
 			}
@@ -112,7 +109,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void showAlertDialog(Schedual s,int ID) {
         final Schedual schedual=s;
         final int id=ID;
-		AlarmDialog.Builder builder = new AlarmDialog.Builder(context1);
+		AlarmDialog.Builder builder = new AlarmDialog.Builder(context);
 		
 		//builder.setContentInfo(map);
 		builder.setSchedual(schedual);
@@ -123,7 +120,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			int whichButton) {
 		try {
 			manager.cancel(id);
-			SchedualDao sDao=new SchedualDao(context1);
+			SchedualDao sDao=new SchedualDao(context);
 			schedual.setStatus(0);
 			sDao.update(schedual);
 			MainActivity.instance.setAlarmList();					
@@ -205,12 +202,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 	   public void setNotify(Schedual s) {
 		    final Schedual schedual=s;
 				 // 获取通知服务
-		    manager = (NotificationManager) context1.getSystemService(Context.NOTIFICATION_SERVICE);	
-			icon = BitmapFactory.decodeResource(context1.getResources(),
+		    manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);	
+			icon = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.ic_launcher);	
-			Notification.Builder mBuilder = new Notification.Builder(context1);
+			Notification.Builder mBuilder = new Notification.Builder(context);
 //					//PendingIntent 跳转动作
-			Intent intent=new Intent(context1,Calendar_ViewSchedual.class);
+			Intent intent=new Intent(context,Calendar_ViewSchedual.class);
 			 Bundle bundle = new Bundle();                           //创建Bundle对象   
 			 String date_str=s.getStarttime().substring(0,10);
 			 bundle.putString(Calendar_ViewSchedual.ARGUMENT_ID, s.getSchdeual_ID()+"");     //装入数据   
@@ -244,7 +241,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 				}
 				
 			}			
-			PendingIntent pendingIntent=PendingIntent.getActivity(context1, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);  
+			PendingIntent pendingIntent=PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);  
 			mBuilder.setSmallIcon(R.drawable.ic_launcher)
 					.setTicker("日程提醒")
 					.setContentTitle(title)
@@ -273,7 +270,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			}
 			
 			
-//		   AlertDialog.Builder builder = new AlertDialog.Builder(context1);
+//		   AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //				builder.setTitle("日程提醒");
 //				builder.setMessage(schedual.getTitle());
 //				builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -281,7 +278,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 //					int whichButton) {
 //				try {
 //					manager.cancel(id);
-//					SchedualDao sDao=new SchedualDao(context1);
+//					SchedualDao sDao=new SchedualDao(context);
 //					schedual.setStatus(0);
 //					sDao.update(schedual);
 //					MainActivity.instance.setAlarmList();					
@@ -309,7 +306,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	  
 	  class MediaThread implements Runnable{
 			public void run() {
-				mediaPlayer = MediaPlayer.create(context1, R.raw.tone);
+				mediaPlayer = MediaPlayer.create(context, R.raw.tone);
 					Log.e("1","ring----");
 					try {
 						//MainActivity.mediaPlayer.setLooping(true);
@@ -330,43 +327,64 @@ public class AlarmReceiver extends BroadcastReceiver {
 		}
 	  class ShakeThread implements Runnable{
 			public void run() {
-				vibrator = (Vibrator) context1.getSystemService(
+				vibrator = (Vibrator) context.getSystemService(
 						Service.VIBRATOR_SERVICE);
 				vibrator.vibrate(new long[] { 1000, 100, 100, 1000 }, -1);	
 			}
 		}
 	  
+		
 		/**
 		 * 执行异步任务
-		 * 
-		 * @param params
-		 *      
+		 * 登录系统
+		 *  参数为“phone”,“pwd”  ,"imei"  
 		 */
-		public void UserLogin(final Object... params) {
-			new AsyncTask<Object, Object,Integer>() {
-				@SuppressWarnings("unchecked")
+		public void UserLogin() {
+			final String user=PreferenceUtils.getInstance().getLoginUser();
+			final String pwd=PreferenceUtils.getInstance().getLoginPwd();
+			Map<String, String> params = new HashMap<String, String>();  
+	        params.put("pwd", pwd);
+	        params.put("phone", user);
+	        params.put("imei", PreferenceUtils.getInstance().getDeviceId());
+	        LoadDataFromHTTP task = new LoadDataFromHTTP(
+	                context, Constant.URL_LOGIN, params);
+	        task.getData(new DataCallBack() {
+				
 				@Override
-				protected Integer doInBackground(Object... params) {
-					int status=-1;
-				  try {
-			    	        status=HttpUnit.sendLoginRequest((Map<String, String>) params[0]);
-			    	        Constant.isLogin=false;
-			    	        return status;
-						
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						return -1;
-//						e.printStackTrace();
-					}
-				}
-				protected void onPostExecute(Integer status) {
-					 if(status==0){
-				        	Constant.isLogin=true;
-				        	Constant.LoginTime=System.currentTimeMillis()/1000;
-				        	
-				        }
-				    };
+				public void onDataCallBack(JSONObject data) {
+					// TODO Auto-generated method stub
+					 try {
+		                    int code = data.getInteger("status");
+		                    switch (code) {
+							case 0:
+								Log.e("1", "登录成功！");
+								PreferenceUtils.getInstance().setLoginUser(user);
+					        	PreferenceUtils.getInstance().setLoginPwd(pwd);
+					        	Constant.isLogin=true;
+					        	Constant.LoginTime=System.currentTimeMillis()/1000;
+					        	JSONObject jsonLogin= data.getJSONObject("user_action");
+					        	Constant.UID=jsonLogin.getInteger("uid")+"";
+					        	Constant.TOKEN=jsonLogin.getString("token");
+								break;
+							case 1:
+							case 2:				        	
+							case 23:
+								context.startActivity(new Intent().setClass(context, LoginActivity.class));
+								break;
+							default:
+								context.startActivity(new Intent().setClass(context, LoginActivity.class));
+								break;
+							}
 
-			}.execute(params);}
+		                } catch (JSONException e) {
+
+		                    Toast.makeText(context, "数据解析错误...",
+		                            Toast.LENGTH_SHORT).show();
+		                    e.printStackTrace();
+		                    context.startActivity(new Intent().setClass(context, LoginActivity.class));
+		                }
+				}
+			});
+		}	
     
 }  

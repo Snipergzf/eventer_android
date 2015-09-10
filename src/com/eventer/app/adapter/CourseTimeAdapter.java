@@ -28,7 +28,7 @@ import com.eventer.app.db.CourseDao;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.Course;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.other.Course_edit;
+import com.eventer.app.other.Activity_Course_Edit;
 import com.eventer.app.util.WheelDialogClassHourShowUtil;
 import com.eventer.app.util.WheelDialogTwoShowUtil;
 import com.eventer.app.view.DialogView_ClassHour.onWheelBtnPosClick;

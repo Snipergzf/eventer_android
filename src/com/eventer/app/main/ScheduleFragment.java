@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.other.Activity_AddCourse;
-import com.eventer.app.other.Course_edit;
-import com.eventer.app.other.Course_setting;
+import com.eventer.app.other.Activity_Course_Edit;
+import com.eventer.app.other.Activity_Course_Setting;
 import com.eventer.app.view.PopMenu;
 
 
@@ -29,7 +29,6 @@ public  class ScheduleFragment extends Fragment  implements OnClickListener{
 	private Fragment[] fragments;
     public CalendarFragment calendarfragment;
     private CourseFragment coursefragment;
-    private TODOListFragment  listfragment;
     private int index;
     private int currentIndex;
     private Spinner view_index;
@@ -56,20 +55,18 @@ public  class ScheduleFragment extends Fragment  implements OnClickListener{
 		return rootView;
 	}
 	
-private void initView(View view){
-		
+    private void initView(View view){
+		//初始化日程视图和课程视图
 		calendarfragment = new CalendarFragment();
 	    coursefragment = new CourseFragment();
-	    listfragment=new TODOListFragment();
 	   
-	    fragments = new Fragment[] {calendarfragment,coursefragment,listfragment};
+	    fragments = new Fragment[] {calendarfragment,coursefragment};
 
      // 添加显示第一个fragment
         getChildFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, fragments[0])
-                .add(R.id.fragment_container, fragments[1])
-                .add(R.id.fragment_container, fragments[2])
-                .hide(fragments[2]).hide(fragments[1]).show(fragments[0]).commit();
+                .add(R.id.fragment_container, fragments[1])             
+               .hide(fragments[1]).show(fragments[0]).commit();
         
         view_index=(Spinner)view.findViewById(R.id.spinner_view);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.view_schedual,R.layout.simple_spinner_item);
@@ -108,7 +105,10 @@ private void initView(View view){
 		
 		
 	}
-
+    /**
+     * 日程视图和课程视图的切换
+     * @param index2
+     */
 	protected void changeViewByIndex(int index2) {
 	// TODO Auto-generated method stub
 		switch (index2) {
@@ -124,11 +124,6 @@ private void initView(View view){
 			iv_add.setVisibility(View.VISIBLE);
 			ll_list.setVisibility(View.GONE);
 			break;
-		case 2:
-			weekinfo_rl.setVisibility(View.GONE);
-			iv_setting.setVisibility(View.GONE);
-			iv_add.setVisibility(View.GONE);
-			ll_list.setVisibility(View.VISIBLE);
 		default:
 			break;
 		}
@@ -153,20 +148,23 @@ private void initView(View view){
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		//添加按钮
 		case R.id.iv_add:
-			if(index==0){
-				CalendarFragment.instance.addCourse();
-			}else if(index==1){
+			if(index==0){//添加日程
+				CalendarFragment.instance.addSchedual();
+			}else if(index==1){//添加课程
 				Intent intent1=new Intent();
 				intent1.setClass(getActivity(), Activity_AddCourse.class);
 				startActivityForResult(intent1, CourseFragment.COURSE_SETTING);
 			}
 			break;
+		//课程视图的课程设置
 		case R.id.iv_setting:
 			Intent intent=new Intent();
-			intent.setClass(getActivity(), Course_setting.class);
+			intent.setClass(getActivity(), Activity_Course_Setting.class);
 			startActivityForResult(intent, CourseFragment.COURSE_SETTING);
 			break;
+		//课程视图的星期选中
 		case R.id.weekinfo_ll:
 			PopMenu addPopWindow = new PopMenu(getActivity());
 			for(int i=1; i<CourseFragment.totalWeek;i++){
@@ -178,16 +176,6 @@ private void initView(View view){
 			}
 			addPopWindow.setCheckedItem(CourseFragment.showWeek);
 	        addPopWindow.showAsDropDown(weekinfo_rl);
-		case R.id.btn_collect:
-			btn_collect.setSelected(true);
-			btn_concern.setSelected(false);
-			TODOListFragment.instance.changeView(0);
-			break;
-		case R.id.btn_concren:
-			btn_collect.setSelected(false);
-			btn_concern.setSelected(true);
-			TODOListFragment.instance.changeView(1);
-			break;
 		default:
 			break;
 		}

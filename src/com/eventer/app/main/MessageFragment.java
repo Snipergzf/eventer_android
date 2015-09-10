@@ -10,22 +10,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -36,8 +35,8 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ConversationAdapter;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.entity.ChatEntity;
+import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Contact;
-import com.eventer.app.socket.Activity_Chat;
 
 
 
@@ -49,15 +48,13 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 	private List<ChatEntity> mData=new ArrayList<ChatEntity>();
 	private Context context;
 	private ConversationAdapter adapter;
-	private TextView tv_contact;
-	private Handler mHandler;
+	private RelativeLayout re_contact;	
 	public static MessageFragment instance;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		//return super.onCreateView(inflater, container, savedInstanceState);
 		context=getActivity();
 		return inflater.inflate(R.layout.fragment_message, container, false);
 		
@@ -72,10 +69,11 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 	    View headView = infalter.inflate(R.layout.item_conversation_header,
 	                null);
 	    listView.addHeaderView(headView);
-	    adapter = new ConversationAdapter(getActivity(),mData);
+	    re_contact=(RelativeLayout)headView.findViewById(R.id.re_contact);
+	    adapter = new ConversationAdapter(context,mData);
         listView.setAdapter(adapter);
         
-
+        //给对话的item的添加左滑菜单
      	SwipeMenuCreator creator = new SwipeMenuCreator() {
 
      			@Override
@@ -171,9 +169,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 
 
         });
-		
-        tv_contact=(TextView)getView().findViewById(R.id.contact);
-        tv_contact.setOnClickListener(new OnClickListener() {
+        re_contact.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -188,7 +184,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
         refresh();
  
 	}
-	
+	//删除对话
 	private void delete(ChatEntity item) {
 		ChatEntityDao dao=new ChatEntityDao(context);
 		dao.deleteMessageByUser(item.getFrom());
@@ -199,7 +195,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				getResources().getDisplayMetrics());
 	}
-	
+	//删除对话的消息框 
 	private void showMyDialog(String title, final ChatEntity message, final int position) {
 
         final AlertDialog dlg = new AlertDialog.Builder(context).create();
@@ -212,7 +208,6 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
         TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
         tv_title.setText(title);
         TextView tv_content1 = (TextView) window.findViewById(R.id.tv_content1);
-        final String username = message.getFrom();
         // 是否已经置顶
 //            tv_content1.setText("置顶聊天");
         tv_content1.setVisibility(View.GONE);
@@ -230,26 +225,6 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 
     }
 	
-//	public class RefreshThread  implements Runnable{
-//		@Override
-//		public void run() {
-//			// TODO Auto-generated method stub
-//			 Looper.prepare();//1、初始化Looper
-//	            mHandler = new Handler(){//2、绑定handler到CustomThread实例的Looper对象
-//	                public void handleMessage (Message msg) {//3、定义处理消息的方法
-//	                    switch(msg.what) {
-//	                    case 0:
-//	                    	ChatEntityDao dao=new ChatEntityDao(context);    
-//	  	                    dao.setClearUnReadMsg((String) msg.obj);
-//	  	                    refresh();
-//	                    }
-//	                }
-//	            };
-//	        Looper.loop();//4、启动消息循环
-//			
-//		}   	
-//    }
-	
 	public void refreshData(){
 		MainActivity.instance.updateUnreadLabel();
 		RefreshThread thread=new RefreshThread();
@@ -261,23 +236,15 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		public void run() {
 			// TODO Auto-generated method stub
 			refresh();
-//			Map<String,String> params=new HashMap<String,String>();
-//			params.put("uid", Constant.UID+"");
-//			params.put("token", Constant.TOKEN);
-//			params.put("friend_id", "123");
-//			try {
-//				HttpUnit.sendFriendRequest(params);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 		}   	
     }
-	
+	//刷新页面
 	private void refresh(){
 		mData=new ArrayList<ChatEntity>();
 		ChatEntityDao dao=new ChatEntityDao(context);
+		//获取对话列表
         mData=dao.getChatEntityList(new String[]{"*","Max(addTime)"},null, null,ChatEntityDao.COLUMN_NAME_FROM,ChatEntityDao.COLUMN_NAME_TIME+" desc");
+        //获取未读信息
  		 List<ChatEntity> unreadMsg=dao.getChatEntityList(new String[]{"*" ,"Max(addTime)","Count(*) as NotRead"}, "status=1", null, "talker", null);		 		 
  		 for (ChatEntity chatEntity : unreadMsg) {
  			 String user=chatEntity.getFrom();

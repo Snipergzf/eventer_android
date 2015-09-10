@@ -12,11 +12,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -51,17 +47,16 @@ import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Event;
 import com.eventer.app.entity.EventOp;
 import com.eventer.app.entity.Schedual;
-import com.eventer.app.http.HTTPService;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
-import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 
 public class Activity_EventDetail  extends SwipeBackActivity  implements OnClickListener {
 	
 	private ImageView iv_collect,iv_share,iv_comment;
 	private TextView tv_theme,tv_title,tv_time,tv_source,tv_pubtime,tv_place;
+	private TextView tv_collect_num,tv_share_num,tv_msg_num;
 	private TextView tv;
 	private ImageView[] ivlist;
     private Event event;
@@ -92,6 +87,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		tv_theme=(TextView)findViewById(R.id.tv_tag);
 		tv_time=(TextView)findViewById(R.id.tv_time);
 		tv_place=(TextView)findViewById(R.id.tv_place);
+		tv_collect_num=(TextView)findViewById(R.id.tv_collection_num);
 		tv=(TextView)findViewById(R.id.tv);
 		tv_title=(TextView)findViewById(R.id.tv_title);
 		iv_collect.setOnClickListener(this);
@@ -103,9 +99,10 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		if(TextUtils.isEmpty(id)){
 			Toast.makeText(context, "活动不存在！", Toast.LENGTH_SHORT).show();
 			finish();
-		}		
+		}
+		//从数据库中读取活动
 		EventDao d=new EventDao(context);
-		event=d.getEvent(id+"");
+		event=d.getEvent(id);
 		if(event!=null){
 			initData();
 		}else{
@@ -182,6 +179,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			e.setOperator(Constant.UID);
 			e.setOpTime(System.currentTimeMillis()/1000);
 			dao.saveEventOp(e);
+			ClickFeedBack();
 			switch (op) {
 			case 1:
 				iv_collect.setSelected(true);
@@ -190,12 +188,30 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			default:
 				break;
 			}
+			UpdateFeedBack();
 		}else{
 			Toast.makeText(context, "活动为空！", Toast.LENGTH_SHORT).show();
 			finish();
 		}
 	}
 	
+	private void ClickFeedBack() {
+		// TODO Auto-generated method stub
+		Map<String,String> map=new HashMap<String, String>();
+		map.put("event_id", id);
+		map.put("share_num", "");		
+		map.put("click_num", "1");
+		map.put("participate_num", "");
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
+		task.getData(new DataCallBack() {			
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+	}
+
 	private String getTimeSpan(long begin_time, long end_time) {
 		// TODO Auto-generated method stub
 		String begin=getTime(begin_time*1000);
@@ -210,7 +226,9 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}
 		return time;
 	}
-
+    /**
+     * 从服务器端获得活动信息
+     */
 	private void loadevent() {
 		// TODO Auto-generated method stub
 		Map<String,String> map=new HashMap<String, String>();
@@ -368,7 +386,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}else if(now.lt(remind)){
 			status=0;
 		}else if(now.gt(finish)){
-			status=2;
+			status=1;
 		}
 		return status;
 	}
@@ -388,7 +406,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			switch (v.getId()) {
 			case R.id.iv_comment:
 				Intent intent=new Intent();
-				intent.setClass(context, EventCommentActivity.class);
+				intent.setClass(context, Activity_EventComment.class);
 				intent.putExtra("event_id", event.getEventID());
                 startActivity(intent);
 				break;
@@ -415,10 +433,32 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				
 				SchedualDao sdao=new SchedualDao(context);
 				if(op==1&&iv_collect.isSelected()){
+					    DelCollectFeedBack();
 						sdao.delSchedualByEventId(event.getEventID());
 						dao.delByEventId(event.getEventID());
 						iv_collect.setSelected(false);
+						tv_collect_num.setVisibility(View.VISIBLE);
+						String str = tv_collect_num.getText().toString();
+						if (TextUtils.isEmpty(str)) {
+							tv_collect_num.setVisibility(View.GONE);
+						} else {
+							try {
+								int num = Integer.parseInt(str);
+								num=num-1;
+								if(num>0){
+									tv_collect_num.setText(num+"");
+									tv_collect_num.setVisibility(View.VISIBLE);
+								}else{
+									tv_collect_num.setVisibility(View.GONE);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								tv_collect_num.setVisibility(View.GONE);
+							}
+						}
+						
 						Animation scale_anim_1 = AnimationUtils.loadAnimation(context, R.anim.scale);
+						tv_collect_num.startAnimation(scale_anim_1);
 						iv_collect.startAnimation(scale_anim_1);
 						op=0;
 						Toast.makeText(context,
@@ -427,8 +467,23 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 //					if(op>0){
 //						ivlist[op-1].setSelected(false);
 //					}
+					CollectFeedBack();
 					iv_collect.setSelected(true);
 					Animation scale_anim_1 = AnimationUtils.loadAnimation(context, R.anim.scale);
+					tv_collect_num.setVisibility(View.VISIBLE);
+					String str = tv_collect_num.getText().toString();
+					if (TextUtils.isEmpty(str)) {
+						tv_collect_num.setText("1");
+					} else {
+						try {
+							int num = Integer.parseInt(str);
+							tv_collect_num.setText(String.valueOf(++num));
+						} catch (Exception e) {
+							e.printStackTrace();
+							tv_collect_num.setText("1");
+						}
+					}
+					tv_collect_num.startAnimation(scale_anim_1);
 					iv_collect.startAnimation(scale_anim_1);
 					op=1;
 //					ivlist[op-1].setSelected(true);
@@ -455,12 +510,9 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							s.setRemindtime(starttime);
 							s.setTitle(event.getTitle());	
 							s.setPlace(event.getPlace());
-							int status=getStatus(endtime,starttime);
-							
+							int status=getStatus(endtime,starttime);						
 							s.setStatus(status);
-							if(status!=0){
-								s.setStatus(1);
-							}
+							s.setType(1);
 							s.setFrequency(0);
 							sdao.saveSchedual(s);
 						}
@@ -497,6 +549,94 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				break;
 			}
 		}
+    private void CollectFeedBack(){
+    	Map<String,String> map=new HashMap<String, String>();
+		map.put("event_id", id);
+		map.put("share_num", "");		
+		map.put("click_num", "");
+		map.put("participate_num", "1");
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
+		task.getData(new DataCallBack() {			
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int status=data.getInteger("status");
+					if(status==0){
+						return;
+					}else{
+						Toast.makeText(context,
+		                        "上传数据失败！", Toast.LENGTH_SHORT ).show();
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					Toast.makeText(context,
+	                        "上传数据失败！", Toast.LENGTH_SHORT ).show();
+				}
+			}
+		});
+    }
+    
+    private void DelCollectFeedBack(){
+    	Map<String,String> map=new HashMap<String, String>();
+		map.put("event_id", id);
+		map.put("participate_num", "1");
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_DEL_EVENT_FEEDBACK, map);
+		task.getData(new DataCallBack() {			
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int status=data.getInteger("status");
+					if(status==0){
+						return;
+					}else{
+						Toast.makeText(context,
+		                        "上传数据失败！", Toast.LENGTH_SHORT ).show();
+					}					
+				} catch (Exception e) {
+					// TODO: handle exception
+					Toast.makeText(context,
+	                        "上传数据失败！", Toast.LENGTH_SHORT ).show();
+				}
+			}
+		});
+    }
+    
+    private void UpdateFeedBack(){
+    	Map<String,String> map=new HashMap<String, String>();
+		map.put("event_id", id);
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_UPDATE_EVENT_FEEDBACK, map);
+		task.getData(new DataCallBack() {			
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int status=data.getInteger("status");
+					if(status==0){
+						JSONObject action=data.getJSONObject("event_action");
+						JSONObject json=action.getJSONObject("event");
+						int participate_num=json.getInteger("participate_num");
+						if(participate_num>0){
+							tv_collect_num.setText(participate_num+"");
+							tv_collect_num.setVisibility(View.VISIBLE);
+						}else{
+							tv_collect_num.setVisibility(View.GONE);
+						}
+						   
+					}else{
+						Toast.makeText(context,
+		                        "更新数据失败！", Toast.LENGTH_SHORT ).show();
+					}					
+				} catch (Exception e) {
+					// TODO: handle exception
+					Toast.makeText(context,
+	                        "更新数据失败！", Toast.LENGTH_SHORT ).show();
+				}
+			}
+		});
+    }
 
 
 }

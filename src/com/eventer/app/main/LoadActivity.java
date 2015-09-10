@@ -2,15 +2,11 @@ package com.eventer.app.main;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,12 +20,10 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
-import com.eventer.app.MyApplication;
 import com.eventer.app.R;
-import com.eventer.app.db.EventDao;
 import com.eventer.app.http.HttpUnit;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
@@ -60,28 +54,24 @@ public class LoadActivity extends BaseActivity {
 		animation.setDuration(1500);
 		view.startAnimation(animation);
 		ll_login=(LinearLayout)view.findViewById(R.id.login_ll);
-	}	
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
+		
+		/***
+		 * 判断登录状态
+		 */
 		new Thread(new Runnable() {
 			public void run() {
-				//PreferenceUtils.getInstance().clearPreference();
+				//读取PreferenceUtils中的登录状态
 				user=PreferenceUtils.getInstance().getLoginUser();
 				pwd=PreferenceUtils.getInstance().getLoginPwd();
 				if (user!=null&&user!=""&&pwd!=null&&pwd!="") {
-					// ** 免登陆情况 加载所有本地群和会话
-					//不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
-					//加上的话保证进了主页面会话和群组都已经load完毕
+					// 保存了账号和密码，不跳转至登录界面，直接登录
 					long start = System.currentTimeMillis();
 					//加载数据
 					Map<String, String> params = new HashMap<String, String>();  
 			        params.put("pwd", pwd);
 			        params.put("phone", user);
-			        params.put("imei", PreferenceUtils.getInstance().getDeviceId());
-			        
+			        //获取手机的唯一标识码
+			        params.put("imei", PreferenceUtils.getInstance().getDeviceId());			        
 					UserLogin(params);
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
@@ -94,6 +84,7 @@ public class LoadActivity extends BaseActivity {
 					}
 
 				}else if(user!=null){
+					//只保存了账号（切换账号），跳转至登录界面
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
@@ -101,27 +92,19 @@ public class LoadActivity extends BaseActivity {
 					startActivity(new Intent(LoadActivity.this, LoginActivity.class));
 					finish();
 				}else{
+					//初次打开系统，显示登录或注册选项
 					ll_login.setVisibility(View.VISIBLE);
 				}	
 			}
 		}).start();
 
+	}	
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
 	}
-	
-//	/**
-//	 * 获取当前应用程序的版本号
-//	 */
-//	private String getVersion() {
-//		PackageManager pm = getPackageManager();
-//		try {
-//			PackageInfo packinfo = pm.getPackageInfo(getPackageName(), 0);
-//			String version = packinfo.versionName;
-//			return version;
-//		} catch (NameNotFoundException e) {
-//			e.printStackTrace();
-//			return "版本号错误";
-//		}
-//	}
 	 @SuppressLint("SdCardPath")
      public void initFile() {
 
@@ -131,14 +114,22 @@ public class LoadActivity extends BaseActivity {
              dir.mkdirs();
          }
      } 
-	 
+	 /***
+	  * 登录按钮的响应事件
+	  * 跳转至登陆界面
+	  * @param v
+	  */
 	public void login(View v) {
 		Intent intent = new Intent();
 		intent.setClass(LoadActivity.this, LoginActivity.class);
 		startActivity(intent);
 		finish();
 	}
-
+    /***
+     * 注册按钮的响应事件
+     * 跳转至注册界面
+     * @param v
+     */
 	public void register(View v) {
 		Intent intent = new Intent();
 		intent.setClass(LoadActivity.this, RegisterActivity.class);
@@ -148,7 +139,8 @@ public class LoadActivity extends BaseActivity {
 		
 		/**
 		 * 执行异步任务
-		 * 
+		 * 登录系统
+		 * 参数为phone,pwd,imei
 		 * @param params
 		 *      
 		 */
@@ -161,7 +153,6 @@ public class LoadActivity extends BaseActivity {
 					int status=-1;
 				  try {
 			    	        status=HttpUnit.sendLoginRequest((Map<String, String>) params[0]);
-			    	        
 			    	        Constant.isLogin=false;
 			    	        return status;
 						
@@ -177,22 +168,18 @@ public class LoadActivity extends BaseActivity {
 				        	Log.e("1", "登录成功！");
 				        	PreferenceUtils.getInstance().setLoginUser(user);
 				        	PreferenceUtils.getInstance().setLoginPwd(pwd);
-				        	//PreferenceUtils.getInstance().clearPreference();
 				        	Constant.isLogin=true;
 				        	Constant.LoginTime=System.currentTimeMillis()/1000;
-//				        	EventDao dao=new EventDao(context);
-//				        	List<String> list=dao.getEventIDList();
-//				        	MyApplication.getInstance().setCacheByKey("EventList", list);
+				        	//初始化个人信息
 				        	initSelfInfo();
-//				        	Intent intent = new Intent();
-//				    		intent.setClass(LoadActivity.this, MainActivity.class);
-//				    		startActivity(intent);
-//				    		finish();
 				        }else if(status==1){
 				        	Toast.makeText(context, "该用户不存在！", Toast.LENGTH_LONG)
 							.show();
-				        }
-				        else{
+				        }else  if(status==23){
+				    			Toast toast=Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);  
+				    	        toast.show(); 
+				    	        startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
+				        } else{
 				        	Toast.makeText(context, "登录错误！", Toast.LENGTH_LONG)
 							.show();	
 				        	Constant.isLogin=false;
@@ -205,8 +192,10 @@ public class LoadActivity extends BaseActivity {
 				    };
 
 			}.execute(params);}
-		
-		
+		/***
+		 * 从服务器获取个人信息，
+		 * 将信息写入LocalUserInfo
+		 */
 		private void initSelfInfo(){
 			 Map<String, String> maps = new HashMap<String, String>();		 
 		     maps.put("uid", Constant.UID+"");
@@ -218,6 +207,7 @@ public class LoadActivity extends BaseActivity {
 		            @Override
 		            public void onDataCallBack(JSONObject data) {
 		                try {
+		                	
 		                    int code = data.getInteger("status");
 		                    if (code == 0) {
 		                    	JSONObject json=data.getJSONObject("user_action");
@@ -237,6 +227,7 @@ public class LoadActivity extends BaseActivity {
 		    			    		startActivity(intent);
 		    			    		finish();
 		                    	}else{
+		                    		//该用户还未填写昵称，跳转至个人信息完善界面
 		                    		Toast.makeText(context, "您尚未完善个人信息，请完善个人信息！",
 			                                Toast.LENGTH_SHORT).show();
 		                    		Intent intent = new Intent();

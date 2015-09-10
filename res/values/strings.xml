@@ -122,7 +122,7 @@
     <string name="course_table_detail">课表详情</string>
     <string name="course_table_add">添加课表</string>
     <string name="add">添加</string>
-    <string name="newfriend_hint">手机号/昵称</string>
+    <string name="newfriend_hint">输入手机号搜索好友</string>
     <string name="add_contact_friend">邀请或添加通讯录中的朋友</string>
     <string name="phone_contact">手机联系人</string>
     <string name="new_friend">新的朋友</string>
@@ -172,7 +172,8 @@
     <string name="share_single">分享给好友</string>
     <string name="share_group">分享给群组</string>
     <string name="share">分享</string>
-    <string name="share_activity">分享活动</string>
+    <string name="share_activity">分享</string>
+   
     <string name="title_activity_share_to_single">ShareToSingleActivity</string>
     <string name="title_activity_chat_room_setting">ChatRoomSettingActivity</string>
     <string name="clear_msg">清空聊天记录</string>
@@ -217,5 +218,13 @@
     <string name="title_activity_our_team">OurTeamActivity</string>
     <string name="not_friend_hint">你们还不是好友，是否添加该好友?</string>
     <string name="title_activity_version">VersionActivity</string>
+    <string name="title_activity_share_event">ShareEventActivity</string>
+    <string name="time">时间</string>
+    <string name="participants">参与者</string>
+    <string name="enter">收藏到个人事项中</string>
+    <string name="notify">通知:请查看群日程！</string>
+    <string name="title_activity_group_share">GroupShareActivity</string>
+    <string name="groupshare">群日程列表</string>
+    <string name="title_activity_share_single_shecdual">ShareSingleShecdualActivity</string>
 
 </resources>

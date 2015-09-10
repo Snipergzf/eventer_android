@@ -35,14 +35,15 @@ public class Constant {
 	  public final static String APPSECRET="eaf57ad6cc5b431cbf345221572e088b";
    
 		 //·þÎñÆ÷¶Ë
-	  public static final String URL_Register = "";   
-    
 	  
 	  public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
 	  
 	  public static final String ACCOUNT_REMOVED = "account_removed";
 	  
 	  public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
+	  
+	  public static final String URL_REGISTER="http://123.56.142.241/v1/user/register";
+	  public static final String URL_LOGIN="http://123.56.142.241/v1/user/login";
 	  
 	  public static final String URL_UPDATE_Nick = "http://123.56.142.241/v1/user/set_name";
 	  public static final String URL_UPDATE_Avatar = "http://123.56.142.241/v1/user/set_avatar";
@@ -61,6 +62,10 @@ public class Constant {
 	  public static final String URL_GET_COMMENT ="http://123.56.142.241/v1/comment/get";
 	  
 	  public static final String URL_GET_EVENT ="http://123.56.142.241/v1/event/search";
+	  
+	  public static final String URL_SEND_EVENT_FEEDBACK ="http://123.56.142.241/v1/event/feedback_add";
+	  public static final String URL_DEL_EVENT_FEEDBACK ="http://123.56.142.241/v1/event/feedback_del";
+	  public static final String URL_UPDATE_EVENT_FEEDBACK ="http://123.56.142.241/v1/event/update";
 	  
 	  
 	  

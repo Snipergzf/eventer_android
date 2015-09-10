@@ -15,7 +15,7 @@
        android:paddingBottom="15dp">
 
        <Button
-           android:id="@+id/schedualBtn"
+           android:id="@+id/btn_login"
            android:layout_width="0dp"
            android:layout_height="40dp"
            android:layout_marginLeft="10dp"
@@ -31,7 +31,7 @@
            android:textColor="#ffffff" />
 
        <Button
-           android:id="@+id/courseBtn"
+           android:id="@+id/btn_register"
            android:layout_width="0dp"
            android:layout_height="40dp"
            android:layout_marginLeft="5dp"

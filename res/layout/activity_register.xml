@@ -27,8 +27,7 @@
 	        android:paddingTop="7dp"
 	        android:paddingBottom="7dp"
 	        android:gravity="center"
-	        android:textSize="18sp"
-	       
+	        android:textSize="18sp"    
 	        android:text="@string/register_tel"/>
 	    <View
 	        android:layout_width="0.05dp"
@@ -178,6 +177,7 @@
             android:id="@+id/tv_protocol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:textSize="14sp" />

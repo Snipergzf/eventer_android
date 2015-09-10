@@ -63,6 +63,11 @@ public class CollectActivity extends Activity {
 			}
 		});
 	}
+	/***
+	 * 我的收藏列表的适配器
+	 * @author LiuNana
+	 *
+	 */
 	public class MyEventAadpter extends BaseAdapter{
 	    private LayoutInflater mInflater;  
 		  
@@ -150,7 +155,7 @@ public class CollectActivity extends Activity {
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
 								Intent intent=new Intent();
-								intent.setClass(context, EventCommentActivity.class);
+								intent.setClass(context, Activity_EventComment.class);
 								intent.putExtra("event_id", mData.get(position).getEventID());
 				                startActivity(intent);
 								mDialog.dismiss();

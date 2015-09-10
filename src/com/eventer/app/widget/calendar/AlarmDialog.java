@@ -9,6 +9,8 @@ import java.util.Map;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -20,6 +22,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.main.MainActivity;
+import com.eventer.app.other.Calendar_ViewSchedual;
 
 public class AlarmDialog extends Dialog {
 
@@ -253,6 +256,6 @@ public class AlarmDialog extends Dialog {
 			dialog.setContentView(layout);
 			return dialog;
 		}
-
+		
 	}
 }

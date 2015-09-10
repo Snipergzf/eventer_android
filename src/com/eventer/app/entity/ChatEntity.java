@@ -10,6 +10,7 @@ public class ChatEntity {
     private long MsgID;
     private long MsgTime;
     private int NotRead;
+    private String ShareId;
     public int getNotRead() {
 		return NotRead;
 	}
@@ -44,6 +45,16 @@ public class ChatEntity {
 		Type = type;
 	}
 
+
+
+	public String getShareId() {
+		return ShareId;
+	}
+
+
+	public void setShareId(String shareId) {
+		ShareId = shareId;
+	}
 
 
 	public String getImgPath() {

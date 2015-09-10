@@ -66,12 +66,13 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		instance=this;
 		initView(rootView);
 		id=getActivity().getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
-		if(id==-1){
-			setDefalt();
-			IsNew=true;
-        }else{
+		int type=getActivity().getIntent().getIntExtra(Calendar_ViewSchedual.ARGUMENT_TYPE, -1);
+		if(id!=-1&&type==2){
         	setData();
         	IsNew=false;
+        }else{
+			setDefalt();
+			IsNew=true; 
         }
 		return rootView;
 	}
@@ -100,7 +101,7 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd HH:mm");     
 		String   time =sDateFormat.format(new   Date());
 		String[] nowtime=time.split(" ");	
-		String date=getActivity().getIntent().getStringExtra(Calendar_AddSchedual.ARGUMENT);
+		String date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
 		eventdate.setText(date);
 		eventtime.setText(nowtime[1]);		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.eventspan,R.layout.simple_spinner_item);
@@ -145,7 +146,7 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
        	String detail =c.getString(c.getColumnIndex("detail"));
        	String remind=c.getString(c.getColumnIndex("remind"));
        	String _f=c.getString(c.getColumnIndex("frequency"));
-	        String friend= c.getString(c.getColumnIndex("companion"));
+	    String friend= c.getString(c.getColumnIndex("companion"));
 	        String event_date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
 	       //Log.e("1",id+"");
 	       if(start!=null&&start.trim().length() != 0){
@@ -269,17 +270,15 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
     	int status=getStatus(getTime(),start,remindtime);
 		ContentValues cv=new ContentValues();            
         cv.put("title", eventtitle.getText().toString());
-        cv.put("Place", eventplace.getText().toString());  
-        cv.put("Detail", eventdetail.getText().toString());  
-        cv.put("Remind", eventalarm.getSelectedItemPosition());  
-        cv.put("Companion", "");  
+        cv.put("place", eventplace.getText().toString());  
+        cv.put("detail", eventdetail.getText().toString());  
+        cv.put("remind", eventalarm.getSelectedItemPosition());  
+        cv.put("companion", "");  
         cv.put("frequency", eventrepeat.getSelectedItemPosition());  
-        cv.put("StartTime",start);  
-        cv.put("EndTime", start);
-        cv.put("Status", 2);
-//        if(status!=0){
-//        	cv.put("Status", 2);
-//        }
+        cv.put("startTime",start);  
+        cv.put("endTime", start);
+        cv.put("status", status);
+        cv.put("type",2);
         cv.put("RemindTime", remindtime);
         if(IsNew){
           long Sid=System.currentTimeMillis()/1000;
@@ -347,9 +346,9 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		if(now.gteq(remind)&&now.lteq(finish)){
 			status=1;
 		}else if(now.lt(remind)){
-			status=0;
+			status=1;
 		}else if(now.gt(finish)){
-			status=2;
+			status=0;
 		}
 		return status;
 	}

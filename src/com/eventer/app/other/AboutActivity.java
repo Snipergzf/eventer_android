@@ -40,6 +40,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
 		PackageManager pm = context.getPackageManager();//context为当前Activity上下文 
 		PackageInfo pi;
 		String version="";
+		//获取版本信息
 		try {
 			pi = pm.getPackageInfo(context.getPackageName(), 0);
 		    version = pi.versionName;

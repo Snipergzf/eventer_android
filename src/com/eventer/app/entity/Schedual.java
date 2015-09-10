@@ -7,7 +7,7 @@ public class Schedual {
 	private String title;
     private String place;
     private String detail;
-    private String remind;
+    private int remind;
     private String remindtime;
     private String starttime;
     private String endtime;
@@ -15,6 +15,8 @@ public class Schedual {
     private String eventId;
     private int frequency;
     private int status;
+    private int type;
+    private String shareId;
     private String friend;
     
 	
@@ -57,10 +59,10 @@ public class Schedual {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	public String getRemind() {
+	public int getRemind() {
 		return remind;
 	}
-	public void setRemind(String remind) {
+	public void setRemind(int remind) {
 		this.remind = remind;
 	}
 	public String getRemindtime() {
@@ -104,6 +106,18 @@ public class Schedual {
 	}
 	public void setFriend(String friend) {
 		this.friend = friend;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getShareId() {
+		return shareId;
+	}
+	public void setShareId(String shareId) {
+		this.shareId = shareId;
 	}
  
     

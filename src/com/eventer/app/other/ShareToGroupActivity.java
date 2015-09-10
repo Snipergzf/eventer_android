@@ -3,7 +3,9 @@ package com.eventer.app.other;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.easemob.util.HanziToPinyin;
+import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.adapter.PickChatroomAdapter;
 import com.eventer.app.db.ChatEntityDao;
@@ -41,6 +44,8 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.entity.Event;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 
 public class ShareToGroupActivity extends Activity {
@@ -282,21 +287,32 @@ public class ShareToGroupActivity extends Activity {
         for (String room : addList) {
         	String body="";
         	String content="";
+        	int type=0;
+        	String shareId="";
         	try {	
 	        	JSONObject content_json = new JSONObject();
 	        	if(shareType==ShareToSingleActivity.SHARE_EVENT){
         			content_json.put("event_id", event.getEventID());
     	        	content_json.put("event_title", event.getTitle());
+    	        	type=2;
+    	        	ShareFeedBack();
         		}else if(shareType==ShareToSingleActivity.SHARE_SCHEDUAL){
         			content_json.put("schedual_place", schedual.getPlace());
         			content_json.put("schedual_detail", schedual.getDetail());
         			content_json.put("schedual_title", schedual.getTitle());
-        			content_json.put("schedual_time", schedual.getStarttime());
+        			content_json.put("schedual_start", schedual.getStarttime());
         			content_json.put("schedual_f", schedual.getFrequency());
+        			content_json.put("schedual_end", schedual.getEndtime());
+        			content_json.put("schedual_friend",new String[]{Constant.UID});
+        			content_json.put("schedual_type", schedual.getType());
+        			shareId= Constant.UID+"@"+System.currentTimeMillis();
+        			type=3;
         		}
 	        	JSONObject send_json = new JSONObject();
 	        	send_json.put("action", "send");			
 				send_json.put("data", content_json);
+				send_json.put("shareId", shareId);
+				send_json.put("type", type);
 				content=content_json.toJSONString();
 				body = send_json.toJSONString();
 			} catch (JSONException e) {
@@ -312,6 +328,7 @@ public class ShareToGroupActivity extends Activity {
             msg.setMsgTime(time/1000);
             msg.setStatus(2);
             msg.setMsgID(time);
+            msg.setShareId(shareId);
             ChatEntityDao dao =new ChatEntityDao(context);
             dao.saveMessage(msg);
 			MainActivity.instance.newMsg(room, room, body, 49);
@@ -319,6 +336,30 @@ public class ShareToGroupActivity extends Activity {
 		}
         finish();
 
+    }
+    
+    private void ShareFeedBack(){
+    	Map<String,String> map=new HashMap<String, String>();
+		map.put("event_id", eid);
+		map.put("share_num", "1");		
+		map.put("click_num", "");
+		map.put("participate_num", "");
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
+		task.getData(new DataCallBack() {			
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int status=data.getInteger("status");
+					if(status==0){
+						return;
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		});
     }
 
     public void back(View view) {

@@ -25,7 +25,6 @@ import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.Course;
-import com.eventer.app.socket.Activity_Chat;
 import com.eventer.app.view.TitleBar;
 
 public class Activity_CourseTable_View extends Activity implements
@@ -61,7 +60,7 @@ public class Activity_CourseTable_View extends Activity implements
 				// TODO Auto-generated method stub
 				Intent intent=new Intent();
 				intent.putExtra("c_detail", mData.get(position));
-				intent.setClass(Activity_CourseTable_View.this, Course_edit.class);
+				intent.setClass(Activity_CourseTable_View.this, Activity_Course_Edit.class);
 				startActivityForResult(intent, 11);
 				
 			}

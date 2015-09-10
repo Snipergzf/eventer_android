@@ -79,15 +79,21 @@ public class LocalContactActivity extends Activity{
 			}
 		});
 		 adapter = new MyAdapter(context);
-		    listView.setAdapter(adapter);
-		    listView.setOnItemClickListener(new OnItemClickListener() {
-		            @Override
-		            public void onItemClick(AdapterView<?> parent, View view,
-		                    int position, long id) {
+	    listView.setAdapter(adapter);
+	    listView.setOnItemClickListener(new OnItemClickListener() {
+	            @Override
+	            public void onItemClick(AdapterView<?> parent, View view,
+	                    int position, long id) {
+	            	String phone=mData.get(position).getTel();
+	            	UserInfo u=new UserInfo(); 
+	                if(isExist.containsKey(phone)){
+	                	u=isExist.get(phone);
+	                	startActivity(new Intent().setClass(context, Activity_UserInfo.class).putExtra("user", u.getUsername()));
+          	
+	                }
 
-
-		            }
-		        });
+	            }
+	        });
 		PhoneDao dao=new PhoneDao(context);
 		mData=dao.getPhoneList();
 		phonelist=dao.getTelList();
@@ -122,7 +128,11 @@ public class LocalContactActivity extends Activity{
         }
     }
 
-
+    /***
+     * 手机通讯录的适配器
+     * @author LiuNana
+     *
+     */
     public class MyAdapter extends BaseAdapter {  
     	  
         private LayoutInflater mInflater;  
@@ -148,8 +158,7 @@ public class LocalContactActivity extends Activity{
             // TODO Auto-generated method stub  
             return position;  
         }  
-        //****************************************final方法  
-             //注意原本getView方法中的int position变量是非final的，现在改为final  
+        
         @SuppressLint("ViewHolder")
 		public View getView(final int position, View convertView, ViewGroup parent) {  
              ViewHolder holder = null;  
@@ -202,7 +211,7 @@ public class LocalContactActivity extends Activity{
 					// TODO Auto-generated method stub
 					if(isTrue){
 						Intent intent=new Intent();
-						intent.setClass(context, AddFriendsFinalActivity.class);
+						intent.setClass(context, Activity_Friends_Add.class);
 						intent.putExtra("id", temp_user.getUsername());
 						intent.putExtra("avatar", temp_user.getAvatar());
 						intent.putExtra("nick", temp_user.getNick());
@@ -225,7 +234,6 @@ public class LocalContactActivity extends Activity{
     // 刷新ui
     public void refresh() {
         try {
-            // 可能会在子线程中调到这方法
            this.runOnUiThread(new Runnable() {
                 public void run() {
                 	PhoneDao dao=new PhoneDao(context);
@@ -264,7 +272,7 @@ public class LocalContactActivity extends Activity{
 
 	
 	 /**
-     * 获取联系人列表，并过滤掉黑名单和排序
+     * 获取联系人列表序
      */
     private void getContactList() {
     	SourceData.clear();
@@ -310,7 +318,7 @@ public class LocalContactActivity extends Activity{
 								String uid=jsonObject.getString("id");
 								String avatar=jsonObject.getString("avatar");
 								String name=jsonObject.getString("name");
-								 if(user.containsKey(uid)){
+								if(user.containsKey(uid)){
 									UserInfo userinfo=user.get(uid);
 									isExist.put(string, userinfo);
 								}else{
@@ -447,6 +455,7 @@ public class LocalContactActivity extends Activity{
         return sb.toString().toLowerCase();  
     }
     
+    //更新通讯录
     class UpdateContact implements Runnable{
 		@Override
 		public void run() {

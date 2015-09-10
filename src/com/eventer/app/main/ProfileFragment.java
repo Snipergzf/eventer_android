@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import android.widget.Toast;
 import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
-import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.other.AboutActivity;
 import com.eventer.app.other.AssistFunctionActivity;
@@ -38,7 +36,6 @@ import com.eventer.app.other.MyUserInfoActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.util.PreferenceUtils;
 
 
 public  class ProfileFragment extends Fragment implements OnClickListener {
@@ -50,6 +47,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 	private TextView tv_name;
 	private ImageView iv_avatar;
 	private LoadUserAvatar avatarLoader;
+	public static int IS_EXIT=0xfff; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +83,8 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		if(name!=null){
 			tv_name.setText(name);
 		}
-	
+	    
+		//设置监听器
 		re_collect.setOnClickListener(this);
 		re_myinfo.setOnClickListener(this);
 		re_history.setOnClickListener(this);
@@ -106,35 +105,37 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		super.onDestroy();
 	}
 
-	
+	/**
+	 * 页面控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.re_myinfo:
+		case R.id.re_myinfo://我的信息
 			Intent intent=new Intent();
 			intent.setClass(context, MyUserInfoActivity.class);
-			startActivity(intent);
+			getActivity().startActivityForResult(intent, IS_EXIT);
 			break;
-		case R.id.re_collect:
+		case R.id.re_collect://我的收藏
 			startActivity(new Intent().setClass(context, CollectActivity.class));
 			break;
-		case R.id.re_history:
+		case R.id.re_history://浏览历史
 			startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));
 			break;
-		case R.id.re_about:
+		case R.id.re_about://关于我们
 			startActivity(new Intent().setClass(context, AboutActivity.class));
 			break;
-		case R.id.re_assist:
+		case R.id.re_assist://辅助功能
 			startActivity(new Intent().setClass(context, AssistFunctionActivity.class));
 			break;
-		case R.id.re_version_info:
+		case R.id.re_version_info://检查更新
 		    checkVersion();	
 			break;
-		case R.id.re_feedback:
+		case R.id.re_feedback://意见反馈
 			startActivity(new Intent().setClass(context, FeedbackActivity.class));
 			break;
-		case R.id.re_msg_alert:
+		case R.id.re_msg_alert://消息提醒
 			startActivity(new Intent().setClass(context, MsgAlertActivity.class));
 			break;
 		default:
@@ -158,7 +159,11 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		}
 		
 	}
-
+   /***
+    * 显示头像
+    * @param iamgeView  头像显示的控件
+    * @param avatar  头像地址
+    */
 	private void showUserAvatar(final ImageView iamgeView, String avatar) {
 	        final String url_avatar = avatar;
 	        iamgeView.setTag(url_avatar);
@@ -191,8 +196,11 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 	            map.put("uid", Constant.UID+"");
 	            GetAvatar(map);
 	        }
-	    }
-	 
+  	    }
+	/***
+	 * 获取头像 
+	 * @param params
+	 */
 	 public void GetAvatar(final Object... params) {
 			new AsyncTask<Object, Object,Map<String, Object>>() {
 				@SuppressWarnings("unchecked")

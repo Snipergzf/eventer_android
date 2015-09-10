@@ -18,9 +18,9 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromServer;
-import com.eventer.app.task.LoadDataFromServer.DataCallBack;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.UploadPicToServer;
+import com.eventer.app.http.UploadPicToServer.DataCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
 public class UpdateNickActivity extends Activity{
@@ -71,7 +71,7 @@ public class UpdateNickActivity extends Activity{
         LoadDataFromHTTP task = new LoadDataFromHTTP(
                 context, Constant.URL_UPDATE_SELFINFO, map);
 
-        task.getData(new com.eventer.app.task.LoadDataFromHTTP.DataCallBack() {
+        task.getData(new com.eventer.app.http.LoadDataFromHTTP.DataCallBack() {
 
             @SuppressLint("ShowToast")
             @Override

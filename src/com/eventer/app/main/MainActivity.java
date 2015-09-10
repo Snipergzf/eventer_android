@@ -11,8 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -35,7 +33,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,12 +60,12 @@ import com.eventer.app.entity.Msg.Container;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpUnit;
-import com.eventer.app.other.Activity_NewFriends;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.other.Activity_Chat;
+import com.eventer.app.other.Activity_Friends_New;
 import com.eventer.app.other.Calendar_ViewSchedual;
-import com.eventer.app.socket.Activity_Chat;
 import com.eventer.app.socket.SocketService;
-import com.eventer.app.task.LoadDataFromHTTP;
-import com.eventer.app.task.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.widget.calendar.AlarmReceiver;
 
@@ -115,13 +112,11 @@ public class MainActivity extends FragmentActivity{
 		setContentView(R.layout.activity_main);		
 		context=this;
 		instance=this;
-		if(TextUtils.isEmpty(Constant.UID)){
+		if(!Constant.isLogin){				
+			startActivity(new Intent().setClass(context, LoginActivity.class));
 			System.exit(0);
 		}
 		initData();
-//		DBManager db=new DBManager(context);
-//		db.deleteDatabase(context);
-		
 		fm=getSupportFragmentManager();
 		if(savedInstanceState != null) {
             //读取上一次界面Save的时候tab选中的状态
@@ -129,7 +124,7 @@ public class MainActivity extends FragmentActivity{
 			activityfragment = (ActivityFragment) fm.findFragmentByTag(FRAGMENT_TAG[0]);
             homefragment = (ScheduleFragment) fm.findFragmentByTag(FRAGMENT_TAG[1]);         
             msgfragment = (MessageFragment) fm.findFragmentByTag(FRAGMENT_TAG[2]);
-            profilefragment = (ProfileFragment) fm.findFragmentByTag(FRAGMENT_TAG[3]);
+            profilefragment = (ProfileFragment) fm.findFragmentByTag(FRAGMENT_TAG[3]); 
         }
 	}
 	private void initData() {
@@ -145,15 +140,100 @@ public class MainActivity extends FragmentActivity{
 	     intentFilter.addAction("com.eventer.app.socket.RECEIVER");  
 	     registerReceiver(msgReceiver, intentFilter); 
 	     manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//	     DBManager db=new DBManager(context);
-//	     db.deleteDatabase(context);
-	     initView();
+	     
 	     
 	     eventReceiver = new EventReceiver();  
 	     IntentFilter intentFilter1 = new IntentFilter();  
 	     intentFilter1.addAction("com.eventer.app.activity");  
 	     registerReceiver(eventReceiver, intentFilter1); 	
+	     initView();
 	}
+	private void initView(){	
+		//初始化四个模块的Fragment
+		homefragment = new ScheduleFragment();
+	    activityfragment = new ActivityFragment();
+	    msgfragment = new MessageFragment();
+	    profilefragment = new ProfileFragment();
+	    fragments = new Fragment[] {activityfragment, homefragment, 
+	                msgfragment, profilefragment };
+	    // 添加显示第一个fragment
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, activityfragment,FRAGMENT_TAG[0])
+                .add(R.id.fragment_container, homefragment,FRAGMENT_TAG[1])
+                .add(R.id.fragment_container, msgfragment,FRAGMENT_TAG[2])
+                .add(R.id.fragment_container, profilefragment,FRAGMENT_TAG[3])
+                .hide(homefragment).hide(profilefragment)
+                .hide(msgfragment).show(activityfragment).commit();
+		
+		imagebuttons = new ImageView[4];
+		imagebuttons[0] = (ImageView) findViewById(R.id.ib_activity);
+        imagebuttons[1] = (ImageView) findViewById(R.id.ib_schedual);       
+        imagebuttons[2] = (ImageView) findViewById(R.id.ib_message);
+        imagebuttons[3] = (ImageView) findViewById(R.id.ib_profile);
+        imagebuttons[0].setSelected(true);
+        
+        textviews = new TextView[4];
+        textviews[0] = (TextView) findViewById(R.id.tv_activity);
+        textviews[1] = (TextView) findViewById(R.id.tv_schedual);        
+        textviews[2] = (TextView) findViewById(R.id.tv_message);
+        textviews[3] = (TextView) findViewById(R.id.tv_profile);
+        textviews[0].setTextColor(0xFF45C01A);
+        
+       //初始化日程提醒机制
+        if (am == null) {
+			am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		}
+        try {
+			Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class); 
+			PendingIntent sender = PendingIntent.getBroadcast(this,
+					0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			Long now_time=System.currentTimeMillis();
+			am.setRepeating(AlarmManager.RTC_WAKEUP, now_time+3,60*1000, sender);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        unreadLabel=(TextView)findViewById(R.id.unread_msg_number);
+        //刷新未读信息的提醒信息
+        updateUnreadLabel();
+	}
+	/***
+	 * Fragment的切换
+	 * @param view
+	 */
+	 public void onTabClick(View view) {
+	        switch (view.getId()) {
+	        case R.id.re_schedual:
+	            index=1;
+	            break;
+	        case R.id.re_activity:
+	            index=0;
+	            break;
+	        case R.id.re_message:
+	            index=2;
+	            break;
+	        case R.id.re_profile:
+	            index=3;
+	            break;
+	        }
+	        if (currentTabIndex != index) {
+	            FragmentTransaction trx = getSupportFragmentManager()
+	                    .beginTransaction();
+	            trx.hide(fragments[currentTabIndex]);
+	            if (!fragments[index].isAdded()) {
+	                trx.add(R.id.fragment_container, fragments[index]);
+	            }
+	            trx.show(fragments[index]).commit();
+	            
+	            imagebuttons[currentTabIndex].setSelected(false);
+		        // 把当前tab设为选中状态
+		        imagebuttons[index].setSelected(true);
+		        textviews[currentTabIndex].setTextColor(0xFF999999);
+		        textviews[index].setTextColor(0xFF45C01A);
+		        currentTabIndex = index;
+	        }
+	        
+	    }
+	//实现消息网关的Service
 	public ServiceConnection internetServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName arg0, IBinder service) {
         	Log.e("1", "here internetServiceConnection");
@@ -170,7 +250,7 @@ public class MainActivity extends FragmentActivity{
         	binder = null;
         }
     };
-    
+    //通过消息网关发送消息
     public boolean newMsg(String MID, String RID, String body,int type){
     	if(binder == null){
     		Log.e("newMsg", "binder is null");
@@ -185,8 +265,7 @@ public class MainActivity extends FragmentActivity{
 		return true;
     }
     
-    
-    
+ 
     public void sendToService(A a){
     	Container msg = Container.newBuilder()
            		.setMID(String.valueOf(a.MID)).setSID(String.valueOf(Constant.UID)).setRID(String.valueOf(a.RID))
@@ -232,7 +311,9 @@ public class MainActivity extends FragmentActivity{
             unreadLabel.setVisibility(View.INVISIBLE);
         }
     }
-    
+    /**
+     * 从服务器端拉取好友列表
+     */
     protected void loadFriendList() {
 		// TODO Auto-generated method stub
 		Map<String, String> map=new HashMap<String, String>();
@@ -284,7 +365,9 @@ public class MainActivity extends FragmentActivity{
 			}
 		});
 	}
-    
+    /**
+     * 从服务器端拉取新的好友的信息，并将这些好友信息存入数据库
+     */
     public void AddFriendList(final Object... params) {
 		new AsyncTask<Object, Object,Integer>() {
 			@SuppressWarnings("unchecked")
@@ -317,7 +400,11 @@ public class MainActivity extends FragmentActivity{
 		}.execute(params);}
 	
     
-    
+    /**
+     * 接收推送的活动，处理活动
+     * @author LiuNana
+     *
+     */
 			@SuppressLint("NewApi")
 		public class EventReceiver extends BroadcastReceiver{  
 		  
@@ -372,12 +459,14 @@ public class MainActivity extends FragmentActivity{
 			
 	}  
 
-    
+    /**
+     * 初始化日程提醒的数据
+     */
 	 public void setAlarmList(){
 	    	Log.e("1","alarmlist");
 	    	Alarmlist= new HashMap<String, Schedual>();    	
 			DBManager dbHelper;
-			dbHelper = new DBManager(MainActivity.this);
+			dbHelper = new DBManager(context);
 	        dbHelper.openDatabase();        
 			String today=formatter.format(new Date());
 			String[] today_time=today.split(" ");
@@ -440,7 +529,8 @@ public class MainActivity extends FragmentActivity{
 								IsTodayEvent=true;	  	
 					  }
 					  break;
-	        	}  
+	        	} 
+	        	//如果该日程是今日的日程
 	        	if(IsTodayEvent){
 	        		if(diff>0){
 		        		Remind_dt=Remind_dt.plusDays(diff);
@@ -484,109 +574,25 @@ public class MainActivity extends FragmentActivity{
 	   		 intent.putExtras(bundle); 
 	   	     startActivityForResult(intent,0);  
 	   }
-	    
-	
-	private void initView(){
-		
-		homefragment = new ScheduleFragment();
-	    activityfragment = new ActivityFragment();
-	    msgfragment = new MessageFragment();
-	    profilefragment = new ProfileFragment();
-	    fragments = new Fragment[] {activityfragment, homefragment, 
-	                msgfragment, profilefragment };
-	    // 添加显示第一个fragment
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, activityfragment,FRAGMENT_TAG[0])
-                .add(R.id.fragment_container, homefragment,FRAGMENT_TAG[1])
-                .add(R.id.fragment_container, msgfragment,FRAGMENT_TAG[2])
-                .add(R.id.fragment_container, profilefragment,FRAGMENT_TAG[3])
-                .hide(homefragment).hide(profilefragment)
-                .hide(msgfragment).show(activityfragment).commit();
-		
-		imagebuttons = new ImageView[4];
-		imagebuttons[0] = (ImageView) findViewById(R.id.ib_activity);
-        imagebuttons[1] = (ImageView) findViewById(R.id.ib_schedual);       
-        imagebuttons[2] = (ImageView) findViewById(R.id.ib_message);
-        imagebuttons[3] = (ImageView) findViewById(R.id.ib_profile);
-        imagebuttons[0].setSelected(true);
-        
-        textviews = new TextView[4];
-        textviews[0] = (TextView) findViewById(R.id.tv_activity);
-        textviews[1] = (TextView) findViewById(R.id.tv_schedual);        
-        textviews[2] = (TextView) findViewById(R.id.tv_message);
-        textviews[3] = (TextView) findViewById(R.id.tv_profile);
-        textviews[0].setTextColor(0xFF45C01A);
-        if (am == null) {
-			am = (AlarmManager) getSystemService(ALARM_SERVICE);
-		}
-        try {
-			Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class); 
-			//intent.putExtra("msg", "no no !");
-			//Intent intent = new Intent(myListActivity, CallAlarm.class);
-			PendingIntent sender = PendingIntent.getBroadcast(this,
-					0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-			Long now_time=System.currentTimeMillis();
-			am.setRepeating(AlarmManager.RTC_WAKEUP, now_time+3,60*1000, sender);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        unreadLabel=(TextView)findViewById(R.id.unread_msg_number);
-        updateUnreadLabel();
-	}
 	
 	
-	
-	 public void onTabClick(View view) {
-	        switch (view.getId()) {
-	        case R.id.re_schedual:
-	            index=1;
-	            break;
-	        case R.id.re_activity:
-	            index=0;
-	            break;
-	        case R.id.re_message:
-	            index=2;
-	            break;
-	        case R.id.re_profile:
-	            index=3;
-	            break;
-	        }
-	        if (currentTabIndex != index) {
-	            FragmentTransaction trx = getSupportFragmentManager()
-	                    .beginTransaction();
-	            trx.hide(fragments[currentTabIndex]);
-	            if (!fragments[index].isAdded()) {
-	                trx.add(R.id.fragment_container, fragments[index]);
-	            }
-	            trx.show(fragments[index]).commit();
-	            
-	            imagebuttons[currentTabIndex].setSelected(false);
-		        // 把当前tab设为选中状态
-		        imagebuttons[index].setSelected(true);
-		        textviews[currentTabIndex].setTextColor(0xFF999999);
-		        textviews[index].setTextColor(0xFF45C01A);
-		        currentTabIndex = index;
-	        }
-	        
-	    }
 	 
 	    /** 
-	     * 广播接收器 
-	     * @author len 
+	     * 接收好友或者群组消息
+	     * @author LiuNana 
 	     * 
-	     */  
-	   
-		@SuppressLint("NewApi")
-		public class MsgReceiver extends BroadcastReceiver{  
-	  
+	     */  	   
+		public class MsgReceiver extends BroadcastReceiver{    
 	        @Override  
 	        public void onReceive(Context context, Intent intent) {  
 	            //拿到进度，更新UI  
-	            String id=intent.getStringExtra("talker");  
+	        	String id=intent.getStringExtra("talker");  
+	            long time=intent.getLongExtra("time", -1);
+	            if(time==-1){
+	            	time=System.currentTimeMillis()/1000;
+	            }
 	            String mid=intent.getStringExtra("mid");
 	            String msg=intent.getStringExtra("msg");
-	            Pattern p = Pattern.compile("[0-9]*"); 
-	            Matcher m = p.matcher(mid); 
 	            	JSONObject recvJs;
 					try {
 							String chat_talker="";
@@ -597,6 +603,7 @@ public class MainActivity extends FragmentActivity{
 								chat_talker="";
 							}
 							if(mid.equals("ADD")){
+								//加好友
 								String title="";
 								String ticker="";
 								String msgBody="";
@@ -656,29 +663,28 @@ public class MainActivity extends FragmentActivity{
 								dao1.saveUser(u);								
 								InviteMessgeDao dao=new InviteMessgeDao(context);
 								dao.saveMessage(invite);
-								Intent intent1=new Intent(context,Activity_NewFriends.class);
+								Intent intent1=new Intent(context,Activity_Friends_New.class);
 								intent1.putExtra("userId", id);
 								
 								notifyMsg(ticker, title, msgBody, intent1,33);
 							}
 						else if(mid.indexOf("@")!=-1&&!chat_talker.equals(mid)){
+							//群组消息
 							recvJs = JSONObject.parseObject(msg);
 							String bodyString = recvJs.getString("data");
+							String shareId = recvJs.getString("shareId");
+							int type=recvJs.getInteger("type");
 							Log.e("1","main:msgRecv+"+bodyString);
 							Intent intent1=new Intent(context,Activity_Chat.class);
 							intent1.putExtra("groupId", mid);
 							intent1.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
 							notifyMsg("收到来自群组的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,49);
-							long time=intent.getLongExtra("time",-1); 
 							ChatEntity entity = new ChatEntity();						
-							entity.setType(1);
+							entity.setType(type);
 							entity.setFrom(mid);
+							entity.setShareId(shareId);
 							entity.setContent(id+":\n"+bodyString);
-							if(time!=-1){
-								entity.setMsgTime(time);
-							}else{
-								entity.setMsgTime(System.currentTimeMillis()/1000);
-							}
+							entity.setMsgTime(time);	
 							entity.setStatus(1);
 							entity.setMsgID(System.currentTimeMillis());
 							ChatEntityDao dao=new ChatEntityDao(context);
@@ -686,29 +692,28 @@ public class MainActivity extends FragmentActivity{
 							updateUnreadLabel();
 							MessageFragment.instance.refreshView();
 						}else if(mid.equals("DEL")){
+							//删除好友消息
 							UserDao dao=new UserDao(context);
 							List<String> delFriend=new ArrayList<String>();
 							delFriend.add(id);							
 							MyApplication.getInstance().clearContact();							
 							dao.updateUsers(delFriend);
-						}else if(m.matches()&&mid.length()==1&&!chat_talker.equals(id)&&MyApplication.getInstance().getContactIDList().contains(id)){
+						}else if(mid.equals("1")&&!chat_talker.equals(id)&&MyApplication.getInstance().getContactIDList().contains(id)){
+							//单聊消息
 							recvJs = JSONObject.parseObject(msg);
 							String bodyString = recvJs.getString( "data");
+							int type=recvJs.getInteger("type");
+							String shareId = recvJs.getString("shareId");
 							Log.e("1","main:msgRecv+"+bodyString);						
 							Intent intent1=new Intent(context,Activity_Chat.class);
 							intent1.putExtra("userId", id);
 							 notifyMsg("收到来自好友的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,33);						
-							long time=intent.getLongExtra("time",-1); 
 							ChatEntity entity = new ChatEntity();						
-							entity.setType(Integer.parseInt(mid));
+							entity.setType(type);
 							entity.setFrom(id);
+							entity.setShareId(shareId);
 							entity.setContent(bodyString);
-							if(time!=-1){
-								entity.setMsgTime(time);
-							}else{
-								entity.setMsgTime(System.currentTimeMillis());
-							}
-							
+						    entity.setMsgTime(time);					
 							entity.setStatus(1);
 							entity.setMsgID(System.currentTimeMillis());
 							ChatEntityDao dao=new ChatEntityDao(context);
@@ -724,16 +729,16 @@ public class MainActivity extends FragmentActivity{
 	        }  
 	          
 	    }  
-		
-//		class RefreshThread  implements Runnable{
-//			@Override
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				updateUnreadLabel();
-//				MessageFragment.instance.refreshView();
-//			}   	
-//	    }
 		@SuppressLint("NewApi")
+		/**
+		 * 消息提醒
+		 * @param ticker
+		 * @param title
+		 * @param content
+		 * @param intent
+		 * @param notify
+		 * @author LiuNana 
+		 */
 		private void notifyMsg(String ticker,String title,String content,Intent intent,int notify){
 			 alert=PreferenceUtils.getInstance().getMsgAlert();
 			 if(alert){
@@ -770,37 +775,16 @@ public class MainActivity extends FragmentActivity{
 				manager.notify(notify, mNotification);
 			 }	
 		}
-	    
-		 class SaveMsg  implements Runnable{
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					setAlarmList();	
-				}
-		    	
-		}
-		 
-		 
-		class MsgHandler extends Handler{
-
-			@Override
-			public void handleMessage(Message msg) {
-				// TODO Auto-generated method stub
-				super.handleMessage(msg);
-				Bundle b=(Bundle)msg.obj;
-				String body=b.getString("msg");
-				String id=b.getString("id");
-				switch (msg.what) {
-				case 33:
-					break;
-
-				default:
-					break;
-				}
-			}
-			 
-		}
-		 
+		@Override
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        super.onActivityResult(requestCode, resultCode, data);
+	        if(resultCode==ProfileFragment.IS_EXIT){
+	        	  if(!Constant.isLogin){
+	        		  startActivity(new Intent().setClass(context, LoginActivity.class));
+	      			  System.exit(0);
+	        	  }
+	        }
+	    }
 		 
 		    /**
 		    * 短时间内连续按两次返回键，退出程序
@@ -830,35 +814,33 @@ public class MainActivity extends FragmentActivity{
 				}
 			}
 			
-			@Override
-			 public void onSaveInstanceState(Bundle outState) {  
-				    // TODO Auto-generated method stub       
-				    //Log.v("LH", "onSaveInstanceState"+outState);  
-				    //super.onSaveInstanceState(outState);   //将这一行注释掉，阻止activity保存fragment的状态
-//				    outState.putInt(PRV_INDEX,currentTabIndex);
-//			        super.onSaveInstanceState(outState);
-				}
-			 
-			 @Override
-				protected void onStart()
-				{		
-					super.onStart();
-				    AlarmListThread thread_alarm=new AlarmListThread();//创建新的Runnable，	
-					Thread thread=new Thread(thread_alarm);//利用Runnable对象生成Thread
-					thread.start();
-					AlarmReceiver.notify_id_list.clear();
-					Log.e("1", "Main___onStart");
-				}
-			    @Override
-			    protected void onDestroy() {
-			        super.onDestroy();
-			        Log.e("1", "Main___onDestroy");
-			        instance = null;
-//			        DBManager.getInstance().closeDatabase();
-			        unbindService(internetServiceConnection);
-			        unregisterReceiver(msgReceiver);
-			        unregisterReceiver(eventReceiver);
-			    }
-			    
+			
+		@Override
+		 public void onSaveInstanceState(Bundle outState) {  
+			    // TODO Auto-generated method stub       
+			    //super.onSaveInstanceState(outState);   //将这一行注释掉，阻止activity保存fragment的状态
 
+			}
+		 
+		 @Override
+			protected void onStart()
+			{		
+				super.onStart();
+			    AlarmListThread thread_alarm=new AlarmListThread();//创建新的Runnable，	
+				Thread thread=new Thread(thread_alarm);//利用Runnable对象生成Thread
+				thread.start();
+				AlarmReceiver.notify_id_list.clear();
+				Log.e("1", "Main___onStart");
+			}
+		    @Override
+	     protected void onDestroy() {
+		        super.onDestroy();
+		        Log.e("1", "Main___onDestroy");
+		        instance = null;
+		        //注销服务和广播接收者
+		        unbindService(internetServiceConnection);
+		        unregisterReceiver(msgReceiver);
+		        unregisterReceiver(eventReceiver);
+		 }
+			     
 }

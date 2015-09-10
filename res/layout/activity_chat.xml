@@ -56,14 +56,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true" >
 
-            <ImageView
-                android:id="@+id/iv_setting"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="9dp"
-                android:scaleType="centerInside"
-                android:background="@drawable/ib_bg"
-                android:src="@drawable/icon_single_setting" />
+           
+
 
             <ImageView
                 android:visibility="gone"
@@ -75,7 +69,28 @@
                 android:src="@drawable/icon_group_setting" />
         </LinearLayout>
     </RelativeLayout>
-
+    <RelativeLayout 
+        android:id="@+id/re_notify"
+        android:layout_below="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:background="@color/orange"
+        android:padding="10dp">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:text="@string/notify"/>
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/edit_clear_normal"
+            />
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/bar_bottom"
         android:layout_width="match_parent"
@@ -99,14 +114,14 @@
             android:orientation="horizontal"
             android:paddingTop="4dp" >
 
-            <Button
+            <!-- <Button
                 android:id="@+id/btn_set_mode_voice"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginLeft="6dp"
                 android:background="@drawable/icon_chat_voice"
                 android:onClick="setModeVoice"
-                android:visibility="visible" />
+                android:visibility="visible" /> -->
 
             <Button
                 android:id="@+id/btn_set_mode_keyboard"
@@ -189,14 +204,15 @@
                     android:visibility="invisible" />
             </RelativeLayout>
 
-            <Button
+           <!-- <Button
                 android:id="@+id/btn_more"
                 android:layout_width="32dip"
                 android:layout_height="32dip"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/icon_chattype_add"
-                android:onClick="more" />
+                
+                android:onClick="more" />  -->
 
             <Button
                 android:id="@+id/btn_send"
@@ -207,8 +223,7 @@
                 android:onClick="onClick"
                 android:text="@string/button_send"
                 android:textColor="#666666"
-                android:textSize="11sp"
-                android:visibility="gone" />
+                android:textSize="11sp" />
         </LinearLayout>
     <View
             android:layout_width="match_parent"
@@ -451,7 +466,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bar_bottom"
-        android:layout_below="@id/top_bar" >
+        android:layout_below="@id/re_notify" >
 
         <ProgressBar
             android:id="@+id/pb_load_more"

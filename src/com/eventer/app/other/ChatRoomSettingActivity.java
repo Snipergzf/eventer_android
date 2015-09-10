@@ -43,8 +43,8 @@ import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.entity.UserInfo;
-import com.eventer.app.task.LoadDataFromServer;
-import com.eventer.app.task.LoadDataFromServer.DataCallBack;
+import com.eventer.app.http.UploadPicToServer;
+import com.eventer.app.http.UploadPicToServer.DataCallBack;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.ui.base.BaseActivity;
@@ -60,21 +60,15 @@ OnClickListener {
 	int m_total = 0;
 	// 成员列表
 	private ExpandGridView gridview;
-	// 修改群名称、置顶、、、、
 	private RelativeLayout re_change_groupname;
-	private RelativeLayout rl_switch_block_groupmsg;
 	private RelativeLayout re_clear;
 	
-	// 状态变化
-	private ImageView iv_switch_block_groupmsg;
-	private ImageView iv_switch_unblock_groupmsg;
-	// 删除并退出
-	
+	// 删除并退出	
 	private Button exitBtn;
 	
 	// 群名称
 	private String group_name;
-	// 是否是管理员
+	// 是否是管主
 	boolean is_admin = false;
 	List<UserInfo> members = new ArrayList<UserInfo>();
 	String[] member;
@@ -111,11 +105,9 @@ private void initView() {
 	gridview = (ExpandGridView) findViewById(R.id.gridview);
 	
 	re_change_groupname = (RelativeLayout) findViewById(R.id.re_change_groupname);
-	rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
+	
 	re_clear = (RelativeLayout) findViewById(R.id.re_clear);
 
-	iv_switch_block_groupmsg = (ImageView) findViewById(R.id.iv_switch_block_groupmsg);
-	iv_switch_unblock_groupmsg = (ImageView) findViewById(R.id.iv_switch_unblock_groupmsg);
 	exitBtn = (Button) findViewById(R.id.btn_exit_grp);
 
 }
@@ -150,8 +142,7 @@ private void initData() {
 		
 		// 显示群组成员头像和昵称
 		showMembers(members);	
-		re_change_groupname.setOnClickListener(this);
-		rl_switch_block_groupmsg.setOnClickListener(this);		
+		re_change_groupname.setOnClickListener(this);	
 		re_clear.setOnClickListener(this);	
 		exitBtn.setOnClickListener(this);
 	}
@@ -186,30 +177,6 @@ private void initData() {
 @Override
 public void onClick(View v) {
 	switch (v.getId()) {
-	case R.id.rl_switch_block_groupmsg: // 屏蔽群组
-	    if (iv_switch_block_groupmsg.getVisibility() == View.VISIBLE) {
-	        System.out.println("change to unblock group msg");
-	        try {
-	            EMGroupManager.getInstance().unblockGroupMessage(groupId);
-	            iv_switch_block_groupmsg.setVisibility(View.INVISIBLE);
-	            iv_switch_unblock_groupmsg.setVisibility(View.VISIBLE);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            // todo: 显示错误给用户
-	        }
-	    } else {
-	        System.out.println("change to block group msg");
-	        try {
-	            EMGroupManager.getInstance().blockGroupMessage(groupId);
-	            iv_switch_block_groupmsg.setVisibility(View.VISIBLE);
-	            iv_switch_unblock_groupmsg.setVisibility(View.INVISIBLE);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            // todo: 显示错误给用户
-	        }
-	    }
-	    break;
-	
 	case R.id.re_clear: // 清空聊天记录
 	    progressDialog.setMessage("正在清空群消息...");
 	    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -318,7 +285,7 @@ private class GridAdapter extends BaseAdapter {
 		                
 		                    // 进入选人页面
 		                    startActivity((new Intent(context,
-		                            CreatChatRoomActivity.class).putExtra(
+		                            ChatRoomCreatActivity.class).putExtra(
 		                            "groupId", groupId)));
 		                 
 		            }
@@ -661,7 +628,7 @@ private void updateGroupName(String groupId, String updateStr) {
 Map<String, String> map = new HashMap<String, String>();
 map.put("groupId", groupId);
 map.put("groupName", updateStr);
-LoadDataFromServer task = new LoadDataFromServer(
+UploadPicToServer task = new UploadPicToServer(
         context, Constant.URL_UPDATE_Groupnanme,
         map);
 
