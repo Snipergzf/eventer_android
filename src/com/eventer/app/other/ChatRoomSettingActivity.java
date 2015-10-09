@@ -115,11 +115,12 @@ private void initView() {
 private void initData() {
 		// 获取传过来的groupid
 		groupId = getIntent().getStringExtra("groupId");
+		Log.e("236", "ChatRoomSettingActivity"+groupId);
 		// 获取本地该群数据
 		ChatroomDao dao=new  ChatroomDao(context);
-		group=dao.getRoom(groupId);		
+		group=dao.getRoom(groupId);
 		// 获取封装的群名（里面封装了显示的群名和群组成员的信息）
-		String group_name = group.getRoomname();		
+		String group_name = group.getRoomname();
 		tv_groupname.setText(group_name);
 		member=group.getMember();
 		m_total=member.length;

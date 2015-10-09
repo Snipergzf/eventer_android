@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;

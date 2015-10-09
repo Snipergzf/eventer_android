@@ -106,6 +106,7 @@ public class MainActivity extends FragmentActivity{
 		}
 	};
     private Context context;
+    private int GROUP_CREATED_NOTIFICATION = 6;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -425,7 +426,6 @@ public class MainActivity extends FragmentActivity{
 			        	if(!list.contains(id+"")){
 		                    
 						String provider = recvJs.getString("cEvent_provider");
-						Log.e("1", provider);
 						String content=recvJs.getString("cEvent_content");
 						String theme=recvJs.getString("cEvent_theme");
 						String place=recvJs.getString("cEvent_place");						
@@ -546,7 +546,6 @@ public class MainActivity extends FragmentActivity{
 		           			  s.setStarttime(Satrt_dt.toString().substring(0, 16));
 		           			  s.setStatus(status);       			
 		           			  Alarmlist.put(id+"", s);
-		           			  Log.e("1",0+"     "+s.toString());
 	        			 }
 	        			  
 	        		  }
@@ -675,22 +674,40 @@ public class MainActivity extends FragmentActivity{
 							String shareId = recvJs.getString("shareId");
 							int type=recvJs.getInteger("type");
 							Log.e("1","main:msgRecv+"+bodyString);
-							Intent intent1=new Intent(context,Activity_Chat.class);
-							intent1.putExtra("groupId", mid);
-							intent1.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
-							notifyMsg("收到来自群组的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,49);
-							ChatEntity entity = new ChatEntity();						
-							entity.setType(type);
-							entity.setFrom(mid);
-							entity.setShareId(shareId);
-							entity.setContent(id+":\n"+bodyString);
-							entity.setMsgTime(time);	
-							entity.setStatus(1);
-							entity.setMsgID(System.currentTimeMillis());
-							ChatEntityDao dao=new ChatEntityDao(context);
-							dao.saveMessage(entity);
-							updateUnreadLabel();
-							MessageFragment.instance.refreshView();
+							if (type == GROUP_CREATED_NOTIFICATION) {
+								Intent intent1=new Intent(context,Activity_Chat.class);
+								intent1.putExtra("groupId", mid);
+								intent1.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
+								notifyMsg("收到来自群组的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,49);
+								ChatEntity entity = new ChatEntity();						
+								entity.setType(type);
+								entity.setFrom(mid);
+								entity.setContent(bodyString);
+								entity.setMsgTime(time);	
+								entity.setStatus(1);
+								entity.setMsgID(System.currentTimeMillis());
+								ChatEntityDao dao=new ChatEntityDao(context);
+								dao.saveMessage(entity);
+								updateUnreadLabel();
+								MessageFragment.instance.refreshView();
+							}else {
+								Intent intent1=new Intent(context,Activity_Chat.class);
+								intent1.putExtra("groupId", mid);
+								intent1.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
+								notifyMsg("收到来自群组的消息！", "消息通知", id+"发送消息:"+bodyString, intent1,49);
+								ChatEntity entity = new ChatEntity();						
+								entity.setType(type);
+								entity.setFrom(mid);
+								entity.setShareId(shareId);
+								entity.setContent(id+":\n"+bodyString);
+								entity.setMsgTime(time);	
+								entity.setStatus(1);
+								entity.setMsgID(System.currentTimeMillis());
+								ChatEntityDao dao=new ChatEntityDao(context);
+								dao.saveMessage(entity);
+								updateUnreadLabel();
+								MessageFragment.instance.refreshView();
+							}
 						}else if(mid.equals("DEL")){
 							//删除好友消息
 							UserDao dao=new UserDao(context);

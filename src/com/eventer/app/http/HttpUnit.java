@@ -374,8 +374,7 @@ public class HttpUnit {
         String imguri ="";  
         if (!imageuri.equals("")) {  
             imguri = imageuri.substring(imageuri.lastIndexOf("/") + 1);//获得图片或文件名称  
-        }   
-//          
+        }           
         try {  
             URL url = new URL(uploadUrl);    
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();    
@@ -418,24 +417,16 @@ public class HttpUnit {
             }  
               dos.writeBytes("--" + BOUNDARY + "--\r\n");  
               dos.flush();  
-  
               InputStream is = conn.getInputStream();  
-              Log.e("1", "status:"+conn.getResponseCode()+"");
+//            Log.e("1", "status:"+conn.getResponseCode()+"");
               InputStreamReader isr = new InputStreamReader(is, "utf-8");  
               BufferedReader br = new BufferedReader(isr);  
-              
               result = br.readLine();  
-              
         }catch (Exception e) {  
             result = "{\"ret\":\"898\"}";  
             Log.e("1","sendPic_err:--"+e.toString());
-            
-            
-            
         }  
-    
         return result;  
-          
     }
 
 	public static List<User> searchFriendListRequest(List<String> list) {
@@ -459,7 +450,7 @@ public class HttpUnit {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 //				e.printStackTrace();
-				Log.e("1", "refresh_friend_filed");
+				Log.e("1", "refresh_friend_failed");
 			}
 		}
 		return users;
