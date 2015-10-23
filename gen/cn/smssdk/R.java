@@ -64,8 +64,8 @@ public final class R {
 		public static final int smssdk_dialog_back = 0x7f02012a;
 		public static final int smssdk_dialog_bg = 0x7f02012b;
 		public static final int smssdk_dialog_btn_back = 0x7f02012c;
-		public static final int smssdk_dialog_btn_nor = 0x7f020151;
-		public static final int smssdk_dialog_btn_pre = 0x7f020152;
+		public static final int smssdk_dialog_btn_nor = 0x7f02016b;
+		public static final int smssdk_dialog_btn_pre = 0x7f02016c;
 		public static final int smssdk_edittext_bg_selector = 0x7f02012d;
 		public static final int smssdk_input_bg_focus = 0x7f02012e;
 		public static final int smssdk_input_bg_normal = 0x7f02012f;

@@ -18,6 +18,7 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.NewFriendsAdapter;
 import com.eventer.app.db.InviteMessgeDao;
 import com.eventer.app.entity.InviteMessage;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_Friends_New extends Activity {
     private ListView listView;
@@ -80,12 +81,20 @@ public class Activity_Friends_New extends Activity {
 
 	}
 
-
-
-
 	public void back(View v) {
         finish();
     }
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 
 }

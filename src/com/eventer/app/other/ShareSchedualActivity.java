@@ -50,6 +50,7 @@ import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.CircleImageView;
 import com.eventer.app.widget.ExpandGridView;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShareSchedualActivity extends BaseActivity {
 	private Context context;
@@ -613,4 +614,15 @@ public class ShareSchedualActivity extends BaseActivity {
 			    return position;
 			}
 	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+	
 }

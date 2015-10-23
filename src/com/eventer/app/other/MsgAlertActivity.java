@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.eventer.app.R;
 import com.eventer.app.util.PreferenceUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zcw.togglebutton.ToggleButton;
 import com.zcw.togglebutton.ToggleButton.OnToggleChanged;
 
@@ -93,6 +94,16 @@ public class MsgAlertActivity extends Activity {
 	
 	public void back(View v){
 		finish();
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 	

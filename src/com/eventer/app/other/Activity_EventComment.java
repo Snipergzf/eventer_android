@@ -57,6 +57,7 @@ import com.eventer.app.entity.EventOp;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_EventComment extends Activity {
 	private String eid;
@@ -493,6 +494,18 @@ public class Activity_EventComment extends Activity {
 	
 	public void back(View v){
 		finish();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

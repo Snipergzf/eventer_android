@@ -12,6 +12,7 @@ import com.eventer.app.R.id;
 import com.eventer.app.R.layout;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.ui.base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class AssistFunctionActivity extends BaseActivity implements OnClickListener{
     private RelativeLayout re_clear_cache,re_clear_msg;
@@ -50,6 +51,16 @@ public class AssistFunctionActivity extends BaseActivity implements OnClickListe
 		default:
 			break;
 		}
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 }

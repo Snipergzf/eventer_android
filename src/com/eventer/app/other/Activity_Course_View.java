@@ -21,6 +21,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.Course;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class Activity_Course_View extends Activity  implements OnClickListener{
@@ -141,6 +142,18 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 	  				}
 	  			}
           }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	
 	
 }

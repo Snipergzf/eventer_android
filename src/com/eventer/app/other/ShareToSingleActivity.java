@@ -46,6 +46,7 @@ import com.eventer.app.entity.User;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShareToSingleActivity extends Activity {
 	private ImageView iv_search;
@@ -361,5 +362,17 @@ public class ShareToSingleActivity extends Activity {
             return "".equals(str.trim());
         }
     }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 
 }

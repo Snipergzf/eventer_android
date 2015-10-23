@@ -63,7 +63,6 @@
             android:theme="@style/horizontal_slide" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -135,7 +134,7 @@
             android:name=".other.Activity_Friends_Add"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".other.AlarmAlert" >
+        <!-- <activity android:name=".other.AlarmAlert" >
         </activity>
         <activity
             android:name=".other.FriendSearchResult"
@@ -144,7 +143,7 @@
         <activity
             android:name=".other.AlertDialog"
             android:screenOrientation="portrait" >
-        </activity>
+        </activity> -->
         <activity
             android:name=".other.MyUserInfoActivity"
             android:screenOrientation="portrait" >
@@ -241,10 +240,10 @@
             android:name=".other.OurTeamActivity"
             android:label="@string/title_activity_our_team" >
         </activity>
-        <activity
+        <!-- <activity
             android:name=".other.ShareEventActivity"
             android:label="@string/title_activity_share_event" >
-        </activity>
+        </activity> -->
         <activity
             android:name="com.eventer.app.other.GroupSchedualActivity"
             android:label="@string/title_activity_group_share" >
@@ -253,6 +252,16 @@
             android:name="com.eventer.app.other.ShareSingleShecdualActivity"
             android:label="@string/title_activity_share_single_shecdual" >
         </activity>
+        <service
+    		android:name="com.umeng.update.net.DownloadingService"
+    		android:process=":DownloadingService" >
+		</service>
+		<activity 
+    		android:name="com.umeng.update.UpdateDialogActivity"
+    		android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+		</activity>
+        <meta-data android:value="561e47d267e58e1331000e1f" android:name="UMENG_APPKEY"/>
+		<meta-data android:value="baidu" android:name="UMENG_CHANNEL"/>
     </application>
 
 </manifest>

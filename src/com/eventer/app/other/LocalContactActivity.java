@@ -42,6 +42,7 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.umeng.analytics.MobclickAgent;
 
 public class LocalContactActivity extends Activity{
 
@@ -123,6 +124,7 @@ public class LocalContactActivity extends Activity{
     @Override
     public void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         if (!hidden) {
             refresh();
         }
@@ -509,10 +511,10 @@ public class LocalContactActivity extends Activity{
 		}
     	
     }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
     	
-    
-    
-
-
-
 }

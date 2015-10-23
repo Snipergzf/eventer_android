@@ -27,8 +27,10 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.umeng.analytics.MobclickAgent;
 
 public class LoadActivity extends BaseActivity {
+	
 	private static final int sleepTime = 2000;
 	private Context context;
 	private LinearLayout ll_login;
@@ -157,10 +159,8 @@ public class LoadActivity extends BaseActivity {
 			    	        return status;
 						
 					} catch (Throwable e) {
-						// TODO Auto-generated catch block
 						Log.e("1", e.toString());
 						return -1;
-//						e.printStackTrace();
 					}
 				}
 				protected void onPostExecute(Integer status) {
@@ -265,6 +265,17 @@ public class LoadActivity extends BaseActivity {
 
 		        });
 
+		}
+		@Override
+		protected void onResume() {
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		@Override
+		protected void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
 		}
 		
 }

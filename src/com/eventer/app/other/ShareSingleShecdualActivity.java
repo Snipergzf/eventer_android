@@ -50,6 +50,7 @@ import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.CircleImageView;
 import com.eventer.app.widget.ExpandGridView;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShareSingleShecdualActivity extends BaseActivity {
 
@@ -359,5 +360,15 @@ public class ShareSingleShecdualActivity extends BaseActivity {
 	                iamgeView.setImageBitmap(bitmap);
 
 	    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	
 }

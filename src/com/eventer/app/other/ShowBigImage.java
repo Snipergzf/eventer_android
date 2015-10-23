@@ -16,6 +16,7 @@ import com.eventer.app.task.LoadBigAvatar.ImageDownloadedCallBack;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.photoview.PhotoView;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * œ¬‘ÿœ‘ æ¥ÛÕº
@@ -76,4 +77,18 @@ public class ShowBigImage extends BaseActivity {
 			setResult(RESULT_OK);
 		finish();
 	}
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+	
 }

@@ -24,10 +24,10 @@ import com.eventer.app.adapter.CourseTimeAdapter;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.widget.ListViewForScrollView;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class Activity_Course_Edit extends Activity  implements OnClickListener{
-
 
     private TextView add_commit,title;
     private EditText addkc_name,addkc_teacher;
@@ -43,7 +43,6 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 	private String c_name;
 	private int classid;
 	private Course course;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,9 +54,6 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 	    initView();
 	  
 	}	
-
-	
-
     //初始化界面
 	private void initView() {
 		// TODO Auto-generated method stub
@@ -192,6 +188,16 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 				break;
 		}
 		
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	

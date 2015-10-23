@@ -24,6 +24,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
 import com.eventer.app.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_AddCourse extends FragmentActivity implements
 		OnClickListener {
@@ -216,9 +217,17 @@ public class Activity_AddCourse extends FragmentActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		
 	}
-
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+	
 }

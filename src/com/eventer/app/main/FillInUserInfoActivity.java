@@ -43,6 +43,7 @@ import com.eventer.app.other.MyUserInfoActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
 import com.eventer.app.widget.SpinerPopWindow;
+import com.umeng.analytics.MobclickAgent;
 
 public class FillInUserInfoActivity extends Activity {
     private EditText et_usernick,et_emial;
@@ -487,4 +488,15 @@ public class FillInUserInfoActivity extends Activity {
 	public void back(View view){
 		finish();
 	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+	
 }

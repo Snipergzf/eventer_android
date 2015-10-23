@@ -47,6 +47,7 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.other.LocalContactActivity.UpdateContact;
 import com.eventer.app.other.LocalContactActivity.ViewHolder;
 import com.eventer.app.task.Contact;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_Friends_Search extends Activity {
 	private String search_info;
@@ -325,9 +326,18 @@ public class Activity_Friends_Search extends Activity {
 					  }	    	 
 				 }catch(Exception e){				 
 				 }
-					  
 			}
-	    	
 	    }
 
+		@Override
+		protected void onResume() {
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+		@Override
+		protected void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+	    
 }

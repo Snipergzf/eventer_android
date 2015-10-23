@@ -52,7 +52,7 @@ public class Constant {
 	  public static final String URL_GET_SELFINFO="http://123.56.142.241/v1/user/search";
 	  public static final String URL_UPDATE_SELFINFO="http://123.56.142.241/v1/user/update";
 	  
-//	  public static final String URL_Avatar = "http://123.56.142.241/images/avatar";
+	  public static final String URL_Avatar = "http://123.56.142.241/images/avatar";
 	  
 	  public static final String URL_GET_FRIENDLIST="http://123.56.142.241/v1/friend/update";
 	  public static final String URL_DEL_FRIEND="http://123.56.142.241/v1/friend/delete";

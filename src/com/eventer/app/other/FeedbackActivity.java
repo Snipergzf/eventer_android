@@ -2,6 +2,7 @@ package com.eventer.app.other;
 
 import com.eventer.app.R;
 import com.eventer.app.R.layout;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Context;
@@ -53,4 +54,17 @@ public class FeedbackActivity extends Activity {
 	public void back(View v){
 		finish();
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+	
 }

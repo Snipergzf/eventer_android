@@ -67,6 +67,7 @@ import com.eventer.app.main.MessageFragment;
 import com.eventer.app.util.SmileUtils;
 import com.eventer.app.widget.ExpandGridView;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 聊天页面
@@ -80,7 +81,6 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	public static final int REQUEST_CODE_CONTEXT_MENU = 3;
 	public static final int REQUEST_CODE_TEXT = 5;
 	public static final int REQUEST_CODE_NET_DISK = 9;
-
 	public static final int REQUEST_CODE_SELECT_USER_CARD = 16;
 	public static final int REQUEST_CODE_SEND_USER_CARD = 17;
 	public static final int REQUEST_CODE_LOCAL = 19;
@@ -93,10 +93,8 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	public static final int RESULT_CODE_DWONLOAD = 5;
 	public static final int RESULT_CODE_TO_CLOUD = 6;
 	public static final int RESULT_CODE_EXIT_GROUP = 7;
-
 	public static final int CHATTYPE_SINGLE = 1;
 	public static final int CHATTYPE_GROUP = 2;
-
 	private ImageView micImage;
 	private ListView listView;
 	private EditText mEditTextContent;
@@ -106,26 +104,21 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	// private ViewPager expressionViewpager;
 	private LinearLayout emojiIconContainer;
 	private LinearLayout btnContainer;
-
 	private ImageView iv_clear;
 	private RelativeLayout re_notify;
-
 	private View more;
 	private ViewPager expressionViewpager;
 	private InputMethodManager manager;
 	private List<String> reslist;
 	private Drawable[] micImages;
 	private int chatType;
-
 	public static Activity_Chat instance = null;
 	// 给谁发送消息
 	private MessageAdapter adapter;
-
 	public static int resendPos;
 	private List<ChatEntity> mData = new ArrayList<ChatEntity>();
 	private Queue<String> toastqueue = new LinkedList<String>();
 	private Handler mHandler;
-
 	private ImageView iv_emoticons_normal;
 	private ImageView iv_emoticons_checked;
 	private RelativeLayout edittext_layout;
@@ -144,7 +137,6 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	// 设置按钮
 	private ImageView iv_setting;
 	private ImageView iv_setting_group;
-
 	private MsgReceiver msgReceiver;
 	@SuppressLint("HandlerLeak")
 	private Handler micImageHandler = new Handler() {
@@ -597,11 +589,13 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**
@@ -939,5 +933,6 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 		}
 
 	}
+	
 
 }

@@ -28,6 +28,7 @@ import com.eventer.app.util.WheelDialogShowUtil;
 import com.eventer.app.util.WheelDialogTwoShowUtil;
 import com.eventer.app.view.CourseView;
 import com.eventer.app.view.DialogView.onWheelBtnPosClick;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_Course_Setting extends Activity  implements OnClickListener{
 
@@ -329,7 +330,18 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 			default:
 				break;
 		}
-		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 	

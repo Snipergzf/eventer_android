@@ -27,6 +27,7 @@ import com.eventer.app.adapter.ContactAdapter;
 import com.eventer.app.db.UserDao;
 import com.eventer.app.entity.User;
 import com.eventer.app.widget.Sidebar;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("SimpleDateFormat")
 public class Activity_Contact extends Activity implements OnClickListener{
@@ -118,6 +119,7 @@ public class Activity_Contact extends Activity implements OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         if (!hidden) {
             refresh();
         }
@@ -219,7 +221,6 @@ public class Activity_Contact extends Activity implements OnClickListener{
         return sb.toString().toLowerCase();  
     }
 
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -231,6 +232,12 @@ public class Activity_Contact extends Activity implements OnClickListener{
 		default:
 			break;
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}  
 	
 }

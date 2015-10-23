@@ -27,6 +27,7 @@ import com.eventer.app.entity.InviteMessage.InviteMesageStatus;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.util.LocalUserInfo;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_Friends_Add extends Activity {
 	private TextView tv_send;
@@ -170,4 +171,17 @@ public class Activity_Friends_Add extends Activity {
         
         finish();
     }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+    
 }

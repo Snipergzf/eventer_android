@@ -47,6 +47,7 @@ import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint({ "InflateParams", "SdCardPath" })
 public class ChatRoomCreatActivity extends BaseActivity {
@@ -609,6 +610,18 @@ public class ChatRoomCreatActivity extends BaseActivity {
 		private boolean isEmpty(String str) {
 			return "".equals(str.trim());
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

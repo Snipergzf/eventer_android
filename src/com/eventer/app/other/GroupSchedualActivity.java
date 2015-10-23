@@ -18,6 +18,7 @@ import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Context;
@@ -172,6 +173,17 @@ public class GroupSchedualActivity extends BaseActivity {
     public final class ViewHolder {   
         TextView title; 
         TextView info;
-
     }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+    
 }

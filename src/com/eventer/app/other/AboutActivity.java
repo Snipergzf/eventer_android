@@ -4,6 +4,7 @@ import com.eventer.app.R;
 import com.eventer.app.R.id;
 import com.eventer.app.R.layout;
 import com.eventer.app.ui.base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Context;
@@ -86,5 +87,16 @@ public class AboutActivity extends BaseActivity implements OnClickListener{
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"));            
             intent.putExtra("sms_body", message);            
             startActivity(intent);  
-    }  
+    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	} 
+    
 }

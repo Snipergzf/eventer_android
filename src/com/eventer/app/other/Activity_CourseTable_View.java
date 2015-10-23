@@ -26,6 +26,7 @@ import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.Course;
 import com.eventer.app.view.TitleBar;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_CourseTable_View extends Activity implements
 		OnClickListener{
@@ -128,11 +129,18 @@ public class Activity_CourseTable_View extends Activity implements
                  
             }
         });
-
     }
-	
-	
 
-	
-   
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
 }

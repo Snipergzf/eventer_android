@@ -22,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.smssdk.SMSSDK;
+
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
@@ -31,6 +33,7 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
@@ -46,6 +49,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		context=this;
+		SMSSDK.initSDK(LoginActivity.this, Constant.APPKEY, Constant.APPSECRET);
 		btn_login=(Button)findViewById(R.id.btn_login);
 		btn_pwd_clear=(ImageButton)findViewById(R.id.btn_pwd_clear);
 		btn_user_clear=(ImageButton)findViewById(R.id.btn_user_clear);
@@ -62,7 +66,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// TODO Auto-generated method stub
 				int len=s.length();
 				if(len>0){
 					btn_user_clear.setVisibility(View.VISIBLE);				
@@ -315,6 +318,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		super.onDestroy();
 		Log.e("1", "login--destory");
 	}
-	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	
 }

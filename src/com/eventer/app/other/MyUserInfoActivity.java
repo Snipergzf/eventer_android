@@ -47,6 +47,7 @@ import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends Activity {
@@ -609,6 +610,18 @@ public class MyUserInfoActivity extends Activity {
 		nick = LocalUserInfo.getInstance(context).getUserInfo(
                 "nick");
 		tv_name.setText(nick);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

@@ -33,6 +33,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
+import com.umeng.analytics.MobclickAgent;
 
 public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 	
@@ -298,6 +299,16 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
     		}
     		this.finish();
     	}
-    };
+    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	};
 
 }

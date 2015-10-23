@@ -51,6 +51,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_EventDetail  extends SwipeBackActivity  implements OnClickListener {
 	
@@ -637,6 +638,18 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			}
 		});
     }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 
 
 }

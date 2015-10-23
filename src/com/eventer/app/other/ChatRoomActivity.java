@@ -18,6 +18,7 @@ import com.eventer.app.adapter.ChatRoomAdapter;
 import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.ui.base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("InflateParams")
 public class ChatRoomActivity extends BaseActivity {
@@ -66,9 +67,16 @@ public class ChatRoomActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
     protected void onDestroy() {
         super.onDestroy();
         instance = null;

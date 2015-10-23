@@ -22,6 +22,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.UploadPicToServer;
 import com.eventer.app.http.UploadPicToServer.DataCallBack;
 import com.eventer.app.util.LocalUserInfo;
+import com.umeng.analytics.MobclickAgent;
 
 public class UpdateNickActivity extends Activity{
 	private Context context;
@@ -107,7 +108,19 @@ public class UpdateNickActivity extends Activity{
     }
 
     public void back(View view) {
-
         finish();
     }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+    
 }

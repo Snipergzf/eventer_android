@@ -27,6 +27,7 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.view.TitleBar;
 import com.eventer.app.widget.AbstractSpinerAdapter;
 import com.eventer.app.widget.SpinerPopWindow;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_AddCourseTable extends Activity implements
 		OnClickListener, AbstractSpinerAdapter.IOnItemSelectListener {
@@ -202,6 +203,17 @@ public class Activity_AddCourseTable extends Activity implements
 
 			}
 		}.execute(params);}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+	super.onPause();
+	MobclickAgent.onPause(this);
+	}
 	
-   
 }

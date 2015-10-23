@@ -39,6 +39,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("SimpleDateFormat")
 public class Calendar_AddSchedual extends FragmentActivity implements OnClickListener {
@@ -164,6 +165,18 @@ public class Calendar_AddSchedual extends FragmentActivity implements OnClickLis
         trx.show(fragments[index2]).commit();	           
         currentIndex=index2;
        
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onPause(this);
 	}
 
 

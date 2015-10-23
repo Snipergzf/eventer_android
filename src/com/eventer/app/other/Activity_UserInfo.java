@@ -48,6 +48,7 @@ import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
+import com.umeng.analytics.MobclickAgent;
 
 public class Activity_UserInfo extends Activity {
 	 private TextView tv_name,tv_email,tv_school,tv_grade,tv_major,tv_nick;
@@ -530,7 +531,18 @@ public class Activity_UserInfo extends Activity {
 	    	        dlg.cancel();
 	    	    }
 	    	});
-
 	    }
+
+		@Override
+		protected void onResume() {
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		@Override
+		protected void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
 	    
-	}
+}

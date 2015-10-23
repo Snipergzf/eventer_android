@@ -30,23 +30,23 @@
      </string-array>
      
      
-      <string-array name="course_showtype">
+     <string-array name="course_showtype">
 			<item>仅本周</item>
 			<item>全部课程</item>
      </string-array>
      
-   <string-array name="view_schedual">
+     <string-array name="view_schedual">
            <item>日程视图</item>
            <item>课程视图</item>
-    </string-array>  
+     </string-array>  
     
-   <string-array name="add_course">
+     <string-array name="add_course">
            <item>搜索课程</item>
            <item>手动添加</item>
-    </string-array> 
+     </string-array> 
 
     
-  <string-array name="weeks">
+  	 <string-array name="weeks">
         <item>周日</item>
         <item>周一</item>
         <item>周二</item>
@@ -54,7 +54,7 @@
         <item>周四</item>
         <item>周五</item>
         <item>周六</item>
-    </string-array>
+     </string-array>
     
      
      <string-array name="hours">
