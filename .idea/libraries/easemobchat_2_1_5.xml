@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="easemobchat_2.1.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/eventer/libs/easemobchat_2.1.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

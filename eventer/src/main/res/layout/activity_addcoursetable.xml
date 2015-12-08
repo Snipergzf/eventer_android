@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingTop="15dp"
+    android:orientation="vertical">
+    
+		 <RelativeLayout
+            android:id="@+id/ll_lowwarn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="40dp"
+            android:padding="5dp"
+ >
+
+	           <TextView
+	           android:id="@+id/tv_title1"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_marginLeft="10dp"
+	           android:layout_marginRight="10dp"
+	           android:layout_centerVertical="true"
+	           android:text="@string/school_year" 
+	           android:textColor="#000000"
+	           android:textSize="16sp" >
+            	</TextView>      
+	           
+	            <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+	            android:layout_centerVertical="true"
+	            android:layout_toRightOf="@id/tv_title1"
+	            android:layout_marginRight="10dp"
+	         	android:background="@drawable/edit_bg"
+                android:textSize="16sp"
+                android:textColor="#ff000000"
+                android:gravity="left|center"
+                android:paddingLeft="5dp">
+	            </TextView>
+	            
+	            
+            	<ImageButton
+                android:id="@+id/bt_dropdown"
+                android:layout_width="36px"
+                android:layout_height="20px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/down_arrow" />
+   </RelativeLayout>
+		    
+    <View
+       
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@+id/rview"
+        android:background="#cccccc" />
+		 <RelativeLayout
+           
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="40dp"
+            android:padding="5dp"
+            >
+
+	           <TextView
+	           android:id="@+id/tv_title2"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_marginLeft="10dp"
+	           android:layout_marginRight="10dp"
+	           android:layout_centerVertical="true"
+	           android:text="@string/school" 
+	           android:textColor="#000000"
+	           android:textSize="16sp" >
+            	</TextView>      
+	           
+	            <TextView
+                android:id="@+id/tv_school"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+	            android:layout_centerVertical="true"
+	            android:layout_toRightOf="@id/tv_title2"
+	            android:layout_marginRight="10dp"
+	         	android:background="@drawable/edit_bg"
+                android:textSize="16sp"
+                android:textColor="#ff000000"
+                android:gravity="left|center"
+                android:paddingLeft="5dp">
+	            </TextView>
+	            
+	            
+            	<ImageButton
+                
+                android:layout_width="36px"
+                android:layout_height="20px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/down_arrow" />
+   </RelativeLayout>
+   <View
+       
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@+id/rview"
+        android:background="#cccccc" />
+   <RelativeLayout
+            android:id="@+id/ll_major"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="40dp"
+            android:padding="5dp"
+           >
+
+	           <TextView
+	           android:id="@+id/tv_title3"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_marginLeft="10dp"
+	           android:layout_marginRight="10dp"
+	           android:layout_centerVertical="true"
+	           android:text="@string/major" 
+	           android:textColor="#000000"
+	           android:textSize="16sp" >
+            	</TextView>      
+	           
+	            <TextView
+                android:id="@+id/tv_major"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+	            android:layout_centerVertical="true"
+	            android:layout_toRightOf="@id/tv_title3"
+	            android:layout_marginRight="10dp"
+	         	android:background="@drawable/edit_bg"
+                android:textSize="16sp"
+                android:textColor="#ff000000"
+                android:gravity="left|center"
+                android:paddingLeft="5dp">
+	            </TextView>
+	            
+	            
+            	<ImageButton
+                
+                android:layout_width="36px"
+                android:layout_height="20px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/down_arrow" />
+   </RelativeLayout>
+   <View
+       
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@+id/rview"
+        android:background="#cccccc" />
+   <RelativeLayout
+            android:id="@+id/ll_class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="40dp"
+             android:padding="5dp"
+
+            >
+
+	           <TextView
+	           android:id="@+id/tv_title4"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_marginLeft="10dp"
+	           android:layout_marginRight="10dp"
+	           android:layout_centerVertical="true"
+	           android:text="@string/mclass" 
+	           android:textColor="#000000"
+	           android:textSize="16sp" >
+            	</TextView>      
+	           
+	            <TextView
+                android:id="@+id/tv_class"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+	            android:layout_centerVertical="true"
+	            android:layout_toRightOf="@id/tv_title4"
+	            android:layout_marginRight="10dp"
+	         	android:background="@drawable/edit_bg"
+                android:textSize="16sp"
+                android:textColor="#ff000000"
+                android:gravity="left|center"
+                android:paddingLeft="5dp">
+	            </TextView>
+	            
+	            
+            	<ImageButton
+                android:layout_width="36px"
+                android:layout_height="20px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/down_arrow" />
+   </RelativeLayout>
+   
+     <Button
+        android:id="@+id/btn_search_ctable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/caldroid_white"
+        android:background="@drawable/button_blue"
+        android:layout_margin="18dp"
+        android:textScaleX="1.1"
+        android:textSize="16sp"
+        android:text="@string/search_course_table" />
+
+</LinearLayout>

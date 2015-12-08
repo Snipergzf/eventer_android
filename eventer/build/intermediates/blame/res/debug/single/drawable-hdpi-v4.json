@@ -1,0 +1,898 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_location.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_location.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_heart.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_heart.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_activity_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_activity_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_41.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_41.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_register.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_register.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\record_animate_01.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\record_animate_01.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_return.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_return.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_38.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_38.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_24.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_24.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_10.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_10.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_33.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_33.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_5.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_5.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_comment.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_comment.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_16.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_16.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_2.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_26.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_26.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_12.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_12.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\course_temp.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\course_temp.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_21.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_21.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatting_setmode_keyboard_btn_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatting_setmode_keyboard_btn_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_heart_down2.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_heart_down2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\a_a.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\a_a.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_3.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_3.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_53.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_53.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\next.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\next.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_hand_down2.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_hand_down2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_23.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_23.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_36.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_36.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_6.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_6.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\down_bg.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\down_bg.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\iv_add_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\iv_add_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_1.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_1.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\a_1.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\a_1.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\appitem_del_btn.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\appitem_del_btn.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_search.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_search.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_14.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_14.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bg_cut_line.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\bg_cut_line.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_group_setting.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_group_setting.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\option_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\option_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\voice_rcd_btn_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\voice_rcd_btn_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\discussion_avatar.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\discussion_avatar.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_pic.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_pic.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_forwarding_down.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_forwarding_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share_nor.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\share_nor.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\update.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\update.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\line_01.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\line_01.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\course_bg.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\course_bg.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\cancel_concern.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\cancel_concern.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_43.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_43.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\empty.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\empty.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\rename_group_over.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\rename_group_over.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_cancel_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_cancel_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_14.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_14.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_top_more.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_top_more.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_sex_female.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ic_sex_female.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatto_bg_focused.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatto_bg_focused.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_7.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_7.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\iv_btn_setting.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\iv_btn_setting.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_heart_down.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_heart_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_47.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_47.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ib_setting.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ib_setting.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_26.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_26.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\delete_group_over.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\delete_group_over.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_33.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_33.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\back.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\back.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_25.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_25.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_32.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_32.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\concern.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\concern.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_29.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_29.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\assitant.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\assitant.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_8.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_8.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_10.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_10.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\input_bar_bg_active.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\input_bar_bg_active.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_24.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_24.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_48.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_48.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_calendar_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_calendar_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_31.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_31.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatto_bg_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatto_bg_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_style_zero_focused.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_style_zero_focused.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_cancel.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_cancel.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_18.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_18.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_50.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_50.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\info.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\info.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\my_collect.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\my_collect.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\button2.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\button2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_19.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_19.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\collect.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\collect.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\delete_group_nor.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\delete_group_nor.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_emoji_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_emoji_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_28.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_28.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\default_discussion.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\default_discussion.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_22.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_22.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\msg_state_fail_resend_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\msg_state_fail_resend_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_photo.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_photo.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatting_setmode_voice_btn_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatting_setmode_voice_btn_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatto_bg_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatto_bg_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_13.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_13.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_settings_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_settings_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_51.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_51.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_sex_male.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ic_sex_male.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\close.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\close.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_2.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\unread_count_bg.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\unread_count_bg.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_message_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_message_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\default_avatar.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\default_avatar.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\add_time.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\add_time.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\edit_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\edit_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_15.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_15.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_4.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_4.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\edit_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\edit_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_39.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_39.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\jy_jb_btn_off.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\jy_jb_btn_off.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_34.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_34.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\dx_checkbox_gray_on.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\dx_checkbox_gray_on.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_25.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_25.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_4.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_4.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_emoji_checked.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_emoji_checked.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_btn_deleteperson.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_btn_deleteperson.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_3.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_3.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\xlistview_arrow.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\xlistview_arrow.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\cancel_collect.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\cancel_collect.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\dx_checkbox_on.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\dx_checkbox_on.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_17.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_17.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_5.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_5.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_19.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_19.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_style_zero_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_style_zero_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_23.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_23.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_32.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_32.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_42.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_42.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_6.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_6.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_37.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_37.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\back_down.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\back_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\rename_group_nor.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\rename_group_nor.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\edit.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\edit.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_30.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_30.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\menu_bg_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\menu_bg_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\signin_local_gallry.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\signin_local_gallry.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatfrom_bg_focused.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatfrom_bg_focused.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\show_head_toast_bg.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\show_head_toast_bg.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_29.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_29.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\login_bg.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\login_bg.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_settings_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_settings_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\appitem_del_btn_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\appitem_del_btn_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\input_bar_bg_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\input_bar_bg_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_27.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_27.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatfrom_bg_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatfrom_bg_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_52.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_52.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\jy_drltsz_btn_addperson.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\jy_drltsz_btn_addperson.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chattype_add.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chattype_add.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_21.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_21.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_activity_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_activity_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\jy_jb_btn_on.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\jy_jb_btn_on.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_40.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_40.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_46.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_46.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_49.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_49.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\default_fmessage.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\default_fmessage.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_forwarding_down2.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_forwarding_down2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_message_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_message_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_11.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_11.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\appitem_del_btn_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\appitem_del_btn_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bg_pop_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\bg_pop_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_style_zero_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_style_zero_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_20.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_20.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\default_image.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\default_image.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\select_over.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\select_over.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_17.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_17.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\history.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\history.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_return_down.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_return_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_11.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_11.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatfrom_bg_pressed.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatfrom_bg_pressed.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\iv_add_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\iv_add_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\open.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\open.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_16.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_16.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chat_voice_call_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chat_voice_call_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatting_setmode_voice_btn_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatting_setmode_voice_btn_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\our_team.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\our_team.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_13.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_13.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_15.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_15.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ar5.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ar5.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ib_add.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ib_add.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_27.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_27.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_20.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_20.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_8.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_8.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\dx_checkbox_off.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\dx_checkbox_off.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_34.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_34.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\voice_rcd_btn_nor.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\voice_rcd_btn_nor.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\option_selected.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\option_selected.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chat_voice_call_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chat_voice_call_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\menu_bg.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\menu_bg.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_45.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_45.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\login_app.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\login_app.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_single_setting.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_single_setting.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_vedio.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_vedio.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_44.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_44.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\edit_clear_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\edit_clear_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\delete.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\delete.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\msg_state_fail_resend.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\msg_state_fail_resend.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\singleline_item_bg.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\singleline_item_bg.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_check_blue.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_check_blue.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\down_arrow.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\down_arrow.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_35.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_35.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_22.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_22.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\cancel_down.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\cancel_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_28.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_28.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\edit_clear_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\edit_clear_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share_over.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\share_over.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_forwarding.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_forwarding.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\back_over.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\back_over.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\default_chatroom.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\default_chatroom.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chatting_setmode_keyboard_btn_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chatting_setmode_keyboard_btn_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_54.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_54.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\msg_alert.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\msg_alert.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\popmenu_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\popmenu_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_18.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_18.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_voice.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_voice.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_12.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_12.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_comment_down.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_comment_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\iv_add.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\iv_add.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_1.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_1.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_7.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_7.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\tab_calendar_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_calendar_normal.png"
+    }
+]

@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\chat_room_setting.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\chat_room_setting.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\main.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\main.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\share_to_single.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\share_to_single.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\reset_pwd.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\reset_pwd.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\fill_in_user_info.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\fill_in_user_info.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\login.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\login.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\collect.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\collect.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\register.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\register.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\activity__event_detail.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\activity__event_detail.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\menu\\event_comment.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\menu\\event_comment.xml"
+    }
+]

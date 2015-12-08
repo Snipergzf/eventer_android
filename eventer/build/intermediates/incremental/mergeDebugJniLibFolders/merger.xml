@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="F:\ProjectAS\eventer\src\main\jniLibs"><file name="armeabi/libbspatch.so" path="F:\ProjectAS\eventer\src\main\jniLibs\armeabi\libbspatch.so"/><file name="armeabi/libumeng_opustool.so" path="F:\ProjectAS\eventer\src\main\jniLibs\armeabi\libumeng_opustool.so"/></source></dataSet><dataSet config="debug"><source path="F:\ProjectAS\eventer\src\debug\jniLibs"/></dataSet></merger>

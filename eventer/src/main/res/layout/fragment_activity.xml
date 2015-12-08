@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee"
+    android:orientation="vertical" >
+   <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/caldroid_holo_blue_light"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical" >
+
+        
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/tab_activity"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+ 
+    </RelativeLayout>
+   
+    <RelativeLayout
+        android:id="@+id/theme_listview"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/title"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:background="@color/white">
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <TextView
+                android:id="@+id/tv_theme_all" 
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/theme_all"
+                android:gravity="center"
+                android:background="@drawable/theme_tv"
+                android:textColor="@drawable/theme_txt"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_theme_lecture" 
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/theme_lecture"
+                android:background="@drawable/theme_tv"
+                android:textColor="@drawable/theme_txt"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_theme_fun" 
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/theme_fun"
+                android:background="@drawable/theme_tv"
+                android:textColor="@drawable/theme_txt"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_theme_job" 
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/theme_job"
+                android:background="@drawable/theme_tv"
+                android:textColor="@drawable/theme_txt"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_theme_other" 
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/theme_other"
+                android:background="@drawable/theme_tv"
+                android:textColor="@drawable/theme_txt"
+                android:gravity="center"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        
+    </RelativeLayout>
+    <RelativeLayout
+       android:layout_below="@+id/theme_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+	     <com.eventer.app.widget.refreshlist.XListView 
+	        android:id="@+id/listview"
+	        android:layout_below="@+id/theme_listview"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:divider="@android:color/transparent"
+	        android:dividerHeight="8dp" 
+	        />
+	     <ImageView 
+	         android:id="@+id/iv_empty"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:layout_centerHorizontal="true"
+	         android:src="@drawable/empty"
+	         android:visibility="gone"
+	         android:layout_marginTop="70dp"
+	        />
+     </RelativeLayout>
+ 
+ 
+</RelativeLayout>

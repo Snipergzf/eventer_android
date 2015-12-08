@@ -1,0 +1,98 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_dialog_back.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_dialog_back.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_delete.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\ic_delete.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_cp_default_avatar.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_cp_default_avatar.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_input_bg_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_input_bg_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_back_arrow2.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_back_arrow2.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\shadow_left.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\shadow_left.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_default_avatar.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_default_avatar.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\chat_file_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\chat_file_pressed.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_cl_divider.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_cl_divider.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_input_bg_special_normal.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_input_bg_special_normal.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\app_panel_video_icon.9.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\app_panel_video_icon.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\open_icon.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\open_icon.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_input_bg_special_focus.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_input_bg_special_focus.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\shadow_right.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\shadow_right.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\chat_file_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\chat_file_normal.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_sharesdk_icon.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_sharesdk_icon.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_search_icon.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_search_icon.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_clear_search.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_clear_search.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\shadow_bottom.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\shadow_bottom.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_back_arrow.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_back_arrow.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_input_bg_focus.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_input_bg_focus.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\close_icon.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-xhdpi\\close_icon.png"
+    }
+]

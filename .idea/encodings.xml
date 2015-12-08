@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/eventer/src/main/java/com/eventer/app/Constant.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/eventer/src/main/java/com/eventer/app/adapter/ChatRoomAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eventer/src/main/java/com/eventer/app/http/UploadPicToServer.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eventer/src/main/java/com/eventer/app/task/LoadUserAvatar.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eventer/src/main/java/com/eventer/app/util/LocalUserInfo.java" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

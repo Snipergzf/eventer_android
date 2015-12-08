@@ -1,0 +1,451 @@
+package com.eventer.app.other;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
+
+import com.easemob.util.HanziToPinyin;
+import com.easemob.util.HanziToPinyin.Token;
+import com.eventer.app.Constant;
+import com.eventer.app.MyApplication;
+import com.eventer.app.R;
+import com.eventer.app.db.PhoneDao;
+import com.eventer.app.db.UserDao;
+import com.eventer.app.entity.Phone;
+import com.eventer.app.entity.UserInfo;
+import com.eventer.app.http.HttpUnit;
+import com.eventer.app.task.Contact;
+import com.eventer.app.task.LoadUserAvatar;
+import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.widget.CircleProgressBar;
+import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
+import com.eventer.app.widget.refreshlist.XListView;
+import com.umeng.analytics.MobclickAgent;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class LocalContactActivity extends Activity{
+
+	private MyAdapter adapter;
+	private List<Map<String, String>> SourceData=new ArrayList<Map<String,String>>();
+	private List<Phone> mData=new ArrayList<Phone>();
+	private Map<String,UserInfo> isExist=new HashMap<String, UserInfo>();
+	private XListView listView;
+	private ImageView back;
+	private final int REFRESH_MORE = 1;
+	private LinearLayout loading;
+
+	public Context context;
+	private LoadUserAvatar avatarLoader;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_phone_contact);
+		context=this;
+		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		listView = (XListView) findViewById(R.id.list);
+		back=(ImageView)findViewById(R.id.iv_back);
+		loading=(LinearLayout)findViewById(R.id.ll_loading);
+		CircleProgressBar progress=(CircleProgressBar)findViewById(R.id.progress);
+		progress.setColorSchemeResources(android.R.color.holo_orange_light);
+
+		back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+		adapter = new MyAdapter(context);
+		listView.setAdapter(adapter);
+		listView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+									int position, long id) {
+				String phone=mData.get(position).getTel();
+				UserInfo u=new UserInfo();
+				if(isExist.containsKey(phone)){
+					u=isExist.get(phone);
+					startActivity(new Intent().setClass(context, Activity_UserInfo.class).putExtra("user", u.getUsername()));
+
+				}
+
+			}
+		});
+		listView.setPullRefreshEnable(new IXListViewRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				handleTel(SourceData);
+			}
+		});
+		PhoneDao dao=new PhoneDao(context);
+		mData=dao.getPhoneList();
+		dao.getTelList();
+		UserDao d=new UserDao(context);
+		if(mData==null||mData.size()==0){
+			loading.setVisibility(View.VISIBLE);
+			getContactList();
+		}else{
+			loading.setVisibility(View.GONE);
+			for (Phone p: mData) {
+				String user=p.getUserId();
+				if(!TextUtils.isEmpty(user)){
+					UserInfo info=d.getInfo(user);
+					isExist.put(p.getTel()+"", info);
+				}
+				Map<String, String> map=new HashMap<String, String>();
+				map.put("phone", p.getTel());
+				map.put("name", p.getRelName());
+				SourceData.add(map);
+			}
+			handleTel(SourceData);
+		}
+	}
+
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		refresh();
+	}
+
+
+	/***
+	 * 手机通讯录的适配器
+	 * @author LiuNana
+	 *
+	 */
+	public class MyAdapter extends BaseAdapter {
+
+		private LayoutInflater mInflater;
+
+		public MyAdapter(Context context) {
+			this.mInflater = LayoutInflater.from(context);
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return mData.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return mData.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@SuppressLint("ViewHolder")
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			ViewHolder holder = null;
+			if (convertView == null) {
+				holder=new ViewHolder();
+				//可以理解为从vlist获取view  之后把view返回给ListView
+				convertView = mInflater.inflate(R.layout.item_phone_contact_list, null);
+				holder.name = (TextView)convertView.findViewById(R.id.tv_name);
+				holder.phone = (TextView)convertView.findViewById(R.id.tv_eventer_id);
+				holder.avatar=(ImageView)convertView.findViewById(R.id.iv_avatar);
+				holder.add=(Button)convertView.findViewById(R.id.tv_add);
+				holder.text=(TextView)convertView.findViewById(R.id.tv_text);
+
+				convertView.setTag(holder);
+			}else {
+				holder = (ViewHolder)convertView.getTag();
+			}
+			holder.name.setText("");
+			holder.add.setText("");
+			holder.phone.setText("");
+			holder.avatar.setImageResource(R.drawable.default_avatar);
+			holder.text.setText("");
+			String phone=mData.get(position).getTel();
+			String name=mData.get(position).getRelName();
+			holder.name.setText(name);
+			holder.phone.setText(phone+"");
+			boolean isEventer=false;
+			UserInfo u=new UserInfo();
+			u=isExist.get(phone);
+			int type=u.getType();
+			if(type==1){
+				holder.add.setVisibility(View.GONE);
+				holder.text.setVisibility(View.VISIBLE);
+				holder.text.setText("已添加");
+			}else{
+				holder.text.setVisibility(View.GONE);
+				holder.add.setVisibility(View.VISIBLE);
+				holder.add.setBackgroundResource(R.drawable.btn_blue_bg);
+				holder.add.setText("添加");
+				isEventer=true;
+			}
+			String avatar=u.getAvatar();
+			showUserAvatar(holder.avatar, avatar);
+			final boolean isTrue=isEventer;
+			final UserInfo temp_user=u;
+			holder.add.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(isTrue){
+						Intent intent=new Intent();
+						intent.setClass(context, Activity_Friends_Add.class);
+						intent.putExtra("id", temp_user.getUsername());
+						intent.putExtra("avatar", temp_user.getAvatar());
+						intent.putExtra("nick", temp_user.getNick());
+						context.startActivity(intent);
+					}else{
+						//发送短信邀请
+					}
+				}
+			});
+			return convertView;
+		}
+	}
+	public final class ViewHolder {
+		TextView name;
+		TextView phone;
+		ImageView avatar;
+		Button add;
+		TextView text;
+	}
+	// 刷新ui
+	public void refresh() {
+		try {
+			this.runOnUiThread(new Runnable() {
+				public void run() {
+					PhoneDao dao=new PhoneDao(context);
+					List<Phone> list=dao.getPhoneList();
+					mData=new ArrayList<Phone>();
+					for (Phone phone : list) {
+						if(isExist.containsKey(phone.getTel())){
+							mData.add(phone);
+						}
+					}
+					UserDao d=new UserDao(context);
+					for (Phone p: mData) {
+						String user=p.getUserId();
+						if(!TextUtils.isEmpty(user)){
+							UserInfo info=d.getInfo(user);
+							isExist.put(p.getTel()+"", info);
+						}
+						Map<String, String> map=new HashMap<String, String>();
+						map.put("phone", p.getTel());
+						map.put("name", p.getRelName());
+						SourceData.add(map);
+					}
+
+					Collections.sort(mData, new FullPinyinComparator() {
+					});
+					adapter.notifyDataSetChanged();
+					listView.stopRefresh();
+
+				}
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	private void showUserAvatar(ImageView iamgeView, String avatar) {
+		if(avatar==null||avatar.equals("")||avatar.equals("default")) return;
+		final String url_avatar =avatar;
+		iamgeView.setTag(url_avatar);
+		Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
+				new ImageDownloadedCallBack() {
+
+					@Override
+					public void onImageDownloaded(ImageView imageView,
+												  Bitmap bitmap,int status) {
+						if(status==-1){
+							if (imageView.getTag() == url_avatar) {
+								imageView.setImageBitmap(bitmap);
+							}
+						}
+					}
+				});
+		if (bitmap != null)
+			iamgeView.setImageBitmap(bitmap);
+
+	}
+
+
+	/**
+	 * 获取联系人列表序
+	 */
+	private void getContactList() {
+		SourceData.clear();
+		mData.clear();
+		Contact contact=new Contact(context);
+		SourceData=contact.getPhoneContactsList();
+		handleTel(SourceData);
+		// 获取本地好友列表
+
+	}
+
+	/**
+	 * 执行异步任务
+	 *
+	 * @param params
+	 *
+	 */
+	public void handleTel(final Object... params) {
+		new AsyncTask<Object, Object,Map<String,UserInfo>>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Map<String,UserInfo> doInBackground(Object... params) {
+				Map<String,UserInfo> result=new HashMap<String, UserInfo>();
+				try {
+					List<Map<String, String>> list=(List<Map<String, String>>) params[0];
+					Map<String,UserInfo> user=MyApplication.getInstance().getUserList();
+					PhoneDao dao=new PhoneDao(context);
+					for (Map<String, String> map1 : list) {
+						String string=map1.get("phone");
+						String realname=map1.get("name");
+						if(!isExist.containsKey(string)){
+							Map<String,String> map=new HashMap<String, String>();
+							map.put("search_name", string);
+							map.put("uid", Constant.UID+"");
+							map.put("token", Constant.TOKEN);
+							Map<String,Object> info=HttpUnit.sendSerachFriendRequest(map);
+							int status=(int) info.get("status");
+							if(status==0){
+								String s=(String) info.get("info");
+								JSONObject jsonObject= new  JSONObject(s);
+								String uid=jsonObject.getString("id");
+								String avatar=jsonObject.getString("avatar");
+								String name=jsonObject.getString("name");
+								if(user.containsKey(uid)){
+									UserInfo userinfo=user.get(uid);
+									isExist.put(string, userinfo);
+								}else{
+									UserInfo userinfo=new UserInfo();
+									userinfo.setAvatar(avatar);
+									userinfo.setNick(name);
+									userinfo.setType(22);
+									userinfo.setUsername(uid);
+									MyApplication.getInstance().addUser(userinfo);
+									isExist.put(string, userinfo);
+								}
+								Phone p=new Phone();
+								p.setRelName(realname);
+								p.setTel(string);
+								p.setUserId(uid);
+								dao.savePhone(p);
+							}else{
+								Phone p=new Phone();
+								p.setRelName(realname);
+								p.setTel(string);
+								dao.savePhone(p);
+							}
+						}
+					}
+					return result;
+				} catch (Throwable e) {
+					// TODO Auto-generated catch block
+					Log.e("1", e.toString());
+					return null;
+				}
+			}
+			protected void onPostExecute(Map<String,UserInfo> result) {
+				// 设置adapter
+				loading.setVisibility(View.GONE);
+				refresh();
+
+			};
+		}.execute(params);}
+
+
+	@SuppressLint("DefaultLocale")
+	public class FullPinyinComparator implements Comparator<Phone> {
+
+		@SuppressLint("DefaultLocale")
+		@Override
+		public int compare(Phone o1, Phone o2) {
+			// TODO Auto-generated method stub
+			String py1 = o1.getRelName();
+			String py2 = o2.getRelName();
+			py1=getPinYin(py1);
+			py2=getPinYin(py2);
+			// Log.e("1",py1+py2+getPinYin("$$#"));
+			// 判断是否为空""
+			if (isEmpty(py1) && isEmpty(py2))
+				return 0;
+			if (isEmpty(py1))
+				return -1;
+			if (isEmpty(py2))
+				return 1;
+			try {
+				py1 = py1.toUpperCase();
+				py2 = py2.toUpperCase();
+			} catch (Exception e) {
+				System.out.println("某个str为\" \" 空");
+			}
+			return py1.compareTo(py2);
+		}
+
+		private boolean isEmpty(String str) {
+			return "".equals(str.trim());
+		}
+	}
+
+	public static String getPinYin(String input) {
+		ArrayList<Token> tokens = HanziToPinyin.getInstance().get(input);
+
+		StringBuilder sb = new StringBuilder();
+		if (tokens != null && tokens.size() > 0) {
+			for (Token token : tokens) {
+				if (Token.PINYIN == token.type) {
+					sb.append(token.target);
+				} else {
+					sb.append(token.source);
+				}
+			}
+		}
+		return sb.toString().toLowerCase();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+}

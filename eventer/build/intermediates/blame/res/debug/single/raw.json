@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\raw\\smssdk_pydb",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\raw\\smssdk_pydb"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\raw\\tone.mp3",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\raw\\tone.mp3"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\raw\\event",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\raw\\event"
+    }
+]

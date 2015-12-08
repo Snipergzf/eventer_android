@@ -1,0 +1,185 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    tools:context="com.eventer.app.main.RegisterActivity" >
+     <View
+        android:layout_width="match_parent"       
+        android:layout_height="0.05dp"
+        android:background="#cccccc" />
+   <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="7dp"
+	    android:paddingBottom="7dp"
+        android:background="@color/caldroid_white"
+        >
+       
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/caldroid_holo_blue_light"
+	        android:paddingStart="15dp"
+	        android:paddingEnd="15dp"
+	        android:paddingTop="7dp"
+	        android:paddingBottom="7dp"
+	        android:gravity="center"
+	        android:textSize="18sp"    
+	        android:text="@string/register_tel"/>
+	    <View
+	        android:layout_width="0.05dp"
+	        android:layout_height="match_parent"
+	        android:background="@color/caldroid_lighter_gray" />
+	    <EditText
+	        android:id="@+id/edit_tel"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:hint="@string/register_tel_hint"
+	        android:background="#ffffff"
+	        android:textColorHint="@color/caldroid_gray"
+	        android:padding="7dp"
+	        android:inputType="number"
+	        android:singleLine="true"
+	        android:textSize="18sp"
+	        android:maxLength="11"
+	       >
+	        <requestFocus />
+	    </EditText>
+	    <ImageButton 
+	        android:id="@+id/btn_tel_clear"
+	        android:layout_width="18dp"
+	        android:layout_height="18dp"
+	        android:layout_marginStart="10dp"
+	        android:layout_marginEnd="10dp"
+	        android:layout_gravity="end|center_vertical"
+	        android:visibility="gone"
+	        android:background="@drawable/edit_clear_btn_bg"/>
+    </LinearLayout>
+        <View
+        android:layout_width="match_parent"       
+        android:layout_height="0.05dp"
+        android:background="#cccccc" />
+   <LinearLayout 
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	    android:paddingTop="7dp"
+	    android:paddingBottom="7dp"
+        android:background="@color/caldroid_white"
+        >       	
+	   <EditText
+	        android:id="@+id/edit_security_code"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:hint="@string/register_code_hint"
+	        android:background="#ffffff"
+	        android:textColorHint="@color/caldroid_gray"
+	        android:paddingTop="7dp"
+	        android:paddingBottom="7dp"
+	        android:paddingStart="15dp"
+	        android:paddingEnd="15dp"
+	        android:inputType="number"
+	        android:textSize="18sp"
+	        android:singleLine="true"
+	        android:maxLength="11"
+	       />
+
+	    <ImageButton 
+	        android:id="@+id/btn_security_code_clear"
+	        android:layout_width="18dp"
+	        android:layout_height="18dp"
+	        android:layout_marginStart="10dp"
+	        android:layout_marginEnd="10dp"
+	        android:layout_gravity="end|center_vertical"
+	        android:visibility="gone"
+	        android:background="@drawable/edit_clear_btn_bg"/>
+	     <View
+	        android:layout_width="0.05dp"
+	        android:layout_height="match_parent"
+	        android:background="@color/caldroid_lighter_gray" />
+	     <TextView
+	        android:id="@+id/btn_send_code"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:textColor="@color/caldroid_holo_blue_light"
+	        android:background="@color/caldroid_white"
+	        android:paddingStart="7dp"
+	        android:paddingEnd="7dp"
+	        android:textSize="18sp"
+	        android:text="@string/send_again" />
+    </LinearLayout>
+        <View
+        android:layout_width="match_parent"       
+        android:layout_height="0.05dp"
+        android:background="#cccccc" />
+   <LinearLayout 
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	    android:paddingTop="7dp"
+	    android:paddingBottom="7dp"
+        android:background="@color/caldroid_white"
+        >       	
+	   <EditText
+	        android:id="@+id/edit_pwd"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:hint="@string/register_pwd_hint"
+	        android:background="#ffffff"
+	        android:textColorHint="@color/caldroid_gray"
+	        android:paddingTop="7dp"
+	        android:paddingBottom="7dp"
+	        android:paddingStart="15dp"
+	        android:paddingEnd="15dp"
+	        android:textSize="18sp"
+	        android:singleLine="true"
+	        android:maxLength="20"
+	        android:inputType="textPassword"
+	       />
+	    <ImageButton 
+	        android:id="@+id/btn_pwd_clear"
+	        android:layout_width="18dp"
+	        android:layout_height="18dp"
+	        android:layout_marginStart="10dp"
+	        android:layout_marginEnd="10dp"
+	        android:layout_gravity="end|center_vertical"
+	        android:visibility="gone"
+	        android:background="@drawable/edit_clear_btn_bg"/>
+	    
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:layout_marginBottom="5dp"
+        android:background="#cccccc" />
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/caldroid_darker_gray"
+        android:background="@drawable/button_gray"
+        android:layout_margin="15dp"
+        android:textScaleX="1.1"
+        android:textSize="20sp"
+        android:text="@string/next" />
+    
+    <TextView
+            android:id="@+id/tv_protocol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textSize="14sp" />
+
+</LinearLayout>

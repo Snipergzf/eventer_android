@@ -1,0 +1,144 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	 <RelativeLayout
+	        android:id="@+id/comment_top_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="50dp"
+	        android:background="@color/caldroid_holo_blue_light" >
+	
+	        <TextView
+	            android:id="@+id/comment_title"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:padding="10dp"
+	            android:text="@string/comment"
+	            android:textColor="@android:color/white"
+	            android:textSize="18sp" />
+	
+	        <TextView
+	            android:id="@+id/comment_line"
+	            android:layout_width="match_parent"
+	            android:layout_height="1.5dp"
+	            android:layout_alignParentBottom="true"
+	            android:background="@drawable/line_01" />
+	    </RelativeLayout>
+	    <RelativeLayout 
+	        android:id="@+id/event_detail"
+	        android:layout_below="@id/comment_top_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="180dp"
+	        android:background="#99F89012">
+	        <ImageView 
+	            android:id="@+id/iv_event_cover"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:src="@color/transparent"/>
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:padding="8dp"
+	            android:layout_alignParentBottom="true"
+	            android:background="#50000000"
+	            android:orientation="vertical">
+	        <TextView 
+	            android:id="@+id/tv_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/white"
+	            android:textSize="18sp"
+	            android:singleLine="true"
+	            android:layout_marginLeft="-7dp"
+	            android:layout_marginRight="-7dp"
+	            android:paddingBottom="3dp"
+	            android:textStyle="bold"/>
+	        <TextView 
+	            android:id="@+id/tv_time"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/white"
+	            android:padding="3dp"
+	            android:singleLine="true"
+	            android:textSize="14sp"/>
+
+	        <TextView
+	            android:id="@+id/tv_place"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/white"
+	            android:singleLine="true"
+	            android:padding="3dp"
+	            android:textSize="14sp" />
+
+	        </LinearLayout>
+	    </RelativeLayout>
+	    
+	
+	    <RelativeLayout
+	        android:id="@+id/comment_bottom_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="50dp"
+	        android:layout_alignParentBottom="true" >
+	        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/line_01" />
+	        <ImageView
+	            android:id="@+id/comment_finish"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:onClick="back"
+	            android:src="@drawable/finish_selector" />
+	
+	        <Button
+	            android:id="@+id/comment_send"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginLeft="10dp"
+	            android:layout_marginRight="10dp"
+	            android:background="@null"
+	            android:gravity="center"
+	            android:text="@string/button_send"
+	            android:textColor="#007aff"
+	            android:textSize="18sp" />
+	
+	        <EditText
+	            android:id="@+id/comment_et"
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp"
+	            android:layout_centerVertical="true"
+	            android:layout_toLeftOf="@+id/comment_send"
+	            android:layout_toRightOf="@+id/comment_finish"
+	            android:background="@drawable/search_et_bg"
+	            android:gravity="center_vertical"
+	            android:hint="@string/comment_et"
+	            android:imeOptions="actionSearch"
+	            android:paddingLeft="3dp"
+	            android:textColor="#333333"
+	            android:textSize="16sp" />
+	    </RelativeLayout>
+	
+	    <com.eventer.app.widget.refreshlist.XListView
+	        android:id="@+id/listview"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_above="@id/comment_bottom_layout"
+	        android:layout_below="@id/event_detail"
+	        android:divider="@null" />
+	    <TextView
+	        android:id="@+id/tv_empty"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/event_detail"
+	        android:text="@string/no_comment"
+	        android:padding="6dp"
+	        android:textSize="13sp"
+	        android:textColor="@color/caldroid_darker_gray"
+	        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"   
+    android:padding="10dp"
+    android:background="@drawable/click_bg"
+    android:layout_height="match_parent"> 
+
+       <TextView android:id="@+id/tv_time" 
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="right|top"
+            android:textColor="#999999" 
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />  
+       <TextView 
+           android:id="@+id/tv_type" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/caldroid_holo_blue_light" 
+            android:layout_below="@id/tv_time"
+            android:layout_alignRight="@id/tv_time"
+            android:layout_alignLeft="@id/tv_time" 
+            android:gravity="right|bottom"          
+            android:padding="2dp"
+            android:textSize="12sp" />       
+       <View
+           android:id="@+id/view_temp"
+           android:layout_width="3dp"
+           android:layout_height="match_parent" 
+           android:layout_alignTop="@id/tv_time"
+           android:layout_alignBottom="@id/tv_type"
+           android:layout_toRightOf="@+id/tv_time"   
+           android:layout_marginLeft="8dp"  
+           android:layout_marginRight="8dp"   
+           android:background="@color/caldroid_holo_blue_light"/>
+        <ImageView 
+	        android:id="@+id/iv_status"
+	        android:layout_width="25dp"
+	        android:layout_height="25dp"
+	        android:paddingTop="10dp"
+	        android:visibility="gone"
+	        android:src="@drawable/dx_checkbox_gray_on"
+	        android:layout_alignParentRight="true"/>  
+	   <TextView android:id="@+id/tv_title" 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	            android:layout_toRightOf="@id/view_temp"
+	            android:layout_toLeftOf="@id/iv_status"
+	            android:layout_alignTop="@id/view_temp"
+	            android:singleLine="true"
+	            android:gravity="top"
+	            android:textColor="#555555"  
+	            android:textSize="16sp" /> 
+	   <TextView android:id="@+id/tv_info" 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	            android:paddingTop="6dp"
+	            android:layout_toRightOf="@id/view_temp"
+	            android:layout_alignParentBottom="true"
+	            android:gravity="bottom"
+	            android:singleLine="true"
+	            android:textColor="@color/caldroid_darker_gray"  
+	            android:textSize="12sp" /> 
+	   
+</RelativeLayout>

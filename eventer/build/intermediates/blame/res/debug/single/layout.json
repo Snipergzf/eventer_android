@@ -1,0 +1,554 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_course.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_course.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_expression.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_expression.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_event_detail.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_event_detail.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_share_to_single.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_share_to_single.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_received_message.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_received_message.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\moreselected.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\moreselected.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\addcourse_popmenu.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\addcourse_popmenu.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_msg_alert.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_msg_alert.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\popmenu.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\popmenu.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\xlistview_footer.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\xlistview_footer.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\social_chatsetting_gridview_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\social_chatsetting_gridview_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_phone_contact.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_phone_contact.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\info_theme_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\info_theme_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_collect_eventlist.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_collect_eventlist.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_login.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_addfriends_two.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_addfriends_two.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_collect_eventlist.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_collect_eventlist.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_share_message.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_share_message.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_addschedual.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_addschedual.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_concern_eventlist.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_concern_eventlist.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_newfriendsmsg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_newfriendsmsg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_friend_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_friend_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_event_detail.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_event_detail.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_about.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_about.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_4.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_4.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_phone_search_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_phone_search_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\base.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\base.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_friendsearch_result.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_friendsearch_result.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\layout_wheel_term.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\layout_wheel_term.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_sent_message.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_sent_message.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_conversation_group_4.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_conversation_group_4.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\schedual_participant_gridview_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\schedual_participant_gridview_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\dialog_share.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\dialog_share.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\social_alertdialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\social_alertdialog.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\tb_munion_aditem.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\tb_munion_aditem.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\dialog_collect_option.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\dialog_collect_option.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_conversation_group_2.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_conversation_group_2.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_schedual.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_schedual.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\course_info_view.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\course_info_view.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_add_todo.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_add_todo.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_collect.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_collect.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\date_cell.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\date_cell.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\layout_wheel_dialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\layout_wheel_dialog.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_todo_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_todo_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_mychatroom_footer.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_mychatroom_footer.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_history_eventlist.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_history_eventlist.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\spiner_item_layout.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\spiner_item_layout.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_register.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_register.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_view.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_view.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_main.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_main.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_big_image.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_show_big_image.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header_item_1.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header_item_1.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chat_room_setting.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_chat_room_setting.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_contact_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_contact_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_searchcourse.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_searchcourse.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_myinfo.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_myinfo.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_checkbox_1.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_checkbox_1.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\sheduallist_footer.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\sheduallist_footer.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_addcoursetable.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_addcoursetable.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_sent_picture.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_sent_picture.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_assist_function.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_assist_function.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_viewschedual.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_viewschedual.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_contact_list_footer.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_contact_list_footer.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_course_search.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_course_search.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_3.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_check_phone.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_check_phone.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\pomenu_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\pomenu_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\layout_wheel_classhour.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\layout_wheel_classhour.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_event_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_event_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\popupwindow_add.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\popupwindow_add.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_coursetable_view.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_coursetable_view.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_checkbox_4.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_checkbox_4.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_profile.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_profile.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\simple_spinner_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\simple_spinner_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_newfriendsmsag.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_newfriendsmsag.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_schedual_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_schedual_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_checkbox_2.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_checkbox_2.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_conversation_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_conversation_header.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_feedback.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_feedback.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chat.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_chat.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\swipeback_layout.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\swipeback_layout.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_fill_in_user_info.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_fill_in_user_info.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\spiner_window_layout.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\spiner_window_layout.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_activity.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_activity.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\titlebar.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\titlebar.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_checkbox_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_checkbox_3.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\expression_gridview.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\expression_gridview.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_alarm_dialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_alarm_dialog.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\date_grid_fragment.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\date_grid_fragment.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header_item_4.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header_item_4.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_contactlist_listview_checkbox.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_contactlist_listview_checkbox.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_browser_history.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_browser_history.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\loadmore.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\loadmore.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_comment_single.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_comment_single.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\course_add.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\course_add.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_contactlist.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_contactlist.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_1.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_1.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_course_addmanully.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_course_addmanully.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\tb_munion_adview.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\tb_munion_adview.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_schedual_view.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_schedual_view.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\course_info_edit.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\course_info_edit.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_userinfo.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_userinfo.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_our_team.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_our_team.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_add_schedual.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_add_schedual.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\alertdialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\alertdialog.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header_item_2.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header_item_2.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_conversation_group_1.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_conversation_group_1.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_message.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\fragment_message.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_group_share.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_group_share.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_update_nick.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_update_nick.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_mychatroom_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_mychatroom_header.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_share_event.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_share_event.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\coursetable_setting.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\coursetable_setting.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chatroom.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_chatroom.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_mychatroom.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_mychatroom.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_2.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_2.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\info_alertdialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\info_alertdialog.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_course_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_course_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_event_comment.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_event_comment.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_course_add.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_course_add.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_share_single_shecdual.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_share_single_shecdual.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_course_detail_view.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_course_detail_view.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_received_picture.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_received_picture.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header_item_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header_item_3.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_conversation_group_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_conversation_group_3.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_course_detail.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_course_detail.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\xlistview_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\xlistview_header.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_addfriends_final.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_addfriends_final.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_conversation_single.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_conversation_single.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_contact_list_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_contact_list_header.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_sc_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_sc_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_phone_contact_list.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_phone_contact_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\beizhu_alertdialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\beizhu_alertdialog.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_load.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_load.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\wheel_layout.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\wheel_layout.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_reset_pwd.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_reset_pwd.xml"
+    }
+]

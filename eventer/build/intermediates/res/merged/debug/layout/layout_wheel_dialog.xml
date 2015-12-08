@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_gray_round_frame_n"
+    android:orientation="vertical" >
+
+    <TextView
+        
+        android:textColor="#676767"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:id="@+id/tv_title"
+        style="@style/login_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="title"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp" />
+
+    <View
+        android:visibility="invisible"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dp"
+        android:background="#2fbeb7" />
+    <com.eventer.app.widget.wheel.WheelView 
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/wheel01"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_weight="1.0"
+        />
+    
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.3dp"
+        android:background="#dfdfdf" />
+
+    <LinearLayout
+       
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:focusable="false"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_negative"
+            style="@style/login_edittext"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+              android:background="@drawable/selector_homepage_item"
+            android:gravity="center"
+            android:text="取消"
+            android:textSize="18sp"
+            android:textColor="#4ca0eb" />
+     <View
+        android:layout_width="0.3dp"
+        android:layout_height="fill_parent"
+        android:background="#dfdfdf" />
+        <Button
+              android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+             android:focusable="false"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_positive"
+            style="@style/login_edittext"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+           android:background="@drawable/selector_homepage_item"
+            android:gravity="center"
+            android:text="确定"
+             android:textSize="18sp"
+            android:textColor="#4ca0eb" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_country_bg_selector.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_country_bg_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_country_group_scroll_down.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_country_group_scroll_down.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_corners_bg_nor.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_corners_bg_nor.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_dialog_btn_back.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_dialog_btn_back.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_btn_enable.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_btn_enable.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_edittext_bg_selector.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_edittext_bg_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_corners_bg.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_corners_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_country_group_scroll_up.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_country_group_scroll_up.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_corners_bg_pre.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_corners_bg_pre.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\smssdk_btn_disenable.xml",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\smssdk_btn_disenable.xml"
+    }
+]

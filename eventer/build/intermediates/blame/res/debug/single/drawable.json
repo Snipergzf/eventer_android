@@ -1,0 +1,410 @@
+[
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\delete_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\delete_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\click_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\click_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_button_right_checked.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_button_right_checked.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\checkbox_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\checkbox_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_dialog_btn_back.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_dialog_btn_back.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_ok_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_ok_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\edit_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\edit_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_homepage_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\selector_homepage_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\card_state_pressed.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\card_state_pressed.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\button.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\button.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\progressbar.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\progressbar.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_blue_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_blue_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_bj.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_bj.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_btn_disenable.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_btn_disenable.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\collect_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\collect_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\concern_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\concern_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\button_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\button_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_calendar.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tab_calendar.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chatfrom_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chatfrom_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\disable_cell.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\disable_cell.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_button_left_chexked.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_button_left_chexked.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\dialog_bottom_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\dialog_bottom_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\theme_tv.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\theme_tv.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\sidebar_background_pressed.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\sidebar_background_pressed.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\appitem_del_btn.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\appitem_del_btn.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\theme_txt.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\theme_txt.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_right.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_right.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\circular_white.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\circular_white.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\dark_gray_border.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\dark_gray_border.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_button_left.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_button_left.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_normal_shape.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_normal_shape.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\ib_select_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\ib_select_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\select_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\select_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chat_send_btn_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chat_send_btn_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\check_blue.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\check_blue.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chat_press_speak_btn.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chat_press_speak_btn.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\red_border.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\red_border.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_button_right.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_button_right.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_blue_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_blue_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_edittext_bg_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_edittext_bg_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_wheel_selected_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\shape_wheel_selected_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chat_voice_call_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chat_voice_call_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\button_gray.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\button_gray.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chat_file_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chat_file_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\recording_text_hint_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\recording_text_hint_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\bg_pop_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\bg_pop_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\card_background_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\card_background_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_blue_normal_shape.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_blue_normal_shape.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\finish_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\finish_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_pressed_shape.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_pressed_shape.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\ib_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\ib_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chatting_setmode_keyboard_btn.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chatting_setmode_keyboard_btn.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\recording_hint_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\recording_hint_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chatto_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chatto_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\share_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\share_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_country_group_scroll_up.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_country_group_scroll_up.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\msg_state_failed_resend.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\msg_state_failed_resend.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\card_background.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\card_background.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\option_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\option_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_2.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_2.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\comment_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\comment_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tv_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tv_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_corners_bg_pre.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_corners_bg_pre.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_corners_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_corners_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_activity.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tab_activity.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_1.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_1.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_left.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_left.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_check.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_check.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_corners_bg_nor.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_corners_bg_nor.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_register_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_register_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_country_group_scroll_down.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_country_group_scroll_down.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\gray_border.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\gray_border.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_3.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_profile.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tab_profile.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_gray_round_frame_n.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\shape_gray_round_frame_n.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\chat_send_btn.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chat_send_btn.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tb_munion_icon.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tb_munion_icon.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_country_bg_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_country_bg_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_blue_pressed_shape.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_blue_pressed_shape.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\edit_clear_btn_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\edit_clear_btn_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\theme_tv_select.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\theme_tv_select.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_text.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_text.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\circular.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\circular.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\edit.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\edit.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tb_munion_item_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tb_munion_item_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\timestampe_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\timestampe_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\button_share.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\button_share.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\button_blue.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\button_blue.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_btn_enable.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable\\smssdk_btn_enable.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\boder.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\boder.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_message.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tab_message.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_list_item_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_list_item_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\collection_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\collection_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\theme_tv_disselect.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\theme_tv_disselect.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\cell_blue.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\cell_blue.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\collection_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\collection_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\red_border_gray_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\red_border_gray_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\search_et_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\search_et_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_style_red.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_style_red.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\share_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\share_bg.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\cell_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\cell_bg.xml"
+    }
+]

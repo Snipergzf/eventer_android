@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ProjectAS.iml" filepath="$PROJECT_DIR$/ProjectAS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eventer/eventer.iml" filepath="$PROJECT_DIR$/eventer/eventer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sMSSDK/sMSSDK.iml" filepath="$PROJECT_DIR$/sMSSDK/sMSSDK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/toggleButtonLib/toggleButtonLib.iml" filepath="$PROJECT_DIR$/toggleButtonLib/toggleButtonLib.iml" />
+    </modules>
+  </component>
+</project>

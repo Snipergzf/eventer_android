@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/re_parent"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:padding="7dp"
+         >
+
+        <RelativeLayout
+            android:id="@+id/re_avatar"
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:paddingLeft="4dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" >
+
+            <RelativeLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:background="#DBDFE0"
+                android:padding="13dp" >
+
+                <com.eventer.app.widget.CircleImageView
+                    android:id="@+id/iv_avatar1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/default_avatar" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/re_avatar"
+            android:layout_toLeftOf="@+id/tv_time"
+            android:layout_marginRight="60dp"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:textColor="#353535"
+            android:paddingTop="5dp"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#AAAAAA"
+            android:paddingTop="5dp"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/re_avatar"
+            android:layout_below="@id/tv_name"
+            android:orientation="horizontal"
+            android:paddingRight="30dp" >
+
+            <ImageView
+                android:id="@+id/msg_state"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/msg_state_fail_resend"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:textColor="#AAAAAA"
+                android:paddingBottom="5dp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_unread"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignRight="@id/re_avatar"
+            android:layout_alignTop="@id/re_avatar"
+            android:layout_marginRight="7dp"
+            android:padding="0dp"
+            android:background="@drawable/unread_count_bg"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="#ffffff"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
