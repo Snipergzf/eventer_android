@@ -9,17 +9,18 @@ import android.widget.Toast;
 
 import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-public class AssistFunctionActivity extends BaseActivity implements OnClickListener{
-	private RelativeLayout re_clear_cache,re_clear_msg;
+public class AssistFunctionActivity extends BaseActivityTest implements OnClickListener{
+	RelativeLayout re_clear_cache,re_clear_msg;
 	private Context context;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_assist_function);
 		context=this;
+		setBaseTitle(R.string.assist);
 		initView();
 	}
 	private void initView() {

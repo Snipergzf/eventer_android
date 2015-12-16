@@ -1,10 +1,5 @@
 package com.eventer.app.task;
 
-import java.io.InputStream;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,6 +12,11 @@ import com.eventer.app.http.HTTPService;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.widget.photoview.PhotoView;
+
+import java.io.InputStream;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 图片异步加载类
@@ -47,7 +47,7 @@ public class LoadBigAvatar {
                             final ImageDownloadedCallBack imageDownloadedCallBack) {
         final String filename = imageUrl
                 .substring(imageUrl.lastIndexOf("/") + 1);
-        final String filepath = fileUtil.getAbsolutePath() + filename;
+//        final String filepath = fileUtil.getAbsolutePath() + filename;
 
         // 先从内存中拿
         Bitmap bitmap = bitmapCache.getBitmap("full_"+filename);
@@ -69,7 +69,7 @@ public class LoadBigAvatar {
         }
 
         // 内存和文件中都没有再从网络下载
-        if (imageUrl != null && !imageUrl.equals("")) {
+        if (!imageUrl.equals("")) {
             final Handler handler = new Handler() {
                 @SuppressLint("HandlerLeak")
                 @Override

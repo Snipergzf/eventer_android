@@ -1,14 +1,5 @@
 package com.eventer.app.widget.calendar;
 
-import hirondelle.date4j.DateTime;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -21,6 +12,15 @@ import android.widget.TextView;
 
 import com.eventer.app.R;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import hirondelle.date4j.DateTime;
+
 
 /**
  * The CaldroidGridAdapter provides customized view for the dates gridview
@@ -28,7 +28,8 @@ import com.eventer.app.R;
  * @author thomasdao
  * 
  */
-@SuppressLint("UseSparseArrays")
+@SuppressWarnings({"UnusedDeclaration"})
+@SuppressLint({"UseSparseArrays","SetTextI18n"})
 public class CaldroidGridAdapter extends BaseAdapter {
 	protected ArrayList<DateTime> datetimeList;
 	protected int month;
@@ -36,12 +37,12 @@ public class CaldroidGridAdapter extends BaseAdapter {
 	protected Context context;
 	protected ArrayList<DateTime> disableDates;
 	protected ArrayList<DateTime> selectedDates;
-    protected HashMap<Integer, List<DateTime>> scheduleDates = new HashMap<Integer, List<DateTime>>();
+    protected HashMap<Integer, List<DateTime>> scheduleDates = new HashMap<>();
     
 	// Use internally, to make the search for date faster instead of using
 	// indexOf methods on ArrayList
-	protected HashMap<DateTime, Integer> disableDatesMap = new HashMap<DateTime, Integer>();
-	protected HashMap<DateTime, Integer> selectedDatesMap = new HashMap<DateTime, Integer>();
+	protected HashMap<DateTime, Integer> disableDatesMap = new HashMap<>();
+	protected HashMap<DateTime, Integer> selectedDatesMap = new HashMap<>();
 	
 	protected DateTime minDateTime;
 	protected DateTime maxDateTime;
@@ -124,12 +125,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param context
-	 * @param month
-	 * @param year
-	 * @param caldroidData
-	 * @param extraData
+	 *
 	 */
 	public CaldroidGridAdapter(Context context, int month, int year,
 			HashMap<String, Object> caldroidData,
@@ -202,8 +198,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
 			// Set it
 			if (backgroundResource != null) {
-				backgroundView.setBackgroundResource(backgroundResource
-						.intValue());
+				backgroundView.setBackgroundResource(backgroundResource);
 			}
 		}
 
@@ -216,8 +211,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
 			// Set it
 			if (textColorResource != null) {
-				textView.setTextColor(resources.getColor(textColorResource
-						.intValue()));
+				textView.setTextColor(resources.getColor(textColorResource));
 			}
 		}
 	}
@@ -227,9 +221,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 	 * (disabled, active, selected, etc)
 	 *
 	 * To be used only in getView method
-	 * 
-	 * @param position
-	 * @param cellView
+	 *
 	 */
 	protected void customizeTextView(int position, View cellView) {
 		
@@ -391,11 +383,11 @@ public class CaldroidGridAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View cellView = (View) convertView;
+		View cellView = convertView;
 
 		// For reuse
 		if (convertView == null) {
-			cellView = (View) inflater.inflate(R.layout.date_cell, null);
+			cellView =  inflater.inflate(R.layout.date_cell, parent , false);
 		}
 
 		customizeTextView(position, cellView);

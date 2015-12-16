@@ -1,7 +1,5 @@
 package com.eventer.app.util;
 
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,7 +7,6 @@ import android.content.Context;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.eventer.app.R;
@@ -19,11 +16,13 @@ import com.eventer.app.view.DialogView_ClassHour.onWheelBtnPosClick;
 import com.eventer.app.widget.wheel.WheelListAdapter;
 import com.eventer.app.widget.wheel.WheelView;
 
+import java.util.Map;
+
 /**
  * 封装了滚轮操作的类
  *
  * */
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class WheelDialogClassHourShowUtil {
 
 
@@ -123,10 +122,7 @@ public class WheelDialogClassHourShowUtil {
 	}
 
 	public boolean isShowing()	{
-		if(dialog !=null && dialog.isShowing())	{
-			return true;
-		}
-		return false;
+		return dialog != null && dialog.isShowing();
 	}
 
 
@@ -144,7 +140,7 @@ public class WheelDialogClassHourShowUtil {
 
 	}
 
-	private WheelListAdapter mAdapter;
+	WheelListAdapter mAdapter;
 	// Scrolling flag
 	@SuppressLint("NewApi")
 	private void initWheel(WheelView wheel1,WheelView wheel2,WheelView wheel3,final Map<Integer,String[]> data )	{
@@ -172,8 +168,6 @@ public class WheelDialogClassHourShowUtil {
 
 	/**
 	 * 在选择完以后要执行的事件
-	 * @param view
-	 * @param text
 	 */
 	public  void setTextToView(View view,String text)	{
 
@@ -182,10 +176,10 @@ public class WheelDialogClassHourShowUtil {
 			mTextView.setText(text);
 		}
 
-		else if(view instanceof EditText)	{
-			EditText mEditText=(EditText)view;
-			mEditText.setText(text);
-		}
+//		else if(view instanceof EditText)	{
+//			EditText mEditText=(EditText)view;
+//			mEditText.setText(text);
+//		}
 	}
 
 }

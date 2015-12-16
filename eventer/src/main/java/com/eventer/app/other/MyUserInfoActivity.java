@@ -1,16 +1,6 @@
 package com.eventer.app.other;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -44,20 +34,30 @@ import com.eventer.app.main.CheckPhoneActivity;
 import com.eventer.app.main.ProfileFragment;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint("SdCardPath")
-public class MyUserInfoActivity extends Activity {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-    private RelativeLayout re_avatar;
-    private RelativeLayout re_name;
-    private RelativeLayout re_sex;
-    private RelativeLayout re_exit;
-    private RelativeLayout re_grade,re_school,re_major,re_class,re_reset_pwd;
+@SuppressLint("SdCardPath")
+public class MyUserInfoActivity extends BaseActivityTest {
+
+    RelativeLayout re_avatar;
+    RelativeLayout re_name;
+    RelativeLayout re_sex;
+    RelativeLayout re_exit;
+    RelativeLayout re_grade,re_school,re_major,re_class,re_reset_pwd;
 
     private TextView tv_grade,tv_school,tv_major,tv_class;
 
@@ -72,7 +72,6 @@ public class MyUserInfoActivity extends Activity {
     private static final int UPDATE_NICK = 5;// 结果
     private LoadUserAvatar avatarLoader;
     private boolean isUpload=false;
-    String hxid;
     String sex;
     String sign;
     String nick;
@@ -86,6 +85,7 @@ public class MyUserInfoActivity extends Activity {
         setContentView(R.layout.activity_myinfo);
         avatarLoader = new LoadUserAvatar(this, Constant.IMAGE_PATH);
         context=this;
+        setBaseTitle(R.string.my_info);
         instance=this;
         initView();
         initData();
@@ -140,14 +140,18 @@ public class MyUserInfoActivity extends Activity {
         Log.e("1", avatar);
         tv_name.setText(nick);
 
-        if (sex.equals("1")) {
-            tv_sex.setText("男");
+        switch (sex) {
+            case "1":
+                tv_sex.setText("男");
 
-        } else if (sex.equals("2")) {
-            tv_sex.setText("女");
+                break;
+            case "2":
+                tv_sex.setText("女");
 
-        } else {
-            tv_sex.setText("");
+                break;
+            default:
+                tv_sex.setText("");
+                break;
         }
 
         if(!TextUtils.isEmpty(grade)){
@@ -419,7 +423,7 @@ public class MyUserInfoActivity extends Activity {
         }else if(avatar.equals("default")){
             iamgeView.setBackgroundResource(R.drawable.default_avatar);
         }else{
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("uid", Constant.UID+"");
             GetAvatar(map);
         }
@@ -432,7 +436,7 @@ public class MyUserInfoActivity extends Activity {
     @SuppressLint("SdCardPath")
     private void updateAvatarInServer(final String image) {
 
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         if ((new File(Constant.IMAGE_PATH + image)).exists()) {
             map.put("upload", Constant.IMAGE_PATH + image);
             // map.put("image", image);
@@ -461,8 +465,7 @@ public class MyUserInfoActivity extends Activity {
                         if(avatar!=null){
                             String filename = avatar
                                     .substring(avatar.lastIndexOf("/") + 1);
-                            Bitmap bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
-                                    + imageName);
+                            Bitmap bitmap;
                             BitmapFactory.Options options = new BitmapFactory.Options();
                             options.inJustDecodeBounds = false;
                             options.inSampleSize = 1; // width，hight设为原来的十分一
@@ -510,9 +513,13 @@ public class MyUserInfoActivity extends Activity {
                                 Toast.LENGTH_SHORT).show();
 
                     } else {
+                        if(!Constant.isConnectNet){
+                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "服务器繁忙请重试...",
+                                    Toast.LENGTH_SHORT).show();
+                        }
 
-                        Toast.makeText(context, "服务器繁忙请重试...",
-                                Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -532,7 +539,6 @@ public class MyUserInfoActivity extends Activity {
 
     /***
      * 从服务器端获取头像
-     * @param params
      */
     public void GetAvatar(final Object... params) {
         new AsyncTask<Object, Object,Map<String, Object>>() {
@@ -540,7 +546,7 @@ public class MyUserInfoActivity extends Activity {
             @SuppressWarnings("unchecked")
             @Override
             protected Map<String, Object> doInBackground(Object... params) {
-                Map<String, Object> status=new HashMap<String, Object>();
+                Map<String, Object> status;
                 try {
                     status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
                     return status;
@@ -561,23 +567,25 @@ public class MyUserInfoActivity extends Activity {
                                 .setUserInfo("avatar", info);
                         showUserAvatar(iv_avatar, info);
                     }else {
-                        Toast.makeText(context, "头像获取失败！", Toast.LENGTH_LONG)
-                                .show();
-
+                        if(!Constant.isConnectNet){
+                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "头像获取失败！", Toast.LENGTH_LONG)
+                                    .show();
+                        }
                     }
                 }
-            };
+            }
 
         }.execute(params);}
 
 
     /***
      * 修改性别
-     * @param params
      */
     public void updateSex(final String sexnum) {
         isUpload=true;
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         map.put("sex", sexnum);
         map.put("uid", Constant.UID+"");
@@ -610,8 +618,12 @@ public class MyUserInfoActivity extends Activity {
                                 Toast.LENGTH_SHORT).show();
                     } else {
 
-                        Toast.makeText(context, "服务器繁忙请重试...",
-                                Toast.LENGTH_SHORT).show();
+                        if(!Constant.isConnectNet){
+                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "服务器繁忙请重试...",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 } catch (JSONException e) {

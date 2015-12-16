@@ -13,13 +13,13 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -33,7 +33,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
@@ -41,10 +40,12 @@
         android:name="com.eventer.app.MyApplication"
         android:allowBackup="true"
         android:configChanges="orientation|screenSize"
-        android:debuggable="false"
+        android:debuggable="true"
+        android:exported="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
+        android:supportsRtl="true"
         android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         <activity
             android:name="com.eventer.app.main.MainActivity"
@@ -59,6 +60,7 @@
         <!-- 开屏页 -->
         <activity
             android:name="com.eventer.app.main.LoadActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
@@ -68,14 +70,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.eventer.app.main.RegisterActivity"
-            android:label="@string/title_activity_register"
-            android:theme="@style/TitleTheme" >
+        <activity android:name="com.eventer.app.main.RegisterActivity" >
         </activity>
-        <activity
-            android:name="com.eventer.app.main.ResetPwdActivity"
-            android:label="@string/title_activity_reset_pwd" >
+        <activity android:name="com.eventer.app.main.ResetPwdActivity" >
         </activity>
         <activity android:name="com.eventer.app.main.CheckPhoneActivity" >
         </activity>
@@ -256,14 +253,37 @@
             android:label="@string/title_activity_share_event" >
         </activity>
         -->
+        <receiver android:name="com.eventer.app.receiver.NetworkReceiver" >
+            <intent-filter android:priority="2147483647" >
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- monitor network change -->
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.eventer.app.service.CheckInternetService" >
+        </service>
+
+        <receiver android:name="com.eventer.app.receiver.NoNetReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.ISGOODORBAD" />
+ <!-- 对网络不可用的情况进行反馈 -->
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.eventer.app.other.GroupSchedualActivity"
             android:label="@string/title_activity_group_share" >
         </activity>
+        <!--
         <activity
-            android:name="com.eventer.app.other.ShareSingleShecdualActivity"
+            android:name=".other.ShareSingleShecdualActivity"
             android:label="@string/title_activity_share_single_shecdual" >
         </activity>
+        -->
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
@@ -274,7 +294,6 @@
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        <activity android:name="com.umeng.fb.ConversationActivity" />
 
         <meta-data
             android:name="UMENG_APPKEY"

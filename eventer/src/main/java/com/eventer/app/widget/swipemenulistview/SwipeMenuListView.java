@@ -1,7 +1,6 @@
 package com.eventer.app.widget.swipemenulistview;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -12,8 +11,8 @@ import android.widget.ListView;
 
 /**
  * @author baoyz
- * @date 2014-8-18
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class SwipeMenuListView extends ListView {
 
     private static final int TOUCH_STATE_NONE = 0;
@@ -212,21 +211,19 @@ public class SwipeMenuListView extends ListView {
                 break;
             case MotionEvent.ACTION_UP:
                 if (mTouchState == TOUCH_STATE_X) {
-                    if (mTouchView != null) {
-                        boolean isBeforeOpen = mTouchView.isOpen();
-                        mTouchView.onSwipe(ev);
-                        boolean isAfterOpen = mTouchView.isOpen();
-                        if (isBeforeOpen != isAfterOpen && mOnMenuStateChangeListener != null) {
-                            if (isAfterOpen) {
-                                mOnMenuStateChangeListener.onMenuOpen(mTouchPosition);
-                            } else {
-                                mOnMenuStateChangeListener.onMenuClose(mTouchPosition);
-                            }
+                    boolean isBeforeOpen = mTouchView.isOpen();
+                    mTouchView.onSwipe(ev);
+                    boolean isAfterOpen = mTouchView.isOpen();
+                    if (isBeforeOpen != isAfterOpen && mOnMenuStateChangeListener != null) {
+                        if (isAfterOpen) {
+                            mOnMenuStateChangeListener.onMenuOpen(mTouchPosition);
+                        } else {
+                            mOnMenuStateChangeListener.onMenuClose(mTouchPosition);
                         }
-                        if (!isAfterOpen) {
-                            mTouchPosition = -1;
-                            mTouchView = null;
-                        }
+                    }
+                    if (!isAfterOpen) {
+                        mTouchPosition = -1;
+                        mTouchView = null;
                     }
                     if (mOnSwipeListener != null) {
                         mOnSwipeListener.onSwipeEnd(mTouchPosition);
@@ -284,17 +281,17 @@ public class SwipeMenuListView extends ListView {
         mOnMenuStateChangeListener = onMenuStateChangeListener;
     }
 
-    public static interface OnMenuItemClickListener {
+    public interface OnMenuItemClickListener {
         boolean onMenuItemClick(int position, SwipeMenu menu, int index);
     }
 
-    public static interface OnSwipeListener {
+    public interface OnSwipeListener {
         void onSwipeStart(int position);
 
         void onSwipeEnd(int position);
     }
 
-    public static interface OnMenuStateChangeListener {
+    public interface OnMenuStateChangeListener {
         void onMenuOpen(int position);
 
         void onMenuClose(int position);

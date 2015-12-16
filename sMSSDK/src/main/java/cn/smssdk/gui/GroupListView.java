@@ -7,20 +7,20 @@
  */
 package cn.smssdk.gui;
 
-import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
 /**自定义控件-城市列表*/
+@SuppressWarnings({"UnusedDeclaration"})
 public class GroupListView extends RelativeLayout {
 	private ListView lvBody;
 	private InnerAdapter innerAdapter;
@@ -28,7 +28,6 @@ public class GroupListView extends RelativeLayout {
 	private View tvTitle;
 	private int curFirstItem;
 	private int titleHeight;
-	private OnScrollListener osListener;
 	private OnItemClickListener oicListener;
 
 	public GroupListView(Context context) {
@@ -51,26 +50,6 @@ public class GroupListView extends RelativeLayout {
 		lvBody.setCacheColorHint(0);
 		lvBody.setSelector(new ColorDrawable());
 		lvBody.setVerticalScrollBarEnabled(false);
-		lvBody.setOnScrollListener(new OnScrollListener() {
-
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if (osListener != null) {
-					osListener.onScrollStateChanged(view, scrollState);
-				}
-			}
-
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				curFirstItem = firstVisibleItem;
-				if (tvTitle != null) {
-					GroupListView.this.onScroll();
-				}
-
-				if (osListener != null) {
-					osListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-				}
-			}
-		});
 		// 设置国家列表的点击事件
 		lvBody.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
@@ -166,9 +145,7 @@ public class GroupListView extends RelativeLayout {
 		}
 	}
 
-	public void setOnScrollListener(OnScrollListener l) {
-		osListener = l;
-	}
+
 
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		oicListener = listener;
@@ -289,41 +266,29 @@ public class GroupListView extends RelativeLayout {
 
 		/**
 		 * 得到group listview 某组的子item数
-		 * @param group
 		 */
 		public abstract int getCount(int group);
 
 		/**
 		 * 得到group listview 某组的title 标题
-		 * @param group
-		 * @return
 		 */
 		public abstract String getGroupTitle(int group);
 
 		/**
 		 * 获取group listview 某组的第几个位置的数据对象
-		 * @param group
-		 * @param position
-		 * @return
+
 		 */
 		public abstract Object getItem(int group, int position);
 
 		/**
 		 * 获取group listview某组的组标题的View
-		 * @param group
-		 * @param convertView
-		 * @param parent
-		 * @return
+
 		 */
 		public abstract View getTitleView(int group, View convertView, ViewGroup parent);
 
 		/**
 		 * 获取group listview 某组的第几个位置的item的View
-		 * @param group
-		 * @param position
-		 * @param convertView
-		 * @param parent
-		 * @return
+
 		 */
 		public abstract View getView(int group, int position, View convertView, ViewGroup parent);
 
@@ -339,9 +304,9 @@ public class GroupListView extends RelativeLayout {
 	 * group list view 的 item 点击事件监听接口
 	 *
 	 */
-	public static interface OnItemClickListener {
+	public  interface OnItemClickListener {
 
-		public void onItemClick(GroupListView parent, View view, int group, int position);
+		 void onItemClick(GroupListView parent, View view, int group, int position);
 
 	}
 

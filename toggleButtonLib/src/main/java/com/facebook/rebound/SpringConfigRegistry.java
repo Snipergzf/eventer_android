@@ -17,6 +17,7 @@ import java.util.Map;
 /**
  * class for maintaining a registry of all spring configs
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class SpringConfigRegistry {
 
   private static final SpringConfigRegistry INSTANCE = new SpringConfigRegistry(true);

@@ -1,27 +1,23 @@
 package com.eventer.app.task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+@SuppressWarnings({"UnusedDeclaration"})
 public class Contact {
 	private Context context;
-	public Contact() {
-		// TODO Auto-generated constructor stub
-	}
+
 
 	public Contact(Context context){
 		this.context = context;
@@ -30,13 +26,12 @@ public class Contact {
 		Map<String, String> map=getPhoneContacts();
 		Map<String, String> map2 =GetSimContact();
 		Set<String> set = map2.keySet();
-		Iterator<String> iterator = set.iterator();
-		while (iterator.hasNext()) {
+		for (String aSet : set) {
 			String key;
 			String value;
-			key=iterator.next().toString();
-			if(!map.containsKey(key)){
-				value=map.get(key);
+			key = aSet;
+			if (!map.containsKey(key)) {
+				value = map.get(key);
 				map.put(key, value);
 			}
 		}
@@ -45,10 +40,13 @@ public class Contact {
 	}
 
 	public Map<String, String> getPhoneContacts() {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		ContentResolver cr =context.getContentResolver();
 		//取得电话本中开始一项的光标，必须先moveToNext()
 		Cursor cursor =cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
+		if(cursor==null){
+			return map;
+		}
 		while(cursor.moveToNext()){
 			//取得联系人的名字索引
 			int nameIndex  =cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME);
@@ -74,7 +72,9 @@ public class Contact {
 //	             }else {  
 //	                 contactPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.bg_head);  
 //	             }  
-
+			if(phone==null){
+				break;
+			}
 			while(phone.moveToNext()){
 				String phoneNumber =phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
@@ -89,14 +89,14 @@ public class Contact {
 	}
 
 	public Map<String, String> GetSimContact(){
-		Map<String, String> list = new HashMap<String, String>();
+		Map<String, String> list = new HashMap<>();
 		try{
 			Intent intent = new Intent();
 			intent.setData(Uri.parse("content://icc/adn"));
 			Uri uri = intent.getData();
 			ContentResolver cr = context.getContentResolver();
 			Cursor cursor =context.getContentResolver().query(uri, null, null, null, null);
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, String> map = new HashMap<>();
 			if (cursor != null) {
 				while(cursor.moveToNext()){
 					//取得联系人的名字索引
@@ -109,6 +109,9 @@ public class Contact {
 							ContactsContract.CommonDataKinds.Phone.CONTACT_ID+ " = "
 									+ contactId, null, null);//第一个参数是确定查询电话号，第三个参数是查询具体某个人的过滤值
 					//一个人可能有几个号码
+					if(phone==null){
+						break;
+					}
 					while(phone.moveToNext()){
 						String phoneNumber =phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						if(!map.containsKey(phoneNumber)){
@@ -122,17 +125,22 @@ public class Contact {
 				cursor.close();
 			}
 
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return list;
 	}
 
 
 
 	public List<Map<String, String>> getPhoneContactsList() {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> list = new ArrayList<>();
 		ContentResolver cr =context.getContentResolver();
 		//取得电话本中开始一项的光标，必须先moveToNext()
 		Cursor cursor =cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
+		if (cursor==null){
+			return list;
+		}
 		while(cursor.moveToNext()){
 			//取得联系人的名字索引
 			int nameIndex  =cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME);
@@ -159,11 +167,13 @@ public class Contact {
 			//          }else {
 			//              contactPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.bg_head);
 			//          }
-
+			if(phone==null){
+				break;
+			}
 			while(phone.moveToNext()){
 				String phoneNumber =phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 				Log.e("1","1----------phone---"+phoneNumber);
-				Map<String, String> map = new HashMap<String, String>();
+				Map<String, String> map = new HashMap<>();
 				map.put("name", name);
 				map.put("phone", phoneNumber);
 				list.add(map);
@@ -175,14 +185,14 @@ public class Contact {
 	}
 
 	public List<Map<String, String>> GetSimContactList(){
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> list = new ArrayList<>();
 		try{
 			Intent intent = new Intent();
 			intent.setData(Uri.parse("content://icc/adn"));
 			Uri uri = intent.getData();
 			ContentResolver cr = context.getContentResolver();
 			Cursor cursor =context.getContentResolver().query(uri, null, null, null, null);
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, String> map ;
 			if (cursor != null) {
 				while(cursor.moveToNext()){
 					//取得联系人的名字索引
@@ -195,9 +205,12 @@ public class Contact {
 							ContactsContract.CommonDataKinds.Phone.CONTACT_ID+ " = "
 									+ contactId, null, null);//第一个参数是确定查询电话号，第三个参数是查询具体某个人的过滤值
 					//一个人可能有几个号码
+					if(phone==null){
+						break;
+					}
 					while(phone.moveToNext()){
 						String phoneNumber =phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-						map = new HashMap<String, String>();
+						map = new HashMap<>();
 						map.put("name", name);
 						map.put("phone", phoneNumber);
 						Log.e("1","3------------"+name+"------"+phone);
@@ -209,7 +222,9 @@ public class Contact {
 				cursor.close();
 			}
 
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return list;
 	}
 }

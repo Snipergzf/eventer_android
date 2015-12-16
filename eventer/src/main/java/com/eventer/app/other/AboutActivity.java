@@ -14,17 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-public class AboutActivity extends BaseActivity implements OnClickListener{
-    private RelativeLayout re_tell_friend,re_our_team;
-    private TextView tv_app_info;
+public class AboutActivity extends BaseActivityTest implements OnClickListener{
+    RelativeLayout re_tell_friend,re_our_team;
+    TextView tv_app_info;
     private Context context;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
+//		TextView title=(TextView)findViewById(R.id.tv_title);
+//		title.setText(R.string.about);
+		setBaseTitle(R.string.about);
 		context=this;
 		initView();
 	}

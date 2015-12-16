@@ -1,30 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.MyApplication;
-import com.eventer.app.R;
-import com.eventer.app.db.ChatEntityDao;
-import com.eventer.app.db.ChatroomDao;
-import com.eventer.app.db.UserDao;
-import com.eventer.app.entity.ChatRoom;
-import com.eventer.app.entity.UserInfo;
-import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivity;
-import com.eventer.app.util.FileUtil;
-import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.ExpandGridView;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -46,6 +21,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.MyApplication;
+import com.eventer.app.R;
+import com.eventer.app.db.ChatEntityDao;
+import com.eventer.app.db.ChatroomDao;
+import com.eventer.app.db.UserDao;
+import com.eventer.app.entity.ChatRoom;
+import com.eventer.app.entity.UserInfo;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.task.LoadUserAvatar;
+import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.util.FileUtil;
+import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.ExpandGridView;
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
 public class ChatRoomSettingActivity extends BaseActivity implements
 		OnClickListener {
 	private TextView tv_groupname;
@@ -54,17 +54,17 @@ public class ChatRoomSettingActivity extends BaseActivity implements
 	// 成员总数
 	int m_total = 0;
 	// 成员列表
-	private ExpandGridView gridview;
+	ExpandGridView gridview;
 	private RelativeLayout re_change_groupname;
 	private RelativeLayout re_clear;
-	private FileUtil fileUtil;
+	FileUtil fileUtil;
 	// 删除并退出
 	private Button exitBtn;
-	List<UserInfo> members = new ArrayList<UserInfo>();
+	List<UserInfo> members = new ArrayList<>();
 	String[] member;
 	String[] display;
 	int display_index=0;
-	String longClickUsername = null;
+
 
 	private String groupId;
 	private ChatRoom group;
@@ -130,11 +130,11 @@ public class ChatRoomSettingActivity extends BaseActivity implements
 	}
 
 	// 显示群成员头像昵称的gridview
-	@SuppressLint("ClickableViewAccessibility")
-	private void showMembers() {
-
-
-	}
+//	@SuppressLint("ClickableViewAccessibility")
+//	private void showMembers() {
+//
+//
+//	}
 
 	@Override
 	public void onClick(View v) {
@@ -191,10 +191,10 @@ public class ChatRoomSettingActivity extends BaseActivity implements
 		@Override
 		public View getView(final int position, View convertView,
 							final ViewGroup parent) {
-			ViewHolder holder = null;
+			ViewHolder holder ;
 			if (convertView == null) {
 				convertView = LayoutInflater.from(context).inflate(
-						R.layout.social_chatsetting_gridview_item, null);
+						R.layout.social_chatsetting_gridview_item, parent, false);
 				holder=new ViewHolder();
 				holder.iv_avatar =  (ImageView)convertView.findViewById(R.id.iv_avatar);
 				holder.tv_username = (TextView) convertView.findViewById(R.id.tv_username);
@@ -301,7 +301,7 @@ public class ChatRoomSettingActivity extends BaseActivity implements
 
 	private void getGroupMember(final String groupId) {
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("group_id", groupId);
 		map.put("uid", Constant.UID);
 
@@ -402,8 +402,8 @@ public class ChatRoomSettingActivity extends BaseActivity implements
 					ChatroomDao dao = new ChatroomDao(context);
 					group = dao.getRoom(groupId);
 					// 获取封装的群名（里面封装了显示的群名和群组成员的信息）
-					if(group!=null){
-
+					if(group==null){
+						return;
 					}
 					String group_name = group.getRoomname();
 					tv_groupname.setText(group_name);
@@ -459,7 +459,7 @@ public class ChatRoomSettingActivity extends BaseActivity implements
 	}
 
 	private void getUserInfo(String uid,final int pos){
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("uid", uid);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_USERINFO, map);
 		task.getData(new DataCallBack() {

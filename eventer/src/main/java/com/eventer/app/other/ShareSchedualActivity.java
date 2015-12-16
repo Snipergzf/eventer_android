@@ -1,11 +1,26 @@
 package com.eventer.app.other;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -23,58 +38,46 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.CircleImageView;
 import com.eventer.app.widget.ExpandGridView;
 import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import hirondelle.date4j.DateTime;
 
-@SuppressLint({ "SimpleDateFormat", "InflateParams" })
-public class ShareSchedualActivity extends BaseActivity {
+@SuppressLint({ "SimpleDateFormat", "InflateParams","SetTextI18n" })
+public class ShareSchedualActivity extends BaseActivityTest {
 	private Context context;
 	private String shareId;
-	private ChatEntity message;
+	ChatEntity message;
 	private CircleImageView iv_avatar;
 	private TextView tv_nick,tv_title,tv_time,tv_place,
 			tv_detail,tv_page_title,tv_time_info,tv_attend_num;
-	private ImageView iv_finish,iv_collect;
+	ImageView iv_finish,iv_collect;
 	private TextView tv_collect;
 	private ExpandGridView gridview;
-	private Schedual schedual_db=new Schedual();
+	Schedual schedual_db=new Schedual();
 	private Schedual schedual=new Schedual();
-	private GridAdapter adapter;
+	GridAdapter adapter;
 	private String publisher;
 	private LoadUserAvatar avatarLoader;
-	private LinearLayout li_collect;
+	LinearLayout li_collect;
 	private boolean isCollect=false;
-	List<UserInfo> members = new ArrayList<UserInfo>();
+	List<UserInfo> members = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_share_event);
 		context=this;
+		setBaseTitle(R.string.share_activity);
 		shareId=getIntent().getStringExtra("shareId");
 		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
 		if(!TextUtils.isEmpty(shareId)){
@@ -126,7 +129,7 @@ public class ShareSchedualActivity extends BaseActivity {
 					tv_collect.setText("取消");
 					isCollect=true;
 					SchedualDao dao=new SchedualDao(context);
-					schedual.setSchdeual_ID(System.currentTimeMillis()/1000);
+					schedual.setSchdeual_ID(System.currentTimeMillis() / 1000);
 					int status=getStatus( schedual.getEndtime(), schedual.getStarttime());
 					schedual.setStatus(status);
 					schedual.setShareId(shareId);
@@ -139,7 +142,10 @@ public class ShareSchedualActivity extends BaseActivity {
 					json.put("share", shareTo);
 					schedual.setFriend(json.toJSONString());
 					dao.saveSchedual(schedual);
-					sendMsg(4,array.toJSONString());
+					if(Constant.isConnectNet)
+						sendMsg(4,array.toJSONString());
+					else
+						Toast.makeText(getApplicationContext(),getText(R.string.no_network),Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -149,7 +155,7 @@ public class ShareSchedualActivity extends BaseActivity {
 	}
 
 	private void sendMsg(int type,String friend){
-		String body="";
+		String body;
 		JSONObject content_json = new JSONObject();
 		String friend_json=schedual.getFriend();
 		JSONObject json=JSONObject.parseObject(friend_json);
@@ -183,7 +189,8 @@ public class ShareSchedualActivity extends BaseActivity {
 			String id=(String) share;
 			msg.setFrom(id);
 			dao.saveMessage(msg);
-			if(id.indexOf("@")!=-1){
+
+			if(id.contains("@")){
 				MainActivity.instance.newMsg(id, id, body, 49);
 			}else{
 				MainActivity.instance.newMsg("1", id, body,17);
@@ -224,7 +231,12 @@ public class ShareSchedualActivity extends BaseActivity {
 				if(array.contains(Constant.UID)){
 					array.remove(Constant.UID);
 				}
-				sendMsg(5,array.toJSONString());
+				if(Constant.isConnectNet){
+					sendMsg(5,array.toJSONString());
+				}else{
+					Toast.makeText(getApplicationContext(),getText(R.string.no_network),Toast.LENGTH_SHORT).show();
+				}
+
 				dlg.cancel();
 			}
 		});
@@ -251,7 +263,7 @@ public class ShareSchedualActivity extends BaseActivity {
 			isCollect=true;
 		}
 		String detail="",end="",start="",place="",title="",friend="";
-		members=new ArrayList<UserInfo>();
+		members=new ArrayList<>();
 		int _f=0,type=0;
 		if(message!=null){
 			String content=message.getContent();
@@ -286,7 +298,7 @@ public class ShareSchedualActivity extends BaseActivity {
 				share_json.put("share",array);
 				schedual.setFriend(share_json.toJSONString());
 			}catch(Exception e){
-
+                e.printStackTrace();
 			}
 		}else if(schedual_db!=null){
 			detail=schedual_db.getDetail();
@@ -328,19 +340,19 @@ public class ShareSchedualActivity extends BaseActivity {
 			tv_title.setText(title);
 		}else{
 			tv_title.setText("未填写");
-			tv_title.setTextColor(getResources().getColorStateList(R.color.caldroid_lighter_gray));
+			tv_title.setTextColor(ContextCompat.getColor(context, R.color.caldroid_lighter_gray));
 		}
 		if(!TextUtils.isEmpty(place)){
 			tv_place.setText(place);
 		}else{
 			tv_place.setText("未填写");
-			tv_place.setTextColor(getResources().getColorStateList(R.color.caldroid_lighter_gray));
+			tv_place.setTextColor(ContextCompat.getColor(context, R.color.caldroid_lighter_gray));
 		}
 		if(!TextUtils.isEmpty(detail)){
 			tv_detail.setText(detail);
 		}else{
 			tv_detail.setText("未填写");
-			tv_detail.setTextColor(getResources().getColorStateList(R.color.caldroid_lighter_gray));
+			tv_detail.setTextColor(ContextCompat.getColor(context, R.color.caldroid_lighter_gray));
 		}
 
 		JSONArray array=JSONArray.parseArray(friend);
@@ -370,9 +382,9 @@ public class ShareSchedualActivity extends BaseActivity {
 				user.setNick(LocalUserInfo.getInstance(context).getUserInfo("nick"));
 				user.setUsername(name);
 				members.add(user);
-				synchronized (gridview){
+//				synchronized (gridview){
 					gridview.notifyAll();
-				}
+//				}
 			}else if(MyApplication.getInstance().getContactList().containsKey(name)){
 				UserInfo user=new UserInfo();
 				User u=MyApplication.getInstance().getContactList().get(name);
@@ -385,18 +397,18 @@ public class ShareSchedualActivity extends BaseActivity {
 					user.setNick(Beizhu);
 				}
 				members.add(user);
-				synchronized (gridview){
+//				synchronized (gridview){
 					gridview.notifyAll();
-				}
+//				}
 
 			}else if(MyApplication.getInstance().getUserList().containsKey(name)){
 				UserInfo u=MyApplication.getInstance().getUserList().get(name);
 				members.add(u);
-				synchronized (gridview){
+//				synchronized (gridview){
 					gridview.notifyAll();
-				}
+//				}
 			}else{
-				Map<String,String> map=new HashMap<String, String>();
+				Map<String,String> map=new HashMap<>();
 				map.put("uid", name);
 				LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_USERINFO, map);
 				task.getData(new DataCallBack() {
@@ -419,9 +431,9 @@ public class ShareSchedualActivity extends BaseActivity {
 									user.setUsername(name);
 									MyApplication.getInstance().addUser(user);
 									members.add(user);
-									synchronized (gridview){
-										gridview.notifyAll();
-									}
+
+									gridview.notifyAll();
+
 									break;
 								default:
 									Log.e("1", "获取用户信息失败：");
@@ -453,7 +465,7 @@ public class ShareSchedualActivity extends BaseActivity {
 			String avatar=u.getAvatar();
 			showUserAvatar(iv_avatar, avatar);
 		}else{
-			Map<String,String> map=new HashMap<String, String>();
+			Map<String,String> map=new HashMap<>();
 			map.put("uid", publisher);
 			LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_USERINFO, map);
 			task.getData(new DataCallBack() {
@@ -491,10 +503,10 @@ public class ShareSchedualActivity extends BaseActivity {
 	}
 	private String getRemindTime(String start, int span) {
 		// TODO Auto-generated method stub
-		String rTime=null;
+		String rTime;
 		start=start.substring(0,16);
 		DateTime begin=new DateTime(start+":00");
-		DateTime r=null;
+		DateTime r;
 		switch(span){
 			case 1:
 				r=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
@@ -520,8 +532,7 @@ public class ShareSchedualActivity extends BaseActivity {
 	}
 	public String getTime(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date(now));
-		return date;
+		return sdf.format(new Date(now));
 	}
 
 

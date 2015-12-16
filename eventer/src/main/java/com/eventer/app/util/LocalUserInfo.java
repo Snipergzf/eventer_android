@@ -1,9 +1,9 @@
 package com.eventer.app.util;
 
-import com.eventer.app.Constant;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.eventer.app.Constant;
 
 public class LocalUserInfo {
 
@@ -23,8 +23,7 @@ public class LocalUserInfo {
     /**
      * 单例模式，获取instance实例
      *
-     * @param cxt
-     * @return
+
      */
     public static LocalUserInfo getInstance(Context cxt) {
         if (mPreferenceUtils == null) {

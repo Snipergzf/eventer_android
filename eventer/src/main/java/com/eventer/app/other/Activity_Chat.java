@@ -1,48 +1,11 @@
 package com.eventer.app.other;
 
-import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.MyApplication;
-import com.eventer.app.R;
-import com.eventer.app.adapter.ExpressionAdapter;
-import com.eventer.app.adapter.ExpressionPagerAdapter;
-import com.eventer.app.adapter.MessageAdapter;
-import com.eventer.app.db.ChatEntityDao;
-import com.eventer.app.db.ChatroomDao;
-import com.eventer.app.db.UserDao;
-import com.eventer.app.entity.ChatEntity;
-import com.eventer.app.entity.ChatRoom;
-import com.eventer.app.entity.User;
-import com.eventer.app.entity.UserInfo;
-import com.eventer.app.http.HttpUnit;
-import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.main.MainActivity;
-import com.eventer.app.main.MessageFragment;
-import com.eventer.app.util.SmileUtils;
-import com.eventer.app.widget.ExpandGridView;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,6 +35,43 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.MyApplication;
+import com.eventer.app.R;
+import com.eventer.app.adapter.ExpressionAdapter;
+import com.eventer.app.adapter.ExpressionPagerAdapter;
+import com.eventer.app.adapter.MessageAdapter;
+import com.eventer.app.db.ChatEntityDao;
+import com.eventer.app.db.ChatroomDao;
+import com.eventer.app.db.UserDao;
+import com.eventer.app.entity.ChatEntity;
+import com.eventer.app.entity.ChatRoom;
+import com.eventer.app.entity.User;
+import com.eventer.app.entity.UserInfo;
+import com.eventer.app.http.HttpUnit;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.main.MainActivity;
+import com.eventer.app.main.MessageFragment;
+import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.util.SmileUtils;
+import com.eventer.app.widget.ExpandGridView;
+import com.umeng.analytics.MobclickAgent;
+
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+
 import hirondelle.date4j.DateTime;
 
 /**
@@ -80,61 +80,53 @@ import hirondelle.date4j.DateTime;
  */
 @SuppressLint({ "HandlerLeak", "SimpleDateFormat" })
 @SuppressWarnings("deprecation")
-public class Activity_Chat extends Activity implements OnClickListener {
-	public static final int REQUEST_CODE_CONTEXT_MENU = 3;
+public class Activity_Chat extends BaseActivityTest implements OnClickListener {
 	public static final int REQUEST_CODE_GROUP_DETAIL = 21;
 	public static final int RESULT_CODE_EXIT_GROUP = 7;
 	public static final int CHATTYPE_SINGLE = 1;
 	public static final int CHATTYPE_GROUP = 2;
-	private ImageView micImage;
 	private ListView listView;
 	private EditText mEditTextContent;
 	private View buttonSetModeKeyboard;
 	private View buttonPressToSpeak;
-	// private ViewPager expressionViewpager;
 	private LinearLayout emojiIconContainer;
 	private LinearLayout btnContainer;
-	private ImageView iv_clear;
+	ImageView iv_clear;
 	private RelativeLayout re_notify;
 	private View more;
-	private ViewPager expressionViewpager;
+	ViewPager expressionViewpager;
 	private InputMethodManager manager;
 	private List<String> reslist;
-	private Drawable[] micImages;
 	private int chatType;
 	public static Activity_Chat instance = null;
 	// 给谁发送消息
 	private MessageAdapter adapter;
-	public static int resendPos;
-	private List<ChatEntity> mData = new ArrayList<ChatEntity>();
-	private Queue<String> toastqueue = new LinkedList<String>();
+	private List<ChatEntity> mData = new ArrayList<>();
+	Queue<String> toastqueue = new LinkedList<>();
 	private Handler mHandler;
 	private ImageView iv_emoticons_normal;
 	private ImageView iv_emoticons_checked;
 	private RelativeLayout edittext_layout;
 	private ProgressBar loadmorePB;
 	private boolean isloading;
-	private final int pagesize = 20;
+	final int pagesize = 20;
 	private boolean haveMoreData = true;
-	public String playMsgId;
 	private Context context;
 	public String talker;
-	private ImageView iv_back;
-	private TextView tv_name;
 	private User user = new User();
 	// 分享的照片
 	String iamge_path = null;
 	// 设置按钮
-	private ImageView iv_setting_group;
+	ImageView iv_setting_group;
 	private MsgReceiver msgReceiver;
-	@SuppressLint("HandlerLeak")
-	private Handler micImageHandler = new Handler() {
-		@Override
-		public void handleMessage(android.os.Message msg) {
-			// 切换msg切换图片
-			micImage.setImageDrawable(micImages[msg.what]);
-		}
-	};
+//	@SuppressLint("HandlerLeak")
+//	Handler micImageHandler = new Handler() {
+//		@Override
+//		public void handleMessage(android.os.Message msg) {
+//			// 切换msg切换图片
+//			micImage.setImageDrawable(micImages[msg.what]);
+//		}
+//	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,12 +134,13 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_chat);
 		context = Activity_Chat.this;
 		instance = this;
+		setBaseTitle(R.string.chat);
 		initView();
 		setUpView();
 		iamge_path = this.getIntent().getStringExtra("iamge_path");
-		if (iamge_path != null && !iamge_path.equals("")) {
-			// sendPicture(iamge_path, true);
-		}
+//		if (iamge_path != null && !iamge_path.equals("")) {
+//			// sendPicture(iamge_path, true);
+//		}
 		mHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -209,7 +202,6 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	 */
 	protected void initView() {
 
-		micImage = (ImageView) findViewById(R.id.mic_image);
 		listView = (ListView) findViewById(R.id.list);
 		mEditTextContent = (EditText) findViewById(R.id.et_sendmessage);
 		buttonSetModeKeyboard = findViewById(R.id.btn_set_mode_keyboard);
@@ -222,8 +214,6 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		iv_emoticons_normal = (ImageView) findViewById(R.id.iv_emoticons_normal);
 		iv_emoticons_checked = (ImageView) findViewById(R.id.iv_emoticons_checked);
 		loadmorePB = (ProgressBar) findViewById(R.id.pb_load_more);
-		iv_back = (ImageView) findViewById(R.id.iv_back);
-		tv_name = (TextView) findViewById(R.id.name);
 		iv_clear = (ImageView) findViewById(R.id.iv_clear);
 		re_notify = (RelativeLayout) findViewById(R.id.re_notify);
 		iv_clear.setOnClickListener(this);
@@ -236,11 +226,10 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		more = findViewById(R.id.more);
 		edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
-		iv_back.setOnClickListener(this);
 		// 表情list
 		reslist = getExpressionRes(54);
 		// 初始化表情viewpager
-		List<View> views = new ArrayList<View>();
+		List<View> views = new ArrayList<>();
 		View gv1 = getGridChildView(1);
 		View gv2 = getGridChildView(2);
 		View gv3 = getGridChildView(3);
@@ -295,7 +284,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		}
 		listView.setOnScrollListener(new ListScrollListener());
 		listView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-		adapter = new MessageAdapter(this, talker, mData, chatType);
+		adapter = new MessageAdapter(this, mData, chatType);
 		listView.setAdapter(adapter);
 		listView.setOnTouchListener(new OnTouchListener() {
 
@@ -319,9 +308,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	// 有未过期群日程，显示通知
 	private void initNotify() {
 		// TODO Auto-generated method stub
-		if (chatType == CHATTYPE_SINGLE) {
-			return;
-		} else {
+		if (chatType == CHATTYPE_GROUP) {
 			ChatEntityDao dao = new ChatEntityDao(context);
 			List<String> list = dao.getShareList(talker);
 			for (String string : list) {
@@ -334,10 +321,10 @@ public class Activity_Chat extends Activity implements OnClickListener {
 					String end = json.getString("schedual_end");
 					if (getStatus(end)) {
 						re_notify.setVisibility(View.VISIBLE);
-						return;
 					}
 
 				} catch (Exception e) {
+					e.printStackTrace();
 
 				}
 			}
@@ -346,8 +333,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 
 	public String getTime(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date(now));
-		return date;
+		return sdf.format(new Date(now));
 	}
 
 	// 获取日程状态
@@ -355,7 +341,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String nowtime = sdf.format(new Date());
-		int status = 0;
+		int status;
 		DateTime now = new DateTime(nowtime + ":00");
 		DateTime finish = new DateTime(end + ":00");
 
@@ -413,7 +399,6 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	/**
 	 * 显示键盘图标
 	 *
-	 * @param view
 	 */
 	public void setModeKeyboard(View view) {
 		edittext_layout.setVisibility(View.VISIBLE);
@@ -428,7 +413,6 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	/**
 	 * 点击文字输入框
 	 *
-	 * @param v
 	 */
 	public void editClick(View v) {
 		listView.setSelection(listView.getCount() - 1);
@@ -441,7 +425,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	}
 
 	public List<String> getExpressionRes(int getSum) {
-		List<String> reslist = new ArrayList<String>();
+		List<String> reslist = new ArrayList<>();
 		for (int x = 1; x <= getSum; x++) {
 			String filename = "e_" + x;
 
@@ -455,13 +439,11 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	/**
 	 * 获取表情的gridview的子view
 	 *
-	 * @param i
-	 * @return
 	 */
 	private View getGridChildView(int i) {
 		View view = View.inflate(this, R.layout.expression_gridview, null);
 		ExpandGridView gv = (ExpandGridView) view.findViewById(R.id.gridview);
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		if (i == 1) {
 			List<String> list1 = reslist.subList(0, 20);
 			list.addAll(list1);
@@ -485,7 +467,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 					// 按住说话可见，不让输入表情
 					if (buttonSetModeKeyboard.getVisibility() != View.VISIBLE) {
 
-						if (filename != "back_over") { // 不是删除键，显示表情
+						if (!filename.equals("back_over")) { // 不是删除键，显示表情
 							// 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
 							@SuppressWarnings("rawtypes")
 							Class clz = Class
@@ -527,6 +509,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 						}
 					}
 				} catch (Exception e) {
+					e.printStackTrace();
 				}
 
 			}
@@ -551,9 +534,9 @@ public class Activity_Chat extends Activity implements OnClickListener {
 			if (u != null) {
 				user = u;
 				if (!TextUtils.isEmpty(u.getBeizhu()))
-					tv_name.setText(u.getBeizhu());
+					setBaseTitle(u.getBeizhu());
 				else if (!TextUtils.isEmpty(u.getNick()))
-					tv_name.setText(u.getNick());
+					setBaseTitle(u.getNick());
 			} else {
 				UserInfo info = MyApplication.getInstance().getUserList()
 						.get(talker);
@@ -575,7 +558,8 @@ public class Activity_Chat extends Activity implements OnClickListener {
 			}
 			findViewById(R.id.container_voice_call).setVisibility(View.GONE);
 			// String groupName = getIntent().getStringExtra("groupName");
-			tv_name.setText(roomName);
+			setBaseTitle(roomName);
+
 		}
 		refresh();
 	}
@@ -614,13 +598,13 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		}
 	}
 
-	public String getToChatUsername() {
-		return talker;
-	}
+//	public String getToChatUsername() {
+//		return talker;
+//	}
 
 	private void send() {
 		String contString = mEditTextContent.getText().toString();
-		if (contString.length() > 0) {
+		if (Constant.isConnectNet&&contString.length() > 0) {
 			ChatEntity entity = new ChatEntity();
 			entity.setType(1);
 			entity.setFrom(talker);
@@ -632,13 +616,20 @@ public class Activity_Chat extends Activity implements OnClickListener {
 			adapter.notifyDataSetChanged();
 			mEditTextContent.setText("");
 			listView.setSelection(listView.getCount() - 1);
+		}else if(!Constant.isConnectNet){
+			Toast.makeText(context,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
 		}
 	}
 
+	@Override
+	public void back(View view){
+		startActivity(new Intent().setClass(context, MainActivity.class));
+		// scrollToFinishActivity();
+		finish();
+	}
 	/**
 	 * 消息图标点击事件
 	 *
-	 * @param view
 	 */
 	@Override
 	public void onClick(View view) {
@@ -654,11 +645,6 @@ public class Activity_Chat extends Activity implements OnClickListener {
 				} else {
 					sendText(s);
 				}
-				break;
-			case R.id.iv_back:
-				startActivity(new Intent().setClass(context, MainActivity.class));
-				// scrollToFinishActivity();
-				finish();
 				break;
 			case R.id.iv_emoticons_checked:
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
@@ -689,13 +675,11 @@ public class Activity_Chat extends Activity implements OnClickListener {
 
 	/**
 	 * 从服务器端拉取好友列表
-	 * @param s
-	 * @param msg
-	 * @param time
+	 *
 	 */
 	protected void isFriend(final String fid, final String s) {
 		// TODO Auto-generated method stub
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("uid", Constant.UID + "");
 		map.put("token", Constant.TOKEN);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(context,
@@ -710,8 +694,8 @@ public class Activity_Chat extends Activity implements OnClickListener {
 						Log.e("1", "friendlist");
 						JSONObject obj = data.getJSONObject("friend_action");
 						JSONArray friends = obj.getJSONArray("friends");
-						List<String> friend = new ArrayList<String>();
-						List<String> addFriend = new ArrayList<String>();
+						List<String> friend = new ArrayList<>();
+						List<String> addFriend = new ArrayList<>();
 						for (int i = 0; i < friends.size(); i++) {
 							friend.add(friends.get(i) + "");
 						}
@@ -761,9 +745,9 @@ public class Activity_Chat extends Activity implements OnClickListener {
 
 			protected void onPostExecute(Integer status) {
 				if (status == 0) {
-
+					Log.e("1", status.toString());
 				}
-			};
+			}
 
 		}.execute(params);
 	}
@@ -813,8 +797,6 @@ public class Activity_Chat extends Activity implements OnClickListener {
 	 *
 	 * @param content
 	 *            message content
-	 * @param isResend
-	 *            boolean resend
 	 */
 	private void sendText(String content) {
 
@@ -932,14 +914,13 @@ public class Activity_Chat extends Activity implements OnClickListener {
 		if (resultCode == RESULT_CODE_EXIT_GROUP) {
 			setResult(RESULT_OK);
 			finish();
-			return;
 		}
-		if (requestCode == REQUEST_CODE_CONTEXT_MENU) {
-
-		}
-		if (resultCode == RESULT_OK) { // 清空消息
-
-		}
+//		if (requestCode == REQUEST_CODE_CONTEXT_MENU) {
+//
+//		}
+//		if (resultCode == RESULT_OK) { // 清空消息
+//
+//		}
 	}
 
 	/**
@@ -956,7 +937,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 							&& haveMoreData) {
 						loadmorePB.setVisibility(View.VISIBLE);
 						// sdk初始化加载的聊天记录为20条，到顶时去db里获取更多
-						List<ChatEntity> messages = new ArrayList<ChatEntity>();
+						List<ChatEntity> messages;
 						try {
 							// 获取更多messges，调用此方法的时候从db获取的messages
 							ChatEntityDao dao = new ChatEntityDao(context);
@@ -971,6 +952,7 @@ public class Activity_Chat extends Activity implements OnClickListener {
 						try {
 							Thread.sleep(300);
 						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
 						if (messages.size() != 0) {
 							// 刷新ui

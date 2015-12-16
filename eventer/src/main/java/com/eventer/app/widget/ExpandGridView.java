@@ -13,11 +13,10 @@
  */
 package com.eventer.app.widget;
 
-import com.eventer.app.view.MyGridView;
-
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.GridView;
+
+import com.eventer.app.view.MyGridView;
 
 public class ExpandGridView extends MyGridView {
 

@@ -1,13 +1,7 @@
 package com.eventer.app.main;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,14 +37,17 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public  class ProfileFragment extends Fragment implements OnClickListener {
 
-	private RelativeLayout re_myinfo;
-	private RelativeLayout re_collect,re_history,re_msg_alert;
-	private RelativeLayout re_assist,re_version,re_about,re_feedback;
+	RelativeLayout re_myinfo;
+	RelativeLayout re_collect,re_history,re_msg_alert;
+	RelativeLayout re_assist,re_version,re_about,re_feedback;
 	private Context context;
-	private TextView tv_name;
+	TextView tv_name;
 	private ImageView iv_avatar;
 	private View iv_version_alert;
 	private LoadUserAvatar avatarLoader;
@@ -77,7 +74,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		tv_name=(TextView)rootView.findViewById(R.id.tv_name);
 		iv_avatar=(ImageView)rootView.findViewById(R.id.iv_avatar);
-		iv_version_alert=(View)rootView.findViewById(R.id.iv_version_alert);
+		iv_version_alert=rootView.findViewById(R.id.iv_version_alert);
 		re_myinfo=(RelativeLayout)rootView.findViewById(R.id.re_myinfo);
 		re_collect=(RelativeLayout)rootView.findViewById(R.id.re_collect);
 		re_history=(RelativeLayout)rootView.findViewById(R.id.re_history);
@@ -142,25 +139,30 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 				startActivity(new Intent().setClass(context, AssistFunctionActivity.class));
 				break;
 			case R.id.re_version_info://检查更新
-				PreferenceUtils.getInstance().setVersionAlert(false);
-				iv_version_alert.setVisibility(View.GONE);
-				UmengUpdateAgent.setDefault();
-				UmengUpdateAgent.setSlotId("54357");
-				UmengUpdateAgent.forceUpdate(context);
-				UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-					@Override
-					public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-						switch (updateStatus) {
-							// 有更新
-							case UpdateStatus.Yes:
-								break;
-							// 没有更新
-							default:
-								Toast.makeText(context, "当前 版本是最新版本！", Toast.LENGTH_SHORT).show();;
-								break;
+				if(Constant.isConnectNet){
+					PreferenceUtils.getInstance().setVersionAlert(false);
+					iv_version_alert.setVisibility(View.GONE);
+					UmengUpdateAgent.setDefault();
+					UmengUpdateAgent.setSlotId("54357");
+					UmengUpdateAgent.forceUpdate(context);
+					UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+						@Override
+						public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+							switch (updateStatus) {
+								// 有更新
+								case UpdateStatus.Yes:
+									break;
+								// 没有更新
+								default:
+									Toast.makeText(context, "当前 版本是最新版本！", Toast.LENGTH_SHORT).show();
+									break;
+							}
 						}
-					}
-				});
+					});
+				}else{
+					Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+				}
+
 				break;
 			case R.id.re_feedback://意见反馈
 				startActivity(new Intent().setClass(context, FeedbackActivity.class));
@@ -222,21 +224,20 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		}else if(avatar.equals("default")){
 			iamgeView.setBackgroundResource(R.drawable.default_avatar);
 		}else{
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, String> map = new HashMap<>();
 			map.put("uid", Constant.UID+"");
 			GetAvatar(map);
 		}
 	}
 	/***
-	 * 获取头像 
-	 * @param params
+	 * 获取头像
 	 */
 	public void GetAvatar(final Object... params) {
 		new AsyncTask<Object, Object,Map<String, Object>>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Map<String, Object> doInBackground(Object... params) {
-				Map<String, Object> status=new HashMap<String, Object>();
+				Map<String, Object> status;
 				try {
 					status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
 					return status;
@@ -259,7 +260,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 								.show();
 					}
 				}
-			};
+			}
 
 		}.execute(params);}
 
@@ -274,7 +275,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 			MyApplication.getInstance().setValueByKey("set_avatar", false);
 		}
 		MobclickAgent.onPageStart("MainScreen"); //统计页面
-		Map<String, String> map_value = new HashMap<String, String>();
+		Map<String, String> map_value = new HashMap<>();
 		map_value.put("type", "popular");
 		map_value.put("artist", "JJLin");
 

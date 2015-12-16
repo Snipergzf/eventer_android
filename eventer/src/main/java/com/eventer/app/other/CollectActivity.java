@@ -1,9 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +8,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.WindowManager.LayoutParams;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -28,13 +24,17 @@ import com.eventer.app.R;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-public class CollectActivity extends Activity {
-	private ListView listview;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CollectActivity extends BaseActivityTest {
+	ListView listview;
 	private MyEventAadpter adapter;
 	private Context context;
-	private List<Event> mData=new ArrayList<Event>();
+	private List<Event> mData=new ArrayList<>();
 	private EventOpDao dao;
 	private Dialog mDialog;
 	@Override
@@ -42,6 +42,7 @@ public class CollectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collect);
 		context=this;
+		setBaseTitle(R.string.my_collect);
 		dao=new EventOpDao(context);
 		initView();
 	}
@@ -96,12 +97,12 @@ public class CollectActivity extends Activity {
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			ViewHolder holder = null;
+			ViewHolder holder;
 			Event event=mData.get(position);
 			if (convertView == null) {
 				holder=new ViewHolder();
 				//可以理解为从vlist获取view  之后把view返回给ListView
-				convertView = mInflater.inflate(R.layout.item_collect_eventlist, null);
+				convertView = mInflater.inflate(R.layout.item_collect_eventlist, parent , false);
 				holder.title = (TextView)convertView.findViewById(R.id.tv_title);
 				holder.iv=(ImageView)convertView.findViewById(R.id.iv_collect);
 				holder.info=(TextView)convertView.findViewById(R.id.tv_info);

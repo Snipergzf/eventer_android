@@ -1,11 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -21,6 +15,12 @@ import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.other.Fragment_Addkc_Search;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * 简单的好友Adapter实现
  *
@@ -30,7 +30,6 @@ public class CourseAdapter  extends BaseAdapter {
 	private Context context;                        //运行上下文
 	private List<Course> listItems;
 	private LayoutInflater mInflater;            //视图容器
-	private boolean[] hasChecked;
 	private int res;
 	private String hint="";
 
@@ -110,7 +109,7 @@ public class CourseAdapter  extends BaseAdapter {
 
 		String name=item.getClassname();
 		String teacher=item.getTeacher();
-		if(hint!=null&&hint!=""){
+		if(hint!=null&&hint.equals("")){
 			if(name!=null){
 				name=name.replace(hint, "<font color=" + "\"" + "#F89012" + "\">"   +hint + "</font>" );
 			}else{
@@ -139,10 +138,10 @@ public class CourseAdapter  extends BaseAdapter {
 			int index=0;
 			while(it.hasNext()){
 				if(index==0){
-					JSONObject info=json.getJSONObject(it.next().toString());
+					JSONObject info=json.getJSONObject(it.next());
 					String[] weeklist=info.getString("week").split(",");
-					for(int i=0;i<weeklist.length;i++){
-						week+=weeklist[i]+"周 ";
+					for (String aWeeklist : weeklist) {
+						week += aWeeklist + "周 ";
 					}
 					String day=context.getResources().getStringArray(R.array.weeks)[info.getInt("day")];
 					time=day+" "+info.getString("time")+"节";
@@ -182,7 +181,8 @@ public class CourseAdapter  extends BaseAdapter {
 				}else{
 					CourseDao dao=new CourseDao(context);
 					dao.deleteCourse(listItems.get(loc).getClassid());
-					Fragment_Addkc_Search.ClassIdList.remove((Object)id);
+					Integer num=id;
+					Fragment_Addkc_Search.ClassIdList.remove(num);
 				}
 				notifyDataSetChanged();
 			}

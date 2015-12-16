@@ -21,16 +21,16 @@ import com.umeng.analytics.MobclickAgent;
 @SuppressLint("SimpleDateFormat")
 public class Calendar_AddSchedual extends FragmentActivity implements OnClickListener {
 
-	private TextView event_finish;
+	TextView event_finish;
 	private Button btn_schedual,btn_todo;
-	private ImageView iv_back;
+	ImageView iv_back;
 	private Fragment[] fragments;
-	private Fragment_AddSchedual fragment_add_schedual;
-	private Fragment_AddTodo fragment_add_todo;
+	Fragment_AddSchedual fragment_add_schedual;
+	Fragment_AddTodo fragment_add_todo;
 	private int currentIndex=0;
 	private Long id;
-	private boolean IsNew=true;
-	public static final String ARGUMENT = "argument";
+	boolean IsNew=true;
+//	public static final String ARGUMENT = "argument";
 	public static final String RESPONSE = "response";
 	private Context context;
 	public void onCreate(Bundle savedInstanceState) {

@@ -1,10 +1,25 @@
 package com.eventer.app.adapter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TextView.BufferType;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -29,28 +44,13 @@ import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.SmileUtils;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.TextView.BufferType;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@SuppressLint({ "SdCardPath", "InflateParams" })
+@SuppressLint({ "SdCardPath", "InflateParams" ,"SetTextI18n"})
 public class MessageAdapter extends BaseAdapter {
 
 	private static final int MESSAGE_TYPE_TXT = 1;
@@ -60,11 +60,11 @@ public class MessageAdapter extends BaseAdapter {
 	private static final int GROUP_INVITE_NOTIFICATION=8;
 	private LayoutInflater inflater;
 	private LoadUserAvatar avatarLoader;
-	private List<ChatEntity> msglist = new ArrayList<ChatEntity>();
+	private List<ChatEntity> msglist = new ArrayList<>();
 	private Context context;
 	private int chatType;
 
-	public MessageAdapter(Context context, String username,
+	public MessageAdapter(Context context,
 						  List<ChatEntity> msglist, int chatType) {
 		this.context = context;
 		inflater = LayoutInflater.from(context);
@@ -142,6 +142,9 @@ public class MessageAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			convertView = createViewByMessage(message);
 			final View view = convertView;
+			if(convertView!=null){
+
+			}
 			switch (message.getType()) {
 				case 4:
 				case 5:
@@ -172,7 +175,9 @@ public class MessageAdapter extends BaseAdapter {
 						holder.tv = (TextView) convertView
 								.findViewById(R.id.tv_chatcontent);
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
+
 
 					holder.tv.setOnLongClickListener(new OnLongClickListener() {
 						@Override
@@ -189,8 +194,7 @@ public class MessageAdapter extends BaseAdapter {
 							// TODO Auto-generated method stub
 							String txt = message.getContent();
 							Log.e("1", txt);
-							if (message.getStatus() > 1) {
-							} else {
+							if (message.getStatus() < 2) {
 								if (chatType == Activity_Chat.CHATTYPE_GROUP) {
 									int i = message.getContent().indexOf(":\n");
 									txt = "";
@@ -211,7 +215,7 @@ public class MessageAdapter extends BaseAdapter {
 										intent.putExtra("event_id", event_id);
 										context.startActivity(intent);
 									} catch (Exception e) {
-
+										e.printStackTrace();
 									}
 									break;
 								case MESSAGE_TYPE_SCHEDUAL:
@@ -288,7 +292,7 @@ public class MessageAdapter extends BaseAdapter {
 							String avatar = u.getAvatar();
 							showUserAvatar(holder.head_iv, avatar);
 						} else {
-							Map<String, String> map = new HashMap<String, String>();
+							Map<String, String> map = new HashMap<>();
 							map.put("uid", speaker);
 							LoadDataFromHTTP task = new LoadDataFromHTTP(context,
 									Constant.URL_GET_USERINFO, map);
@@ -389,7 +393,7 @@ public class MessageAdapter extends BaseAdapter {
 									.setText(nick + "取消参加了--" + title);
 						}
 					} else {
-						Map<String, String> map = new HashMap<String, String>();
+						Map<String, String> map = new HashMap<>();
 						map.put("uid", toChat);
 						LoadDataFromHTTP task = new LoadDataFromHTTP(context,
 								Constant.URL_GET_USERINFO, map);
@@ -539,13 +543,10 @@ public class MessageAdapter extends BaseAdapter {
 	/**
 	 * 文本消息
 	 *
-	 * @param message
-	 * @param holder
 	 */
 	private void handleTextMessage(ChatEntity message, ViewHolder holder) {
 		String txt = message.getContent();
-		if (message.getStatus() > 1) {
-		} else {
+		if (message.getStatus() <2 ) {
 			if (chatType == Activity_Chat.CHATTYPE_GROUP) {
 				int i = message.getContent().indexOf(":\n");
 				txt = "";
@@ -569,6 +570,7 @@ public class MessageAdapter extends BaseAdapter {
 							+ "#666666" + "\">" + event_title + "</font>";
 					holder.tv.setText(Html.fromHtml(share_txt));
 				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				break;
 			case MESSAGE_TYPE_SCHEDUAL:
@@ -580,7 +582,7 @@ public class MessageAdapter extends BaseAdapter {
 							+ "#666666" + "\">" + title + "</font>";
 					holder.tv.setText(Html.fromHtml(share_txt));
 				} catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 				break;
 
@@ -596,8 +598,7 @@ public class MessageAdapter extends BaseAdapter {
 
 	private String getSchedualTitle(ChatEntity message) {
 		String txt = message.getContent();
-		if (message.getStatus() > 1) {
-		} else {
+		if (message.getStatus() < 2) {
 			if (chatType == Activity_Chat.CHATTYPE_GROUP) {
 				int i = message.getContent().indexOf(":\n");
 				txt = "";
@@ -608,10 +609,10 @@ public class MessageAdapter extends BaseAdapter {
 		}
 		try {
 			JSONObject json = JSONObject.parseObject(txt);
-			String title = json.getString("schedule_title");
-			return title;
+			return json.getString("schedule_title");
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -641,12 +642,12 @@ public class MessageAdapter extends BaseAdapter {
 	}
 
 	public static class ViewHolder {
-		ImageView iv;
+//		ImageView iv;
 		TextView tv;
 		ProgressBar pb;
-		ImageView staus_iv;
+//		ImageView staus_iv;
 		ImageView head_iv;
-		TextView tv_userId;
+//		TextView tv_userId;
 		TextView tv_sharemsg;
 	}
 

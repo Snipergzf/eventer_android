@@ -3,7 +3,6 @@ package com.eventer.app.view;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +11,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.widget.wheel.OnWheelScrollListener;
 import com.eventer.app.widget.wheel.WheelView;
 
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class DialogView {
 
 	
 	
 	private Context mContext;
-	private Handler msgHandler;
 	private LayoutInflater mInflater;
 	
 	private WheelView wheel;
@@ -47,13 +46,11 @@ public class DialogView {
 		this.mInflater=LayoutInflater.from(mContext); 
 	}
 
-	private String positiveBtnStr="确定";
-	private String negativeBtnStr="取消";
-	private int layout_resource=0;
+	int layout_resource=0;
 
 	
 	 
-	private TextView tv_title;
+	TextView tv_title;
 //	private TextView tv_message;
 	public  Button btn_positive;
 	public Button btn_negative;
@@ -97,9 +94,9 @@ public class DialogView {
 
 
 	public  Dialog initDialog(String title,String message) {
-		View mView = null;
+		View mView;
 		if(layout_resource==0)	{
-			mView=mInflater.inflate(R.layout.layout_wheel_dialog, null); 
+			mView=mInflater.inflate(R.layout.layout_wheel_dialog, new LinearLayout(mContext),false);
 		}
 		else {
 			mView=mInflater.inflate(layout_resource, null);
@@ -201,7 +198,7 @@ public class DialogView {
 	}
 	
 	private int wheelViewIndex=0;
-	private String wheelViewCurentText;
+	String wheelViewCurentText;
 	private void initWheelView()	{
 		wheel.addScrollingListener(new OnWheelScrollListener() {
 			
@@ -255,7 +252,7 @@ public class DialogView {
 		this.btnPosClick = btnPosClick;
 	}
 	public interface onWheelBtnPosClick{
-		public void onClick(String text,int position);
+		 void onClick(String text,int position);
 	}
 	onWheelBtnNegClick btnNegClick;
 	public onWheelBtnNegClick getBtnNegClick() {
@@ -267,7 +264,7 @@ public class DialogView {
 		this.btnNegClick = btnNegClick;
 	}
 	public interface onWheelBtnNegClick{
-		public void onClick(String text,int position);
+		 void onClick(String text,int position);
 	}
 	public void setHint(int index) {
 		// TODO Auto-generated method stub

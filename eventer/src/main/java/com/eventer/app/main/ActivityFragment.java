@@ -1,14 +1,23 @@
 package com.eventer.app.main;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
@@ -20,22 +29,13 @@ import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
 import com.eventer.app.widget.refreshlist.XListView;
 import com.umeng.analytics.MobclickAgent;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.TextView;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 public  class ActivityFragment extends Fragment implements OnClickListener,OnScrollListener {
@@ -49,10 +49,11 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 	private int themeindex=0;
 
 	private int visibleLastIndex = 0;   //最后的可视项索引    
-	private	ArrayList<Event> all_event= new ArrayList<Event>();
-	private int datasize = 5;
-	private int visibleItemCount;       // 当前窗口可见项总数 
+	private	ArrayList<Event> all_event= new ArrayList<>();
+	int datasize = 5;
+	int visibleItemCount;       // 当前窗口可见项总数
 	private Context context;
+	private TextView note;
 	public static ActivityFragment instance;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 
 	private void initView(View rootView) {
 		// TODO Auto-generated method stub
+		note=(TextView)rootView.findViewById(R.id.note);
 		listView = (XListView)rootView.findViewById(R.id.listview);
 		iv_empty=(ImageView)rootView.findViewById(R.id.iv_empty);
 		themelist=new TextView[5];
@@ -126,10 +128,58 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		});
 	}
 
+	private void animateViewIn() {
+
+        Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_in);
+        anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+        anim.setDuration(700);
+		anim.setFillAfter(true);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+
+
+			}
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+        note.startAnimation(anim);
+
+    }
+	    private void animateViewOut() {
+
+        Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_out);
+        anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+			anim.setDuration(700);
+		anim.setFillAfter(true);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+//                onViewHidden(event);
+			}
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+        note.startAnimation(anim);
+
+    }
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		int index=-1;
+		int index;
 		String theme="";
 		switch (v.getId()) {
 			case R.id.tv_theme_all:
@@ -138,10 +188,12 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 			case R.id.tv_theme_lecture:
 				index=1;
 				theme="讲座";
+				animateViewOut();
 				break;
 			case R.id.tv_theme_fun:
 				index=2;
-				theme="文体";
+				theme = "文体";
+				animateViewIn();
 				break;
 			case R.id.tv_theme_job:
 				index=3;
@@ -183,10 +235,9 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 
 	}
 
-	private Handler mHandler = new Handler() {
+	Handler mHandler = new Handler(new Handler.Callback() {
 		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
+		public boolean handleMessage(Message msg) {
 			switch (msg.what) {
 				case REFRESH_MORE:
 					@SuppressWarnings("unchecked")
@@ -212,16 +263,17 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 				default:
 					break;
 			}
+			return false;
 		}
-	};
+	});
 
 	private void initData() {
 		// TODO Auto-generated method stub
 	}
 
 	private List<Event> getListItems() {
-		List<Event> listItems = new ArrayList<Event>();
-		List<Event> list = new ArrayList<Event>();
+		List<Event> listItems;
+		List<Event> list = new ArrayList<>();
 		EventDao dao=new EventDao(context);
 		listItems=dao.getEventList();
 		for (Event event : listItems) {
@@ -250,51 +302,50 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 
 	private Event getEventItem(Event event) {
 		// TODO Auto-generated method stub
-		String time=event.getTime();
-		JSONArray time1;
-		long now=System.currentTimeMillis()/1000;
-		try {
-			time1 = new JSONArray(time);
-
-			for(int i=0;i<time1.length()/2;i++){
-				long begin=time1.getLong(2*i);
-				long end=time1.getLong(2*i+1);
-				if(i==0){
-					event.setStart(begin);
-					event.setEnd(end);
-				}
-				if(begin<event.getStart()){
-					event.setStart(begin);
-				}
-				if(end>event.getEnd()){
-					event.setEnd(end);;
-				}
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//时间成对，可能有多个时间
-
-		if(now>event.getEnd()){
-			event=null;
-		}
+//		String time=event.getTime();
+//		JSONArray time1;
+//		long now=System.currentTimeMillis()/1000;
+//		try {
+//			time1 = new JSONArray(time);
+//
+//			for(int i=0;i<time1.length()/2;i++){
+//				long begin=time1.getLong(2*i);
+//				long end=time1.getLong(2*i+1);
+//				if(i==0){
+//					event.setStart(begin);
+//					event.setEnd(end);
+//				}
+//				if(begin<event.getStart()){
+//					event.setStart(begin);
+//				}
+//				if(end>event.getEnd()){
+//					event.setEnd(end);;
+//				}
+//			}
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}//时间成对，可能有多个时间
+//
+//		if(now>event.getEnd()){
+//			event=null;
+//		}
 		return event;
 	}
 
 	public String getTime(long now) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String date = sdf.format(new Date(now));
-		return date;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		return  sdf.format(new Date(now));
 	}
 
-	public void addEvent(Event event){
-		event=getEventItem(event);
-		if(event!=null){
-			listItems.add(0,event);
-			//listViewAdapter.addItem(event);
-			listViewAdapter.notifyDataSetChanged();
-		}
-	}
+//	public void addEvent(Event event){
+//		event=getEventItem(event);
+//		if(event!=null){
+//			listItems.add(0,event);
+//			//listViewAdapter.addItem(event);
+//			listViewAdapter.notifyDataSetChanged();
+//		}
+//	}
 
 
 	@Override
@@ -321,9 +372,9 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		this.visibleItemCount = visibleItemCount;
 		visibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 		//如果所有的记录选项等于数据集的条数，则出现列表底部视图
-		if(totalItemCount == datasize+1){
-
-		}
+//		if(totalItemCount == datasize+1){
+//
+//		}
 	}
 
 	public void onResume() {

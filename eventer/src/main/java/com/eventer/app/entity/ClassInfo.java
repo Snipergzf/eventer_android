@@ -1,7 +1,7 @@
 package com.eventer.app.entity;
 
 import java.util.List;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class ClassInfo {
 	private int fromX;
 	private int fromY;

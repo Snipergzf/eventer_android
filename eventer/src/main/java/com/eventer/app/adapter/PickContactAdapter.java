@@ -1,8 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,19 +20,23 @@ import com.eventer.app.other.ShareToSingleActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 简单的好友Adapter实现
  *
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public  class PickContactAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private boolean[] isCheckedArray;
     private Bitmap[] bitmaps;
     private LoadUserAvatar avatarLoader;
-    private List<User> list = new ArrayList<User>();
-    private List<String> exitingMembers = new ArrayList<String>();
-    private List<String> addList = new ArrayList<String>();
+    private List<User> list = new ArrayList<>();
+    private List<String> exitingMembers = new ArrayList<>();
+    private List<String> addList = new ArrayList<>();
     private int res;
 
     public PickContactAdapter(Context context, int resource,
@@ -76,7 +77,7 @@ public  class PickContactAdapter extends BaseAdapter {
         tv_name.setText(name);
         iv_avatar.setImageResource(R.drawable.default_avatar);
         iv_avatar.setTag(avatar);
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         if (avatar != null && !avatar.equals("")&&!avatar.equals("default")) {
             bitmap = avatarLoader.loadImage(iv_avatar, avatar,
                     new ImageDownloadedCallBack() {
@@ -123,40 +124,39 @@ public  class PickContactAdapter extends BaseAdapter {
             checkBox.setChecked(true);
             isCheckedArray[position] = true;
         }
-        if (checkBox != null) {
-            checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                                             boolean isChecked) {
-                    // 群组中原来的成员一直设为选中状态
-                    if (exitingMembers.contains(username)) {
-                        isChecked = true;
-                        checkBox.setChecked(true);
-                    }
-                    isCheckedArray[position] = isChecked;
 
-                    if (isChecked) {
-                        // 选中用户显示在滑动栏显示
-                        ShareToSingleActivity.instance.showCheckImage(getBitmap(position),
-                                list.get(position));
+        checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                // 群组中原来的成员一直设为选中状态
+                if (exitingMembers.contains(username)) {
+                    isChecked = true;
+                    checkBox.setChecked(true);
+                }
+                isCheckedArray[position] = isChecked;
 
-                    } else {
-                        // 用户显示在滑动栏删除
-                        ShareToSingleActivity.instance.deleteImage(list.get(position));
+                if (isChecked) {
+                    // 选中用户显示在滑动栏显示
+                    ShareToSingleActivity.instance.showCheckImage(getBitmap(position),
+                            list.get(position));
 
-                    }
+                } else {
+                    // 用户显示在滑动栏删除
+                    ShareToSingleActivity.instance.deleteImage(list.get(position));
 
                 }
-            });
-            // 群组中原来的成员一直设为选中状态
-            if (exitingMembers.contains(username)) {
-                checkBox.setChecked(true);
-                isCheckedArray[position] = true;
-            } else {
-                checkBox.setChecked(isCheckedArray[position]);
-            }
 
+            }
+        });
+        // 群组中原来的成员一直设为选中状态
+        if (exitingMembers.contains(username)) {
+            checkBox.setChecked(true);
+            isCheckedArray[position] = true;
+        } else {
+            checkBox.setChecked(isCheckedArray[position]);
         }
+
         return convertView;
     }
 
@@ -170,15 +170,17 @@ public  class PickContactAdapter extends BaseAdapter {
         return exitingMembers;
     }
 
+    public List<String> getAddList(){
+        return addList;
+    }
+
     @Override
     public String getItem(int position) {
         if (position < 0) {
             return "";
         }
 
-        String header = list.get(position).getHeader();
-
-        return header;
+        return list.get(position).getHeader();
 
     }
 

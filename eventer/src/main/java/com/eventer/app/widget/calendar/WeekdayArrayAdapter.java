@@ -1,7 +1,5 @@
 package com.eventer.app.widget.calendar;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,13 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Customize the weekday gridview
  */
 @SuppressLint("ResourceAsColor")
 public class WeekdayArrayAdapter extends ArrayAdapter<String> {
 	public static int textColor = Color.LTGRAY;
-	private Context context;
+	Context context;
 
 	public WeekdayArrayAdapter(Context context, int textViewResourceId,
 			List<String> objects) {

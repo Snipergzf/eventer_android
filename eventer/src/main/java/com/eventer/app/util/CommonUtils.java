@@ -13,8 +13,6 @@
  */
 package com.eventer.app.util;
 
-import java.util.List;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
@@ -26,14 +24,14 @@ import com.easemob.chat.TextMessageBody;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 
+import java.util.List;
+@SuppressWarnings({"UnusedDeclaration"})
 public class CommonUtils {
 
 
     /**
      * 检测网络是否可用
      *
-     * @param context
-     * @return
      */
     public static boolean isNetWorkConnected(Context context) {
         if (context != null) {
@@ -50,24 +48,18 @@ public class CommonUtils {
     /**
      * 检测Sdcard是否存在
      *
-     * @return
+     * @return boolean
      */
     public static boolean isExitsSdcard() {
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-            return true;
-        else
-            return false;
+        return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
     }
 
     /**
      * 根据消息内容和消息类型获取消息内容提示
      *
-     * @param message
-     * @param context
-     * @return
      */
     public static String getMessageDigest(EMMessage message, Context context) {
-        String digest = "";
+        String digest;
         switch (message.getType()) {
             case LOCATION: // 位置消息
                 if (message.direct == EMMessage.Direct.RECEIVE) {

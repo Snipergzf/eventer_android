@@ -1,8 +1,5 @@
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.eventer.app.entity.InviteMessage;
 import com.eventer.app.entity.InviteMessage.InviteMesageStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+@SuppressWarnings({"UnusedDeclaration"})
 public class InviteMessgeDao {
 	public static final String TABLE_NAME = "dbInviteMessage";
 	public static final String COLUMN_NAME_ID = "id";
@@ -36,7 +36,6 @@ public class InviteMessgeDao {
 
 	/**
 	 * 保存message
-	 * @param message
 	 * @return  返回这条messaged在db中的id
 	 */
 	public synchronized Integer saveMessage(InviteMessage message){
@@ -67,8 +66,7 @@ public class InviteMessgeDao {
 
 	/**
 	 * 更新message
-	 * @param msgId
-	 * @param values
+
 	 */
 	public void updateMessage(int msgId,ContentValues values){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -79,11 +77,11 @@ public class InviteMessgeDao {
 
 	/**
 	 * 获取messges
-	 * @return
+
 	 */
 	public List<InviteMessage> getMessagesList(){
-		dbHelper.openDatabase();;
-		List<InviteMessage> msgs = new ArrayList<InviteMessage>();
+		dbHelper.openDatabase();
+		List<InviteMessage> msgs = new ArrayList<>();
 
 		Cursor cursor = dbHelper.findList(true, TABLE_NAME, null, null, null, null, null, "time desc", null);
 		//Cursor cursor =dbHelper.rawQuery("select b.*,a."+UserDao.COLUMN_NAME_NICK+",a."+UserDao.COLUMN_NAME_AVATAR+" from dbContact a,dbInviteMessage b where a.UserID=b.username", null);
@@ -142,8 +140,8 @@ public class InviteMessgeDao {
 		if(db.isOpen()){
 			db.execSQL("DELETE FROM "+TABLE_NAME);
 		}
-		if(db!=null){
-			db.close();
-		}
+
+		db.close();
+
 	}
 }

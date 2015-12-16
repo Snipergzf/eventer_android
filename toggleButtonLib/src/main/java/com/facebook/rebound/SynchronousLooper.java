@@ -8,7 +8,7 @@
  */
 
 package com.facebook.rebound;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class SynchronousLooper extends SpringLooper {
 
   public static double SIXTY_FPS = 16.6667;
@@ -31,7 +31,7 @@ public class SynchronousLooper extends SpringLooper {
   public void start() {
     mRunning = true;
     while (!mSpringSystem.getIsIdle()) {
-      if (mRunning == false) {
+      if (!mRunning ) {
         break;
       }
       mSpringSystem.loop(mTimeStep);

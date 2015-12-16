@@ -3,6 +3,7 @@ package com.eventer.app.widget.refreshlist;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.eventer.app.R;
 
@@ -19,7 +20,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class XListView extends ListView implements OnScrollListener {
 
 
@@ -66,9 +67,6 @@ public class XListView extends ListView implements OnScrollListener {
 	protected final static float OFFSET_RADIO = 1.8f; // support iOS like pull
 														// feature.
 
-	/**
-	 * @param context
-	 */
 	public XListView(Context context) {
 		super(context);
 		initWithContext(context);
@@ -207,7 +205,7 @@ public class XListView extends ListView implements OnScrollListener {
 	 * stop refresh, reset header view.
 	 */
 	public void stopRefresh() {
-		if (mPullRefreshing == true) {
+		if (mPullRefreshing) {
 			mPullRefreshing = false;
 			resetHeaderHeight();
 		}
@@ -222,16 +220,15 @@ public class XListView extends ListView implements OnScrollListener {
 	 * stop load more, reset footer view.
 	 */
 	public void stopLoadMore() {
-		if (mPullLoading == true) {
+		if (mPullLoading) {
 			mPullLoading = false;
 			mFooterView.setState(XListViewFooter.STATE_NORMAL);
 		}
 	}
 
-	/**
+	/***
 	 * set last refresh time
-	 * 
-	 * @param time
+	 * @param time  refresh time
 	 */
 	public void setRefreshTime(String time) {
 		
@@ -424,8 +421,7 @@ public class XListView extends ListView implements OnScrollListener {
 	};
 	protected String getCurrentTime() {
 		Date nowTime = new Date();
-		String nowTimeStr = dateFormater.get().format(nowTime);
-		return nowTimeStr;
+		return dateFormater.get().format(nowTime);
 	}
 
 
@@ -470,7 +466,7 @@ public class XListView extends ListView implements OnScrollListener {
 	}
 	
 	public interface IStartScroll {
-		public void startScroll();
+		 void startScroll();
 	}
 	
 }

@@ -1,11 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,7 +14,13 @@ import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserDetail;
 import com.eventer.app.entity.UserInfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class UserDao {
 	public static final String TABLE_NAME = "dbContact";
 	public static final String COLUMN_NAME_ID = "userId";
@@ -46,7 +47,6 @@ public class UserDao {
 	/**
 	 * 保存好友list
 	 *
-	 * @param contactList
 	 */
 	public void saveContactList(List<User> contactList) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -71,12 +71,11 @@ public class UserDao {
 	/**
 	 * 获取好友list
 	 *
-	 * @return
 	 */
 	@SuppressLint("DefaultLocale")
 	public Map<String, User> getContactList() {
 		dbHelper.openDatabase();
-		Map<String, User> users = new HashMap<String, User>();
+		Map<String, User> users = new HashMap<>();
 		Cursor cursor=dbHelper.findList(true, TABLE_NAME, null,
 				COLUMN_NAME_IS_STRANGER+"=?", new String[]{"1"}, null, null,null,null);
 		while (cursor.moveToNext()) {
@@ -100,7 +99,7 @@ public class UserDao {
 
 	public List<String> getContactIDList() {
 		dbHelper.openDatabase();
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		Cursor cursor=dbHelper.findList(true, TABLE_NAME, new String[]{COLUMN_NAME_ID},
 				"Type<20", null, null, null,null,null);
 		while (cursor.moveToNext()) {
@@ -117,9 +116,9 @@ public class UserDao {
 				"userId=?", new String[]{id}, null, null,null,null);
 		boolean result=false;
 		int index=0;
-		while (cursor.moveToNext()) {
+		if (cursor.moveToNext()) {
 			index++;
-			break;
+
 		}
 		if(index>0){
 			result=true;
@@ -131,7 +130,6 @@ public class UserDao {
 	/**
 	 * 获取好友list
 	 *
-	 * @return
 	 */
 	@SuppressLint("DefaultLocale")
 	public List<User> getFriendList() {
@@ -139,7 +137,7 @@ public class UserDao {
 		//dbHelper.deleteDatabase(context);
 		Cursor cursor=dbHelper.findList(true, TABLE_NAME, null,
 				COLUMN_NAME_IS_STRANGER+"=?", new String[]{"1"}, null, null,null,null);
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		while (cursor.moveToNext()) {
 			String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
 			String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
@@ -154,7 +152,7 @@ public class UserDao {
 			user.setSign(sign);
 			user.setTel(tel);
 			user.setAvatar(avatar);
-			String headerName = null;
+			String headerName ;
 			if (!TextUtils.isEmpty(user.getNick())) {
 				headerName = user.getNick();
 			} else {
@@ -243,7 +241,6 @@ public class UserDao {
 	/**
 	 * 获取好友list
 	 *
-	 * @return
 	 */
 	@SuppressLint("DefaultLocale")
 	public User getUser(String userId) {
@@ -252,7 +249,7 @@ public class UserDao {
 		Cursor cursor=dbHelper.findList(true, TABLE_NAME, null,
 				"userId=?", new String[]{userId}, null, null,null,null);
 		User user = new User();
-		while (cursor.moveToNext()) {
+		if (cursor.moveToNext()) {
 			String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
 			String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
 			String avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
@@ -266,12 +263,12 @@ public class UserDao {
 			user.setSign(sign);
 			user.setTel(tel);
 			user.setAvatar(avatar);
-			String headerName = null;
-			if (!TextUtils.isEmpty(user.getNick())) {
-				headerName = user.getNick();
-			} else {
-				headerName = user.getUsername();
-			}
+//			String headerName = null;
+//			if (!TextUtils.isEmpty(user.getNick())) {
+//				headerName = user.getNick();
+//			} else {
+//				headerName = user.getUsername();
+//			}
 
 //				if (username.equals(Constant.NEW_FRIENDS_USERNAME) || username.equals(Constant.GROUP_USERNAME)) {
 //					user.setHeader("");
@@ -285,7 +282,7 @@ public class UserDao {
 //						user.setHeader("#");
 //					}
 //				}
-			break;
+
 		}
 //			cursor.close();
 		dbHelper.closeDatabase();
@@ -296,25 +293,24 @@ public class UserDao {
 	/**
 	 * 获取好友list
 	 *
-	 * @return
 	 */
 	@SuppressLint("DefaultLocale")
 	public Map<String,String> getUserInfo(String userId) {
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		dbHelper.openDatabase();
 		//dbHelper.deleteDatabase(context);
-		String name="";
-		String avatar="";
+		String name;
+		String avatar;
 		Cursor cursor=dbHelper.findList(true, TABLE_NAME, new String[]{COLUMN_NAME_AVATAR,COLUMN_NAME_NICK,COLUMN_NAME_BEIZHU},
 				"userId=?", new String[]{userId}, null, null,null,null);
-		while (cursor.moveToNext()) {
+		if (cursor.moveToNext()) {
 			String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
 			String beizhu = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_BEIZHU));
 			avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
 
-			if (beizhu!=null&&beizhu!="") {
+			if (beizhu!=null&&!beizhu.equals("")) {
 				name = beizhu;
-			} else if (nick!=null&&nick!=""){
+			} else if (nick!=null&&!nick.equals("")){
 				name=nick;
 			}else{
 				name=userId;
@@ -331,7 +327,6 @@ public class UserDao {
 
 	/**
 	 * 删除一个联系人
-	 * @param username
 	 */
 	public void deleteContact(String username){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -342,7 +337,6 @@ public class UserDao {
 
 	/**
 	 * 保存一个联系人
-	 * @param user
 	 */
 	public void saveContact(User user){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -371,7 +365,6 @@ public class UserDao {
 
 	/**
 	 * 保存User
-	 * @param user
 	 */
 	public synchronized void saveUser(User user){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -387,6 +380,7 @@ public class UserDao {
 			Cursor isExist=db.query(true, TABLE_NAME, null, COLUMN_NAME_ID+ " = ?", new String[]{user.getUsername()}, null, null, null, null);
 			if(isExist!=null&&isExist.getCount()>0){
 				db.update(TABLE_NAME, values, COLUMN_NAME_ID+ " = ?", new String[]{user.getUsername()});
+				isExist.close();
 			}else{
 				db.insert(TABLE_NAME, null, values);
 			}
@@ -437,7 +431,7 @@ public class UserDao {
 	public Map<String, UserInfo> getUserInfoList() {
 		// TODO Auto-generated method stub
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
-		Map<String, UserInfo> users = new HashMap<String, UserInfo>();
+		Map<String, UserInfo> users = new HashMap<>();
 		if(db.isOpen()){
 			Cursor cursor=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_ID,COLUMN_NAME_NICK,COLUMN_NAME_AVATAR},
 					null, null, null, null,null,null);
@@ -461,7 +455,7 @@ public class UserDao {
 	public UserInfo getInfo(String userId) {
 		UserInfo user=null;
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
-		Map<String, UserInfo> users = new HashMap<String, UserInfo>();
+//		Map<String, UserInfo> users = new HashMap<>();
 		if(db.isOpen()){
 			Cursor cursor=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_ID,COLUMN_NAME_NICK,COLUMN_NAME_AVATAR,COLUMN_NAME_BEIZHU,COLUMN_NAME_IS_STRANGER},
 					"userId=?", new String[]{userId}, null, null,null,null);
@@ -479,7 +473,7 @@ public class UserDao {
 				user.setNick(nick);
 				user.setAvatar(avatar);
 				user.setType(type);
-				users.put(username, user);
+//				users.put(username, user);
 			}
 			cursor.close();
 		}
@@ -512,7 +506,7 @@ public class UserDao {
 		if(db.isOpen()){
 			Cursor cursor=db.rawQuery("select b.*,a.nickname,a.imagePath,a.type from dbContact a,dbUserInfo b where a.userId=b.userId and a.userId=? ",
 					new String[]{userId});
-			while (cursor.moveToNext()) {
+			if (cursor.moveToNext()) {
 				String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
 				String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
 				String avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
@@ -538,6 +532,7 @@ public class UserDao {
 				user.setType(type);
 				return user;
 			}
+			cursor.close();
 		}
 		db.close();
 		return null;
@@ -555,9 +550,11 @@ public class UserDao {
 			Cursor isExist=db.query(true, TABLE_NAME, null, COLUMN_NAME_ID+ " = ?", new String[]{user.getUsername()}, null, null, null, null);
 			if(isExist!=null&&isExist.getCount()>0){
 				db.update(TABLE_NAME, values, COLUMN_NAME_ID+ " = ?", new String[]{user.getUsername()});
+				isExist.close();
 			}else{
 				db.insert(TABLE_NAME, null, values);
 			}
+
 			db.delete("dbUserInfo", COLUMN_NAME_ID+ " = ?", new String[]{user.getUsername()});
 			values = new ContentValues();
 			values.put(COLUMN_NAME_ID, user.getUsername());

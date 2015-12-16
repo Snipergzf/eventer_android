@@ -28,8 +28,6 @@
  *******************************************************************************/
 package com.eventer.app.widget.photoview;
 
-import java.lang.ref.WeakReference;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
@@ -46,6 +44,8 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import java.lang.ref.WeakReference;
 
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGestureDetector.OnGestureListener,
 		GestureDetector.OnDoubleTapListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -125,6 +125,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 				 * calls setScaleType to this.setScaleType. Basically we don't
 				 * need to do anything here
 				 */
+			    Log.e("photo","is photoview");
 			} else {
 				imageView.setScaleType(ScaleType.MATRIX);
 			}
@@ -159,7 +160,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 	private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
 	public PhotoViewAttacher(ImageView imageView) {
-		mImageView = new WeakReference<ImageView>(imageView);
+		mImageView = new WeakReference<>(imageView);
 
 		imageView.setOnTouchListener(this);
 
@@ -202,7 +203,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 	 * when the ImageView is no longer used. A good example is from
 	 * {@link android.view.View#onDetachedFromWindow()} or from
 	 * {@link android.app.Activity#onDestroy()}. This is automatically called if
-	 * you are using {@link uk.co.senab.photoview.PhotoView}.
 	 */
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
@@ -792,7 +792,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 	 * 
 	 * @author Chris Banes
 	 */
-	public static interface OnMatrixChangedListener {
+	public  interface OnMatrixChangedListener {
 		/**
 		 * Callback for when the Matrix displaying the Drawable has changed.
 		 * This could be because the View's bounds have changed, or the user has
@@ -810,7 +810,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 	 * 
 	 * @author Chris Banes
 	 */
-	public static interface OnPhotoTapListener {
+	public  interface OnPhotoTapListener {
 
 		/**
 		 * A callback to receive where the user taps on a photo. You will only
@@ -835,7 +835,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 	 * 
 	 * @author Chris Banes
 	 */
-	public static interface OnViewTapListener {
+	public  interface OnViewTapListener {
 
 		/**
 		 * A callback to receive where the user taps on a ImageView. You will

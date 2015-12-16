@@ -1,12 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.List;
-
-import com.eventer.app.R;
-import com.eventer.app.entity.Schedual;
-import com.eventer.app.widget.swipemenulistview.BaseSwipListAdapter;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuLayout;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -15,6 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.eventer.app.R;
+import com.eventer.app.entity.Schedual;
+import com.eventer.app.widget.swipemenulistview.BaseSwipListAdapter;
+
+import java.util.List;
 
 public class SchedualAdapter extends BaseSwipListAdapter {
 	Context context;
@@ -60,7 +59,7 @@ public class SchedualAdapter extends BaseSwipListAdapter {
 		// TODO Auto-generated method stub
 		Schedual item =  list.get(position);
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_schedual_list, null);
+			convertView = mInflater.inflate(R.layout.item_schedual_list, parent , false);
 			new ViewHolder(convertView);
 		}
 		ViewHolder holder = (ViewHolder) convertView.getTag();
@@ -130,7 +129,7 @@ public class SchedualAdapter extends BaseSwipListAdapter {
 			tv_info=(TextView)view.findViewById(R.id.tv_info);
 			tv_title=(TextView)view.findViewById(R.id.tv_title);
 			tv_type=(TextView)view.findViewById(R.id.tv_type);
-			view_temp=(View)view.findViewById(R.id.view_temp);
+			view_temp=view.findViewById(R.id.view_temp);
 			view.setTag(this);
 		}
 	}

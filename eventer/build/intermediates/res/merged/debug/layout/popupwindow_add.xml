@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/menu_bg"
+    android:background="@color/white"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="180dp"
         android:paddingRight="12dp"
         android:paddingLeft="12dp"
+        android:background="@drawable/menu_bg"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
@@ -21,15 +22,18 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/set_beizhu"
                 android:src="@drawable/rename_group_nor" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true" 
                 android:layout_marginLeft="42dp"
+                android:layout_marginStart="42dp"
                 android:singleLine="true"
-                android:text="设置备注名"
+                android:text="@string/set_beizhu"
                 android:textColor="#353535"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -49,15 +53,18 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/delete_friend"
                 android:src="@drawable/delete_group_nor" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:singleLine="true"
-                android:text="删除好友"
+                android:text="@string/delete_friend"
                 android:layout_marginLeft="42dp"
+                android:layout_marginStart="42dp"
                 android:textColor="#353535"
                 android:textSize="16sp" />
         </RelativeLayout>

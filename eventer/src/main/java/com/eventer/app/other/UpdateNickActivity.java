@@ -1,10 +1,6 @@
 package com.eventer.app.other;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -18,18 +14,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.umeng.analytics.MobclickAgent;
 
-public class UpdateNickActivity extends Activity{
+import java.util.HashMap;
+import java.util.Map;
+
+public class UpdateNickActivity extends BaseActivityTest{
     private Context context;
     private String nick="";
     private EditText et_nick;
-    private TextView tv_save;
+    TextView tv_save;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_nick);
+        setBaseTitle(R.string.send_request);
         context=this;
         nick=LocalUserInfo.getInstance(UpdateNickActivity.this).getUserInfo("nick");
         initView();
@@ -54,7 +55,7 @@ public class UpdateNickActivity extends Activity{
     }
 
     public void updateNick(final String newNick) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         map.put("sex", "");
         map.put("uid", Constant.UID+"");
@@ -88,9 +89,14 @@ public class UpdateNickActivity extends Activity{
                         Toast.makeText(context, "更新失败,请稍后重试！",
                                 Toast.LENGTH_SHORT).show();
                     } else {
+                        if(!Constant.isConnectNet){
+                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+                            return;
+                        }else{
+                            Toast.makeText(context, "服务器繁忙请重试...",
+                                    Toast.LENGTH_SHORT).show();
+                        }
 
-                        Toast.makeText(context, "服务器繁忙请重试...",
-                                Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
 
@@ -106,9 +112,6 @@ public class UpdateNickActivity extends Activity{
         });
     }
 
-    public void back(View view) {
-        finish();
-    }
 
     @Override
     protected void onResume() {

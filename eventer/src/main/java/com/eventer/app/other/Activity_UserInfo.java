@@ -1,10 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,10 +41,17 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.CircleProgressBar;
 import com.umeng.analytics.MobclickAgent;
 
-public class Activity_UserInfo extends Activity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
+public class Activity_UserInfo extends BaseActivityTest {
 	private TextView tv_name,tv_email,tv_school,tv_grade,tv_major,tv_nick;
 	private Context context;
 	private ImageView iv_avatar;
@@ -62,13 +64,14 @@ public class Activity_UserInfo extends Activity {
 	boolean is_friend = false;
 	private  String id;
 	private RelativeLayout rl_email;
-	private LinearLayout ll_class_info;
+	private LinearLayout ll_class_info,layout_content,layout_loading;
 	@SuppressLint("SdCardPath")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_userinfo);
 		context =Activity_UserInfo.this;
+		setBaseTitle(R.string.user_res);
 		avatarLoader = new LoadUserAvatar(this, Constant.IMAGE_PATH);
 		id = this.getIntent().getStringExtra("user");
 		initView();
@@ -101,6 +104,13 @@ public class Activity_UserInfo extends Activity {
 		tv_major=(TextView)this.findViewById(R.id.tv_major);
 		iv_action=(ImageView)this.findViewById(R.id.iv_action);
 		tv_nick=(TextView)this.findViewById(R.id.tv_nick);
+		layout_content=(LinearLayout)this.findViewById(R.id.layout_content);
+		layout_loading=(LinearLayout)this.findViewById(R.id.layout_loading);
+		CircleProgressBar progress=(CircleProgressBar)findViewById(R.id.progress);
+		progress.setColorSchemeResources(android.R.color.holo_orange_light);
+		layout_content.setVisibility(View.GONE);
+		layout_loading.setVisibility(View.VISIBLE);
+		iv_action.setVisibility(View.GONE);
 		if(MyApplication.getInstance().getContactIDList().contains(id)){
 			is_friend=true;
 			iv_action.setVisibility(View.VISIBLE);
@@ -149,12 +159,16 @@ public class Activity_UserInfo extends Activity {
 			}
 		}
 		if(sex!=null){
-			if (sex.equals("1")) {
-				iv_sex.setImageResource(R.drawable.ic_sex_male);
-			} else if (sex.equals("2")) {
-				iv_sex.setImageResource(R.drawable.ic_sex_female);
-			} else {
-				iv_sex.setVisibility(View.GONE);
+			switch (sex) {
+				case "1":
+					iv_sex.setImageResource(R.drawable.ic_sex_male);
+					break;
+				case "2":
+					iv_sex.setImageResource(R.drawable.ic_sex_female);
+					break;
+				default:
+					iv_sex.setVisibility(View.GONE);
+					break;
 			}
 		}else{
 			iv_sex.setVisibility(View.GONE);
@@ -206,11 +220,14 @@ public class Activity_UserInfo extends Activity {
 			}
 
 		});
+		layout_content.setVisibility(View.VISIBLE);
+		layout_loading.setVisibility(View.GONE);
+		iv_action.setVisibility(View.VISIBLE);
 	}
 
 	private void getData() {
 		// TODO Auto-generated method stub
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		maps.put("uid", id);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
 				context, Constant.URL_GET_SELFINFO, maps);
@@ -225,7 +242,7 @@ public class Activity_UserInfo extends Activity {
 						JSONObject info=json.getJSONObject("info");
 						String name=info.getString("name");
 						user=new UserDetail();
-						if(name!=null&&name!=""){
+						if(name!=null&& !name.equals("")){
 							user.setNick(name);
 							user.setSex(info.getString("sex"));
 							user.setAvatar(info.getString("avatar"));
@@ -262,9 +279,12 @@ public class Activity_UserInfo extends Activity {
 								Toast.LENGTH_SHORT).show();
 
 					} else {
-
-						Toast.makeText(context, "服务器繁忙请重试...",
-								Toast.LENGTH_SHORT).show();
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(context, "服务器繁忙请重试...",
+									Toast.LENGTH_SHORT).show();
+						}
 					}
 
 				} catch (JSONException e) {
@@ -279,14 +299,11 @@ public class Activity_UserInfo extends Activity {
 		});
 
 	}
-	public void back(View view) {
-		finish();
-	}
 
 	private void showUserAvatar(final ImageView iamgeView, String avatar) {
 		final String url_avatar = avatar;
 		iamgeView.setTag(url_avatar);
-		if (url_avatar != null && url_avatar.indexOf("http")!=-1) {
+		if (url_avatar != null && url_avatar.contains("http")) {
 			Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
 					new ImageDownloadedCallBack() {
 
@@ -310,7 +327,7 @@ public class Activity_UserInfo extends Activity {
 			iamgeView.setBackgroundResource(R.drawable.default_avatar);
 		}else{
 			if(!try_again){
-				Map<String, String> map = new HashMap<String, String>();
+				Map<String, String> map = new HashMap<>();
 				map.put("uid", Constant.UID+"");
 				GetAvatar(map);
 			}else{
@@ -326,7 +343,7 @@ public class Activity_UserInfo extends Activity {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Map<String, Object> doInBackground(Object... params) {
-				Map<String, Object> status=new HashMap<String, Object>();
+				Map<String, Object> status;
 				try {
 					status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
 					return status;
@@ -345,12 +362,9 @@ public class Activity_UserInfo extends Activity {
 						Log.e("1", "获取头像地址成功！");
 						try_again=true;
 						showUserAvatar(iv_avatar, info);
-					}else {
-
-
 					}
 				}
-			};
+			}
 
 		}.execute(params);}
 
@@ -368,7 +382,8 @@ public class Activity_UserInfo extends Activity {
 			this.setOutsideTouchable(true);
 			// 刷新状态
 			this.update();
-			ColorDrawable dw = new ColorDrawable(0000000000);
+//			ColorDrawable dw = new ColorDrawable(0000000000);
+			ColorDrawable dw = new ColorDrawable(0);
 			this.setBackgroundDrawable(dw);
 			// 设置SelectPicPopupWindow弹出窗体动画效果
 			this.setAnimationStyle(R.style.AnimationPreview);
@@ -399,7 +414,7 @@ public class Activity_UserInfo extends Activity {
 		/**
 		 * 显示popupWindow
 		 *
-		 * @param parent
+		 * @param parent parent view
 		 */
 		public void showPopupWindow(View parent) {
 			if (!this.isShowing()) {
@@ -483,7 +498,7 @@ public class Activity_UserInfo extends Activity {
 		ok.setOnClickListener(new View.OnClickListener() {
 			@SuppressLint("ShowToast")
 			public void onClick(View v) {
-				Map<String,String> map=new HashMap<String, String>();
+				Map<String,String> map=new HashMap<>();
 				map.put("uid", Constant.UID);
 				map.put("friend_id", id);
 				map.put("token", Constant.TOKEN);
@@ -499,7 +514,7 @@ public class Activity_UserInfo extends Activity {
 								case 0:
 									Toast.makeText(context, "删除成功！", Toast.LENGTH_SHORT).show();
 									UserDao dao=new UserDao(context);
-									List<String> delFriend=new ArrayList<String>();
+									List<String> delFriend=new ArrayList<>();
 									delFriend.add(id);
 									ChatEntityDao d=new ChatEntityDao(context);
 									d.deleteMessageByUser(id);

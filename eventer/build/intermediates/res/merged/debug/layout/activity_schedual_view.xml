@@ -5,46 +5,9 @@
     android:background="#fff"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <RelativeLayout
+    <include
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="@color/caldroid_holo_blue_light" >
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:onClick="back"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/back" />
-
-        <View
-            android:id="@+id/view_temp"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/iv_back"
-            android:background="@color/caldroid_holo_blue_dark" />
-
-        <TextView
-            android:id="@+id/page_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/view_temp"
-            android:text="@string/eventdetail"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />      
-    </RelativeLayout>
+        layout="@layout/top_layout"/>
    <RelativeLayout
             android:id="@+id/article_bottom_layout"
             android:layout_width="match_parent"
@@ -63,6 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:onClick="back"
+                android:contentDescription="@string/finish"
                 android:src="@drawable/finish_selector" />
 
             <ImageView
@@ -70,7 +34,9 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/delete"
                 android:src="@drawable/delete_bg" />
 
 
@@ -80,7 +46,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:contentDescription="@string/delete"
                 android:layout_toLeftOf="@+id/iv_delete"
+                android:layout_toStartOf="@+id/iv_delete"
                 android:src="@drawable/share_selector" />
 
             <ImageView
@@ -89,7 +58,10 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:layout_toLeftOf="@+id/iv_share"
+                android:layout_toStartOf="@+id/iv_share"
+                android:contentDescription="@string/edit"
                 android:src="@drawable/edit" />
             
              

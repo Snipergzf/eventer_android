@@ -32,7 +32,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
@@ -47,8 +46,8 @@ import java.util.ArrayList;
 /**
  * Fancy progress indicator for Material theme.
  *
- * @hide
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class MaterialProgressDrawable extends Drawable implements Animatable {
     // Maps to ProgressBar.Large style
     public static final int LARGE = 0;
@@ -86,18 +85,18 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
     static final int ARROW_WIDTH_LARGE = 12;
     static final int ARROW_HEIGHT_LARGE = 6;
     private static final float MAX_PROGRESS_ARC = .8f;
-    private final int[] COLORS = new int[]{
+    final int[] COLORS = new int[]{
             Color.BLACK
     };
     /**
      * The list of animators operating on this drawable.
      */
-    private final ArrayList<Animation> mAnimators = new ArrayList<Animation>();
+    private final ArrayList<Animation> mAnimators = new ArrayList<>();
     /**
      * The indicator ring, used to manage animation state.
      */
     private final Ring mRing;
-    private final Callback mCallback = new Callback() {
+    final Callback mCallback = new Callback() {
         @Override
         public void invalidateDrawable(Drawable d) {
             invalidateSelf();
@@ -153,9 +152,9 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
      * Set the overall size for the progress spinner. This updates the radius
      * and stroke width of the ring.
      *
-     * @param size One of {@link MaterialProgressDrawable.LARGE} or
-     *             {@link MaterialProgressDrawable.DEFAULT}
      */
+    /*  size One of {@link MaterialProgressDrawable.LARGE} or
+       {@link MaterialProgressDrawable.DEFAULT} */
     public void updateSizes(@ProgressDrawableSize int size) {
         final DisplayMetrics metrics = mResources.getDisplayMetrics();
         final float screenDensity = metrics.density;
@@ -215,7 +214,6 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
      * The first color will also be the color of the bar that grows in response
      * to a user swipe gesture.
      *
-     * @param colors
      */
     public void setColorSchemeColors(int... colors) {
         mRing.setColors(colors);

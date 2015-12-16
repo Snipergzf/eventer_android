@@ -1,13 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -42,8 +34,17 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@SuppressLint("SetTextI18n")
 public class Activity_Friends_Search extends Activity {
-	private String search_info;
+	String search_info;
 	private Context context;
 	private ProgressDialog dialog;
 	private ListView listview;
@@ -54,7 +55,7 @@ public class Activity_Friends_Search extends Activity {
 	private List<Phone> mData;
 	private List<Phone> totaldata;
 	private  MyAdapter adapter;
-	private List<String> phonelist=new ArrayList<String>();
+	private List<String> phonelist=new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,14 +88,14 @@ public class Activity_Friends_Search extends Activity {
 				if (s.length() > 0) {
 					String str_s = et_search.getText().toString().trim();
 					int len=str_s.length();
-					mData = new ArrayList<Phone>();
+					mData = new ArrayList<>();
 					if(totaldata!=null&&totaldata.size()>0){
 						for (Phone p: totaldata) {
 							String tel = p.getTel();
 							if(tel!=null&&tel.length()>len){
 								tel=tel.substring(0, len);
 							}
-							if (tel.equals(str_s)) {
+							if (tel!=null&&tel.equals(str_s)) {
 
 								mData.add(p);
 							}
@@ -126,11 +127,10 @@ public class Activity_Friends_Search extends Activity {
 			public void onClick(View v) {
 
 				String friend = et_search.getText().toString().trim();
-				if (friend == null || friend.equals("")) {
-					return;
+				if (!friend.equals("")) {
+					search_info = friend;
+					searchUser(friend);
 				}
-				search_info=friend;
-				searchUser(friend);
 
 			}
 
@@ -141,9 +141,9 @@ public class Activity_Friends_Search extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
 				// TODO Auto-generated method stub
-				Phone p=mData.get(position);
-				String tel=p.getTel();
-				if(tel!=null&&tel.length()>0){
+				Phone p = mData.get(position);
+				String tel = p.getTel();
+				if (tel != null && tel.length() > 0) {
 					et_search.setText(tel);
 					searchUser(tel);
 				}
@@ -157,7 +157,7 @@ public class Activity_Friends_Search extends Activity {
 		totaldata=dao.getPhoneList();
 		phonelist=dao.getTelList();
 		if(phonelist==null){
-			phonelist=new ArrayList<String>();
+			phonelist=new ArrayList<>();
 			UpdateContact thread1=new UpdateContact();//创建新的Runnable，	
 			Thread thread=new Thread(thread1);//利用Runnable对象生成Thread
 			thread.start();
@@ -165,7 +165,7 @@ public class Activity_Friends_Search extends Activity {
 	}
 	/**
 	 *
-	 * @param friend_info
+	 * @param friend_info tel
 	 */
 	private void searchUser(String friend_info) {
 		dialog = new ProgressDialog(
@@ -173,7 +173,7 @@ public class Activity_Friends_Search extends Activity {
 		dialog.setMessage("正在查找联系人...");
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.show();
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("search_name", friend_info);
 		map.put("uid", Constant.UID+"");
 		map.put("token", Constant.TOKEN);
@@ -187,7 +187,7 @@ public class Activity_Friends_Search extends Activity {
 	/**
 	 * 执行异步任务
 	 * 通过手机号搜索好友
-	 * @param params
+	 * @param params 参数：search_name，uid,token
 	 *
 	 */
 	public void FriendSearch(final Object... params) {
@@ -196,7 +196,7 @@ public class Activity_Friends_Search extends Activity {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Map<String,Object> doInBackground(Object... params) {
-				Map<String,Object>  map=new HashMap<String, Object>();
+				Map<String,Object>  map;
 				try {
 					map=HttpUnit.sendSerachFriendRequest((Map<String, String>)params[0]);
 					return map;
@@ -215,7 +215,7 @@ public class Activity_Friends_Search extends Activity {
 						JSONObject jsonObject= new  JSONObject(info);
 						String uid=jsonObject.getString("id");
 						String avatar=jsonObject.getString("avatar");
-						String user_rank=jsonObject.getString("user_rank");
+//						String user_rank=jsonObject.getString("user_rank");
 						String name=jsonObject.getString("name");
 
 						User u=new User();
@@ -241,13 +241,17 @@ public class Activity_Friends_Search extends Activity {
 					}
 
 				}else {
-					Toast.makeText(context,info, Toast.LENGTH_LONG)
-							.show();
+					if(!Constant.isConnectNet){
+						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(context, info, Toast.LENGTH_LONG).show();
+					}
+
 				}
 				if(dialog!=null)
 					dialog.dismiss();
 
-			};
+			}
 		}.execute(params);}
 
 	public class MyAdapter extends BaseAdapter {
@@ -277,10 +281,10 @@ public class Activity_Friends_Search extends Activity {
 		}
 		@SuppressLint("ViewHolder")
 		public View getView(final int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
+			ViewHolder holder;
 			if (convertView == null) {
 				holder=new ViewHolder();
-				convertView = mInflater.inflate(R.layout.item_phone_search_list, null);
+				convertView = mInflater.inflate(R.layout.item_phone_search_list, parent , false);
 				holder.name = (TextView)convertView.findViewById(R.id.tv_name);
 				holder.phone = (TextView)convertView.findViewById(R.id.tv_eventer_id);
 				convertView.setTag(holder);
@@ -318,6 +322,7 @@ public class Activity_Friends_Search extends Activity {
 					}
 				}
 			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 	}

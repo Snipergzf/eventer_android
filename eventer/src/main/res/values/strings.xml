@@ -178,6 +178,7 @@
     <string name="title_activity_share_to_single">ShareToSingleActivity</string>
     <string name="title_activity_chat_room_setting">ChatRoomSettingActivity</string>
     <string name="clear_msg">清空聊天记录</string>
+    <string name="chat">聊天</string>
     <string name="my_collect">我的收藏</string>
     <string name="exit">退出登录</string>
     <string name="title_activity_collect">CollectActivity</string>
@@ -197,6 +198,7 @@
     <string name="version_info">检查更新</string>
     <string name="feedback">意见反馈</string>
     <string name="about">关于我们</string>
+    <string name="my_info">个人信息</string>
     <string name="msg_alert">消息提醒</string>
     <string name="assist">辅助功能</string>
     <string name="title_activity_feedback">FeedbackActivity</string>
@@ -243,6 +245,15 @@
     <string name="theme_other">其他</string>
     <string name="loading">正在加载...</string>
     <string name="cancel_enter">你确定要取消参与该日程吗？</string>
-    
+    <string name="set_beizhu">设置备注名</string>
+    <string name="delete_friend">删除好友</string>
+    <string name="user_res">用户资料</string>
+    <string name="addto_contact">添加到通讯录</string>
+    <string name="schedual_detail">日程详情</string>
+    <string name="todo_detail">待办事件详情</string>
+    <string name="search_f">搜索:</string>
+    <string name="chatgroup">群聊</string>
+    <string name="no_network">当前网络不稳定？！</string>
+
 </resources>
 

@@ -40,6 +40,7 @@ import android.widget.ImageView;
  * called before the animation is actually complete and support shadows on older
  * platforms.
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class CircleProgressBar extends ImageView {
 
     private static final int KEY_SHADOW_COLOR = 0x1E000000;
@@ -59,21 +60,21 @@ public class CircleProgressBar extends ImageView {
     private Animation.AnimationListener mListener;
     private int mShadowRadius;
     private int mBackGroundColor;
-    private int mProgressColor;
+    int mProgressColor;
     private int mProgressStokeWidth;
     private int mArrowWidth;
     private int mArrowHeight;
     private int mProgress;
     private int mMax;
-    private int mDiameter;
+    int mDiameter;
     private int mInnerRadius;
     private Paint mTextPaint;
-    private int mTextColor;
+    int mTextColor;
     private int mTextSize;
     private boolean mIfDrawText;
     private boolean mShowArrow;
     private MaterialProgressDrawable mProgressDrawable;
-    private ShapeDrawable mBgCircle;
+    ShapeDrawable mBgCircle;
     private boolean mCircleBackgroundEnabled;
     private int[] mColors = new int[]{Color.BLACK};
 
@@ -266,7 +267,6 @@ public class CircleProgressBar extends ImageView {
      * The first color will also be the color of the bar that grows in response
      * to a user swipe gesture.
      *
-     * @param colorResIds
      */
     public void setColorSchemeResources(int... colorResIds) {
         final Resources res = getResources();
@@ -282,7 +282,6 @@ public class CircleProgressBar extends ImageView {
      * color will also be the color of the bar that grows in response to a user
      * swipe gesture.
      *
-     * @param colors
      */
     public void setColorSchemeColors(int... colors) {
         mColors = colors;

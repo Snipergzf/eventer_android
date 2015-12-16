@@ -1,13 +1,25 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONObject;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.easemob.util.HanziToPinyin;
 import com.easemob.util.HanziToPinyin.Token;
@@ -22,43 +34,29 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.widget.CircleProgressBar;
 import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
 import com.eventer.app.widget.refreshlist.XListView;
 import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import org.json.JSONObject;
 
-public class LocalContactActivity extends Activity{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
+public class LocalContactActivity extends BaseActivityTest{
 
 	private MyAdapter adapter;
-	private List<Map<String, String>> SourceData=new ArrayList<Map<String,String>>();
-	private List<Phone> mData=new ArrayList<Phone>();
-	private Map<String,UserInfo> isExist=new HashMap<String, UserInfo>();
+	private List<Map<String, String>> SourceData=new ArrayList<>();
+	private List<Phone> mData=new ArrayList<>();
+	private Map<String,UserInfo> isExist=new HashMap<>();
 	private XListView listView;
-	private ImageView back;
-	private final int REFRESH_MORE = 1;
+//	private final int REFRESH_MORE = 1;
 	private LinearLayout loading;
 
 	public Context context;
@@ -69,20 +67,15 @@ public class LocalContactActivity extends Activity{
 
 		setContentView(R.layout.activity_phone_contact);
 		context=this;
+		setBaseTitle(R.string.phone_contact);
 		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
 		listView = (XListView) findViewById(R.id.list);
-		back=(ImageView)findViewById(R.id.iv_back);
+
 		loading=(LinearLayout)findViewById(R.id.ll_loading);
 		CircleProgressBar progress=(CircleProgressBar)findViewById(R.id.progress);
 		progress.setColorSchemeResources(android.R.color.holo_orange_light);
 
-		back.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});
+
 		adapter = new MyAdapter(context);
 		listView.setAdapter(adapter);
 		listView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -91,7 +84,7 @@ public class LocalContactActivity extends Activity{
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
 				String phone=mData.get(position).getTel();
-				UserInfo u=new UserInfo();
+				UserInfo u;
 				if(isExist.containsKey(phone)){
 					u=isExist.get(phone);
 					startActivity(new Intent().setClass(context, Activity_UserInfo.class).putExtra("user", u.getUsername()));
@@ -123,7 +116,7 @@ public class LocalContactActivity extends Activity{
 					UserInfo info=d.getInfo(user);
 					isExist.put(p.getTel()+"", info);
 				}
-				Map<String, String> map=new HashMap<String, String>();
+				Map<String, String> map=new HashMap<>();
 				map.put("phone", p.getTel());
 				map.put("name", p.getRelName());
 				SourceData.add(map);
@@ -174,11 +167,11 @@ public class LocalContactActivity extends Activity{
 
 		@SuppressLint("ViewHolder")
 		public View getView(final int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
+			ViewHolder holder;
 			if (convertView == null) {
 				holder=new ViewHolder();
 				//可以理解为从vlist获取view  之后把view返回给ListView
-				convertView = mInflater.inflate(R.layout.item_phone_contact_list, null);
+				convertView = mInflater.inflate(R.layout.item_phone_contact_list, parent ,false);
 				holder.name = (TextView)convertView.findViewById(R.id.tv_name);
 				holder.phone = (TextView)convertView.findViewById(R.id.tv_eventer_id);
 				holder.avatar=(ImageView)convertView.findViewById(R.id.iv_avatar);
@@ -199,7 +192,7 @@ public class LocalContactActivity extends Activity{
 			holder.name.setText(name);
 			holder.phone.setText(phone+"");
 			boolean isEventer=false;
-			UserInfo u=new UserInfo();
+			UserInfo u;
 			u=isExist.get(phone);
 			int type=u.getType();
 			if(type==1){
@@ -228,8 +221,6 @@ public class LocalContactActivity extends Activity{
 						intent.putExtra("avatar", temp_user.getAvatar());
 						intent.putExtra("nick", temp_user.getNick());
 						context.startActivity(intent);
-					}else{
-						//发送短信邀请
 					}
 				}
 			});
@@ -250,7 +241,7 @@ public class LocalContactActivity extends Activity{
 				public void run() {
 					PhoneDao dao=new PhoneDao(context);
 					List<Phone> list=dao.getPhoneList();
-					mData=new ArrayList<Phone>();
+					mData=new ArrayList<>();
 					for (Phone phone : list) {
 						if(isExist.containsKey(phone.getTel())){
 							mData.add(phone);
@@ -263,10 +254,13 @@ public class LocalContactActivity extends Activity{
 							UserInfo info=d.getInfo(user);
 							isExist.put(p.getTel()+"", info);
 						}
-						Map<String, String> map=new HashMap<String, String>();
+						Map<String, String> map=new HashMap<>();
 						map.put("phone", p.getTel());
 						map.put("name", p.getRelName());
 						SourceData.add(map);
+					}
+					if(!Constant.isConnectNet){
+						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
 					}
 
 					Collections.sort(mData, new FullPinyinComparator() {
@@ -323,7 +317,6 @@ public class LocalContactActivity extends Activity{
 	/**
 	 * 执行异步任务
 	 *
-	 * @param params
 	 *
 	 */
 	public void handleTel(final Object... params) {
@@ -331,7 +324,7 @@ public class LocalContactActivity extends Activity{
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Map<String,UserInfo> doInBackground(Object... params) {
-				Map<String,UserInfo> result=new HashMap<String, UserInfo>();
+				Map<String,UserInfo> result=new HashMap<>();
 				try {
 					List<Map<String, String>> list=(List<Map<String, String>>) params[0];
 					Map<String,UserInfo> user=MyApplication.getInstance().getUserList();
@@ -340,7 +333,7 @@ public class LocalContactActivity extends Activity{
 						String string=map1.get("phone");
 						String realname=map1.get("name");
 						if(!isExist.containsKey(string)){
-							Map<String,String> map=new HashMap<String, String>();
+							Map<String,String> map=new HashMap<>();
 							map.put("search_name", string);
 							map.put("uid", Constant.UID+"");
 							map.put("token", Constant.TOKEN);
@@ -389,7 +382,7 @@ public class LocalContactActivity extends Activity{
 				loading.setVisibility(View.GONE);
 				refresh();
 
-			};
+			}
 		}.execute(params);}
 
 

@@ -4,26 +4,36 @@
     android:layout_height="match_parent"
     android:background="#eee"
     android:orientation="vertical" >
+
    <RelativeLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/caldroid_holo_blue_light"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical" >
 
         
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/tab_activity"
+            android:background="@color/caldroid_holo_blue_light"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/note"
+            android:visibility="gone"
+            android:layout_below="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#e6d966"
+            />
  
     </RelativeLayout>
-   
+
     <RelativeLayout
         android:id="@+id/theme_listview"
         android:layout_width="match_parent"

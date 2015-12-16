@@ -1,5 +1,5 @@
 package com.eventer.app.entity;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class Event extends EventOp {
 
 	String content;

@@ -1,7 +1,5 @@
 package com.eventer.app.widget;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -9,16 +7,19 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.eventer.app.R;
 import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
 
+import java.util.List;
+
 public class SpinerPopWindow extends PopupWindow implements OnItemClickListener{
 
 	private Context mContext;
-	private ListView mListView;
+	ListView mListView;
 	private NormalSpinerAdapter mAdapter;
 	private IOnItemSelectListener mItemSelectListener;
 	
@@ -39,7 +40,7 @@ public class SpinerPopWindow extends PopupWindow implements OnItemClickListener{
 	
 	private void init()
 	{
-		View view = LayoutInflater.from(mContext).inflate(R.layout.spiner_window_layout, null);
+		View view = LayoutInflater.from(mContext).inflate(R.layout.spiner_window_layout,new LinearLayout(mContext),false);
 		setContentView(view);		
 		setWidth(LayoutParams.WRAP_CONTENT);
 		setHeight(LayoutParams.WRAP_CONTENT);

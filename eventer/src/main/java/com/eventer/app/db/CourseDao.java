@@ -1,13 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,7 +9,15 @@ import android.text.TextUtils;
 
 import com.eventer.app.entity.Course;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class CourseDao {
 	public static final String TABLE_NAME = "dbCourse";
 	public static final String COLUMN_NAME_ID = "CourseID";
@@ -39,7 +40,7 @@ public class CourseDao {
 
 	public List<Course> getCourseList(String id) {
 		// TODO Auto-generated method stub
-		List<Course> list=new ArrayList<Course>();
+		List<Course> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
 				COLUMN_NAME_ID+"=?", new String[]{id}, null, null,"extra_Id",null);
@@ -50,7 +51,7 @@ public class CourseDao {
 			String teacher = c.getString(c.getColumnIndex("Teacher"));
 			String week = c.getString(c.getColumnIndex(COLUMN_NAME_WEEK));
 			int ex_id = c.getInt(c.getColumnIndex("extra_Id"));
-			int kcweekday=-1,kcStart=-1,kcLen=-1;
+			int kcweekday,kcStart,kcLen;
 			kcweekday=c.getInt(c.getColumnIndex(COLUMN_NAME_WEEKDAY));
 			kcStart=c.getInt(c.getColumnIndex(COLUMN_NAME_START));
 			kcLen=c.getInt(c.getColumnIndex(COLUMN_NAME_LEN));
@@ -78,7 +79,7 @@ public class CourseDao {
 
 	private List<Course> getTimeList(Course course) {
 		// TODO Auto-generated method stub
-		List<Course> list=new ArrayList<Course>();
+		List<Course> list=new ArrayList<>();
 		String teacher=course.getTeacher();
 		String c_name=course.getClassname();
 		int classid=course.getClassid();
@@ -89,7 +90,7 @@ public class CourseDao {
 			int index=1;
 			while(it.hasNext()){
 				Course c=new Course();
-				JSONObject detail=json.getJSONObject(it.next().toString());
+				JSONObject detail=json.getJSONObject(it.next());
 				c.setClassname(c_name);
 				c.setTeacher(teacher);
 				c.setClassid(classid);
@@ -117,7 +118,7 @@ public class CourseDao {
 
 	public List<Integer> getCourseIdList(){
 		dbHelper.openDatabase();
-		List<Integer> list=new ArrayList<Integer>();
+		List<Integer> list=new ArrayList<>();
 		Cursor c=dbHelper.findList(true, TABLE_NAME,new String[]{COLUMN_NAME_ID},null,null,null,null,null, null);
 		while (c.moveToNext()) {
 			int id = c.getInt(c.getColumnIndex(COLUMN_NAME_ID));

@@ -7,22 +7,23 @@
  */
 package cn.smssdk.gui;
 
-import static com.mob.tools.utils.R.getColorRes;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import cn.smssdk.SMSSDK;
 import cn.smssdk.gui.GroupListView.GroupAdapter;
 import cn.smssdk.gui.layout.SizeHelper;
 import cn.smssdk.utils.SMSLog;
+
+import static com.mob.tools.utils.R.getColorRes;
 
 /** 自定义的国家列表，适配器，用于填充国家listview*/
 public class CountryAdapter extends GroupAdapter {
@@ -52,7 +53,6 @@ public class CountryAdapter extends GroupAdapter {
 
 	/**
 	 * 搜索
-	 * @param token
 	 */
 	public void search(String token) {
 		ArrayList<String> res = sEngine.match(token);
@@ -121,7 +121,7 @@ public class CountryAdapter extends GroupAdapter {
 
 	public String getGroupTitle(int group) {
 		if(titles.size() != 0){
-			return titles.get(group).toString();
+			return titles.get(group);
 		}else{
 			return null;
 		}

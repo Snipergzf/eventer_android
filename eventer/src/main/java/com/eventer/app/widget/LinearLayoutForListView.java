@@ -10,6 +10,7 @@ import com.eventer.app.adapter.CourseTimeAdapter;
 /**
  * 取代ListView的LinearLayout，使之能够成功嵌套在ScrollView中
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class LinearLayoutForListView extends LinearLayout {
 
     private CourseTimeAdapter adapter;

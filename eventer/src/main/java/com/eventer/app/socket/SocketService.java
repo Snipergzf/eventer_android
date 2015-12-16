@@ -1,5 +1,14 @@
 package com.eventer.app.socket;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+import android.util.Log;
+
+import com.eventer.app.Constant;
+import com.eventer.app.entity.Msg.Container;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,18 +22,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
-
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
-import android.util.Log;
-
-import com.eventer.app.Constant;
-import com.eventer.app.entity.Msg.Container;
 
 public class SocketService extends Service{
 	private SocketSendBinder binder = new SocketSendBinder();
@@ -32,8 +31,8 @@ public class SocketService extends Service{
 	private Socket socket;
 	private DataOutputStream output;
 	private InputStream input;
-	private static Queue<Container> taskQueue = new LinkedList<Container>();
-	private Thread send,recv;
+	private static Queue<Container> taskQueue = new LinkedList<>();
+	Thread send,recv;
 	private Intent intent = new Intent("com.eventer.app.socket.RECEIVER");
 	private Intent intent_a = new Intent("com.eventer.app.activity");
 	private int index=0;
@@ -82,7 +81,7 @@ public class SocketService extends Service{
 						context = SSLContext.getInstance("SSL");
 						context.init(null, new X509TrustManager[]{xtm}, null);
 						SSLSocketFactory factory = context.getSocketFactory();
-						socket = (SSLSocket) factory.createSocket(Constant.DomainName, 1430);
+						socket =  factory.createSocket(Constant.DomainName, 1430);
 
 					} catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
 						e.printStackTrace();
@@ -116,6 +115,11 @@ public class SocketService extends Service{
 									output.write(smsg, 0, m_len+4);
 									output.flush();
 									index=0;
+									Log.e("socket", "received:MID="+_msg.getMID()+"; RID="
+											+ _msg.getRID()+"; SID="+_msg.getSID()+"; Type="
+											+ _msg.getTYPE()+"; Time="+_msg.getSTIME()+"; Body="
+											+ _msg.getBODY());
+
 								}else if(index>total){
 									msgBody="{\"token\":\""+Constant.TOKEN+"\"}";
 									time=System.currentTimeMillis()/1000;
@@ -159,7 +163,7 @@ public class SocketService extends Service{
 									context = SSLContext.getInstance("SSL");
 									context.init(null, new X509TrustManager[]{xtm}, null);
 									SSLSocketFactory factory = context.getSocketFactory();
-									socket = (SSLSocket) factory.createSocket(Constant.DomainName, 1430);
+									socket =  factory.createSocket(Constant.DomainName, 1430);
 
 								} catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
 									e.printStackTrace();
@@ -222,6 +226,7 @@ public class SocketService extends Service{
 									sendOrderedBroadcast(intent, null);
 
 								}
+								if(rmsg!=null)
 								Log.e("socket", "received:MID="+rmsg.getMID()+"; RID=" + rmsg.getRID()+"; SID="+rmsg.getSID()+"; Type="+rmsg.getTYPE()+"; Time="+rmsg.getSTIME()+"; Body="+rmsg.getBODY());
 
 							}

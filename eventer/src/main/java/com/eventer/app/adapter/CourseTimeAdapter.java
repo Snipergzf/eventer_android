@@ -1,9 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -24,17 +20,20 @@ import com.eventer.app.util.WheelDialogClassHourShowUtil;
 import com.eventer.app.util.WheelDialogTwoShowUtil;
 import com.eventer.app.view.DialogView_ClassHour.onWheelBtnPosClick;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 简单的好友Adapter实现
  *
  */
-@SuppressLint("UseSparseArrays")
+@SuppressLint("SetTextI18n")
 public class CourseTimeAdapter  extends BaseAdapter {
 
 	private Context context;                        //运行上下文
 	private List<Course> listItems;
 	private LayoutInflater mInflater;            //视图容器
-	private boolean[] hasChecked;
 	private int res;
 
 
@@ -117,11 +116,11 @@ public class CourseTimeAdapter  extends BaseAdapter {
 		String c_time=item.getTime();
 		String c_week=item.getWeek();
 		if(!TextUtils.isEmpty(c_time)&&!TextUtils.isEmpty(c_week)){
-			String time="";
+			String time;
 			String week="";
 			String[] weeklist=c_week.split(",");
-			for(int i=0;i<weeklist.length;i++){
-				week+=weeklist[i]+"周 ";
+			for (String aWeeklist : weeklist) {
+				week += aWeeklist + "周 ";
 			}
 			String day=context.getResources().getStringArray(R.array.weeks)[c_day];
 			time=day+" "+c_time+"节";
@@ -159,7 +158,7 @@ public class CourseTimeAdapter  extends BaseAdapter {
 				}
 				dbHelper1.closeDatabase();
 
-				Map<Integer,String[]> data=new HashMap<Integer,String[]>();
+				Map<Integer,String[]> data=new HashMap<>();
 				data.put(1, weeks);
 				data.put(2, FromClassNum);
 				data.put(3, ToClassNum);
@@ -218,7 +217,7 @@ public class CourseTimeAdapter  extends BaseAdapter {
 					ToWeekNum[i]="到"+(i+1)+"周";
 				}
 
-				Map<Integer,String[]> data1=new HashMap<Integer,String[]>();
+				Map<Integer,String[]> data1=new HashMap<>();
 				data1.put(1, FromWeekNum);
 				data1.put(2, ToWeekNum);
 				final WheelDialogTwoShowUtil wheelUtil2;

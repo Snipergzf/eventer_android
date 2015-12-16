@@ -1,8 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -26,6 +23,9 @@ import com.eventer.app.entity.User;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 简单的好友Adapter实现
  *
@@ -48,7 +48,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         super(context, resource, objects);
         this.res = resource;
         this.userList = objects;
-        copyUserList = new ArrayList<User>();
+        copyUserList = new ArrayList<>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
         avatarLoader=new LoadUserAvatar(context, Constant.IMAGE_PATH);
@@ -67,7 +67,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         TextView nameTextview = (TextView) convertView
                 .findViewById(R.id.tv_name);
         TextView tvHeader = (TextView) convertView.findViewById(R.id.header);
-        View view_temp = (View) convertView.findViewById(R.id.view_temp);
+        View view_temp = convertView.findViewById(R.id.view_temp);
         User user = getItem(position);
         String header = user.getHeader();
         String usernick = user.getNick();
@@ -121,7 +121,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         positionOfSection = new SparseIntArray();
         sectionOfPosition = new SparseIntArray();
         int count = getCount();
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         list.add(getContext().getString(R.string.search_header));
         positionOfSection.put(0, 0);
         sectionOfPosition.put(0, 0);
@@ -160,7 +160,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
                 CharSequence prefix) {
             FilterResults results = new FilterResults();
             if (mList == null) {
-                mList = new ArrayList<User>();
+                mList = new ArrayList<>();
             }
             if (prefix == null || prefix.length() == 0) {
                 results.values = copyUserList;
@@ -169,7 +169,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
             } else {
                 String prefixString = prefix.toString();
                 final int count = mList.size();
-                final ArrayList<User> newValues = new ArrayList<User>();
+                final ArrayList<User> newValues = new ArrayList<>();
                 for (int i = 0; i < count; i++) {
                     final User user = mList.get(i);
                     String username = user.getUsername();
@@ -184,12 +184,10 @@ public class ContactAdapter extends ArrayAdapter<User> implements
                         newValues.add(user);
                     } else {
                         final String[] words = username.split(" ");
-                        final int wordCount = words.length;
-
                         // Start at index 0, in case valueText starts with
                         // space(s)
-                        for (int k = 0; k < wordCount; k++) {
-                            if (words[k].startsWith(prefixString)) {
+                        for (String word : words) {
+                            if (word.startsWith(prefixString)) {
                                 newValues.add(user);
                                 break;
                             }

@@ -1,7 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +15,16 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ChatRoomAdapter;
 import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.entity.ChatRoom;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint("InflateParams")
-public class ChatRoomActivity extends BaseActivity {
-    private ListView groupListView;
+import java.util.List;
+
+@SuppressLint({"InflateParams","SetTextI18n"})
+public class ChatRoomActivity extends BaseActivityTest {
+    ListView groupListView;
     protected List<ChatRoom> grouplist;
-    private ChatRoomAdapter groupAdapter;
+    ChatRoomAdapter groupAdapter;
     TextView tv_total;
     public static ChatRoomActivity instance;
     private Context context;
@@ -34,6 +34,7 @@ public class ChatRoomActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mychatroom);
+        setBaseTitle(R.string.chatgroup);
         context=this;
         instance = this;
         ChatroomDao dao=new ChatroomDao(context);
@@ -82,12 +83,5 @@ public class ChatRoomActivity extends BaseActivity {
         instance = null;
     }
 
-    /**
-     * 返回
-     *
-     * @param view
-     */
-    public void back(View view) {
-        finish();
-    }
+
 }

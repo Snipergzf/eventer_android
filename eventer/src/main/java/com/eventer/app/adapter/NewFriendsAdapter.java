@@ -1,11 +1,21 @@
 package com.eventer.app.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.util.HanziToPinyin;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.InviteMessgeDao;
@@ -19,23 +29,9 @@ import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressLint("ViewHolder")
 public class NewFriendsAdapter extends BaseAdapter {
@@ -43,7 +39,7 @@ public class NewFriendsAdapter extends BaseAdapter {
     List<InviteMessage> msgs;
     private InviteMessgeDao messgeDao;
     private LoadUserAvatar avatarLoader;
-    private boolean try_again=false;
+
     int total = 0;
     //private LoadUserAvatar avatarLoader;
 
@@ -89,7 +85,7 @@ public class NewFriendsAdapter extends BaseAdapter {
         String name = msg.getName();
 
         String avatar = msg.getAvatar();
-        String reason = "";
+        String reason;
         reason=msg.getReason();
         convertView = View.inflate(context, R.layout.item_newfriendsmsag, null);
         holder.iv_avatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
@@ -106,9 +102,7 @@ public class NewFriendsAdapter extends BaseAdapter {
             holder.tv_added.setVisibility(View.VISIBLE);
             holder.btn_add.setVisibility(View.GONE);
             holder.btn_ignore.setVisibility(View.GONE);
-            if(reason!=null&&reason!=""){
-            }
-            else{
+            if(reason==null||reason.equals("")){
                 reason="等待对方确认";
             }
         }else if ( msg.getStatus() == InviteMesageStatus.BEAGREED) {
@@ -116,9 +110,7 @@ public class NewFriendsAdapter extends BaseAdapter {
             holder.tv_added.setVisibility(View.VISIBLE);
             holder.btn_add.setVisibility(View.GONE);
             holder.btn_ignore.setVisibility(View.GONE);
-            if(reason!=null&&reason!=""){
-            }
-            else{
+            if(reason==null||reason.equals("")){
                 reason="等待对方确认";
             }
         } else if (msg.getStatus() == InviteMesageStatus.AGREED){
@@ -126,9 +118,7 @@ public class NewFriendsAdapter extends BaseAdapter {
             holder.tv_added.setVisibility(View.VISIBLE);
             holder.btn_add.setVisibility(View.GONE);
             holder.btn_ignore.setVisibility(View.GONE);
-            if(reason!=null&&reason!=""){
-            }
-            else{
+            if(reason==null||reason.equals("")){
                 reason="对方请求添加你为好友";
             }
         }else if(msg.getStatus()==InviteMesageStatus.REFUSED){
@@ -136,8 +126,7 @@ public class NewFriendsAdapter extends BaseAdapter {
             holder.tv_added.setVisibility(View.VISIBLE);
             holder.btn_add.setVisibility(View.GONE);
             holder.btn_ignore.setVisibility(View.GONE);
-            if(reason!=null&&reason!=""){}
-            else{
+            if(reason==null||reason.equals("")){
                 reason="对方请求添加你为好友";
             }
         }else {
@@ -145,13 +134,14 @@ public class NewFriendsAdapter extends BaseAdapter {
             holder.btn_add.setVisibility(View.VISIBLE);
             holder.btn_ignore.setVisibility(View.VISIBLE);
             holder.btn_add.setTag(msg);
-            if(reason!=null&&reason!=""){}
-            else{reason="对方请求添加你为好友"; }
+            if(reason==null||reason.equals("")){
+                reason="对方请求添加你为好友";
+            }
             holder.btn_add.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    acceptInvitation(holder.btn_add, holder.btn_ignore,msg, holder.tv_added);
+                    acceptInvitation(holder.btn_add, holder.btn_ignore, msg, holder.tv_added);
                 }
 
             });
@@ -224,7 +214,7 @@ public class NewFriendsAdapter extends BaseAdapter {
     private void showUserAvatar(final ImageView iamgeView, String avatar) {
         final String url_avatar = avatar;
         iamgeView.setTag(url_avatar);
-        if (url_avatar != null && url_avatar.indexOf("http")!=-1) {
+        if (url_avatar != null && url_avatar.contains("http")) {
             Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
                     new ImageDownloadedCallBack() {
 
@@ -246,8 +236,6 @@ public class NewFriendsAdapter extends BaseAdapter {
     /**
      * 同意好友请求或者群申请
      *
-     * @param button
-     * @param username
      */
     private void acceptInvitation(final Button button,final Button button1, final InviteMessage msg,
                                   final TextView textview) {
@@ -260,11 +248,11 @@ public class NewFriendsAdapter extends BaseAdapter {
             public void run() {
                 // 调用sdk的同意方法
                 try {
-                    Map<String,Object> result=new HashMap<String, Object>();
+                    Map<String,Object> result=new HashMap<>();
                     if (msg.getGroupId() == null) // 同意好友请求
                     {
 
-                        Map<String,String> map=new HashMap<String, String>();
+                        Map<String,String> map=new HashMap<>();
                         map.put("uid", Constant.UID+"");
                         map.put("friend_id", msg.getId()+"");
                         map.put("certificate",msg.getCertification());
@@ -273,9 +261,7 @@ public class NewFriendsAdapter extends BaseAdapter {
                         result=HttpUnit.sendFriendComfirm(map);
 
                     }
-                    else{
 
-                    }
                     final String info=(String)result.get("info");
                     if((int)result.get("status")==0){
 
@@ -433,68 +419,62 @@ public class NewFriendsAdapter extends BaseAdapter {
 //    }
 
 
-    public void GetAvatar(final Object... params) {
-        new AsyncTask<Object, Object,Map<String, Object>>() {
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected Map<String, Object> doInBackground(Object... params) {
-                Map<String, Object> status=new HashMap<String, Object>();
-                try {
-                    status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
-                    return status;
-
-                } catch (Throwable e) {
-                    // TODO Auto-generated catch block
-                    Log.e("1", e.toString());
-                    return null;
-                }
-            }
-            protected void onPostExecute(Map<String, Object> result) {
-                if(result!=null){
-                    int status=(int)result.get("status");
-                    String info=(String)result.get("info");
-                    if(status==0){
-                        Log.e("1", "获取头像地址成功！");
-
-                        try_again=true;
-
-                    }else {
-
-
-                    }
-                }
-            };
-
-        }.execute(params);}
+//    public void GetAvatar(final Object... params) {
+//        new AsyncTask<Object, Object,Map<String, Object>>() {
+//
+//            @SuppressWarnings("unchecked")
+//            @Override
+//            protected Map<String, Object> doInBackground(Object... params) {
+//                Map<String, Object> status;
+//                try {
+//                    status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
+//                    return status;
+//
+//                } catch (Throwable e) {
+//                    // TODO Auto-generated catch block
+//                    Log.e("1", e.toString());
+//                    return null;
+//                }
+//            }
+//            protected void onPostExecute(Map<String, Object> result) {
+//                if(result!=null){
+//                    int status=(int)result.get("status");
+//                    if(status==0){
+//                        Log.e("1", "获取头像地址成功！");
+//
+//                        try_again=true;
+//
+//                    }
+//                }
+//            }
+//
+//        }.execute(params);}
 
     /**
      * 设置hearder属性，方便通讯中对联系人按header分类显示，以及通过右侧ABCD...字母栏快速定位联系人
      *
-     * @param username
-     * @param user
      */
-    @SuppressLint("DefaultLocale")
-    protected void setUserHearder(String username, User user) {
-        String headerName = null;
-        if (!TextUtils.isEmpty(user.getNick())) {
-            headerName = user.getNick();
-        } else {
-            headerName = user.getUsername();
-        }
-        headerName = headerName.trim();
-        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-            user.setHeader("");
-        } else if (Character.isDigit(headerName.charAt(0))) {
-            user.setHeader("#");
-        } else {
-            user.setHeader(HanziToPinyin.getInstance()
-                    .get(headerName.substring(0, 1)).get(0).target.substring(0,
-                            1).toUpperCase());
-            char header = user.getHeader().toLowerCase().charAt(0);
-            if (header < 'a' || header > 'z') {
-                user.setHeader("#");
-            }
-        }
-    }
+//    @SuppressLint("DefaultLocale")
+//    protected void setUserHearder(String username, User user) {
+//        String headerName = null;
+//        if (!TextUtils.isEmpty(user.getNick())) {
+//            headerName = user.getNick();
+//        } else {
+//            headerName = user.getUsername();
+//        }
+//        headerName = headerName.trim();
+//        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
+//            user.setHeader("");
+//        } else if (Character.isDigit(headerName.charAt(0))) {
+//            user.setHeader("#");
+//        } else {
+//            user.setHeader(HanziToPinyin.getInstance()
+//                    .get(headerName.substring(0, 1)).get(0).target.substring(0,
+//                            1).toUpperCase());
+//            char header = user.getHeader().toLowerCase().charAt(0);
+//            if (header < 'a' || header > 'z') {
+//                user.setHeader("#");
+//            }
+//        }
+//    }
 }

@@ -1,19 +1,5 @@
 package com.eventer.app.main;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.ui.base.BaseActivity;
-import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.util.PreferenceUtils;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,15 +17,30 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.util.PreferenceUtils;
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.smssdk.SMSSDK;
 
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
-	private Button btn_login;
+	Button btn_login;
 	private ImageButton btn_user_clear,btn_pwd_clear;
 	private EditText edit_user,edit_pwd;
-	private TextView tv_login_help,tv_newuser;
+	TextView tv_login_help,tv_newuser;
 	ProgressDialog dialog;
 	private Context context;
 	public static boolean isActive=false;
@@ -116,11 +117,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		});
 		String user=PreferenceUtils.getInstance().getLoginUser();
 		String pwd=PreferenceUtils.getInstance().getLoginPwd();
-		if(user!=null&&user!=""){
+		if(user!=null&& !user.equals("")){
 			edit_user.setText(user);
 			edit_pwd.setFocusable(true);
 			edit_pwd.requestFocus();
-			if(pwd!=null&&pwd!=""){
+			if(pwd!=null&& !pwd.equals("")){
 				edit_pwd.setText(pwd);
 			}
 		}
@@ -180,7 +181,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 *  参数为“phone”,“pwd”  ,"imei"  
 	 */
 	public void UserLogin() {
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put("phone", edit_user.getText().toString());
 		params.put("pwd", edit_pwd.getText().toString());
 		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
@@ -202,6 +203,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							Constant.LoginTime=System.currentTimeMillis()/1000;
 							JSONObject jsonLogin= data.getJSONObject("user_action");
 							Constant.UID=jsonLogin.getInteger("uid")+"";
+							PreferenceUtils.getInstance().setUserId(Constant.UID);
+							Log.e("1", Constant.UID + "---" + PreferenceUtils.getInstance().getUserId());
 							Constant.TOKEN=jsonLogin.getString("token");
 							initSelfInfo();
 							MobclickAgent.onProfileSignIn(Constant.UID);
@@ -223,7 +226,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							break;
 						case -1:
 							dialog.dismiss();
-							Toast.makeText(context, "无法连接到服务器？网络不稳定？！", Toast.LENGTH_LONG)
+							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG)
 									.show();
 							break;
 						default:
@@ -248,7 +251,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 * 将信息写入LocalUserInfo
 	 */
 	private void initSelfInfo(){
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		maps.put("uid", Constant.UID+"");
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
 				context, Constant.URL_GET_SELFINFO, maps);
@@ -267,7 +270,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 //	                    	EventDao dao=new EventDao(context);
 //				        	List<String> list=dao.getEventIDList();
 //				        	MyApplication.getInstance().setCacheByKey("EventList", list);
-						if(name!=null&&name!=""){
+						if(name!=null&& !name.equals("")){
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("sex", info.getString("sex"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("email", info.getString("email"));
@@ -291,22 +294,17 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							finish();
 						}
 
-					} else if (code == 2) {
-
-						Toast.makeText(context, "信息获取失败失败...",
-								Toast.LENGTH_SHORT).show();
-					} else if (code == 3) {
-
-						Toast.makeText(context, "图片上传失败...",
-								Toast.LENGTH_SHORT).show();
-
-					} else {
-
-						Toast.makeText(context, "服务器繁忙请重试...",
-								Toast.LENGTH_SHORT).show();
+					}  else {
+                       if(!Constant.isConnectNet){
+						   Toast.makeText(context, getText(R.string.no_network),
+								   Toast.LENGTH_SHORT).show();
+					   }else{
+						   Toast.makeText(context, "服务器繁忙请重试...",
+								   Toast.LENGTH_SHORT).show();
+					   }
 					}
 
-				} catch (JSONException e) {
+				}catch (JSONException e) {
 
 					Toast.makeText(context, "数据解析错误...",
 							Toast.LENGTH_SHORT).show();

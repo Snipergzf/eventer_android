@@ -1,9 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +27,10 @@ import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressLint({ "SdCardPath", "InflateParams" })
 public class ChatRoomAdapter extends BaseAdapter {
@@ -69,7 +69,7 @@ public class ChatRoomAdapter extends BaseAdapter {
         ChatRoom group = grouplist.get(position);
         final String groupId = group.getRoomId();
 
-        int membersNum = 0;
+        int membersNum;
 
         String groupName =  group.getRoomname();
 
@@ -86,7 +86,7 @@ public class ChatRoomAdapter extends BaseAdapter {
                 groupName_temp2 += "、" + displayName[i];
 
             } else if (i == 4) {
-                groupName_temp2 += "...("+displayName+")";
+                groupName_temp2 += "...("+membersNum+")";
             }
         }
 
@@ -117,7 +117,7 @@ public class ChatRoomAdapter extends BaseAdapter {
                 showUserAvatar((ImageView) view
                         .findViewById(avatar_id[i]), avatar);
             }else{
-                Map<String,String> map=new HashMap<String, String>();
+                Map<String,String> map=new HashMap<>();
                 map.put("uid", member);
                 LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_USERINFO, map);
                 task.getData(new DataCallBack() {

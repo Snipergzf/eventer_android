@@ -1,7 +1,5 @@
 package com.eventer.app.widget.swipemenulistview;
 
-import com.eventer.app.widget.swipemenulistview.SwipeMenuView.OnSwipeItemClickListener;
-
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -11,13 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.WrapperListAdapter;
 
+import com.eventer.app.widget.swipemenulistview.SwipeMenuView.OnSwipeItemClickListener;
+
 
 /**
  * 
  * @author baoyz
- * @date 2014-8-24
  * 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class SwipeMenuAdapter implements WrapperListAdapter,
 		OnSwipeItemClickListener {
 
@@ -51,7 +51,7 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SwipeMenuLayout layout = null;
+        SwipeMenuLayout layout;
        if (convertView != null&&reuseEnable) {       
            layout = (SwipeMenuLayout) convertView;
            layout.closeMenu();

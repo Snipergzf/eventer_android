@@ -17,9 +17,9 @@ import android.widget.FrameLayout;
 /**
  * 
  * @author baoyz
- * @date 2014-8-23
  * 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class SwipeMenuLayout extends FrameLayout {
 
 	private static final int CONTENT_VIEW_ID = 1;
@@ -35,7 +35,7 @@ public class SwipeMenuLayout extends FrameLayout {
 	private int mDownX;
 	private int state = STATE_CLOSE;
 	private GestureDetectorCompat mGestureDetector;
-	private OnGestureListener mGestureListener;
+	OnGestureListener mGestureListener;
 	private boolean isFling;
 	private int MIN_FLING = dp2px(15);
 	private int MAX_VELOCITYX = -dp2px(500);
@@ -178,10 +178,9 @@ public class SwipeMenuLayout extends FrameLayout {
 			isFling = false;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			// Log.i("byz", "downX = " + mDownX + ", moveX = " + event.getX());
 			int dis = (int) (mDownX - event.getX());
 			if (state == STATE_OPEN) {
-				dis += mMenuView.getWidth()*mSwipeDirection;;
+				dis += mMenuView.getWidth()*mSwipeDirection;
 			}
 			swipe(dis);
 			break;

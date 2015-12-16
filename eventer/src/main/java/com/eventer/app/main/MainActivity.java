@@ -155,7 +155,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		context = this;
 		instance = this;
-		if (!Constant.isLogin) {
+		if (!Constant.isLogin&&TextUtils.isEmpty(Constant.UID)) {
 			startActivity(new Intent().setClass(context, LoginActivity.class));
 			MobclickAgent.onProfileSignOff();
 			MobclickAgent.onKillProcess(context);
@@ -232,7 +232,7 @@ public class MainActivity extends FragmentActivity {
 		textviews[1] = (TextView) findViewById(R.id.tv_schedual);
 		textviews[2] = (TextView) findViewById(R.id.tv_message);
 		textviews[3] = (TextView) findViewById(R.id.tv_profile);
-		textviews[0].setTextColor(0xFF45C01A);
+		textviews[0].setSelected(true);
 
 		// 初始化日程提醒机制
 		if (am == null) {
@@ -284,10 +284,10 @@ public class MainActivity extends FragmentActivity {
 			trx.show(fragments[index]).commit();
 
 			imagebuttons[currentTabIndex].setSelected(false);
+			textviews[currentTabIndex].setSelected(false);
 			// 把当前tab设为选中状态
 			imagebuttons[index].setSelected(true);
-			textviews[currentTabIndex].setTextColor(0xFF999999);
-			textviews[index].setTextColor(0xFF45C01A);
+			textviews[index].setSelected(true);
 			currentTabIndex = index;
 		}
 
@@ -940,7 +940,7 @@ public class MainActivity extends FragmentActivity {
 		switch (type) {
 			case 1:
 				Spannable span = SmileUtils
-						.getSmiledString(context, txt);
+						.getSmiledString(txt);
 				txt=span.toString();
 				break;
 			case 2:
@@ -1055,6 +1055,7 @@ public class MainActivity extends FragmentActivity {
 			if (!Constant.isLogin) {
 				startActivity(new Intent().setClass(context,
 						LoginActivity.class));
+				Constant.UID=null;
 				System.exit(0);
 			}
 		}

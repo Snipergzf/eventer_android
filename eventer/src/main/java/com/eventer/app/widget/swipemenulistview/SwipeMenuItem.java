@@ -3,13 +3,14 @@ package com.eventer.app.widget.swipemenulistview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 
 /**
  * 
  * @author baoyz
- * @date 2014-8-23
  * 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class SwipeMenuItem {
 
 	private int id;
@@ -70,7 +71,7 @@ public class SwipeMenuItem {
 	}
 
 	public void setIcon(int resId) {
-		this.icon = mContext.getResources().getDrawable(resId);
+		this.icon = ContextCompat.getDrawable(mContext, resId);
 	}
 
 	public Drawable getBackground() {
@@ -82,7 +83,7 @@ public class SwipeMenuItem {
 	}
 
 	public void setBackground(int resId) {
-		this.background = mContext.getResources().getDrawable(resId);
+		this.background = ContextCompat.getDrawable(mContext,resId);
 	}
 
 	public int getWidth() {

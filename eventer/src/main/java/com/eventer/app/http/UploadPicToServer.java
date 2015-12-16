@@ -1,19 +1,5 @@
 package com.eventer.app.http;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.client.ClientProtocolException;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
@@ -23,19 +9,30 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 图片异步加载类
  *
  * @author Leslie.Fang
  *
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class UploadPicToServer {
 
     private String url;
     private Map<String, String> map = null;
-    private List<String> members = new ArrayList<String>();
+    List<String> members = new ArrayList<>();
     // 是否包含数组，默认是不包含
-    private boolean has_Array = false;
     private String imageuri;
     private String img;
     Context context;
@@ -46,7 +43,6 @@ public class UploadPicToServer {
         this.map = map;
         this.imageuri=imageuri;
         this.img=img;
-        has_Array = false;
         this.context = context;
     }
 
@@ -54,7 +50,6 @@ public class UploadPicToServer {
                              Map<String, String> map) {
         this.url = url;
         this.map = map;
-        has_Array = false;
         this.context = context;
     }
 
@@ -64,7 +59,6 @@ public class UploadPicToServer {
         this.url = url;
         this.map = map;
         this.members = members;
-        has_Array = true;
     }
 
     @SuppressLint("HandlerLeak")
@@ -91,7 +85,7 @@ public class UploadPicToServer {
 
             @SuppressWarnings("rawtypes")
             public void run() {
-                String result="";
+                String result;
                 String end = "\r\n";
                 String MULTIPART_FORM_DATA = "multipart/form-data";
                 String BOUNDARY = "---------7d4a6d158c9"; //数据分隔线
@@ -133,7 +127,7 @@ public class UploadPicToServer {
                         dos.writeBytes("Content-Disposition: form-data; name=\""+img+"\"; filename=\"" + imguri + "\"" + "\r\n"+"Content-Type: image/jpeg\r\n\r\n");
                         FileInputStream fis = new FileInputStream(imageuri);
                         byte[] buffer = new byte[1024]; // 8k
-                        int count = 0;
+                        int count;
                         while ((count = fis.read(buffer)) != -1)
                         {
                             dos.write(buffer, 0, count);
@@ -148,20 +142,16 @@ public class UploadPicToServer {
                     InputStreamReader isr = new InputStreamReader(is, "utf-8");
                     BufferedReader br = new BufferedReader(isr);
                     result = br.readLine();
-                    Log.e("1", "status:"+result.toString()+"");
-                    String builder_BOM = jsonTokener(result.toString());
-                    JSONObject jsonObject = new JSONObject();
+                    Log.e("1", "status:"+result+"");
+                    String builder_BOM = jsonTokener(result);
+                    JSONObject jsonObject ;
                     jsonObject = JSONObject.parseObject(builder_BOM);
                     Message msg = new Message();
                     msg.what = 111;
                     msg.obj = jsonObject;
                     handler.sendMessage(msg);
 
-                } catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                    Log.e("1",e.toString());
-
-                } catch (IOException e) {
+                }  catch (Exception e) {
                     e.printStackTrace();
                     Log.e("1",e.toString());
                 }

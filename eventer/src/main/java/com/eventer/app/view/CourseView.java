@@ -4,13 +4,6 @@
  */
 package com.eventer.app.view;
 
-import hirondelle.date4j.DateTime;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,7 +16,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -31,7 +23,15 @@ import android.view.View.OnTouchListener;
 import com.eventer.app.R;
 import com.eventer.app.entity.ClassInfo;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import hirondelle.date4j.DateTime;
+
 @SuppressLint("SimpleDateFormat")
+@SuppressWarnings({"UnusedDeclaration"})
 public class CourseView extends View implements OnTouchListener {
 
 	private Paint mPaint; // 画笔,包含了画几何图形、文本等的样式和颜色信息
@@ -49,7 +49,7 @@ public class CourseView extends View implements OnTouchListener {
 	private Bitmap bmp;
 	private String[] weekdays;//星期
 	private boolean isMove = false; // 判断是否移动
-	private Context context;
+	Context context;
 	private float bmpScale;
 	public static int TEXT_SIZE = 12;
 	private static DateTime StartWeekday,StartCourseDay;
@@ -99,10 +99,9 @@ public class CourseView extends View implements OnTouchListener {
 	/**
 	 * 将sp值转换为px值，保证文字大小不变
 	 *
-	 * @param spValue
-	 * @param fontScale
+
 	 *            （DisplayMetrics类中属性scaledDensity）
-	 * @return
+	 * @return int
 	 */
 	public static int spTopx(Context context, float spValue) {
 		final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -112,10 +111,8 @@ public class CourseView extends View implements OnTouchListener {
 	/**
 	 * 将dip或dp值转换为px值，保证尺寸大小不变
 	 *
-	 * @param dipValue
-	 * @param scale
 	 *            （DisplayMetrics类中属性density）
-	 * @return
+	 * @return int
 	 */
 	public static int dipTopx(Context context, float dipValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
@@ -172,7 +169,6 @@ public class CourseView extends View implements OnTouchListener {
 	/**
 	 * 区分课间隔，画交线处的十字
 	 *
-	 * @param canvas
 	 */
 	private void printMarker(Canvas canvas) {
 		Matrix matrix=new Matrix();
@@ -203,7 +199,6 @@ public class CourseView extends View implements OnTouchListener {
 	/**
 	 * 画中间主体部分
 	 *
-	 * @param canvas
 	 */
 	private void printContent(Canvas canvas) {
 		if (classList != null && classList.size() > 0) {
@@ -241,11 +236,9 @@ public class CourseView extends View implements OnTouchListener {
 					className+="@"+ classInfo.getClassRoom();
 				}
 				Rect textRect1 = new Rect();
-				int className_len=getByteLength(className);
 				mPaint.getTextBounds(className, 0, className.length(),
 						textRect1);
 
-				float width=mPaint.measureText(className);//文字的宽度
 				float height=textRect1.height();//文字的高度
 
 
@@ -253,7 +246,7 @@ public class CourseView extends View implements OnTouchListener {
 				int tw = textRect1.right - textRect1.left;
 				//计算行数
 
-				int row = (int) ((tw + 30) / eachBoxW + 1);
+
 				int col= (int)Math.floor((float)(eachBoxH*classInfo.getClassNumLen()-8)/height);
 
 //				int classHeight=eachBoxH*classInfo.getClassNumLen()-6;
@@ -280,7 +273,7 @@ public class CourseView extends View implements OnTouchListener {
 				String str=className.substring(lenlist.get(0),lenlist.get(1));
 				float width1=mPaint.measureText(str);//文字的宽度
 				canvas.drawText(className, lenlist.get(0), lenlist.get(1),
-						fromX+1 +(eachBoxW-width1)/2, fromY +3 + th * (1), mPaint);
+						fromX+1 +(eachBoxW-width1)/2, fromY +3 + th, mPaint);
 				for(int j=1;j<lenlist.size()-1;j++){
 					if(j<col){
 						String str1=className.substring(lenlist.get(j),lenlist.get(j+1));
@@ -307,7 +300,7 @@ public class CourseView extends View implements OnTouchListener {
 
 
 	private List<Integer> getStrLenlist(String className){
-		List<Integer> lenlist=new ArrayList<Integer>();
+		List<Integer> lenlist=new ArrayList<>();
 		int j=0;
 		lenlist.add(0);
 		for(int i=0;i<className.length()+1;i++){
@@ -343,15 +336,12 @@ public class CourseView extends View implements OnTouchListener {
 
 	private boolean checkChar(char oneChar){
 		String str=oneChar+"";
-		if(str.getBytes().length>=2)
-			return true;
-		return false;
+		return str.getBytes().length>=2;
 	}
 
 	/**
 	 * 画左边课时bar
 	 *
-	 * @param canvas
 	 */
 	private void printLeftBar(Canvas canvas) {
 		// =================画左边课时栏=================
@@ -396,7 +386,6 @@ public class CourseView extends View implements OnTouchListener {
 	/**
 	 * 画顶部星期bar
 	 *
-	 * @param canvas
 	 */
 	private void printTopBar(Canvas canvas) {
 		// =================画顶部星期栏==================
@@ -511,7 +500,7 @@ public class CourseView extends View implements OnTouchListener {
 	}
 
 	public interface OnItemClassClickListener {
-		public void onClick(ClassInfo classInfo);
+		 void onClick(ClassInfo classInfo);
 	}
 
 	public OnItemClassClickListener getOnItemClassClickListener() {

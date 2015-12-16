@@ -13,8 +13,6 @@
  */
 package com.eventer.app.task;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,6 +27,8 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.other.ShowBigImage;
 import com.eventer.app.util.ImageCache;
 
+import java.io.File;
+@SuppressWarnings({"UnusedDeclaration"})
 public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 	private ImageView iv = null;
 	String localFullSizePath = null;
@@ -105,7 +105,8 @@ public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 					}
 				}
 			});
-		} else {
+		}
+//		else {
 //			if (message.status == EMMessage.Status.FAIL) {
 //				if (CommonUtils.isNetWorkConnected(activity)) {
 //					new Thread(new Runnable() {
@@ -118,7 +119,7 @@ public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 //				}
 //			}
 
-		}
+//		}
 	}
 
 	@Override

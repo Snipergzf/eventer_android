@@ -15,7 +15,7 @@ package com.eventer.app.util;
 
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class ImageUtils {
 //	public static String getThumbnailImagePath(String imagePath) {
 //		String path = imagePath.substring(0, imagePath.lastIndexOf("/") + 1);

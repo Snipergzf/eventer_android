@@ -1,8 +1,18 @@
 package com.eventer.app.main;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -11,23 +21,15 @@ import com.eventer.app.R;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.ui.base.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoadActivity extends BaseActivity {
 
@@ -61,7 +63,7 @@ public class LoadActivity extends BaseActivity {
 //		load_root=(RelativeLayout)view.findViewById(R.id.load_root);
 //		progress=(CircleProgressBar)view.findViewById(R.id.progress);
 //		progress.setColorSchemeResources(android.R.color.holo_orange_light);
-
+		context.startService(new Intent(context, CheckInternetService.class));//make sure the net is truly available
 
 		/***
 		 * 判断登录状态
@@ -71,11 +73,11 @@ public class LoadActivity extends BaseActivity {
 				//读取PreferenceUtils中的登录状态
 				user=PreferenceUtils.getInstance().getLoginUser();
 				pwd=PreferenceUtils.getInstance().getLoginPwd();
-				if (user!=null&&user!=""&&pwd!=null&&pwd!="") {
+				if (user!=null&& !user.equals("") &&pwd!=null&& !pwd.equals("")) {
 					// 保存了账号和密码，不跳转至登录界面，直接登录
 					long start = System.currentTimeMillis();
 					//加载数据
-					Map<String, String> params = new HashMap<String, String>();
+					Map<String, String> params = new HashMap<>();
 					params.put("pwd", pwd);
 					params.put("phone", user);
 					//获取手机的唯一标识码
@@ -97,6 +99,7 @@ public class LoadActivity extends BaseActivity {
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 					startActivity(new Intent(LoadActivity.this, LoginActivity.class));
 					finish();
@@ -126,7 +129,6 @@ public class LoadActivity extends BaseActivity {
 	/***
 	 * 登录按钮的响应事件
 	 * 跳转至登陆界面
-	 * @param v
 	 */
 	public void login(View v) {
 		Intent intent = new Intent();
@@ -137,7 +139,6 @@ public class LoadActivity extends BaseActivity {
 	/***
 	 * 注册按钮的响应事件
 	 * 跳转至注册界面
-	 * @param v
 	 */
 	public void register(View v) {
 		Intent intent = new Intent();
@@ -150,7 +151,6 @@ public class LoadActivity extends BaseActivity {
 	 * 执行异步任务
 	 * 登录系统
 	 * 参数为phone,pwd,imei
-	 * @param params
 	 *
 	 */
 	public void UserLogin(final Object... params) {
@@ -158,7 +158,7 @@ public class LoadActivity extends BaseActivity {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Integer doInBackground(Object... params) {
-				int status=-1;
+				int status;
 				try {
 					status=HttpUnit.sendLoginRequest((Map<String, String>) params[0]);
 					Constant.isLogin=false;
@@ -173,11 +173,12 @@ public class LoadActivity extends BaseActivity {
 			}
 			protected void onPostExecute(Integer status) {
 				if(status==0){
-					Log.e("1", "登录成功！");
+					Log.e("1", "登录成功！"+Constant.UID);
 					PreferenceUtils.getInstance().setLoginUser(user);
 					PreferenceUtils.getInstance().setLoginPwd(pwd);
 					Constant.isLogin=true;
 					Constant.LoginTime=System.currentTimeMillis()/1000;
+
 					MobclickAgent.onProfileSignIn(Constant.UID);
 					//初始化个人信息
 					initSelfInfo();
@@ -195,11 +196,18 @@ public class LoadActivity extends BaseActivity {
 					startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
 					finish();
 				}else  if(status==-1){
-					Toast toast=Toast.makeText(context, "无法连接到服务器？网络不稳定？！", Toast.LENGTH_LONG);
+					String uid=PreferenceUtils.getInstance().getUserId();
+					if(!TextUtils.isEmpty(uid)){
+						startActivity(new Intent().setClass(LoadActivity.this, MainActivity.class));
+						Constant.UID=uid;
+						finish();
+					}else{
+						startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
+						finish();
+					}
+					Toast toast=Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG);
 					toast.show();
 					Constant.isLogin=false;
-					startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
-					finish();
 				} else{
 					Toast.makeText(context, "登录错误！", Toast.LENGTH_LONG)
 							.show();
@@ -210,7 +218,7 @@ public class LoadActivity extends BaseActivity {
 					finish();
 				}
 
-			};
+			}
 
 		}.execute(params);}
 	/***
@@ -220,7 +228,7 @@ public class LoadActivity extends BaseActivity {
 	private void initSelfInfo(){
 //			load_root.getBackground().setAlpha(100);
 //			progress.setVisibility(View.VISIBLE);
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		maps.put("uid", Constant.UID+"");
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
 				context, Constant.URL_GET_SELFINFO, maps);
@@ -236,7 +244,7 @@ public class LoadActivity extends BaseActivity {
 						JSONObject json=data.getJSONObject("user_action");
 						JSONObject info=json.getJSONObject("info");
 						String name=info.getString("name");
-						if(name!=null&&name!=""){
+						if(name!=null&& !name.equals("")){
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("sex", info.getString("sex"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("email", info.getString("email"));
@@ -282,20 +290,26 @@ public class LoadActivity extends BaseActivity {
 						finish();
 
 					} else {
-
-						Toast.makeText(context, "服务器繁忙请重试...",
-								Toast.LENGTH_SHORT).show();
-						startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
-						finish();
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network),
+									Toast.LENGTH_SHORT).show();
+						}
+						String uid=PreferenceUtils.getInstance().getUserId();
+						if(!TextUtils.isEmpty(uid)){
+							startActivity(new Intent().setClass(LoadActivity.this, MainActivity.class));
+							Constant.UID=uid;
+							finish();
+						}else{
+							startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
+							finish();
+						}
 					}
 
 				} catch (JSONException e) {
-
 					Toast.makeText(context, "数据解析错误...",
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
-					startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
-					finish();
+					startActivity(new Intent().setClass(LoadActivity.this, MainActivity.class));
 				}catch (Exception e) {
 					// TODO: handle exception
 				}

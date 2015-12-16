@@ -8,7 +8,7 @@
  */
 
 package com.facebook.rebound;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class SteppingLooper extends SpringLooper {
 
   private boolean mStarted;

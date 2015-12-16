@@ -4,37 +4,9 @@
     android:layout_height="match_parent"
     android:background="#EBEBEB"
     android:orientation="vertical" >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/caldroid_holo_blue_light" >
+    <include
+        layout="@layout/top_layout"/>
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="centerInside"
-            android:background="@drawable/ib_bg"
-            android:src="@drawable/back" />
-
-        <TextView
-            android:id="@+id/tv_titlt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/contact"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
-        
-
-    </RelativeLayout>
-  
 
     <FrameLayout
         android:layout_width="match_parent"

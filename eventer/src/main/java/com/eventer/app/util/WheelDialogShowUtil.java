@@ -7,7 +7,6 @@ import android.content.Context;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.eventer.app.R;
@@ -21,7 +20,7 @@ import com.eventer.app.widget.wheel.WheelView;
  * 封装了滚轮操作的类
  *
  * */
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class WheelDialogShowUtil {
 
 
@@ -115,10 +114,7 @@ public class WheelDialogShowUtil {
 	}
 
 	public boolean isShowing()	{
-		if(dialog !=null && dialog.isShowing())	{
-			return true;
-		}
-		return false;
+		return dialog != null && dialog.isShowing();
 	}
 
 
@@ -137,7 +133,7 @@ public class WheelDialogShowUtil {
 
 	}
 
-	private WheelListAdapter mAdapter;
+	WheelListAdapter mAdapter;
 	// Scrolling flag
 	@SuppressLint("NewApi")
 	private void initWheel(WheelView wheel,final String[] data )	{
@@ -155,8 +151,6 @@ public class WheelDialogShowUtil {
 
 	/**
 	 * 在选择完以后要执行的事件
-	 * @param view
-	 * @param text
 	 */
 	public  void setTextToView(View view,String text)	{
 
@@ -165,10 +159,10 @@ public class WheelDialogShowUtil {
 			mTextView.setText(text);
 		}
 
-		else if(view instanceof EditText)	{
-			EditText mEditText=(EditText)view;
-			mEditText.setText(text);
-		}
+//		else if(view instanceof EditText)	{
+//			EditText mEditText=(EditText)view;
+//			mEditText.setText(text);
+//		}
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.eventer.app.widget.swipemenulistview;
 
-import java.util.List;
-
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -10,15 +9,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * 
  * @author baoyz
- * @date 2014-8-23
  * 
  */
+
+@SuppressWarnings({"UnusedDeclaration"})
 public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
-	private SwipeMenuListView mListView;
+	SwipeMenuListView mListView;
 	private SwipeMenuLayout mLayout;
 	private SwipeMenu mMenu;
 	private OnSwipeItemClickListener onItemClickListener;
@@ -32,6 +34,10 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		this.position = position;
 	}
 
+	public SwipeMenuView(Context context) {
+		super(context);
+	}
+
 	public SwipeMenuView(SwipeMenu menu, SwipeMenuListView listView) {
 		super(menu.getContext());
 		mListView = listView;
@@ -42,7 +48,7 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 			addItem(item, id++);
 		}
 	}
-
+	@SuppressWarnings("deprecation")
 	private void addItem(SwipeMenuItem item, int id) {
 		LayoutParams params = new LayoutParams(item.getWidth(),
 				LayoutParams.MATCH_PARENT);
@@ -51,6 +57,7 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		parent.setGravity(Gravity.CENTER);
 		parent.setOrientation(LinearLayout.VERTICAL);
 		parent.setLayoutParams(params);
+
 		parent.setBackgroundDrawable(item.getBackground());
 		parent.setOnClickListener(this);
 		addView(parent);
@@ -98,7 +105,7 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		this.mLayout = mLayout;
 	}
 
-	public static interface OnSwipeItemClickListener {
+	public interface OnSwipeItemClickListener {
 		void onItemClick(SwipeMenuView view, SwipeMenu menu, int index);
 	}
 }

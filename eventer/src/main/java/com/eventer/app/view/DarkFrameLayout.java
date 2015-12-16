@@ -8,9 +8,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-/**
- * Created by NeXT on 15/8/3.
- */
+
 public class DarkFrameLayout extends FrameLayout {
 
     public static final int MAX_ALPHA = 0X9f;

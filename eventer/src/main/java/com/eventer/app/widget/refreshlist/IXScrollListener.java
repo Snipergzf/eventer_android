@@ -7,8 +7,5 @@ import android.view.View;
  * onXScrolling when header/footer scroll back.
  */
 public interface IXScrollListener {
-	/**
-	 * @param view
-	 */
-	public void onXScrolling(View view);
+	 void onXScrolling(View view);
 }

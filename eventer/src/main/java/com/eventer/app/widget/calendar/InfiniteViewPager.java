@@ -1,9 +1,5 @@
 package com.eventer.app.widget.calendar;
 
-import hirondelle.date4j.DateTime;
-
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,11 +7,16 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
+import hirondelle.date4j.DateTime;
+
 /**
  * A {@link ViewPager} that allows pseudo-infinite paging with a wrap-around
  * effect. Should be used with an {@link InfinitePagerAdapter}.
  * 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class InfiniteViewPager extends ViewPager {
 
 	// ******* Declaration *********
@@ -86,19 +87,13 @@ public class InfiniteViewPager extends ViewPager {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (enabled) {
-			return super.onTouchEvent(event);
-		}
-		
-		return false;
+		return enabled && super.onTouchEvent(event);
+
 	}
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		if (enabled) {
-			return super.onInterceptTouchEvent(event);
-		}
-		return false;
+		return enabled && super.onInterceptTouchEvent(event);
 	}
 
 	/**
@@ -152,7 +147,7 @@ public class InfiniteViewPager extends ViewPager {
 		}
 
 		// Calculate height of the calendar
-		int calHeight = 0;
+		int calHeight;
 
 		// If fit 6 weeks, we need 6 rows
 		if (sixWeeksInCalendar) {

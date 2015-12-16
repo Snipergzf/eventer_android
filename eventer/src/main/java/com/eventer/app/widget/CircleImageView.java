@@ -1,23 +1,23 @@
 package com.eventer.app.widget;
 
-import com.eventer.app.R;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.widget.ImageView;
 
-import android.content.Context;  
-import android.content.res.TypedArray;  
-import android.graphics.Bitmap;  
-import android.graphics.BitmapShader;  
-import android.graphics.Canvas;  
-import android.graphics.Color;  
-import android.graphics.Matrix;  
-import android.graphics.Paint;  
-import android.graphics.RectF;  
-import android.graphics.Shader;  
-import android.graphics.drawable.BitmapDrawable;  
-import android.graphics.drawable.ColorDrawable;  
-import android.graphics.drawable.Drawable;  
-import android.util.AttributeSet;  
-import android.widget.ImageView;  
-  
+import com.eventer.app.R;
+@SuppressWarnings({"UnusedDeclaration"})
 public class CircleImageView extends ImageView {  
   
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;  
@@ -203,9 +203,9 @@ public class CircleImageView extends ImageView {
         mBitmapWidth = mBitmap.getWidth();  
   
         mBorderRect.set(0, 0, getWidth(), getHeight());  
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);  
-  
-        mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);  
+        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
+//        mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+        mDrawableRect.set(mBorderWidth, mBorderWidth-1, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
         mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);  
   
         updateShaderMatrix();  

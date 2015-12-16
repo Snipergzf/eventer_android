@@ -1,10 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,21 +22,27 @@ import com.eventer.app.R;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-public class BrowserHistoryActivity extends Activity {
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-	private ListView listview;
+public class BrowserHistoryActivity extends BaseActivityTest {
+
+	ListView listview;
 	private MyEventAadpter adapter;
 	private Context context;
-	private List<Event> mData=new ArrayList<Event>();
+	private List<Event> mData=new ArrayList<>();
 	private EventOpDao dao;
-	private Button btn_clear;
+	Button btn_clear;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser_history);
 		context=this;
+		setBaseTitle(R.string.browser_history);
 		dao=new EventOpDao(context);
 		initView();
 	}
@@ -70,7 +71,7 @@ public class BrowserHistoryActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				dao.delOperation(Constant.UID, "4");
-				mData=new ArrayList<Event>();
+				mData=new ArrayList<>();
 				adapter.notifyDataSetChanged();
 			}
 		});
@@ -102,12 +103,12 @@ public class BrowserHistoryActivity extends Activity {
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			ViewHolder holder = null;
+			ViewHolder holder;
 			Event event=mData.get(position);
 			if (convertView == null) {
 				holder=new ViewHolder();
 				//可以理解为从vlist获取view  之后把view返回给ListView
-				convertView = mInflater.inflate(R.layout.item_history_eventlist, null);
+				convertView = mInflater.inflate(R.layout.item_history_eventlist, parent , false);
 				holder.title = (TextView)convertView.findViewById(R.id.tv_title);
 				holder.info=(TextView)convertView.findViewById(R.id.tv_info);
 				holder.time=(TextView)convertView.findViewById(R.id.tv_time);
@@ -159,9 +160,7 @@ public class BrowserHistoryActivity extends Activity {
 		MobclickAgent.onResume(this);
 		refresh();
 	}
-	public void back(View v){
-		finish();
-	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();

@@ -1,10 +1,8 @@
 
 package com.eventer.app.entity;
 
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class ChatEntity {
-	private static final String TAG = ChatEntity.class.getSimpleName();
-
     private int Type; 
     private int status;
     private long MsgID;

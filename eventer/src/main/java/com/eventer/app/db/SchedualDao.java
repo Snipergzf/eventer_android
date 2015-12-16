@@ -1,10 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.List;
-
-import com.eventer.app.entity.Schedual;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +8,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.eventer.app.entity.Schedual;
+
+import java.util.List;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class SchedualDao {
 	public static final String TABLE_NAME = "dbSchedule";
 	public static final String COLUMN_NAME_ID = "scheduleID";
@@ -34,7 +35,7 @@ public class SchedualDao {
 
 	//private DbOpenHelper dbHelper;
 	private DBManager dbHelper;
-	private Context context;
+	Context context;
 
 	public SchedualDao(Context context) {
 		dbHelper = new DBManager(context);
@@ -44,7 +45,6 @@ public class SchedualDao {
 
 	/**
 	 *
-	 * @param evenetList
 	 */
 	public void saveEventList(List<Schedual> eventList) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -81,11 +81,7 @@ public class SchedualDao {
 		}
 	}
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
+
 //	@SuppressLint("DefaultLocale")
 //	public Map<String, User> getContactList() {
 //		SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -182,7 +178,7 @@ public class SchedualDao {
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, "dbSchedule", null,
 				"scheduleID=?", new String[]{id+""}, null, null,null,null);
-		while (c.moveToNext()) {
+		if (c.moveToNext()) {
 			String start=c.getString(c.getColumnIndex("startTime"));
 			String end=c.getString(c.getColumnIndex("endTime"));
 			String title=c.getString(c.getColumnIndex("title"));
@@ -221,7 +217,7 @@ public class SchedualDao {
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, "dbSchedule", null,
 				"scheduleID=?", new String[]{sid}, null, null,null,null);
-		while (c.moveToNext()) {
+		if (c.moveToNext()) {
 			String start=c.getString(c.getColumnIndex("startTime"));
 			String end=c.getString(c.getColumnIndex("endTime"));
 			String title=c.getString(c.getColumnIndex("title"));
@@ -258,7 +254,7 @@ public class SchedualDao {
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, "dbSchedule", null,
 				COLUMN_NAME_SHARE+"=?", new String[]{shareId}, null, null,null,null);
-		while (c.moveToNext()) {
+		if (c.moveToNext()) {
 			long sid=c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
 			String start=c.getString(c.getColumnIndex("startTime"));
 			String end=c.getString(c.getColumnIndex("endTime"));

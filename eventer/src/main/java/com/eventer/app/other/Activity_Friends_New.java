@@ -1,8 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.List;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,15 +15,18 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.NewFriendsAdapter;
 import com.eventer.app.db.InviteMessgeDao;
 import com.eventer.app.entity.InviteMessage;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-public class Activity_Friends_New extends Activity {
-    private ListView listView;
-    private RelativeLayout contact_rl;
+import java.util.List;
+
+public class Activity_Friends_New extends BaseActivityTest {
+    ListView listView;
+    RelativeLayout contact_rl;
     private Context context;
-    private NewFriendsAdapter adapter;
+    NewFriendsAdapter adapter;
     private List<InviteMessage> msgs;
-    private InviteMessgeDao dao;
+    InviteMessgeDao dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class Activity_Friends_New extends Activity {
         setContentView(R.layout.activity_newfriendsmsg);
         // DemoApplication.getInstance().addActivity(this);
         context=Activity_Friends_New.this;
+        setBaseTitle(R.string.new_friend);
         initView();
     }
 

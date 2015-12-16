@@ -7,10 +7,6 @@
  */
 package cn.smssdk.gui;
 
-import static com.mob.tools.utils.R.getBitmapRes;
-
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
@@ -23,7 +19,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import static com.mob.tools.utils.R.getBitmapRes;
+
 /** 自定义联系人的列表控件*/
+@SuppressWarnings({"UnusedDeclaration"})
 public class ContactsListView extends RelativeLayout {
 	private ListView lvBody;
 	private InnerAdapter innerAdapter;
@@ -122,15 +123,7 @@ public class ContactsListView extends RelativeLayout {
 		onScroll();
 	}
 
-	public void setSelection(int group) {
-		setSelection(group, -1);
-	}
 
-	public void setSelection(int group, int position) {
-		int titleIndex = innerAdapter.titleIndex.get(group);
-		int selection = titleIndex + position + 1;
-		lvBody.setSelection(selection);
-	}
 
 	// 滚动时，改变标题栏
 	private void onScroll() {
@@ -158,10 +151,7 @@ public class ContactsListView extends RelativeLayout {
 		}
 	}
 
-	// 设置滚动监听
-	public void setOnScrollListener(OnScrollListener l) {
-		osListener = l;
-	}
+
 	/** 自定义listview的适配器*/
 	private static class InnerAdapter extends BaseAdapter {
 		private GroupAdapter adapter;
@@ -277,41 +267,25 @@ public class ContactsListView extends RelativeLayout {
 
 		/**
 		 * 获取某组的item个数
-		 * @param group
-		 * @return
 		 */
 		public abstract int getCount(int group);
 
 		/**
 		 * 获取某组的title标签
-		 * @param group
-		 * @return
 		 */
 		public abstract String getGroupTitle(int group);
 
 		/**
 		 * 获取某组第positon的位置的数据对象
-		 * @param group
-		 * @param position
-		 * @return
 		 */
 		public abstract Object getItem(int group, int position);
 
 		/**
 		 * 获取某组的title的View
-		 * @param group
-		 * @param convertView
-		 * @param parent
-		 * @return
 		 */
 		public abstract TextView getTitleView(int group, TextView convertView, ViewGroup parent);
 		/**
 		 * 获取某组第positon的位置的item View
-		 * @param group
-		 * @param position
-		 * @param convertView
-		 * @param parent
-		 * @return
 		 */
 		public abstract View getView(int group, int position, View convertView, ViewGroup parent);
 

@@ -3,7 +3,7 @@ package com.eventer.app.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class Course implements Parcelable {
 
 	@Override

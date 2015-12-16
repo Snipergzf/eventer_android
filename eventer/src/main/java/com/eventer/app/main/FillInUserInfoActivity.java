@@ -1,27 +1,6 @@
 package com.eventer.app.main;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.http.UploadPicToServer;
-import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
-import com.eventer.app.widget.SpinerPopWindow;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -44,19 +23,38 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FillInUserInfoActivity extends Activity {
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.http.UploadPicToServer;
+import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
+import com.eventer.app.widget.SpinerPopWindow;
+import com.umeng.analytics.MobclickAgent;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class FillInUserInfoActivity extends BaseActivityTest{
 	private EditText et_usernick,et_emial;
 	private TextView tv_sex;
-	private TextView  tv_year,tv_school,tv_major,tv_class;
+	TextView  tv_year,tv_school,tv_major,tv_class;
 	private TextView[] tv_list;
 	private Button btn_register;
 	private ImageView iv_avatar;
 	private Context context;
 	private String imageName;
 	private int index;
-	private List<String> valueList = new ArrayList<String>();
+	private List<String> valueList = new ArrayList<>();
 	private List<String> yearList,schoolList,majorList,classList;
-	private String year,school,major,mclass,name,sex="2",email;
+	private String name,sex="2",email;
 	private String[] classinfo=new String[4];
 	private SpinerPopWindow mSpinerPopWindow;
 	private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
@@ -67,6 +65,7 @@ public class FillInUserInfoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fill_in_user_info);
 		context=this;
+		setBaseTitle(R.string.fillin_info);
 		initView();
 	}
 	private void initView() {
@@ -113,13 +112,13 @@ public class FillInUserInfoActivity extends Activity {
 		tv_school.setOnClickListener(new ClassListener());
 		tv_year.setOnClickListener(new ClassListener());
 
-		yearList=new ArrayList<String>();
+		yearList=new ArrayList<>();
 		yearList.add("2014");
-		schoolList=new ArrayList<String>();
+		schoolList=new ArrayList<>();
 		schoolList.add("电子信息与通信学院");
-		majorList=new ArrayList<String>();
+		majorList=new ArrayList<>();
 		majorList.add("通信工程");
-		classList=new ArrayList<String>();
+		classList=new ArrayList<>();
 		classList.add("1班");
 		classList.add("2班");
 		classList.add("通中英");
@@ -290,8 +289,6 @@ public class FillInUserInfoActivity extends Activity {
 	}
 	/***
 	 * 对图片进行剪切
-	 * @param uri1
-	 * @param size
 	 */
 	@SuppressLint("SdCardPath")
 	private void startPhotoZoom(Uri uri1, int size) {
@@ -316,12 +313,12 @@ public class FillInUserInfoActivity extends Activity {
 		startActivityForResult(intent, PHOTO_REQUEST_CUT);
 	}
 
-	@SuppressLint("SimpleDateFormat")
-	private String getNowTime() {
-		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSS");
-		return dateFormat.format(date);
-	}
+//	@SuppressLint("SimpleDateFormat")
+//	private String getNowTime() {
+//		Date date = new Date(System.currentTimeMillis());
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSS");
+//		return dateFormat.format(date);
+//	}
 	/***
 	 * 弹出消息框
 	 * 选择些别
@@ -342,7 +339,7 @@ public class FillInUserInfoActivity extends Activity {
 			@SuppressLint("SdCardPath")
 			public void onClick(View v) {
 				tv_sex.setText("男");
-				sex="1";
+				sex = "1";
 				dlg.cancel();
 			}
 		});
@@ -351,7 +348,7 @@ public class FillInUserInfoActivity extends Activity {
 		tv_xiangce.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				tv_sex.setText("女");
-				sex="2";
+				sex = "2";
 				dlg.cancel();
 			}
 		});
@@ -361,7 +358,7 @@ public class FillInUserInfoActivity extends Activity {
 	 * 上传个人信息
 	 */
 	private void updateSelfInfo(){
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		email=et_emial.getText().toString();
 		name=et_usernick.getText().toString();
 		maps.put("uid", Constant.UID+"");
@@ -384,7 +381,7 @@ public class FillInUserInfoActivity extends Activity {
 			public void onDataCallBack(JSONObject data) {
 				try {
 					int code = data.getInteger("status");
-					Log.e("1", code+"");
+					Log.e("1", code + "");
 					if (code == 0) {
 						//将个人信息写入LocalUserInfo
 						LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
@@ -395,18 +392,23 @@ public class FillInUserInfoActivity extends Activity {
 						LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("school", classinfo[1]);
 						LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("class", classinfo[3]);
 						LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("major", classinfo[2]);
-						if(imageName!=null&&imageName!=""){
-							updateAvatarInServer(imageName);}
-//	    	            	else{
-						Intent intent = new Intent();
-						intent.setClass(context, MainActivity.class);
-						startActivity(intent);
-						finish();
-//	    	            	}
+						if (imageName != null && !imageName.equals("")) {
+							updateAvatarInServer(imageName);
+						} else {
+							Intent intent = new Intent();
+							intent.setClass(context, MainActivity.class);
+							startActivity(intent);
+							finish();
+						}
 					} else {
+						if (Constant.isConnectNet) {
+							Toast.makeText(getApplicationContext(), getText(R.string.no_network),
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(), "个人信息上传失败...",
+									Toast.LENGTH_SHORT).show();
+						}
 
-						Toast.makeText(FillInUserInfoActivity.this, "信息更新失败...",
-								Toast.LENGTH_SHORT).show();
 					}
 
 				} catch (JSONException e) {
@@ -414,7 +416,7 @@ public class FillInUserInfoActivity extends Activity {
 					Toast.makeText(FillInUserInfoActivity.this, "数据解析错误...",
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					// TODO: handle exception
 				}
 
@@ -429,7 +431,7 @@ public class FillInUserInfoActivity extends Activity {
 	 */
 	@SuppressLint("SdCardPath")
 	private void updateAvatarInServer(final String image) {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		if ((new File(Constant.IMAGE_PATH + image)).exists()) {
 			map.put("upload", Constant.IMAGE_PATH + image);
 			// map.put("image", image);
@@ -455,23 +457,14 @@ public class FillInUserInfoActivity extends Activity {
 						String avatar=json.getString("avatar");
 						LocalUserInfo.getInstance(context)
 								.setUserInfo("avatar", avatar);
-						Intent intent = new Intent();
-						intent.setClass(context, MainActivity.class);
-						startActivity(intent);
-						finish();
-					} else if (code == 2) {
 
-						Toast.makeText(getApplicationContext(), "更新失败...",
-								Toast.LENGTH_SHORT).show();
-					} else if (code == 3) {
-
-						Toast.makeText(getApplicationContext(), "图片上传失败...",
-								Toast.LENGTH_SHORT).show();
-
-					} else {
-
-						Toast.makeText(getApplicationContext(), "服务器繁忙请重试...",
-								Toast.LENGTH_SHORT).show();
+					}else{
+						if(Constant.isConnectNet)
+							Toast.makeText(getApplicationContext(), "头像上传失败...",
+									Toast.LENGTH_SHORT).show();
+						else
+							Toast.makeText(getApplicationContext(), getText(R.string.no_network),
+									Toast.LENGTH_SHORT).show();
 					}
 
 				} catch (JSONException e) {
@@ -479,15 +472,17 @@ public class FillInUserInfoActivity extends Activity {
 					Toast.makeText(getApplicationContext(), "数据解析错误...",
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
+				}finally {
+					Intent intent = new Intent();
+					intent.setClass(context, MainActivity.class);
+					startActivity(intent);
+					finish();
 				}
 
 			}
 
 		});
 
-	}
-	public void back(View view){
-		finish();
 	}
 	@Override
 	protected void onResume() {

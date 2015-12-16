@@ -24,6 +24,7 @@ import com.eventer.app.view.MyGridView;
  * @author thomasdao
  * 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class DateGridFragment extends Fragment {
 	private MyGridView gridView;
 	private CaldroidGridAdapter gridAdapter;

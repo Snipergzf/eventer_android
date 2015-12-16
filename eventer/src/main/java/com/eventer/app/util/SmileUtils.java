@@ -13,21 +13,20 @@
  */
 package com.eventer.app.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.Spannable.Factory;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.text.style.TypefaceSpan;
 
 import com.eventer.app.R;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SmileUtils {
 	public static final String e_1 = "[):]";
@@ -89,7 +88,7 @@ public class SmileUtils {
 	private static final Factory spannableFactory = Spannable.Factory
 			.getInstance();
 
-	private static final Map<Pattern, Integer> emoticons = new HashMap<Pattern, Integer>();
+	private static final Map<Pattern, Integer> emoticons = new HashMap<>();
 
 	static {
 
@@ -156,9 +155,6 @@ public class SmileUtils {
 
 	/**
 	 * replace existing spannable with smiles
-	 * @param context
-	 * @param spannable
-	 * @return
 	 */
 	public static boolean addSmiles(Context context, Spannable spannable) {
 		boolean hasChanges = false;
@@ -192,17 +188,15 @@ public class SmileUtils {
 
 	/**
 	 * replace existing spannable with smiles
-	 * @param context
-	 * @param spannable
-	 * @return
 	 */
-	public static boolean addSmilesString(Context context, SpannableStringBuilder spannable) {
+	public static boolean addSmilesString(SpannableStringBuilder spannable) {
 		boolean hasChanges = false;
 		for (Entry<Pattern, Integer> entry : emoticons.entrySet()) {
 			Matcher matcher = entry.getKey().matcher(spannable);
 			while (matcher.find()) {
 				spannable.replace(matcher.start(), matcher.end(), "[表情]");
 				matcher = entry.getKey().matcher(spannable);
+				hasChanges=true;
 			}
 		}
 		return hasChanges;
@@ -219,9 +213,9 @@ public class SmileUtils {
 		return spannable;
 	}
 
-	public static Spannable getSmiledString(Context context, CharSequence text) {
+	public static Spannable getSmiledString(CharSequence text) {
 		SpannableStringBuilder spannable=new SpannableStringBuilder(text);
-		addSmilesString(context, spannable);
+		addSmilesString(spannable);
 		return spannable;
 	}
 

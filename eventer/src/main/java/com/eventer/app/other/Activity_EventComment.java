@@ -1,34 +1,6 @@
 package com.eventer.app.other;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-import com.eventer.app.adapter.CommentAdapter;
-import com.eventer.app.db.CommentDao;
-import com.eventer.app.db.EventDao;
-import com.eventer.app.entity.Comment;
-import com.eventer.app.entity.Event;
-import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.util.FileUtil;
-import com.eventer.app.widget.refreshlist.IXListViewLoadMore;
-import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
-import com.eventer.app.widget.refreshlist.XListView;
-import com.umeng.analytics.MobclickAgent;
-
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -56,19 +28,49 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Activity_EventComment extends Activity {
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.adapter.CommentAdapter;
+import com.eventer.app.db.CommentDao;
+import com.eventer.app.db.EventDao;
+import com.eventer.app.entity.Comment;
+import com.eventer.app.entity.Event;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.util.FileUtil;
+import com.eventer.app.widget.refreshlist.IXListViewLoadMore;
+import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
+import com.eventer.app.widget.refreshlist.XListView;
+import com.umeng.analytics.MobclickAgent;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
+public class Activity_EventComment extends BaseActivityTest {
 	private String eid;
 	private Event event;
 	private Context context;
-	private Button btn_comment_send;
+	Button btn_comment_send;
 	private EditText et_comment;
 	private TextView tv_title,tv_time,tv_place,tv_empty;
 	private XListView listview;
 	private CommentAdapter adapter;
 	private ImageView iv_event_cover;
-	private RelativeLayout event_datail;
-	private List<Comment> mData=new ArrayList<Comment>();
-	private List<String> id_list=new ArrayList<String>();
+	RelativeLayout event_datail;
+	private List<Comment> mData=new ArrayList<>();
+	private List<String> id_list=new ArrayList<>();
 	private String image="";
 	private FileUtil fileUtil;
 	private final int LODING_MORE = 0;
@@ -80,6 +82,7 @@ public class Activity_EventComment extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_comment);
 		context=this;
+		setBaseTitle(R.string.comment);
 		fileUtil = new FileUtil(context, Constant.IMAGE_PATH);
 		eid=getIntent().getStringExtra("event_id");
 		if(TextUtils.isEmpty(eid)){
@@ -96,7 +99,7 @@ public class Activity_EventComment extends Activity {
 		}else{
 			loadevent();
 		}
-		initData();
+//		initData();
 	}
 
 
@@ -221,7 +224,6 @@ public class Activity_EventComment extends Activity {
 	/**
 	 * 执行异步任务
 	 *
-	 * @param params
 	 *
 	 */
 	public void setEventImage(String... params) {
@@ -230,15 +232,15 @@ public class Activity_EventComment extends Activity {
 			@Override
 			protected Bitmap doInBackground(String... params) {
 
-				InputStream is = null;
+				InputStream is;
 				String filename = image
 						.substring(image.lastIndexOf("/") + 1)+"_e";
 				String filepath = fileUtil.getAbsolutePath() + filename;
 				try {
 					Bitmap bitmap = BitmapFactory.decodeFile(filepath);
-					if(bitmap!=null){
+					if(bitmap==null){
 //						d = new BitmapDrawable(context.getResources(),bitmap);
-					}else{
+//					}else{
 						is = (InputStream) new URL(image).getContent();
 						bitmap = BitmapFactory.decodeStream(is,
 								null, null);
@@ -256,7 +258,7 @@ public class Activity_EventComment extends Activity {
 //	            	   event_datail.setBackground(d);
 					iv_event_cover.setImageBitmap(bitmap);
 				}
-			};
+			}
 		}.execute(params);}
 
 	private String getTimeSpan(long begin_time, long end_time) {
@@ -265,7 +267,7 @@ public class Activity_EventComment extends Activity {
 		String end=getTime(end_time*1000);
 		String beginString=begin.substring(0, 10);
 		String endString=end.substring(0, 10);
-		String time="";
+		String time;
 		if(beginString.equals(endString)){
 			time=begin+" ~"+end.substring(10);
 		}else{
@@ -275,19 +277,18 @@ public class Activity_EventComment extends Activity {
 	}
 
 	public String getTime(long now) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date(now));
-		return date;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+		return sdf.format(new Date(now));
 	}
 
-	private Handler mHandler = new Handler() {
+	private Handler mHandler = new Handler(new Handler.Callback(){
 		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
+		public boolean handleMessage(Message msg) {
+//			super.handleMessage(msg);
 			switch (msg.what) {
 				case REFRESH_MORE:
-					mData=new ArrayList<Comment>();
-					id_list=new ArrayList<String>();
+					mData=new ArrayList<>();
+					id_list=new ArrayList<>();
 					getComment(0);
 					break;
 				case LODING_MORE:
@@ -296,8 +297,9 @@ public class Activity_EventComment extends Activity {
 				default:
 					break;
 			}
+			return false;
 		}
-	};
+	});
 
 	/**
 	 * 初始化评论
@@ -311,7 +313,7 @@ public class Activity_EventComment extends Activity {
 	 */
 	private void loadevent() {
 		// TODO Auto-generated method stub
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("uid", Constant.UID);
 		map.put("event_id", eid);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_EVENT, map);
@@ -321,22 +323,22 @@ public class Activity_EventComment extends Activity {
 			public void onDataCallBack(JSONObject data) {
 				// TODO Auto-generated method stub
 				try {
-					int status=data.getInteger("status");
+					int status = data.getInteger("status");
 					switch (status) {
 						case 0:
-							JSONObject event_action=data.getJSONObject("event_action");
-							JSONObject event_obj=event_action.getJSONObject("event");
-							event=new Event();
+							JSONObject event_action = data.getJSONObject("event_action");
+							JSONObject event_obj = event_action.getJSONObject("event");
+							event = new Event();
 							event.setContent(event_obj.getString("cEvent_content"));
 							event.setEventID(eid);
 							event.setPlace(event_obj.getString("cEvent_place"));
 							event.setTime(event_obj.getString("cEvent_time"));
 							event.setTitle(event_obj.getString("cEvent_name"));
 							event.setPublisher(event_obj.getString("cEvent_provider"));
-							String pubtime=event_obj.getString("cEvent_publish");
+							String pubtime = event_obj.getString("cEvent_publish");
 							event.setIssueTime(Long.parseLong(pubtime));
 							event.setTheme(event_obj.getString("cEvent_theme"));
-							EventDao dao=new EventDao(context);
+							EventDao dao = new EventDao(context);
 							dao.saveEvent(event);
 							initData();
 							break;
@@ -344,6 +346,9 @@ public class Activity_EventComment extends Activity {
 							Toast.makeText(context, "活动已过期!", Toast.LENGTH_SHORT).show();
 							finish();
 						default:
+							if (!Constant.isConnectNet) {
+								Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+							}
 							break;
 					}
 
@@ -370,7 +375,7 @@ public class Activity_EventComment extends Activity {
 		tv_content2.setText("删除该评论");
 		tv_content2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				delComment(comment.getCommentID(),position);
+				delComment(comment.getCommentID(), position);
 				dlg.cancel();
 			}
 		});
@@ -404,7 +409,7 @@ public class Activity_EventComment extends Activity {
 	 * 添加评论
 	 */
 	private void addComment(final String comment){
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		maps.put("uid", Constant.UID);
 		maps.put("token", Constant.TOKEN);
 		maps.put("event_id", eid);
@@ -430,8 +435,8 @@ public class Activity_EventComment extends Activity {
 								c.setCommentID(c_json.getString("comment_id"));
 								c.setContent(c_json.getString("content"));
 								c.setSpeaker(c_json.getString("speaker_id"));
-								CommentDao dao=new CommentDao(context);
-								dao.saveComment(c);
+//								CommentDao dao=new CommentDao(context);
+//								dao.saveComment(c);
 								mData.add(0,c);
 								adapter.setData(mData);
 								adapter.notifyDataSetChanged();
@@ -449,6 +454,9 @@ public class Activity_EventComment extends Activity {
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					if(!Constant.isConnectNet){
+						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+					}
 					e.printStackTrace();
 				}
 			}
@@ -462,7 +470,7 @@ public class Activity_EventComment extends Activity {
 	 */
 
 	private void delComment(final String comment_id,final int position){
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		maps.put("uid", Constant.UID);
 		maps.put("token", Constant.TOKEN);
 		maps.put("event_id", eid);
@@ -489,6 +497,9 @@ public class Activity_EventComment extends Activity {
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					if(!Constant.isConnectNet){
+						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+					}
 					e.printStackTrace();
 				}
 			}
@@ -498,7 +509,7 @@ public class Activity_EventComment extends Activity {
 
 
 	private void getComment(final int pos){
-		Map<String, String> maps = new HashMap<String, String>();
+		Map<String, String> maps = new HashMap<>();
 		maps.put("pos", pos+"");
 		maps.put("count", "20");
 		maps.put("event_id", eid);
@@ -565,7 +576,12 @@ public class Activity_EventComment extends Activity {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					Toast.makeText(context, "无法获取评论，活动可能已经过期！", Toast.LENGTH_LONG).show();
+					if(!Constant.isConnectNet){
+						Toast.makeText(context, getText(R.string.no_network)+"无法获取评论", Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(context, "无法获取评论，活动可能已经过期！", Toast.LENGTH_LONG).show();
+					}
+
 				}
 
 				listview.stopRefresh();
@@ -573,10 +589,6 @@ public class Activity_EventComment extends Activity {
 			}
 		});
 
-	}
-
-	public void back(View v){
-		finish();
 	}
 
 	@Override

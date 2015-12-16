@@ -1,9 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,7 +10,11 @@ import android.util.Log;
 
 import com.eventer.app.entity.Comment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class CommentDao {
 	public static final String TABLE_NAME = "dbComment";
 	public static final String COLUMN_NAME_ID = "commentId";
@@ -23,7 +24,7 @@ public class CommentDao {
 	public static final String COLUMN_NAME_SPEAKER = "userId";
 
 	private DBManager dbHelper;
-	private Context context;
+	Context context;
 
 	public CommentDao(Context context) {
 		dbHelper = new DBManager(context);
@@ -33,7 +34,7 @@ public class CommentDao {
 
 
 	public List<Comment> getCommentList(String eventID) {
-		List<Comment> list=new ArrayList<Comment>();
+		List<Comment> list=new ArrayList<>();
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, null,COLUMN_NAME_EVNET+"=?",
@@ -52,6 +53,7 @@ public class CommentDao {
 				info.setTime(time);
 				list.add(info);
 			}
+			c.close();
 		}
 		dbHelper.closeDatabase();
 		return list;
@@ -98,7 +100,7 @@ public class CommentDao {
 
 	public List<String> getEventIDList() {
 		dbHelper.openDatabase();
-		List<String> list=new ArrayList<String>();
+		List<String> list=new ArrayList<>();
 		Cursor c=dbHelper.findList(true, TABLE_NAME, new String[]{COLUMN_NAME_ID},
 				null, null, null, null,null,null);
 		while (c.moveToNext()) {

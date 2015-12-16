@@ -1,6 +1,5 @@
 package com.eventer.app.other;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -8,14 +7,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.eventer.app.R;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.zcw.togglebutton.ToggleButton;
 import com.zcw.togglebutton.ToggleButton.OnToggleChanged;
 
-public class MsgAlertActivity extends Activity {
-	private ToggleButton toggle_alert,toggle_detail,toggle_voice,toggle_shake;
-	private Context context;
+public class MsgAlertActivity extends BaseActivityTest {
+	ToggleButton toggle_alert,toggle_detail,toggle_voice,toggle_shake;
+	Context context;
 	private LinearLayout li_alert;
 	private RelativeLayout re_alert_detail;
 	@Override
@@ -23,6 +23,7 @@ public class MsgAlertActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_msg_alert);
 		context=this;
+		setBaseTitle(R.string.msg_alert);
 		initView();
 	}
 	private void initView() {

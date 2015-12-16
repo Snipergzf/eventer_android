@@ -1,19 +1,18 @@
 package com.eventer.app.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
+@SuppressWarnings({"UnusedDeclaration"})
 public class FileUtil {
     private static final String TAG = FileUtil.class.getSimpleName();
     private String local_image_path;
+
 
     public FileUtil(Context context,String local_image_path) {
         this.local_image_path = local_image_path;
@@ -22,17 +21,12 @@ public class FileUtil {
     /* Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     /**
      * 保存图片到制定路径
      *
-     * @param filepath
-     * @param bitmap
      */
     public void saveBitmap(String filename, Bitmap bitmap) {
         if (!isExternalStorageWritable()) {
@@ -48,7 +42,7 @@ public class FileUtil {
 
             File file = new File(local_image_path,filename);
             FileOutputStream outputstream = new FileOutputStream(file);
-            if((filename.indexOf("png") != -1)||(filename.indexOf("PNG") != -1))
+            if((filename.contains("png"))||(filename.contains("PNG")))
             {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputstream);
             }  else{
@@ -58,9 +52,7 @@ public class FileUtil {
             outputstream.flush();
             outputstream.close();
 
-        } catch (FileNotFoundException e) {
-            Log.i(TAG, e.getMessage());
-        } catch (IOException e) {
+        }  catch (Exception e) {
             Log.i(TAG, e.getMessage());
         }
     }
@@ -74,7 +66,6 @@ public class FileUtil {
         File root = new File(local_image_path);
         if(!root.exists()){
             root.mkdirs();
-
         }
 
 

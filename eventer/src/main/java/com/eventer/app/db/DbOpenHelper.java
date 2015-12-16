@@ -13,12 +13,6 @@
  */
 package com.eventer.app.db;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,7 +22,11 @@ import android.util.Log;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class DbOpenHelper extends SQLiteOpenHelper{
 
 	private static final int DATABASE_VERSION = 1;
@@ -38,7 +36,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 			+ Environment.getDataDirectory().getAbsolutePath() + "/"
 			+ PACKAGE_NAME;  //在手机里存放数据库的位置
 	private Context context;
-	private final int BUFFER_SIZE = 8192;
+	final int BUFFER_SIZE = 8192;
 
 
 
@@ -71,19 +69,16 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 				fos = new FileOutputStream(dbfile);
 
 				byte[] buffer = new byte[BUFFER_SIZE];
-				int count = 0;
+				int count;
 				while ((count = is.read(buffer)) > 0) {
 					fos.write(buffer, 0, count);
 				}
 				fos.flush();
 				fos.close();
 				is.close();
-				db = SQLiteDatabase.openOrCreateDatabase(dbfile,
-						null);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}catch (IOException e) {
+//				db = SQLiteDatabase.openOrCreateDatabase(dbfile,
+//						null);
+			} catch (Exception e) {
 
 				e.printStackTrace();
 			}

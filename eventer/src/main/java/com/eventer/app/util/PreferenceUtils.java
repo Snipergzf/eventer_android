@@ -1,8 +1,6 @@
 
 package com.eventer.app.util;
 
-import java.util.UUID;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -10,16 +8,18 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.UUID;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class PreferenceUtils {
 	/**
 	 * 保存Preference的name
 	 */
 	private static PreferenceUtils mPreferenceUtils;
 	private static SharedPreferences mSharedPreferences;
-	private static SharedPreferences.Editor editor;
 	private String SHARED_KEY_USER = "shared_key_user";
 	private String SHARED_KEY_PWD= "shared_key_pwd";
+	private String SHARED_KEY_UID = "shared_key_uid";
 	private String SHARED_KEY_ALERT= "shared_key_alert";
 	private String SHARED_KEY_ALERT_DETAIL= "shared_key_alert_detail";
 	private String SHARED_KEY_ALERT_VOICE= "shared_key_alert_voice";
@@ -27,18 +27,14 @@ public class PreferenceUtils {
 	private String EXIST_NEW_VERSION="exist_new_version";
 	private Context context;
 	private String deviceId;
-	private PreferenceUtils() {
-	}
+
 	private PreferenceUtils(Context cxt) {
-		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(cxt);;
-		editor = mSharedPreferences.edit();
+		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(cxt);
 		context=cxt;
 	}
 	/**
 	 * 单例模式，获取instance实例
 	 *
-	 * @param cxt
-	 * @return
 	 */
 	public  static PreferenceUtils getInstance() {
 		if (mPreferenceUtils == null) {
@@ -59,7 +55,7 @@ public class PreferenceUtils {
 	}
 
 	public  void setPrefString(final String key, final String value) {
-		editor.putString(key, value).commit();
+		mSharedPreferences.edit().putString(key, value).apply();
 	}
 
 	public String getLoginUser(){
@@ -67,7 +63,15 @@ public class PreferenceUtils {
 	}
 
 	public void setLoginUser(String paramString){
-		editor.putString(SHARED_KEY_USER, paramString).commit();
+		mSharedPreferences.edit().putString(SHARED_KEY_USER, paramString).apply();
+	}
+
+	public void setUserId(String paramString){
+		mSharedPreferences.edit().putString(SHARED_KEY_UID, paramString).apply();
+	}
+
+	public String getUserId(){
+		return mSharedPreferences.getString(SHARED_KEY_UID, null);
 	}
 
 	public String getLoginPwd(){
@@ -75,7 +79,7 @@ public class PreferenceUtils {
 	}
 
 	public void setLoginPwd(String paramString){
-		editor.putString(SHARED_KEY_PWD, paramString).commit();
+		mSharedPreferences.edit().putString(SHARED_KEY_PWD, paramString).apply();
 	}
 
 	public boolean getMsgAlert(){
@@ -83,30 +87,30 @@ public class PreferenceUtils {
 	}
 
 	public void setMsgAlert(boolean param){
-		editor.putBoolean(SHARED_KEY_ALERT, param).commit();
+		mSharedPreferences.edit().putBoolean(SHARED_KEY_ALERT, param).apply();
 	}
 
 
 	public void setMsgAlertDetail(boolean param){
-		editor.putBoolean(SHARED_KEY_ALERT_DETAIL, param).commit();
+		mSharedPreferences.edit().putBoolean(SHARED_KEY_ALERT_DETAIL, param).apply();
 	}
 	public boolean getMsgAlertDetail(){
 		return mSharedPreferences.getBoolean(SHARED_KEY_ALERT_DETAIL, true);
 	}
 
 	public void setMsgAlertVoice(boolean param){
-		editor.putBoolean(SHARED_KEY_ALERT_VOICE, param).commit();
+		mSharedPreferences.edit().putBoolean(SHARED_KEY_ALERT_VOICE, param).apply();
 	}
 	public boolean getMsgAlertVoice(){
 		return mSharedPreferences.getBoolean(SHARED_KEY_ALERT_VOICE, true);
 	}
 
 	public void setMsgAlertShake(boolean param){
-		editor.putBoolean(SHARED_KEY_ALERT_SHAKE, param).commit();
+		mSharedPreferences.edit().putBoolean(SHARED_KEY_ALERT_SHAKE, param).apply();
 	}
 
 	public void set(String param){
-		editor.putString("msg", param).commit();
+		mSharedPreferences.edit().putString("msg", param).apply();
 	}
 
 	public boolean getMsgAlertShake(){
@@ -122,7 +126,7 @@ public class PreferenceUtils {
 	}
 
 	public void setVersionAlert(boolean param){
-		editor.putBoolean(EXIST_NEW_VERSION, param).commit();
+		mSharedPreferences.edit().putBoolean(EXIST_NEW_VERSION, param).apply();
 	}
 
 	public String getDeviceId(){
@@ -158,7 +162,7 @@ public class PreferenceUtils {
 	}
 
 	public  void clearPreference() {
-		editor.clear();
-		editor.commit();
+		mSharedPreferences.edit().clear();
+		mSharedPreferences.edit().apply();
 	}
 }

@@ -1,7 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,6 +10,8 @@ import android.widget.TextView;
 
 import com.eventer.app.R;
 
+import java.util.List;
+@SuppressWarnings({"UnusedDeclaration"})
 public class ThemeAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
@@ -41,9 +41,9 @@ public class ThemeAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Viewholder holder = null;
+		Viewholder holder;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.info_theme_item, null);
+			convertView = mInflater.inflate(R.layout.info_theme_item, parent , false );
 			holder = new Viewholder();
 			holder.title = (TextView) convertView.findViewById(R.id.info_top_item_title);
 			convertView.setTag(holder);

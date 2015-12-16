@@ -1,10 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -33,20 +29,26 @@ import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 简单的好友Adapter实现
  *
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public  class PickChatroomAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private boolean[] isCheckedArray;
     private Map<String,Bitmap[]> bitmaps;
     private LoadUserAvatar avatarLoader;
-    private List<ChatRoom> list = new ArrayList<ChatRoom>();
-    private List<String> exitingMembers = new ArrayList<String>();
-    private List<String> addList = new ArrayList<String>();
-    private int res;
+    private List<ChatRoom> list = new ArrayList<>();
+    private List<String> exitingMembers = new ArrayList<>();
+    private List<String> addList = new ArrayList<>();
+    int res;
     private Context context;
 
     public PickChatroomAdapter(Context context, int resource,
@@ -57,7 +59,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
         this.res = resource;
         this.list = rooms;
         this.context=context;
-        bitmaps = new HashMap<String, Bitmap[]>();
+        bitmaps = new HashMap<>();
         isCheckedArray = new boolean[list.size()];
 
     }
@@ -74,6 +76,10 @@ public  class PickChatroomAdapter extends BaseAdapter {
 
     public List<String> getMembers(){
         return exitingMembers;
+    }
+
+    public List<String> getAddMembers(){
+        return addList;
     }
 
     @Override
@@ -100,7 +106,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
         ChatRoom group = list.get(position);
 
         final String groupId=group.getRoomId();
-        int membersNum = 0;
+        int membersNum ;
 
         String groupName =  group.getRoomname();
 
@@ -119,7 +125,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
                 groupName_temp2 += "、" + displayName[i];
 
             } else if (i == 4) {
-                groupName_temp2 += "...("+displayName+")";
+                groupName_temp2 += "...("+membersNum+")";
             }
         }
 
@@ -151,7 +157,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
                 showUserAvatar((ImageView) view
                         .findViewById(avatar_id[i]), avatar,position,i);
             }else{
-                Map<String,String> map=new HashMap<String, String>();
+                Map<String,String> map=new HashMap<>();
                 map.put("uid", member);
                 LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_USERINFO, map);
                 task.getData(new DataCallBack() {
@@ -200,40 +206,40 @@ public  class PickChatroomAdapter extends BaseAdapter {
             checkBox.setChecked(true);
             isCheckedArray[position] = true;
         }
-        if (checkBox != null) {
-            checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                                             boolean isChecked) {
-                    // 群组中原来的成员一直设为选中状态
-                    if (exitingMembers.contains(groupId)) {
-                        isChecked = true;
-                        checkBox.setChecked(true);
-                    }
-                    isCheckedArray[position] = isChecked;
 
-                    if (isChecked) {
-                        // 选中用户显示在滑动栏显示
-                        ShareToGroupActivity.instance.showCheckImage(getBitmap(position),
-                                list.get(position));
+        checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                // 群组中原来的成员一直设为选中状态
+                if (exitingMembers.contains(groupId)) {
+                    isChecked = true;
+                    checkBox.setChecked(true);
+                }
+                isCheckedArray[position] = isChecked;
 
-                    } else {
-                        // 用户显示在滑动栏删除
-                        ShareToGroupActivity.instance.deleteImage(list.get(position));
+                if (isChecked) {
+                    // 选中用户显示在滑动栏显示
+                    ShareToGroupActivity.instance.showCheckImage(getBitmap(position),
+                            list.get(position));
 
-                    }
+                } else {
+                    // 用户显示在滑动栏删除
+                    ShareToGroupActivity.instance.deleteImage(list.get(position));
 
                 }
-            });
-            // 群组中原来的成员一直设为选中状态
-            if (exitingMembers.contains(groupId)) {
-                checkBox.setChecked(true);
-                isCheckedArray[position] = true;
-            } else {
-                checkBox.setChecked(isCheckedArray[position]);
-            }
 
+            }
+        });
+        // 群组中原来的成员一直设为选中状态
+        if (exitingMembers.contains(groupId)) {
+            checkBox.setChecked(true);
+            isCheckedArray[position] = true;
+        } else {
+            checkBox.setChecked(isCheckedArray[position]);
         }
+
+
         return convertView;
     }
 
@@ -261,7 +267,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
                     }
 
                 });
-        if (bitmap != null){}
+
         iamgeView.setImageBitmap(bitmap);
         Bitmap[] bitmap_temp=bitmaps.get(position+"");
         bitmap_temp[loc]=bitmap;
@@ -273,25 +279,25 @@ public  class PickChatroomAdapter extends BaseAdapter {
         View convertView;
         switch (size) {
             case 1:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_1, null,
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_1, new LinearLayout(context),
                         false);
 
                 break;
             case 2:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_2, null,
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_2, new LinearLayout(context),
                         false);
                 break;
             case 3:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_3, null,
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_3, new LinearLayout(context),
                         false);
                 break;
             case 4:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, null,
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, new LinearLayout(context),
                         false);
                 break;
 
             default:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, null,
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, new LinearLayout(context),
                         false);
                 break;
 

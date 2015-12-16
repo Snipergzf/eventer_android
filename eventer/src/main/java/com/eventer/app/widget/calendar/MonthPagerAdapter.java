@@ -1,10 +1,10 @@
 package com.eventer.app.widget.calendar;
 
-import java.util.ArrayList;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import java.util.ArrayList;
 
 /**
  * MonthPagerAdapter holds 4 fragments, which provides fragment for current
@@ -21,7 +21,7 @@ public class MonthPagerAdapter extends FragmentPagerAdapter {
 	// Lazily create the fragments
 	public ArrayList<DateGridFragment> getFragments() {
 		if (fragments == null) {
-			fragments = new ArrayList<DateGridFragment>();
+			fragments = new ArrayList<>();
 			for (int i = 0; i < getCount(); i++) {
 				fragments.add(new DateGridFragment());
 			}
@@ -29,9 +29,9 @@ public class MonthPagerAdapter extends FragmentPagerAdapter {
 		return fragments;
 	}
 
-	public void setFragments(ArrayList<DateGridFragment> fragments) {
-		this.fragments = fragments;
-	}
+//	public void setFragments(ArrayList<DateGridFragment> fragments) {
+//		this.fragments = fragments;
+//	}
 
 	public MonthPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -39,8 +39,7 @@ public class MonthPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		DateGridFragment fragment = getFragments().get(position);
-		return fragment;
+		return getFragments().get(position);
 	}
 
 	@Override

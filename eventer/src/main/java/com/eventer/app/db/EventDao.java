@@ -1,9 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,7 +8,11 @@ import android.database.Cursor;
 
 import com.eventer.app.entity.Event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class EventDao {
 	public static final String TABLE_NAME = "dbEventDetail";
 	public static final String COLUMN_NAME_ID = "Id";
@@ -38,7 +39,7 @@ public class EventDao {
 
 	//private DbOpenHelper dbHelper;
 	private DBManager dbHelper;
-	private Context context;
+	Context context;
 
 	public EventDao(Context context) {
 		dbHelper = new DBManager(context);
@@ -49,7 +50,7 @@ public class EventDao {
 
 	@SuppressLint("DefaultLocale")
 	public List<Event> getEventList() {
-		List<Event> list = new ArrayList<Event>();
+		List<Event> list = new ArrayList<>();
 		dbHelper.openDatabase();
 
 		//dbHelper.deleteDatabase(context);
@@ -154,7 +155,7 @@ public class EventDao {
 
 	public List<String> getEventIDList() {
 		dbHelper.openDatabase();
-		List<String> list=new ArrayList<String>();
+		List<String> list=new ArrayList<>();
 		Cursor c=dbHelper.findList(true, TABLE_NAME, new String[]{COLUMN_NAME_ID},
 				null, null, null, null,null,null);
 		while (c.moveToNext()) {
@@ -201,7 +202,7 @@ public class EventDao {
 	//	}
 
 	public List<Event> getEventListByInfo(String[] args){
-		List<Event> list=new ArrayList<Event>();
+		List<Event> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		//a.[operator]=? and a.[operation]=?;
 		Cursor c=dbHelper.rawQuery("select b.*,a.operator,a.operation,a.operate_time from dbEvent a,dbEventDetail b where a.Id=b.Id and a.operator=? and a.operation=? order by operate_time desc",

@@ -1,12 +1,14 @@
 package com.eventer.app.http;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import com.alibaba.fastjson.JSONObject;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -16,13 +18,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.alibaba.fastjson.JSONObject;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class LoadDataFromHTTP {
 
@@ -61,18 +59,14 @@ public class LoadDataFromHTTP {
             public void run() {
                 try {
                     String jsonString= sendPostRequest(url, map);
-                    JSONObject jsonObject = new JSONObject();
+                    JSONObject jsonObject;
                     jsonObject = JSONObject.parseObject(jsonString);
                     Message msg = new Message();
                     msg.what = 111;
                     msg.obj = jsonObject;
                     handler.sendMessage(msg);
 
-                } catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                    Log.e("1",e.toString());
-
-                }catch (HttpHostConnectException e) {
+                } catch (HttpHostConnectException e) {
                     // TODO: handle exception
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("status", -1);
@@ -80,10 +74,6 @@ public class LoadDataFromHTTP {
                     msg.what = 111;
                     msg.obj = jsonObject;
                     handler.sendMessage(msg);
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    Log.e("1",e.toString());
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -114,7 +104,7 @@ public class LoadDataFromHTTP {
         HttpResponse httpResponse = httpClient.execute(httpPost);
         Log.e("1",path+httpResponse.getStatusLine().getStatusCode());
 
-        int tt=httpResponse.getStatusLine().getStatusCode();
+
         if (httpResponse.getStatusLine().getStatusCode() == 200)
         {
 

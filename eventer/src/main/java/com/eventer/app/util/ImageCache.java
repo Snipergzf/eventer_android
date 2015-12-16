@@ -41,8 +41,7 @@ public class ImageCache {
 	
 	/**
 	 * put bitmap to image cache
-	 * @param key
-	 * @param value
+
 	 * @return  the puts bitmap
 	 */
 	public Bitmap put(String key, Bitmap value){
@@ -51,8 +50,7 @@ public class ImageCache {
 	
 	/**
 	 * return the bitmap
-	 * @param key
-	 * @return
+
 	 */
 	public Bitmap get(String key){
 		return cache.get(key);

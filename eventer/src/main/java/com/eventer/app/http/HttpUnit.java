@@ -109,9 +109,9 @@ public class HttpUnit {
 		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/friend/search", params);
 		Log.e("1",jsonString);
 		JSONObject jsonObject= new  JSONObject(jsonString);
-		Map<String,Object> map=new HashMap<String, Object>();
+		Map<String,Object> map=new HashMap<>();
 		int status=jsonObject.getInt("status");
-		String info="";
+		String info;
 		if(status==0){
 			JSONObject obj=jsonObject.getJSONObject("friend_action");
 			info=obj.getString("info");

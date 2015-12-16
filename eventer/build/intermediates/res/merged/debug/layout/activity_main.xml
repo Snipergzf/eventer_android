@@ -7,15 +7,16 @@
     <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="58dp"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
         android:gravity="center_vertical"
+        android:baselineAligned="false"
         android:orientation="horizontal" >
         <RelativeLayout
             android:id="@+id/re_activity"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTabClick"
             android:padding="3dp" >
@@ -27,6 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="#ffffff"
                 android:focusable="false"
+                android:contentDescription="@string/tab_activity"
                 android:scaleType="centerInside"
                 android:src="@drawable/tab_activity" />
 
@@ -38,7 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:text="@string/tab_activity"
-                android:textColor="#9A9A9A"
+                android:textColor="@drawable/tab_text"
                 android:textSize="12sp" />
 
             <TextView
@@ -46,7 +48,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
                 android:textColor="@android:color/white"
@@ -57,7 +61,7 @@
         <RelativeLayout
             android:id="@+id/re_schedual"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTabClick"
             android:padding="3dp" >
@@ -69,6 +73,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="#ffffff"
                 android:focusable="false"
+                android:contentDescription="@string/tab_schedual"
                 android:scaleType="centerInside"
                 android:src="@drawable/tab_calendar" />
 
@@ -80,7 +85,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:text="@string/tab_schedual"
-                android:textColor="#9A9A9A"
+                android:textColor="@drawable/tab_text"
                 android:textSize="12sp" />
 
         
@@ -91,7 +96,7 @@
         <RelativeLayout
             android:id="@+id/re_message"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTabClick"
             android:padding="3dp" >
@@ -103,6 +108,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="#ffffff"
                 android:focusable="false"
+                android:contentDescription="@string/tab_message"
                 android:scaleType="centerInside"
                 android:src="@drawable/tab_message" />
 
@@ -114,14 +120,16 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:text="@string/tab_message"
-                android:textColor="#9A9A9A"
+                android:textColor="@drawable/tab_text"
                 android:textSize="12sp" />
             <TextView
                 android:id="@+id/unread_msg_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
                 android:visibility="gone"
@@ -132,7 +140,7 @@
         <RelativeLayout
             android:id="@+id/re_profile"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTabClick"
             android:padding="3dp" >
@@ -144,6 +152,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="#ffffff"
                 android:focusable="false"
+                android:contentDescription="@string/tab_profile"
                 android:scaleType="centerInside"
                 android:src="@drawable/tab_profile" />
 
@@ -155,7 +164,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:text="@string/tab_profile"
-                android:textColor="#9A9A9A"
+                android:textColor="@drawable/tab_text"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

@@ -9,7 +9,7 @@
  */
 
 package com.facebook.rebound;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class SpringUtil {
 
   /**

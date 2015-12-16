@@ -1,9 +1,5 @@
 package com.eventer.app.main;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -25,8 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
+
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
@@ -34,15 +29,22 @@ import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.view.MyCountTimer;
-import com.eventer.app.view.TitleBar;
 import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class RegisterActivity extends BaseActivity implements OnClickListener, Callback {
+public class RegisterActivity extends BaseActivityTest implements OnClickListener, Callback {
 
 	private EditText edit_tel,edit_code,edit_pwd;
 	private TextView btn_send_code;
@@ -60,9 +62,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		TitleBar.setTitleBar(this,"注册");
 		setContentView(R.layout.activity_register);
-
+        setBaseTitle(R.string.register);
 		edit_tel=(EditText)findViewById(R.id.edit_tel);
 		edit_code=(EditText)findViewById(R.id.edit_security_code);
 		edit_pwd=(EditText)findViewById(R.id.edit_pwd);
@@ -76,7 +77,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 
 		init();
 		initSMSSDK();
-		UserRegister();
+//		UserRegister();
 
 	}
 	/***
@@ -229,10 +230,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 		switch (v.getId()) {
 			//"注册"按钮
 			case R.id.btn_next:
-//			TelString=edit_tel.getText().toString();
-//			UserRegister();
+			TelString=edit_tel.getText().toString();
+			UserRegister();
 				//发送验证码确认
-				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
+//				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
 				break;
 			case R.id.btn_tel_clear:
 				edit_tel.setText("");
@@ -272,14 +273,14 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	/**
 	 * 注册账号
 	 * 参数为“phone”和“pwd”
-	 *
+	 *pwd
 	 */
 	public void UserRegister() {
-		Map<String, String> params = new HashMap<String, String>();
-
+		Map<String, String> params = new HashMap<>();
+//		TelString=edit_tel.getText().toString();
 		pwd=edit_pwd.getText().toString();
-		params.put("phone", "13006336631");
-		params.put("pwd", "123456");
+		params.put("phone", TelString);
+		params.put("pwd", pwd);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
 				context, Constant.URL_REGISTER, params);
 		task.getData(new DataCallBack() {
@@ -302,8 +303,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 									.show();
 							break;
 						default:
-							Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
-									.show();
+							if(!Constant.isConnectNet){
+								Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+							}else{
+								Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
+										.show();
+							}
+
 							break;
 					}
 
@@ -314,6 +320,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 					e.printStackTrace();
 				}catch (Exception e) {
 					// TODO: handle exception
+					Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
+							.show();
 				}
 			}
 		});

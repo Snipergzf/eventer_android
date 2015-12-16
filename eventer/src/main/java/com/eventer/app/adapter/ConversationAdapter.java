@@ -1,11 +1,19 @@
 package com.eventer.app.adapter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.text.Spannable;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TextView.BufferType;
 
 import com.alibaba.fastjson.JSONObject;
 import com.easemob.util.DateUtils;
@@ -26,22 +34,16 @@ import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.SmileUtils;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.text.Spannable;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.TextView.BufferType;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import hirondelle.date4j.DateTime;
 
-@SuppressLint("ViewHolder")
+@SuppressLint("SetTextI18n")
 public class ConversationAdapter extends BaseAdapter {
 	private Context context;                        //运行上下文
 	private List<ChatEntity> listItems;
@@ -158,15 +160,15 @@ public class ConversationAdapter extends BaseAdapter {
 
 		if(chatType==Activity_Chat.CHATTYPE_SINGLE){
 			holder=new ViewHolder();
-			convertView = mInflater.inflate(R.layout.item_conversation_single, null);
+			convertView = mInflater.inflate(R.layout.item_conversation_single, new LinearLayout(context),false);
 			holder.avatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
 			holder.msg = (TextView) convertView.findViewById(R.id.tv_content);
 			holder.time = (TextView) convertView.findViewById(R.id.tv_time);
 			holder.name=(TextView) convertView.findViewById(R.id.tv_name);
 			holder.unread=(TextView) convertView.findViewById(R.id.tv_unread);
 			handleTextMessage(item,holder,chatType);
-			if(u!=null)
-				showUserAvatar(holder.avatar, u.getAvatar());
+
+			showUserAvatar(holder.avatar, u.getAvatar());
 		}else{
 			holder=new ViewHolder();
 			int size=0;
@@ -343,6 +345,7 @@ public class ConversationAdapter extends BaseAdapter {
 		}
 	}
 
+
 	private void handleText(String txt, int type,ViewHolder holder,String nick){
 		switch (type) {
 			case 1:
@@ -350,7 +353,7 @@ public class ConversationAdapter extends BaseAdapter {
 					txt=nick+": "+txt;
 				}
 				Spannable span = SmileUtils
-						.getSmiledString(context, txt);
+						.getSmiledString(txt);
 				holder.msg.setText(span, BufferType.SPANNABLE);
 				break;
 			case 2:
@@ -417,25 +420,25 @@ public class ConversationAdapter extends BaseAdapter {
 		View convertView;
 		switch (size) {
 			case 1:
-				convertView =  mInflater.inflate(R.layout.item_conversation_group_1, null,
+				convertView =  mInflater.inflate(R.layout.item_conversation_group_1, new LinearLayout(context),
 						false);
 
 				break;
 			case 2:
-				convertView =  mInflater.inflate(R.layout.item_conversation_group_2, null,
+				convertView =  mInflater.inflate(R.layout.item_conversation_group_2, new LinearLayout(context),
 						false);
 				break;
 			case 3:
-				convertView =  mInflater.inflate(R.layout.item_conversation_group_3, null,
+				convertView =  mInflater.inflate(R.layout.item_conversation_group_3, new LinearLayout(context),
 						false);
 				break;
 			case 4:
-				convertView =  mInflater.inflate(R.layout.item_conversation_group_4, null,
+				convertView =  mInflater.inflate(R.layout.item_conversation_group_4, new LinearLayout(context),
 						false);
 				break;
 
 			default:
-				convertView =  mInflater.inflate(R.layout.item_conversation_group_4, null,
+				convertView =  mInflater.inflate(R.layout.item_conversation_group_4, new LinearLayout(context),
 						false);
 				break;
 

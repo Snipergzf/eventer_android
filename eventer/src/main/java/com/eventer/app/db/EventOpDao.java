@@ -1,10 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.R.bool;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +11,11 @@ import com.eventer.app.Constant;
 import com.eventer.app.entity.Event;
 import com.eventer.app.entity.EventOp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class EventOpDao {
 	public static final String TABLE_NAME = "dbEvent";
 	public static final String COLUMN_NAME_ID = "Id";
@@ -36,7 +36,7 @@ public class EventOpDao {
 
 	@SuppressLint("DefaultLocale")
 	public List<Event> getEventOpList() {
-		List<Event> list=new ArrayList<Event>();
+		List<Event> list=new ArrayList<>();
 		dbHelper.openDatabase();
 
 		//dbHelper.deleteDatabase(context);
@@ -61,7 +61,6 @@ public class EventOpDao {
 				null,null);
 		while (c.moveToNext()) {
 			isVisit=true;
-			break;
 		}
 		dbHelper.closeDatabase();
 		return isVisit;
@@ -135,7 +134,7 @@ public class EventOpDao {
 
 	public List<String> getEventIDList() {
 		dbHelper.openDatabase();
-		List<String> list=new ArrayList<String>();
+		List<String> list=new ArrayList<>();
 		Cursor c=dbHelper.findList(true, TABLE_NAME, new String[]{COLUMN_NAME_ID},
 				null, null, null, null,null,null);
 		while (c.moveToNext()) {

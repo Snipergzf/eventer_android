@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 
 import com.eventer.app.R;
 
@@ -21,7 +22,7 @@ public class SwipeBackActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		layout = (SwipeBackLayout) LayoutInflater.from(this).inflate(
-				R.layout.base, null);
+				R.layout.base, new LinearLayout(this) , false);
 		layout.attachToActivity(this);
 	}
 

@@ -1,7 +1,7 @@
  
 package com.eventer.app.entity;
 
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class User extends UserInfo{
 	private int unreadMsgCount;
 	private String header;

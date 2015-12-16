@@ -1,38 +1,34 @@
 package com.eventer.app.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
 
+import java.util.ArrayList;
+import java.util.List;
+@SuppressWarnings({"UnusedDeclaration"})
 public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
-
-	public static interface IOnItemSelectListener{
-		public void onItemClick(int pos);
-	};
+    private Context context;
+	public  interface IOnItemSelectListener{
+		void onItemClick(int pos);
+	}
 	
-	 private List<T> mObjects = new ArrayList<T>();
+	 private List<T> mObjects = new ArrayList<>();
 	 private LayoutInflater mInflater;
 	
 	 public  AbstractSpinerAdapter(Context context){
+		 this.context=context;
 		 init(context);
 	 }
 	 
 	 public void refreshData(List<T> objects, int selIndex){
 		 mObjects = objects;
-		 if (selIndex < 0){
-			 selIndex = 0;
-		 }
-		 if (selIndex >= mObjects.size()){
-			 selIndex = mObjects.size() - 1;
-		 }
 	 }
 	 
 	 private void init(Context context) {
@@ -61,7 +57,7 @@ public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 		 ViewHolder viewHolder;
     	 
 	     if (convertView == null) {
-	    	 convertView = mInflater.inflate(R.layout.spiner_item_layout, null);
+	    	 convertView = mInflater.inflate(R.layout.spiner_item_layout, new LinearLayout(context),false);
 	         viewHolder = new ViewHolder();
 	         viewHolder.mTextView = (TextView) convertView.findViewById(R.id.textView);
 	         convertView.setTag(viewHolder);

@@ -1,8 +1,8 @@
 package com.eventer.app.widget.calendar;
 
-import java.util.Date;
-
 import android.view.View;
+
+import java.util.Date;
 
 /**
  * CaldroidListener inform when user clicks on a valid date (not within disabled
@@ -17,17 +17,13 @@ import android.view.View;
 public abstract class CaldroidListener {
 	/**
 	 * Inform client user has clicked on a date
-	 * @param date
-	 * @param view
 	 */
 	public abstract void onSelectDate(Date date, View view);
 
 	
 	/**
 	 * Inform client user has long clicked on a date
-	 * @param date
-	 * @param view
-	 */
+	 * */
 	public void onLongClickDate(Date date, View view) {
 		// Do nothing
 	}
@@ -35,12 +31,10 @@ public abstract class CaldroidListener {
 	
 	/**
 	 * Inform client that calendar has changed month
-	 * @param month
-	 * @param year
 	 */
 	public void onChangeMonth(int month, int year) {
 		// Do nothing
-	};
+	}
 
 	
 	/**

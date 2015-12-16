@@ -1,10 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -33,6 +29,11 @@ import com.eventer.app.other.MyUserInfoActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommentAdapter extends BaseAdapter {
 
@@ -72,13 +73,12 @@ public class CommentAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		ViewHolder holder = null;
+		ViewHolder holder;
 		Comment comment=commentlist.get(position);
 
 		if (convertView == null) {
 			holder=new ViewHolder();
-			convertView = inflater.inflate(R.layout.item_comment_single, null);
+			convertView = inflater.inflate(R.layout.item_comment_single, new LinearLayout(context),false);
 			holder.iv_avatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
 			holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
 			holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
@@ -118,7 +118,7 @@ public class CommentAdapter extends BaseAdapter {
 				holder.tv_name.setText(nick);
 			showUserAvatar(holder.iv_avatar, avatar);
 		}else{
-			Map<String,String> map=new HashMap<String, String>();
+			Map<String,String> map=new HashMap<>();
 			map.put("uid", speaker);
 			LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_USERINFO, map);
 			task.getData(new DataCallBack() {
@@ -150,7 +150,7 @@ public class CommentAdapter extends BaseAdapter {
 								break;
 						}
 					}catch(Exception e){
-
+						e.printStackTrace();
 					}
 
 				}

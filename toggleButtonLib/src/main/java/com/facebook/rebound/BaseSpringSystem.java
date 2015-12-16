@@ -10,11 +10,7 @@
 
 package com.facebook.rebound;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -25,6 +21,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * In addition to listening to physics events on the individual Springs in the system, listeners
  * can be added to the BaseSpringSystem itself to provide pre and post integration setup.
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class BaseSpringSystem {
 
   private final Map<String, Spring> mSpringRegistry = new HashMap<String, Spring>();
@@ -69,18 +66,18 @@ public class BaseSpringSystem {
    * @param id id of the spring to retrieve
    * @return Spring with the specified key
    */
-  public Spring getSpringById(String id) {
-    if (id == null) {
-      throw new IllegalArgumentException("id is required");
-    }
-    return mSpringRegistry.get(id);
-  }
+//  public Spring getSpringById(String id) {
+//    if (id == null) {
+//      throw new IllegalArgumentException("id is required");
+//    }
+//    return mSpringRegistry.get(id);
+//  }
 
   /**
    * return all the springs in the simulator
    * @return all the springs
    */
-  public List<Spring> getAllSprings() {
+  /*public List<Spring> getAllSprings() {
     Collection<Spring> collection = mSpringRegistry.values();
     List<Spring> list;
     if (collection instanceof List) {
@@ -89,7 +86,7 @@ public class BaseSpringSystem {
       list = new ArrayList<Spring>(collection);
     }
     return Collections.unmodifiableList(list);
-  }
+  }*/
 
   /**
    * Registers a Spring to this BaseSpringSystem so it can be iterated if active.

@@ -1,10 +1,5 @@
 package com.eventer.app.other;
 
-import hirondelle.date4j.DateTime;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -36,15 +31,21 @@ import android.widget.TimePicker;
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
+import hirondelle.date4j.DateTime;
+
+@SuppressLint("SetTextI18n")
 public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 
 	private Spinner eventrepeat,eventalarm;
 	private TextView eventdate,eventtime,tv_add_more;
 	private EditText eventtitle,eventplace,eventdetail;
-	private LinearLayout ll_add_info,extra_info;
+	LinearLayout ll_add_info,extra_info;
 	private ImageView iv_add_more;
-	public int Repeat=2,Remind=2;
+	public int Repeat=2;
 	private Long id;
 	private Context context;
 	private boolean IsNew=true;
@@ -98,7 +99,7 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		eventtime.setOnClickListener(this);
 		ll_add_info.setOnClickListener(this);
 
-		SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
 		String   time =sDateFormat.format(new   Date());
 		String[] nowtime=time.split(" ");
 		String date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
@@ -140,13 +141,13 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 				"ScheduleID=?", new String[]{id+""}, null, null,null,null);
 		while (c.moveToNext()) {
 			String start=c.getString(c.getColumnIndex("startTime"));
-			String end=c.getString(c.getColumnIndex("endTime"));
+//			String end=c.getString(c.getColumnIndex("endTime"));
 			String title=c.getString(c.getColumnIndex("title"));
 			String place=c.getString(c.getColumnIndex("place"));
 			String detail =c.getString(c.getColumnIndex("detail"));
 			String remind=c.getString(c.getColumnIndex("remind"));
 			String _f=c.getString(c.getColumnIndex("frequency"));
-			String friend= c.getString(c.getColumnIndex("companion"));
+//			String friend= c.getString(c.getColumnIndex("companion"));
 			String event_date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
 			//Log.e("1",id+"");
 			if(start!=null&&start.trim().length() != 0){
@@ -168,9 +169,9 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 			if(detail!=null&&detail.trim().length() != 0){
 				eventdetail.setText(detail);
 			}
-			if(friend!=null&&friend.trim().length() != 0){
-
-			}
+//			if(friend!=null&&friend.trim().length() != 0){
+//
+//			}
 			if(_f!=null&&_f.trim().length() != 0){
 				int loc=Integer.parseInt(_f);
 				eventrepeat.setSelection(loc);
@@ -205,7 +206,6 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear,
 										  int dayOfMonth) {
-						// TODO Auto-generated method stub
 						int month=monthOfYear+1;
 						String day;
 						if(dayOfMonth>9){
@@ -360,16 +360,15 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	}
 
 	public String getTime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date());
-		return date;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+		return sdf.format(new Date());
 	}
 
 	private String getRemindTime(String start, int span) {
 		// TODO Auto-generated method stub
-		String rTime=null;
+		String rTime;
 		DateTime begin=new DateTime(start+":00");
-		DateTime r=null;
+		DateTime r;
 		switch(span){
 			case 1:
 				r=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
@@ -395,11 +394,12 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	}
 
 	@SuppressLint("SimpleDateFormat")
+	@SuppressWarnings({"UnusedDeclaration"})
 	private String getEndTime(String starttime, int span) {
 		// TODO Auto-generated method stub
-		String endTime=null;
+		String endTime;
 		DateTime begin=new DateTime(starttime+":00");
-		DateTime end=null;
+		DateTime end;
 		switch(span){
 			case 0:
 				end=begin.plus(0, 0, 0, 0, 0, 0, 0, null);

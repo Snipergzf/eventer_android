@@ -1,14 +1,12 @@
 package com.eventer.app.widget.swipeback;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,11 +19,13 @@ import android.widget.Scroller;
 
 import com.eventer.app.R;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  *
  * @author xiaanming
  *
- * @blog http://blog.csdn.net/xiaanming
  *
  */
 public class SwipeBackLayout extends FrameLayout {
@@ -41,7 +41,7 @@ public class SwipeBackLayout extends FrameLayout {
 	private boolean isFinish;
 	private Drawable mShadowDrawable;
 	private Activity mActivity;
-	private List<ViewPager> mViewPagers = new LinkedList<ViewPager>();
+	private List<ViewPager> mViewPagers = new LinkedList<>();
 
 	public SwipeBackLayout(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
@@ -52,8 +52,8 @@ public class SwipeBackLayout extends FrameLayout {
 
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 		mScroller = new Scroller(context);
-
-		mShadowDrawable = getResources().getDrawable(R.drawable.shadow_left);
+		mShadowDrawable= ContextCompat.getDrawable(context, R.drawable.shadow_left);
+//		mShadowDrawable = getResources().getDrawable(R.drawable.shadow_left);
 	}
 
 
@@ -141,8 +141,6 @@ public class SwipeBackLayout extends FrameLayout {
 
 	/**
 	 * 获取SwipeBackLayout里面的ViewPager的集合
-	 * @param mViewPagers
-	 * @param parent
 	 */
 	private void getAlLViewPager(List<ViewPager> mViewPagers, ViewGroup parent){
 		int childCount = parent.getChildCount();
@@ -159,9 +157,7 @@ public class SwipeBackLayout extends FrameLayout {
 
 	/**
 	 * 返回我们touch的ViewPager
-	 * @param mViewPagers
-	 * @param ev
-	 * @return
+	 * @return ViewPager
 	 */
 	private ViewPager getTouchViewPager(List<ViewPager> mViewPagers, MotionEvent ev){
 		if(mViewPagers == null || mViewPagers.size() == 0){

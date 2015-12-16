@@ -1,15 +1,5 @@
 package com.eventer.app.db;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,6 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+@SuppressWarnings({"UnusedDeclaration"})
 public class DBManager {
 
 
@@ -25,7 +22,7 @@ public class DBManager {
         // TODO Auto-generated constructor stub
     }
 
-    private final int BUFFER_SIZE = 8192;
+    final int BUFFER_SIZE = 8192;
     public static final String DB_NAME = Constant.UID+".db"; //保存的数据库文件名
     public static final String PACKAGE_NAME = "com.eventer.app";
     public static final String DB_PATH = "/data"
@@ -33,13 +30,13 @@ public class DBManager {
             + PACKAGE_NAME+"/databases";  //在手机里存放数据库的位置
 
     private SQLiteDatabase database;
-    private AtomicInteger mOpenCounter = new AtomicInteger();
+
 
     private static DBManager instance;
 
     // private static DBManager instance;
 
-    private static final int      DATABASE_VERSION = 1;
+
 
     private Context context;
 
@@ -110,7 +107,7 @@ public class DBManager {
                 Log.e("1", "File11");
                 FileOutputStream fos = new FileOutputStream(dbfile);
                 byte[] buffer = new byte[BUFFER_SIZE];
-                int count = 0;
+                int count ;
                 while ((count = is.read(buffer)) > 0) {
                     fos.write(buffer, 0, count);
                 }
@@ -118,12 +115,9 @@ public class DBManager {
                 fos.close();
                 is.close();
             }
-            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile,
+            return SQLiteDatabase.openOrCreateDatabase(dbfile,
                     null);
-            return db;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }  catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -132,8 +126,7 @@ public class DBManager {
 
     /**
      * 删除数据库
-     * @param context
-     * @return
+
      */
     public boolean deleteDatabase(Context context) {
         return context.deleteDatabase(DB_PATH + "/" + DB_NAME);
@@ -143,7 +136,7 @@ public class DBManager {
      * 插入数据 参数
      * @param tableName 表名
      * @param initialValues 要插入的列对应值
-     * @return
+
      */
     public long insert(String tableName, ContentValues initialValues) {
         return database.insert(tableName, null, initialValues);
@@ -154,7 +147,6 @@ public class DBManager {
      * @param tableName 表名
      * @param deleteCondition 条件
      * @param deleteArgs 条件对应的值（如果deleteCondition中有“？”号，将用此数组中的值替换，一一对应）
-     * @return
      */
     public boolean delete(String tableName, String deleteCondition, String[] deleteArgs) {
         return database.delete(tableName, deleteCondition, deleteArgs) > 0;
@@ -166,7 +158,7 @@ public class DBManager {
      * @param initialValues 要更新的列
      * @param selection 更新的条件
      * @param selectArgs 更新条件中的“？”对应的值
-     * @return
+
      */
     public boolean update(String tableName, ContentValues initialValues, String selection, String[] selectArgs) {
         return database.update(tableName, initialValues, selection, selectArgs) > 0;
@@ -182,7 +174,7 @@ public class DBManager {
      * @param groupBy 分组
      * @param having 分组过滤条件
      * @param orderBy 排序
-     * @return
+
      */
     public Cursor findList(boolean distinct, String tableName, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {
 
@@ -200,7 +192,7 @@ public class DBManager {
      * @param orderBy 排序
      * @param limit 数据区间
      * @param distinct 是否去重复
-     * @return
+
      * @throws SQLException
      */
     public Cursor findOne(boolean distinct, String tableName, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) throws SQLException {
@@ -216,7 +208,7 @@ public class DBManager {
 
     /**
      * 执行SQL(带参数)
-     * @param sql
+
      * @param args SQL中“？”参数值
      */
     public void execSQL(String sql, Object[] args) {
@@ -226,7 +218,7 @@ public class DBManager {
 
     /**
      * 执行SQL
-     * @param sql
+
      */
     public void execSQL(String sql) {
         database.execSQL(sql);
@@ -235,16 +227,15 @@ public class DBManager {
 
     public Cursor rawQuery(String sql,String[] args){
         Cursor mCursor=database.rawQuery(sql, args);
-//    	if (mCursor != null) {
-//            mCursor.moveToFirst();
-//        }
+    	if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
         return mCursor;
     }
 
     /**
      * 判断某张表是否存在
-     * @param tabName 表名
-     * @return
+
      */
     public boolean isTableExist(String tableName) {
         boolean result = false;
@@ -253,7 +244,7 @@ public class DBManager {
         }
 
         try {
-            Cursor cursor = null;
+            Cursor cursor;
             String sql = "select count(1) as c from sqlite_master where type ='table' and name ='" + tableName.trim() + "'";
             cursor = database.rawQuery(sql, null);
             if (cursor.moveToNext()) {
@@ -265,15 +256,15 @@ public class DBManager {
             cursor.close();
         }
         catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }
 
     /**
      * 判断某张表中是否存在某字段(注，该方法无法判断表是否存在，因此应与isTableExist一起应用)
-     * @param tabName 表名
      * @param columnName 列名
-     * @return
+
      */
     public boolean isColumnExist(String tableName, String columnName) {
         boolean result = false;
@@ -282,7 +273,7 @@ public class DBManager {
         }
 
         try {
-            Cursor cursor = null;
+            Cursor cursor;
             String sql = "select count(1) as c from sqlite_master where type ='table' and name ='" + tableName.trim() + "' and sql like '%" + columnName.trim() + "%'";
             cursor = database.rawQuery(sql, null);
             if (cursor.moveToNext()) {
@@ -295,6 +286,7 @@ public class DBManager {
             cursor.close();
         }
         catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }

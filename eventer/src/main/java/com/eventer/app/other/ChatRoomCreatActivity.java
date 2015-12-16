@@ -1,11 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -46,41 +40,48 @@ import com.eventer.app.entity.User;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint({ "InflateParams", "SdCardPath" })
-public class ChatRoomCreatActivity extends BaseActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+@SuppressLint({ "InflateParams", "SdCardPath" ,"SetTextI18n"})
+public class ChatRoomCreatActivity extends BaseActivityTest {
 	private ImageView iv_search;
 	private TextView tv_checked;
 	private ListView listView;
 	/** 是否为一个新建的群组 */
 	protected boolean isCreatingNewGroup;
 	/** 是否为单选 */
-	private boolean isSignleChecked;
+	boolean isSignleChecked;
 	private PickContactAdapter contactAdapter;
 	/** group中一开始就有的成员 */
-	private List<String> exitingMembers = new ArrayList<String>();
+	private List<String> exitingMembers = new ArrayList<>();
 	// 可滑动的显示选中用户的View
 	private LinearLayout menuLinerLayout;
 
 	// 选中用户总数,右上角显示
 	int total = 0;
-	private String userId = null;
+	String userId = null;
 	private String groupId = null;
 	private ProgressDialog progressDialog;
 	// 添加的列表
-	private List<String> addList = new ArrayList<String>();
+	private List<String> addList = new ArrayList<>();
 	private ChatRoom group;
 	private Context context;
-	private int GROUP_CREATED_NOTIFICATION = 6;
-	private int GROUP_INVITE_NOTIFICATION=8;
+	int GROUP_CREATED_NOTIFICATION = 6;
+	int GROUP_INVITE_NOTIFICATION=8;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chatroom);
 		context = this;
+		setBaseTitle(R.string.add_group);
 		LocalUserInfo.getInstance(ChatRoomCreatActivity.this)
 				.getUserInfo("hxid");
 
@@ -97,7 +98,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 			if (group != null) {
 				String[] members = group.getMember();
 				if (members != null && members.length > 0) {
-					exitingMembers = new ArrayList<String>(
+					exitingMembers = new ArrayList<>(
 							Arrays.asList(members));
 				}
 			}
@@ -111,7 +112,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 		}
 
 		// 获取好友列表
-		final List<User> alluserList = new ArrayList<User>();
+		final List<User> alluserList = new ArrayList<>();
 		UserDao dao = new UserDao(context);
 		List<User> users = dao.getFriendList();
 		for (User user : users) {
@@ -147,7 +148,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 									  int count) {
 				if (s.length() > 0) {
 					String str_s = et_search.getText().toString().trim();
-					List<User> users_temp = new ArrayList<User>();
+					List<User> users_temp = new ArrayList<>();
 					for (User user : alluserList) {
 						String usernick = user.getNick();
 						if (usernick.contains(str_s)) {
@@ -249,7 +250,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 	}
 
 	private void deleteImage(User glufineid) {
-		View view = (View) menuLinerLayout.findViewWithTag(glufineid);
+		View view =  menuLinerLayout.findViewWithTag(glufineid);
 
 		menuLinerLayout.removeView(view);
 		total--;
@@ -266,7 +267,6 @@ public class ChatRoomCreatActivity extends BaseActivity {
 	/**
 	 * 确认选择的members
 	 *
-	 * @param v
 	 */
 	public void save() {
 		if (addList.size() == 0) {
@@ -292,14 +292,19 @@ public class ChatRoomCreatActivity extends BaseActivity {
 			}
 
 		} else {
+          if(Constant.isConnectNet){
+			  if (isCreatingNewGroup) {
+				  progressDialog.setMessage("正在创建群聊...");
+			  } else {
+				  progressDialog.setMessage("正在加人...");
+			  }
+			  progressDialog.show();
+			  creatNewGroup(addList);
+		  }else{
+			  Toast.makeText(getApplicationContext()
+					  ,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
+		  }
 
-			if (isCreatingNewGroup) {
-				progressDialog.setMessage("正在创建群聊...");
-			} else {
-				progressDialog.setMessage("正在加人...");
-			}
-			progressDialog.show();
-			creatNewGroup(addList);
 
 		}
 
@@ -308,11 +313,10 @@ public class ChatRoomCreatActivity extends BaseActivity {
 	/**
 	 * 创建新群组
 	 *
-	 * @param newmembers
 	 */
 	private void creatNewGroup(List<String> members) {
 
-		List<String> display=new ArrayList<String>();
+		List<String> display=new ArrayList<>();
 		for (int i = 0; i < members.size(); i++) {
 			String id = members.get(i);
 			if (!id.equals(Constant.UID)) {
@@ -339,7 +343,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 			JSONObject obj = new JSONObject();
 			obj.put("action", "join");
 			obj.put("data",
-					(String[]) members.toArray(new String[members.size()]));
+					 members.toArray(new String[members.size()]));
 			// obj.put("data", new String[]{"3","20"});
 			Log.e("1", obj.toJSONString());
 			String groupmame = Constant.UID + "@" + System.currentTimeMillis()
@@ -350,14 +354,14 @@ public class ChatRoomCreatActivity extends BaseActivity {
 			room.setRoomId(groupmame);
 			room.setTime(System.currentTimeMillis() / 1000);
 			room.setOwner(Constant.UID);
-			room.setMember((String[]) members.toArray(new String[members.size()]));
-			room.setDisplayname((String[]) display.toArray(new String[display.size()]));
+			room.setMember( members.toArray(new String[members.size()]));
+			room.setDisplayname( display.toArray(new String[display.size()]));
 			ChatroomDao dao = new ChatroomDao(context);
 			dao.saveChatROOM(room);
 			//向群组成员发送群消息，目的是告知群成员群信息
 			JSONObject send_json_ = new JSONObject();
-			send_json_.put("memberlist", (String[]) members.toArray(new String[members.size()]));
-			send_json_.put("displaylist", (String[]) display.toArray(new String[display.size()]));
+			send_json_.put("memberlist",  members.toArray(new String[members.size()]));
+			send_json_.put("displaylist",  display.toArray(new String[display.size()]));
 			send_json_.put("owner", Constant.UID);
 
 			JSONObject send_json = new JSONObject();
@@ -391,7 +395,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 
 			JSONObject obj = new JSONObject();
 			obj.put("action", "invite");
-			obj.put("data",(String[]) members.toArray(new String[members.size()]));
+			obj.put("data", members.toArray(new String[members.size()]));
 			Log.e("1", obj.toJSONString());
 			MainActivity.instance.newMsg("group", groupId, obj.toJSONString(),
 					49);
@@ -412,19 +416,19 @@ public class ChatRoomCreatActivity extends BaseActivity {
 			String roomname=group.getRoomname();
 			try{
 				if (oldmember != null && oldmember.length > 0) {
-					oldMembers = new ArrayList<String>(Arrays.asList(oldmember));
+					oldMembers = new ArrayList<>(Arrays.asList(oldmember));
 					oldMembers.addAll(members);
-					allmember= (String[])oldMembers.toArray(new String[oldMembers.size()]);
+					allmember= oldMembers.toArray(new String[oldMembers.size()]);
 				}
 
 				if(olddisplay != null && olddisplay.length > 0){
-					oldDisplay = new ArrayList<String>(Arrays.asList(olddisplay));
-					oldDisplay.addAll(new ArrayList<String>(display));
-					alldisplay=(String[])oldDisplay.toArray(new String[oldDisplay.size()]);
+					oldDisplay = new ArrayList<>(Arrays.asList(olddisplay));
+					oldDisplay.addAll(new ArrayList<>(display));
+					alldisplay=oldDisplay.toArray(new String[oldDisplay.size()]);
 				}
 				roomname=ListToString(alldisplay);
 			}catch(Exception e){
-
+				e.printStackTrace();
 			}
 
 			ChatRoom room = new ChatRoom();
@@ -438,8 +442,8 @@ public class ChatRoomCreatActivity extends BaseActivity {
 
 
 			JSONObject send_json_ = new JSONObject();
-			send_json_.put("newMemberIdList", (String[]) members.toArray(new String[members.size()]));
-			send_json_.put("newMemberList", (String[]) display.toArray(new String[display.size()]));
+			send_json_.put("newMemberIdList", members.toArray(new String[members.size()]));
+			send_json_.put("newMemberList",  display.toArray(new String[display.size()]));
 			send_json_.put("owner", owner);
 			send_json_.put("chatroomName", roomname);
 			send_json_.put("memberlist", allmember);
@@ -492,7 +496,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 		private boolean[] isCheckedArray;
 		private Bitmap[] bitmaps;
 		private LoadUserAvatar avatarLoader;
-		private List<User> list = new ArrayList<User>();
+		private List<User> list = new ArrayList<>();
 		private int res;
 
 		public PickContactAdapter(Context context, int resource,
@@ -538,7 +542,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 				tv_name.setText(name);
 			iv_avatar.setImageResource(R.drawable.default_avatar);
 			iv_avatar.setTag(avatar);
-			Bitmap bitmap = null;
+			Bitmap bitmap;
 			if (avatar != null && !avatar.equals("")
 					&& !avatar.equals("default")) {
 				bitmap = avatarLoader.loadImage(iv_avatar, avatar,
@@ -586,7 +590,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 				checkBox.setChecked(true);
 				isCheckedArray[position] = true;
 			}
-			if (checkBox != null) {
+//			if (checkBox != null) {
 				checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
@@ -628,7 +632,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 					checkBox.setChecked(isCheckedArray[position]);
 				}
 
-			}
+//			}
 			return convertView;
 		}
 
@@ -644,9 +648,7 @@ public class ChatRoomCreatActivity extends BaseActivity {
 				return "";
 			}
 
-			String header = list.get(position).getHeader();
-
-			return header;
+			return list.get(position).getHeader();
 
 		}
 
@@ -657,9 +659,6 @@ public class ChatRoomCreatActivity extends BaseActivity {
 		}
 	}
 
-	public void back(View view) {
-		finish();
-	}
 
 	@SuppressLint("DefaultLocale")
 	public class PinyinComparator implements Comparator<User> {

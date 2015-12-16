@@ -1,9 +1,17 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -19,25 +27,17 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class Activity_Friends_Add extends Activity {
-	private TextView tv_send;
+public class Activity_Friends_Add extends BaseActivityTest {
+	TextView tv_send;
 	private EditText et_reason;
 	private Context context;
 	private String nick;
@@ -47,6 +47,7 @@ public class Activity_Friends_Add extends Activity {
 		setContentView(R.layout.activity_addfriends_final);
 
 		context=this;
+		setBaseTitle(R.string.send_request);
 		final String id =this.getIntent().getStringExtra("id");
 		nick=getIntent().getStringExtra("nick");
 		avatar=getIntent().getStringExtra("avatar");
@@ -57,19 +58,15 @@ public class Activity_Friends_Add extends Activity {
 		tv_send.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				addContact(id,et_reason.getText().toString().trim());
+				addContact(id);
 			}
 
 		});
 	}
 
-	/**
-	 * 娣诲姞contact
-	 *
-	 * @param view
-	 */
+
 	@SuppressLint("ShowToast")
-	public void addContact(final String glufine_id,final String myreason) {
+	public void addContact(final String glufine_id) {
 		if (glufine_id == null || glufine_id.equals("")) {
 			return;
 		}
@@ -98,7 +95,7 @@ public class Activity_Friends_Add extends Activity {
 				try {
 					// 在reason封装请求者的昵称/头像/时间等信息，在通知中显示
 
-					Map<String,String> params=new HashMap<String,String>();
+					Map<String,String> params=new HashMap<>();
 					params.put("uid", Constant.UID+"");
 					params.put("token", Constant.TOKEN);
 					params.put("friend_id", glufine_id);
@@ -149,9 +146,12 @@ public class Activity_Friends_Add extends Activity {
 						runOnUiThread(new Runnable() {
 							public void run() {
 								progressDialog.dismiss();
-								Toast.makeText(getApplicationContext(),
-										info, Toast.LENGTH_SHORT).show();
-
+								if(!Constant.isConnectNet){
+									Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+								}else{
+									Toast.makeText(getApplicationContext(),
+											info, Toast.LENGTH_SHORT).show();
+								}
 								finish();
 							}
 						});
@@ -174,13 +174,10 @@ public class Activity_Friends_Add extends Activity {
 
 	/**
 	 * 从服务器端拉取好友列表
-	 * @param s
-	 * @param msg
-	 * @param time
 	 */
 	protected void isFriend(final String fid) {
 		// TODO Auto-generated method stub
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("uid", Constant.UID + "");
 		map.put("token", Constant.TOKEN);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(context,
@@ -195,8 +192,8 @@ public class Activity_Friends_Add extends Activity {
 						Log.e("1", "friendlist");
 						JSONObject obj = data.getJSONObject("friend_action");
 						JSONArray friends = obj.getJSONArray("friends");
-						List<String> friend = new ArrayList<String>();
-						List<String> addFriend = new ArrayList<String>();
+						List<String> friend = new ArrayList<>();
+						List<String> addFriend = new ArrayList<>();
 						for (int i = 0; i < friends.size(); i++) {
 							friend.add(friends.get(i) + "");
 						}
@@ -247,6 +244,7 @@ public class Activity_Friends_Add extends Activity {
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
+
 							}
 						}
 					});
@@ -259,17 +257,11 @@ public class Activity_Friends_Add extends Activity {
 
 			protected void onPostExecute(Integer status) {
 				if (status == 0) {
-
+					Log.e("1", status+"");
 				}
-			};
+			}
 
 		}.execute(params);
-	}
-
-
-	public void back(View view ){
-
-		finish();
 	}
 
 	@Override

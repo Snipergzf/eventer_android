@@ -1,6 +1,8 @@
 package cn.smssdk.gui;
 
-import static com.mob.tools.utils.R.getRawRes;
+import android.content.Context;
+
+import com.mob.tools.utils.Hashon;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -11,10 +13,9 @@ import java.util.HashSet;
 import java.util.zip.GZIPInputStream;
 
 import cn.smssdk.utils.SMSLog;
-import com.mob.tools.utils.Hashon;
 
-import android.content.Context;
-
+import static com.mob.tools.utils.R.getRawRes;
+@SuppressWarnings({"UnusedDeclaration"})
 public class SearchEngine {
 	private static final String DB_FILE = "smssdk_pydb";
 	private static HashMap<String, Object> hanzi2Pinyin;
@@ -58,9 +59,9 @@ public class SearchEngine {
 		}
 	}
 
-	public void setCaseSensitive(boolean caseSensitive) {
-		this.caseSensitive = caseSensitive;
-	}
+//	public void setCaseSensitive(boolean caseSensitive) {
+//		this.caseSensitive = caseSensitive;
+//	}
 
 	public void setIndex(ArrayList<String> index) {
 		this.index = new ArrayList<SearchIndex>();

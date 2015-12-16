@@ -8,7 +8,7 @@ import android.view.View;
 
 
 public class BaseActivity extends FragmentActivity {
-    private static final int notifiId = 11;
+
     protected NotificationManager notificationManager;
 
     @Override

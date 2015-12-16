@@ -1,10 +1,5 @@
 package com.eventer.app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -15,14 +10,18 @@ import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
 import com.eventer.app.util.PreferenceUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+@SuppressWarnings({"UnusedDeclaration"})
 public class MyApplication extends Application{
 	
 	public static Context  context;
 	private static MyApplication instance;
-	private static  HashMap<String ,Object> Data=new HashMap<String, Object>();
-	private static  HashMap<String ,Object> CacheData=new HashMap<String, Object>();
-	private static  Map<String,User> ContactList=new HashMap<String,User>();
-	private static Map<String,UserInfo> UserList=new HashMap<String,UserInfo>();
+	private static  HashMap<String ,Object> Data=new HashMap<>();
+	private static  HashMap<String ,Object> CacheData=new HashMap<>();
+	private static  Map<String,User> ContactList=new HashMap<>();
+	private static Map<String,UserInfo> UserList=new HashMap<>();
 
 	@Override
 	public void onCreate() {
@@ -55,16 +54,12 @@ public class MyApplication extends Application{
 	}
 	
 	public List<String> getContactIDList(){
-		List<String> list=new ArrayList<String>();
+		List<String> list;
 		UserDao dao=new UserDao(context);
 		list=dao.getContactIDList();
 		return list;
 	}
-	
-	
-	public void finish(){
-		finish();
-	}
+
 	
 	public void initEventList(){
 		EventDao dao=new EventDao(getApplicationContext());
@@ -94,7 +89,7 @@ public class MyApplication extends Application{
 	
 	public Map<String,UserInfo> getUserList(){
 		if(UserList.isEmpty()){
-			Map<String,UserInfo> map=new HashMap<String, UserInfo>();
+			Map<String,UserInfo> map;
 			UserDao dao=new UserDao(context);
 			map=dao.getUserInfoList();
 			return map;

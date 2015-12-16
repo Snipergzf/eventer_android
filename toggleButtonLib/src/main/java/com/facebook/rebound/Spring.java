@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * Classical spring implementing Hooke's law with configurable friction and tension.
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class Spring {
 
   // unique incrementer id for springs
@@ -97,9 +98,9 @@ public class Spring {
    * retrieve the spring config for this spring
    * @return the SpringConfig applied to this spring
    */
-  public SpringConfig getSpringConfig() {
-    return mSpringConfig;
-  }
+//  public SpringConfig getSpringConfig() {
+//    return mSpringConfig;
+//  }
 
   /**
    * Set the displaced value to determine the displacement for the spring from the rest value.
@@ -122,9 +123,9 @@ public class Spring {
    * Get the displacement value from the last time setCurrentValue was called.
    * @return displacement value
    */
-  public double getStartValue() {
-    return mStartValue;
-  }
+//  public double getStartValue() {
+//    return mStartValue;
+//  }
 
   /**
    * Get the current
@@ -263,7 +264,6 @@ public class Spring {
    * realTimeDelta.
    * The math is inlined inside the loop since it made a huge performance impact when there are
    * several springs being advanced.
-   * @param time clock time
    * @param realDeltaTime clock drift
    */
   void advance(double realDeltaTime) {

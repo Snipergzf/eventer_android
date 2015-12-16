@@ -1,15 +1,6 @@
 package com.eventer.app.other;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,14 +22,23 @@ import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint({ "Recycle", "InflateParams" })
-public class Calendar_ViewSchedual extends Activity implements OnClickListener {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	public TextView eventtitle,page_title;
-	private ImageView iv_delete,iv_edit,iv_share,iv_finish;
-	private ImageView viewevent_back;
+@SuppressLint({ "Recycle", "InflateParams" })
+public class Calendar_ViewSchedual extends BaseActivityTest implements OnClickListener {
+
+	public TextView eventtitle;
+	ImageView iv_delete,iv_edit,iv_share,iv_finish;
+
 	public ListView listview;
 	private List<Map<String, Object>> mData;
 	public static final String ARGUMENT_ID = "id";
@@ -57,6 +57,7 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_viewschedual);
 		context=this;
+		setBaseTitle(R.string.eventdetail);
 		id=getIntent().getStringExtra(ARGUMENT_ID);
 		SchedualDao dao=new SchedualDao(context);
 		s=dao.getSchedual(id);
@@ -68,16 +69,16 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 	 */
 	private void initView() {
 		// TODO Auto-generated method stub
-		viewevent_back=(ImageView)findViewById(R.id.iv_back);
+
 		eventtitle=(TextView)findViewById(R.id.viewevent_title);
 		listview=(ListView)findViewById(R.id.eventdetail_lv);
 		iv_delete=(ImageView)findViewById(R.id.iv_delete);
 		iv_edit=(ImageView)findViewById(R.id.iv_edit);
 		iv_share=(ImageView)findViewById(R.id.iv_share);
 		iv_finish=(ImageView)findViewById(R.id.iv_finish);
-		page_title=(TextView)findViewById(R.id.page_title);
 
-		viewevent_back.setOnClickListener(this);
+
+
 		iv_delete.setOnClickListener(this);
 		iv_edit.setOnClickListener(this);
 		iv_finish.setOnClickListener(this);
@@ -85,9 +86,10 @@ public class Calendar_ViewSchedual extends Activity implements OnClickListener {
 
 		listview.setOverScrollMode(View.OVER_SCROLL_NEVER);
 		if(s.getType()==2){
-			page_title.setText("日程详情");
+			setBaseTitle(R.string.schedual_detail);
+
 		}else if(s.getType()==3){
-			page_title.setText("待办事件详情");
+			setBaseTitle(R.string.todo_detail);
 		}
 	}
 	/***

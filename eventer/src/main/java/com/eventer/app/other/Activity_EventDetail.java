@@ -1,14 +1,31 @@
 package com.eventer.app.other;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.easemob.util.DateUtils;
@@ -26,47 +43,32 @@ import com.eventer.app.util.FileUtil;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import hirondelle.date4j.DateTime;
 
-@SuppressLint("SimpleDateFormat")
+@SuppressLint({"SimpleDateFormat","SetTextI18n"})
 public class Activity_EventDetail  extends SwipeBackActivity  implements OnClickListener {
 
-	private ImageView iv_collect,iv_share,iv_comment;
+	ImageView iv_collect,iv_share,iv_comment;
 	private TextView tv_theme,tv_title,tv_time,tv_source,tv_pubtime,tv_place;
 	private TextView tv_collect_num,tv_share_num,tv_comment_num;
 	private TextView tv;
-	private ImageView[] ivlist;
+	ImageView[] ivlist;
 	private Event event;
 	private String id;
 	private Context context;
 	private EventOpDao dao;
 	private Dialog mDialog;
-	private int index=0;
+//	private int index=0;
 	private FileUtil fileUtil;
 	private boolean isCollect=false;
 	@Override
@@ -127,9 +129,10 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 
 					DisplayMetrics dm = new DisplayMetrics();
 					getWindowManager().getDefaultDisplay().getMetrics(dm);
-					Drawable d = context.getResources().getDrawable(R.color.caldroid_holo_blue_light_1);
-					d.setBounds(0, 0, dm.widthPixels,
-							320);
+					Drawable d = ContextCompat.getDrawable(context, R.color.caldroid_holo_blue_light_1);
+					if(d!=null)
+						d.setBounds(0, 0, dm.widthPixels,
+								320);
 					return d;
 				}
 
@@ -194,7 +197,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 
 	private void ClickFeedBack() {
 		// TODO Auto-generated method stub
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
 		map.put("share_num", "");
 		map.put("click_num", "1");
@@ -215,7 +218,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		String end=getTime(end_time*1000);
 		String beginString=begin.substring(0, 10);
 		String endString=end.substring(0, 10);
-		String time="";
+		String time;
 		if(beginString.equals(endString)){
 			time=begin+" ~"+end.substring(10);
 		}else{
@@ -228,7 +231,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	 */
 	private void loadevent() {
 		// TODO Auto-generated method stub
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("uid", Constant.UID);
 		map.put("event_id", id);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_GET_EVENT, map);
@@ -286,7 +289,6 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	/**
 	 * 执行异步任务
 	 *
-	 * @param params
 	 *
 	 */
 	public void DownPage(String... params) {
@@ -294,22 +296,22 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 
 			@Override
 			protected Spanned doInBackground(String... params) {
-				Spanned sp = Html.fromHtml(params[0], new Html.ImageGetter() {
+				return Html.fromHtml(params[0], new Html.ImageGetter() {
 					@Override
 					public Drawable getDrawable(String source) {
-						InputStream is = null;
+						InputStream is;
 						String filename = source
-								.substring(source.lastIndexOf("/") + 1)+"_e";
+								.substring(source.lastIndexOf("/") + 1) + "_e";
 						String filepath = fileUtil.getAbsolutePath() + filename;
 						try {
 							Drawable d;
-							Log.e("1", "url:"+source);
+							Log.e("1", "url:" + source);
 //							BitmapCache bitmapCache = new BitmapCache();
 //							Bitmap bitmap = bitmapCache.getBitmap(source);
 							Bitmap bitmap = BitmapFactory.decodeFile(filepath);
-							if(bitmap!=null){
-								d = new BitmapDrawable(context.getResources(),bitmap);
-							}else{
+							if (bitmap != null) {
+								d = new BitmapDrawable(context.getResources(), bitmap);
+							} else {
 								is = (InputStream) new URL(source).getContent();
 								BitmapFactory.Options options = new BitmapFactory.Options();
 								options.inJustDecodeBounds = false;
@@ -327,14 +329,14 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 //									Log.e("1","rrrr "+source);
 //								}
 								is.close();
-								d = new BitmapDrawable(context.getResources(),bitmap);
+								d = new BitmapDrawable(context.getResources(), bitmap);
 							}
 
 							DisplayMetrics dm = new DisplayMetrics();
 							getWindowManager().getDefaultDisplay().getMetrics(dm);
-							int width=dm.widthPixels-20;
-							int heigt=(width*d.getIntrinsicHeight())/d.getIntrinsicWidth();
-							d.setBounds(10, 0, dm.widthPixels-10,
+							int width = dm.widthPixels - 20;
+							int heigt = (width * d.getIntrinsicHeight()) / d.getIntrinsicWidth();
+							d.setBounds(10, 0, dm.widthPixels - 10,
 									heigt);
 
 							return d;
@@ -343,30 +345,28 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							Log.e("1", e.toString());
 							DisplayMetrics dm = new DisplayMetrics();
 							getWindowManager().getDefaultDisplay().getMetrics(dm);
-							Drawable d = context.getResources().getDrawable(R.color.caldroid_holo_blue_light_1);
-							d.setBounds(0, 0, dm.widthPixels,
-									320);
+							Drawable d = ContextCompat.getDrawable(context, R.color.caldroid_holo_blue_light_1);
+							if (d != null)
+								d.setBounds(0, 0, dm.widthPixels,
+										320);
 							return d;
 						}
 					}
 				}, null);
-				return sp;
 			}
 			protected void onPostExecute(Spanned sp) {
 				tv.setText(sp);
-			};
+			}
 		}.execute(params);}
 
 	public String getTime(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date(now));
-		return date;
+		return sdf.format(new Date(now));
 	}
 
 	public String getFullTime(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date(now));
-		return date;
+		return sdf.format(new Date(now));
 	}
 
 	private int getStatus( String end, String remindtime) {
@@ -547,7 +547,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}
 	}
 	private void CollectFeedBack(){
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
 		map.put("share_num", "");
 		map.put("click_num", "");
@@ -559,11 +559,13 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				// TODO Auto-generated method stub
 				try {
 					int status=data.getInteger("status");
-					if(status==0){
-						return;
-					}else{
-						Toast.makeText(context,
-								"上传数据失败！", Toast.LENGTH_SHORT ).show();
+					if(status!=0){
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(context,
+									"上传数据失败！", Toast.LENGTH_SHORT ).show();
+						}
 					}
 
 				} catch (Exception e) {
@@ -576,7 +578,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	}
 
 	private void DelCollectFeedBack(){
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
 		map.put("participate_num", "1");
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_DEL_EVENT_FEEDBACK, map);
@@ -586,11 +588,13 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				// TODO Auto-generated method stub
 				try {
 					int status=data.getInteger("status");
-					if(status==0){
-						return;
-					}else{
-						Toast.makeText(context,
-								"上传数据失败！", Toast.LENGTH_SHORT ).show();
+					if(status!=0){
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(context,
+									"上传数据失败！", Toast.LENGTH_SHORT ).show();
+						}
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -602,7 +606,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	}
 
 	private void UpdateFeedBack(){
-		Map<String,String> map=new HashMap<String, String>();
+		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_UPDATE_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
@@ -620,6 +624,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 						try{
 							comment_num=json.getInteger("size");
 						}catch (Exception e){
+							e.printStackTrace();
 						}
 
 						if(participate_num>0){
@@ -644,11 +649,15 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 						}
 
 					}else{
-						Toast.makeText(context,
-								"更新数据失败，活动可能已经过期！", Toast.LENGTH_SHORT ).show();
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(context,
+									"更新数据失败，活动可能已经过期！", Toast.LENGTH_SHORT ).show();
+						}
+
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
 					Toast.makeText(context,
 							"更新数据失败！", Toast.LENGTH_SHORT ).show();
 				}

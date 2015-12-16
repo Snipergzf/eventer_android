@@ -1,9 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.eventer.app.entity.ChatRoom;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("DefaultLocale")
 public class ChatroomDao {
@@ -24,7 +24,7 @@ public class ChatroomDao {
 	public static final String COLUMN_NAME_ROOMNAME = "roomdisplayname";
 
 	private DBManager dbHelper;
-	private Context context;
+	Context context;
 
 	public ChatroomDao(Context context) {
 		dbHelper = new DBManager(context);
@@ -38,7 +38,6 @@ public class ChatroomDao {
 
 	/**
 	 * 保存User
-	 * @param user
 	 */
 	public synchronized void saveChatROOM(ChatRoom room){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -57,9 +56,9 @@ public class ChatroomDao {
 
 	public synchronized void update(ContentValues values,String room){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		boolean isSuccess=false;
+		boolean isSuccess;
 		if(db.isOpen()){
-			db.update(TABLE_NAME, values,COLUMN_NAME_ID+ " = ?", new String[]{room});
+			isSuccess=db.update(TABLE_NAME, values,COLUMN_NAME_ID+ " = ?", new String[]{room})>-1;
 			if(!isSuccess){
 				values.put(COLUMN_NAME_ID,room);
 				String owner=room.split("@")[0];
@@ -87,7 +86,7 @@ public class ChatroomDao {
 
 	public List<ChatRoom> getRoomList() {
 		// TODO Auto-generated method stub
-		List<ChatRoom> list=new ArrayList<ChatRoom>();
+		List<ChatRoom> list=new ArrayList<>();
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(TABLE_NAME, null,  null, null, null, null,null);
@@ -108,6 +107,7 @@ public class ChatroomDao {
 				}
 				list.add(room);
 			}
+			c.close();
 		}
 		return list;
 	}
@@ -136,6 +136,7 @@ public class ChatroomDao {
 					room.setRoomname(displayname+"("+memberlist.length+")");
 				}
 			}
+			c.close();
 		}
 		return room;
 	}

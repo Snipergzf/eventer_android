@@ -15,7 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 
 public class FeedbackActivity extends Activity {
 	private EditText et_title,et_content,et_contact;
-	private TextView tv_send;
+	TextView tv_send;
 	private Context context;
 
 	@Override

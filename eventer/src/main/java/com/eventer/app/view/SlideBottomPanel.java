@@ -1,8 +1,5 @@
 package com.eventer.app.view;
 
-import com.eventer.app.R;
-import com.nineoldandroids.view.ViewHelper;
-
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -22,9 +19,10 @@ import android.view.animation.Interpolator;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
-/**
- * Created by NeXT on 15/8/3.
- */
+import com.eventer.app.R;
+import com.nineoldandroids.view.ViewHelper;
+
+@SuppressWarnings({"UnusedDeclaration"})
 public class SlideBottomPanel extends FrameLayout {
 
 
@@ -43,7 +41,7 @@ public class SlideBottomPanel extends FrameLayout {
 
     private static float MAX_CLICK_DISTANCE = 5;
 
-    private int mChildCount;
+    int mChildCount;
     private float mDensity;
     private boolean isAnimating = false;
     private boolean isPanelShowing = false;

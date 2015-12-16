@@ -1,16 +1,5 @@
 package com.eventer.app.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-import com.eventer.app.entity.User;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,10 +13,22 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMConversation;
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.entity.User;
+import com.eventer.app.task.LoadUserAvatar;
+import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 简单的好友Adapter实现
  *
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class FriendAdapter extends ArrayAdapter<User>  {
 
     List<String> list;
@@ -46,7 +47,7 @@ public class FriendAdapter extends ArrayAdapter<User>  {
         super(context, resource, objects);
         this.res = resource;
         this.userList = objects;
-        copyUserList = new ArrayList<User>();
+        copyUserList = new ArrayList<>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
         avatarLoader=new LoadUserAvatar(context, Constant.IMAGE_PATH);
@@ -56,7 +57,7 @@ public class FriendAdapter extends ArrayAdapter<User>  {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 //        if (convertView == null) {
-        convertView = layoutInflater.inflate(res, null);
+              convertView = layoutInflater.inflate(res, parent , false);
 //        }else{
 //        	
 //        }
@@ -122,7 +123,7 @@ public class FriendAdapter extends ArrayAdapter<User>  {
                 CharSequence prefix) {
             FilterResults results = new FilterResults();
             if (mList == null) {
-                mList = new ArrayList<User>();
+                mList = new ArrayList<>();
             }
             if (prefix == null || prefix.length() == 0) {
                 results.values = copyUserList;
@@ -131,7 +132,7 @@ public class FriendAdapter extends ArrayAdapter<User>  {
             } else {
                 String prefixString = prefix.toString();
                 final int count = mList.size();
-                final ArrayList<User> newValues = new ArrayList<User>();
+                final ArrayList<User> newValues = new ArrayList<>();
                 for (int i = 0; i < count; i++) {
                     final User user = mList.get(i);
                     String username = user.getUsername();
@@ -150,8 +151,8 @@ public class FriendAdapter extends ArrayAdapter<User>  {
 
                         // Start at index 0, in case valueText starts with
                         // space(s)
-                        for (int k = 0; k < wordCount; k++) {
-                            if (words[k].startsWith(prefixString)) {
+                        for (String word : words) {
+                            if (word.startsWith(prefixString)) {
                                 newValues.add(user);
                                 break;
                             }

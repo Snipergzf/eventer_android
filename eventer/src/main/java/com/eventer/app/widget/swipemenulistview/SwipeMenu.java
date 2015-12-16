@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * 
  * @author baoyz
- * @date 2014-8-23
  * 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class SwipeMenu {
 
 	private Context mContext;
@@ -19,7 +19,7 @@ public class SwipeMenu {
 
 	public SwipeMenu(Context context) {
 		mContext = context;
-		mItems = new ArrayList<SwipeMenuItem>();
+		mItems = new ArrayList<>();
 	}
 
 	public Context getContext() {

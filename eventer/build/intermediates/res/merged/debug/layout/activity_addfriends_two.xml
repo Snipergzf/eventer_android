@@ -21,8 +21,10 @@
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:onClick="back"
+                android:contentDescription="@string/back"
                 android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -39,7 +41,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_toRightOf="@+id/iv_back"
-                
+                android:layout_toEndOf="@+id/iv_back"
                 android:gravity="bottom"
                 android:textColor="#fff"
                 android:hint="@string/newfriend_hint"
@@ -55,7 +57,9 @@
                 android:layout_height="22dp"
                 android:layout_alignBottom="@id/et_search"
                 android:layout_alignLeft="@id/et_search"
+                android:layout_alignStart="@id/et_search"
                 android:layout_margin="8dp"
+                android:contentDescription="@string/search"
                 android:src="@drawable/ar5" />
 
             <View
@@ -65,6 +69,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/iv_back"
+                android:layout_toEndOf="@id/iv_back"
                 android:background="@color/caldroid_holo_blue_dark" />
         </RelativeLayout>
 
@@ -85,7 +90,9 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/search"
                 android:src="@drawable/a_a" />
 
             <TextView
@@ -94,8 +101,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_toRightOf="@id/iv_find"
-                android:text="搜索:"
+                android:layout_toEndOf="@id/iv_find"
+                android:text="@string/search_f"
                 android:textColor="#353535"
                 android:textSize="16sp" />
 
@@ -107,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/tv_temp"
-                android:text="13830140218"
+                android:layout_toEndOf="@id/tv_temp"
                 android:textColor="#3FB838"
                 android:textSize="16sp" />
         </RelativeLayout>
@@ -115,7 +124,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#DBDBDB" />

@@ -1,20 +1,5 @@
 package com.eventer.app.main;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.other.MyUserInfoActivity;
-import com.eventer.app.ui.base.BaseActivity;
-import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.view.TitleBar;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -28,8 +13,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.other.MyUserInfoActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.util.PreferenceUtils;
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressLint("ShowToast")
-public class ResetPwdActivity extends BaseActivity implements OnClickListener{
+public class ResetPwdActivity extends BaseActivityTest implements OnClickListener{
 
 	private EditText edit_pwd;
 	private ImageButton btn_pwd_clear;
@@ -37,11 +36,10 @@ public class ResetPwdActivity extends BaseActivity implements OnClickListener{
 	private boolean IsPwdCheck=false;
 	private Context context;
 	private String TelString;
-	private String pwd="";
+	String pwd="";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		TitleBar.setTitleBar(this,"重置密码");
 		setContentView(R.layout.activity_reset_pwd);
 		edit_pwd=(EditText)findViewById(R.id.edit_pwd);
 		btn_next=(Button)findViewById(R.id.btn_next);
@@ -52,7 +50,7 @@ public class ResetPwdActivity extends BaseActivity implements OnClickListener{
 			finish();
 		}
 		context=ResetPwdActivity.this;
-
+		setBaseTitle(R.string.reset_pwd);
 		init();
 
 	}
@@ -89,11 +87,7 @@ public class ResetPwdActivity extends BaseActivity implements OnClickListener{
 				else{
 					btn_pwd_clear.setVisibility(View.GONE);
 				}
-				if(len>5&&len<20){
-					IsPwdCheck=true;
-				}else{
-					IsPwdCheck=false;
-				}
+				IsPwdCheck = ((len > 5) && (len < 20));
 			}
 		});
 		//注册点击监听器
@@ -128,7 +122,7 @@ public class ResetPwdActivity extends BaseActivity implements OnClickListener{
 	 *
 	 */
 	public void UserResetPwd() {
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		pwd=edit_pwd.getText().toString();
 		params.put("phone", TelString);
 		params.put("pwd", pwd);
@@ -158,8 +152,14 @@ public class ResetPwdActivity extends BaseActivity implements OnClickListener{
 
 							break;
 						default:
-							Toast.makeText(context, "操作失败，请稍后重试！！", Toast.LENGTH_LONG)
-									.show();
+							if(Constant.isConnectNet){
+								Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG)
+										.show();
+							}else{
+								Toast.makeText(context, "操作失败，请稍后重试！！", Toast.LENGTH_LONG)
+										.show();
+							}
+
 							break;
 					}
 

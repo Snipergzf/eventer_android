@@ -7,56 +7,35 @@
  */
 package cn.smssdk.gui;
 
-import static com.mob.tools.utils.R.getBitmapRes;
-import static com.mob.tools.utils.R.getStringRes;
-import static com.mob.tools.utils.R.getStyleRes;
-
-import java.util.HashMap;
-
 import android.app.Dialog;
-import android.text.Html;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import cn.smssdk.gui.layout.BackVerifyDialogLayout;
-import cn.smssdk.gui.layout.IdentifyNumPageLayout;
-import cn.smssdk.gui.layout.Res;
-import cn.smssdk.gui.layout.SizeHelper;
 
 import com.mob.tools.FakeActivity;
 
+import java.util.HashMap;
+
+import cn.smssdk.gui.layout.BackVerifyDialogLayout;
+import cn.smssdk.gui.layout.IdentifyNumPageLayout;
+import cn.smssdk.gui.layout.Res;
+
+import static com.mob.tools.utils.R.getStringRes;
+import static com.mob.tools.utils.R.getStyleRes;
+
 /** 智能验证码页面*/
+@SuppressWarnings({"UnusedDeclaration"})
 public class SmartVerifyPage extends FakeActivity implements OnClickListener {
 	private static final int RETRY_INTERVAL = 60;
 
 	private String phone;
 	private String code;
-	private String formatedPhone;
 	private int time = RETRY_INTERVAL;
 
-	private Dialog pd;
-
-	private EditText etIdentifyNum;
-	private TextView tvTitle;
-	private TextView tvPhone;
-	private TextView tvIdentifyNotify;
-	private TextView tvUnreceiveIdentify;
-	private ImageView ivClear;
-	private Button btnSubmit;
 	private boolean showSmart = false;
-
-	public void setPhone(String phone, String code, String formatedPhone) {
-		this.phone = phone;
-		this.code = code;
-		this.formatedPhone = formatedPhone;
-	}
 
 	public void onCreate() {
 		IdentifyNumPageLayout page = new IdentifyNumPageLayout(activity);
@@ -64,42 +43,6 @@ public class SmartVerifyPage extends FakeActivity implements OnClickListener {
 
 		if (layout != null) {
 			activity.setContentView(layout);
-			activity.findViewById(Res.id.ll_back).setOnClickListener(this);
-
-			btnSubmit = (Button) activity.findViewById(Res.id.btn_submit);
-			btnSubmit.setOnClickListener(this);
-			btnSubmit.setEnabled(false);
-
-			tvTitle = (TextView) activity.findViewById(Res.id.tv_title);
-			int resId = getStringRes(activity, "smssdk_write_identify_code");
-			if (resId > 0) {
-				tvTitle.setText(resId);
-			}
-
-			etIdentifyNum = (EditText) activity.findViewById(Res.id.et_put_identify);
-
-			tvIdentifyNotify = (TextView) activity.findViewById(Res.id.tv_identify_notify);
-			resId = getStringRes(activity, "smssdk_send_mobile_detail");
-			if (resId > 0) {
-				String text = getContext().getString(resId);
-				tvIdentifyNotify.setText(Html.fromHtml(text));
-			}
-
-			tvPhone = (TextView) activity.findViewById(Res.id.tv_phone);
-			tvPhone.setText(formatedPhone);
-
-			tvUnreceiveIdentify = (TextView) activity.findViewById(Res.id.tv_unreceive_identify);
-			resId = getStringRes(activity, "smssdk_receive_msg");
-			if (resId > 0) {
-				String unReceive = getContext().getString(resId, time);
-				tvUnreceiveIdentify.setText(Html.fromHtml(unReceive));
-			}
-			tvUnreceiveIdentify.setOnClickListener(this);
-			tvUnreceiveIdentify.setEnabled(false);
-
-			ivClear = (ImageView) activity.findViewById(Res.id.iv_clear);
-			ivClear.setOnClickListener(this);
-
 			countDown();
 		}
 
@@ -111,35 +54,13 @@ public class SmartVerifyPage extends FakeActivity implements OnClickListener {
 			public void run() {
 				time--;
 				if (time == RETRY_INTERVAL - 2) {
-					btnSubmit.setEnabled(true);
-					int resId = getBitmapRes(activity, "smssdk_btn_enable");
-					if (resId > 0) {
-						btnSubmit.setBackgroundResource(resId);
-					}
-					resId = getStringRes(activity, "smssdk_smart_verify_already");
-					etIdentifyNum.setText(resId);
-					etIdentifyNum.setEnabled(false);
-					etIdentifyNum.setPadding(0, 0, 0, 0);
-					etIdentifyNum.setTextSize(TypedValue.COMPLEX_UNIT_PX,SizeHelper.fromPxWidth(32));
-					etIdentifyNum.setGravity(Gravity.CENTER);
-					etIdentifyNum.invalidate();
 
-					resId = getStringRes(activity, "smssdk_smart_verify_tips");
-					tvIdentifyNotify.setText(resId);
 
-					tvUnreceiveIdentify.setVisibility(View.INVISIBLE);
+
 					showSmart = true;
 					time = RETRY_INTERVAL;
 				} else {
-					int resId = getStringRes(activity, "smssdk_receive_msg");
-					if (resId > 0) {
-						String unReceive = getContext().getString(resId, time);
-						tvUnreceiveIdentify.setText(Html.fromHtml(unReceive));
-					}
-//					if (time == 30){
-//						btnSounds.setVisibility(View.VISIBLE);
-//					}
-					tvUnreceiveIdentify.setEnabled(false);
+
 					runOnUIThread(this, 1000);
 				}
 			}
@@ -150,7 +71,7 @@ public class SmartVerifyPage extends FakeActivity implements OnClickListener {
 		int id = v.getId();
 		int id_ll_back = Res.id.ll_back;
 		int id_btn_submit = Res.id.btn_submit;
-		int id_iv_clear = Res.id.iv_clear;
+
 
 		if (id == id_ll_back) {
 			if(showSmart) {
@@ -169,8 +90,6 @@ public class SmartVerifyPage extends FakeActivity implements OnClickListener {
 			resp.put("phone", phone);
 			afterSubmit(resp);
 
-		} else if (id == id_iv_clear) {
-			etIdentifyNum.getText().clear();
 		}
 	}
 
@@ -178,15 +97,11 @@ public class SmartVerifyPage extends FakeActivity implements OnClickListener {
 	/**
 	 * 提交验证码成功后的执行事件
 	 *
-	 * @param result
-	 * @param data
 	 */
 	private void afterSubmit(final Object data) {
 		runOnUIThread(new Runnable() {
 			public void run() {
-				if (pd != null && pd.isShowing()) {
-					pd.dismiss();
-				}
+
 
 				HashMap<String, Object> res = new HashMap<String, Object>();
 				res.put("res", true);

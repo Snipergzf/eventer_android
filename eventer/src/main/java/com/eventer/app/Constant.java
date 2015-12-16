@@ -1,10 +1,10 @@
  
 package com.eventer.app;
 
-import javax.net.ssl.SSLSocket;
-
 import android.os.Environment;
 
+import javax.net.ssl.SSLSocket;
+@SuppressWarnings({"UnusedDeclaration"})
 public class Constant {
 	  public final static String WEB_SERVICE_URL = "http://123.56.142.241/";
 	  //public final static String WEB_SERVICE_URL = "http://104.236.74.226/";
@@ -18,8 +18,8 @@ public class Constant {
 	  public static String TOKEN = "";
 	  public static String Phone="";
 	  public static boolean isLogin = false;
-	  public static boolean isConnectNet = false;
-	  public static boolean isWifiConnectNet = false;
+	  public static boolean isConnectNet = true;
+//	  public static boolean isWifiConnectNet = false;
 	  public static String TAG_FAILURE;
 	  public static String TAG_CONNECTFAILURE;
 	  public static SSLSocket socket=null;

@@ -1,10 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,12 +23,17 @@ import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.http.HttpUnit;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 
 	private EditText et_search;
-	private ListView listview;
-	private Button btn_search,btn_add_table;
+	ListView listview;
+	Button btn_search,btn_add_table;
 
 	private CourseAdapter adapter;
 	private List<Course>  mData;
@@ -54,7 +54,7 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 							 Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView=inflater.inflate(R.layout.fragment_course_search, container, false);
-		mData=new ArrayList<Course>();
+		mData=new ArrayList<>();
 		context=getActivity();
 		instance=this;
 		initView(rootView);
@@ -99,8 +99,8 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 	 * 获取课程列表
 	 */
 	private void refresh(String str) {
-		mData.clear();;
-		Map<String, String> params = new HashMap<String, String>();
+		mData.clear();
+		Map<String, String> params = new HashMap<>();
 		params.put("uid", Constant.UID+"");
 		params.put("search_name", str);
 		GetCourseByHTTP(params);
@@ -117,7 +117,7 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 			case R.id.btn_search:
 				String str=et_search.getText().toString();
 				adapter.setHint(str);
-				if(str!=null&&str!=""){
+				if(!str.equals("")){
 					refresh(str);
 				}
 				break;
@@ -136,7 +136,6 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 	/**
 	 * 执行异步任务
 	 *
-	 * @param params
 	 *
 	 */
 	public void GetCourseByHTTP(final Object... params) {
@@ -144,7 +143,7 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 			@SuppressWarnings("unchecked")
 			@Override
 			protected List<Course> doInBackground(Object... params) {
-				List<Course> list=new ArrayList<Course>();
+				List<Course> list;
 				try {
 					list=HttpUnit.sendCourseRequest((Map<String, String>) params[0]);
 					return list;
@@ -159,7 +158,7 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 				if(list!=null){
 					mData=list;
 				}else{
-					mData=new ArrayList<Course>();
+					mData=new ArrayList<>();
 				}
 
 				adapter.setData(mData);

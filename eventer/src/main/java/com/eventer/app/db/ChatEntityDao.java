@@ -1,11 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +10,13 @@ import android.util.Log;
 
 import com.eventer.app.entity.ChatEntity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class ChatEntityDao {
 	public static final String TABLE_NAME = "dbMessage";
 	public static final String COLUMN_NAME_ID = "MsgId";
@@ -40,7 +41,7 @@ public class ChatEntityDao {
 
 	@SuppressLint("DefaultLocale")
 	public List<ChatEntity> getChatEntityList(String[] columns,String selection,String[] selectionArgs,String groupBy,String OrderBy) {
-		List<ChatEntity> list=new ArrayList<ChatEntity>();
+		List<ChatEntity> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		//dbHelper.deleteDatabase(context);
 		Cursor c=dbHelper.findList(true, TABLE_NAME, columns,
@@ -91,7 +92,7 @@ public class ChatEntityDao {
 
 	@SuppressLint("DefaultLocale")
 	public List<ChatEntity> getChatEntityList(String selection,String[] selectionArgs,String groupBy,String OrderBy) {
-		List<ChatEntity> list=new ArrayList<ChatEntity>();
+		List<ChatEntity> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		//dbHelper.deleteDatabase(context);
 		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
@@ -141,7 +142,7 @@ public class ChatEntityDao {
 	}
 
 	public int getUnreadMsgCount() {
-		List<ChatEntity> list=new ArrayList<ChatEntity>();
+		List<ChatEntity> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		//dbHelper.deleteDatabase(context);
 		Cursor c=dbHelper.findOne(true, TABLE_NAME, new String[]{"count(*) as count"},
@@ -154,7 +155,7 @@ public class ChatEntityDao {
 
 	/**
 	 * 保存一条消息
-	 * @param user
+	 * @param msg save info
 	 */
 	public boolean saveMessage(ChatEntity msg){
 		dbHelper.openDatabase();
@@ -178,17 +179,12 @@ public class ChatEntityDao {
 		long result=dbHelper.insert(TABLE_NAME, values);
 
 		dbHelper.closeDatabase();
-		if(result>=0){
-			return true;
-		}else{
-			return false;
-		}
 
+		return result>=0;
 	}
 
 	/**
 	 * 删除一条消息
-	 * @param user
 	 */
 	public boolean deleteMessage(String id){
 		dbHelper.openDatabase();
@@ -225,7 +221,7 @@ public class ChatEntityDao {
 
 	public List<ChatEntity> getMsgList(String talker, long msgID, int pagesize) {
 		// TODO Auto-generated method stub
-		List<ChatEntity> list=new ArrayList<ChatEntity>();
+		List<ChatEntity> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		//dbHelper.deleteDatabase(context);
 		Cursor c;
@@ -286,45 +282,45 @@ public class ChatEntityDao {
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, null,COLUMN_NAME_SHARE+"=?", new String[]{shareId}, null, null, COLUMN_NAME_TIME+" desc", "0,1");
-			while (c.moveToNext()) {
-				long id = c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
-				String talkto = c.getString(c.getColumnIndex(COLUMN_NAME_FROM));
-				String path = c.getString(c.getColumnIndex(COLUMN_NAME_PATH));
-				String status=c.getString(c.getColumnIndex(COLUMN_NAME_STATUS));
-				String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
-				String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
-				String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
-				String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
-				int temp=c.getColumnIndex("NotRead");
-				int unread=0;
-				if(temp>-1){
-					unread=c.getInt(temp);
-				}
-				cinfo.setContent(content);
-				cinfo.setFrom(talkto);
-				Log.e("1",id+"");
-				cinfo.setMsgID(id);//id为空时返回0值
-				cinfo.setNotRead(unread);
-				cinfo.setShareId(share);
-				if(status!=null){
-					cinfo.setStatus(Integer.parseInt(status));
-				}else{
-					cinfo.setStatus(-1);
-				}
-				if(cType!=null){
-					cinfo.setType(Integer.parseInt(cType));
-				}else{
-					cinfo.setType(-1);
-				}
-				if(time!=null){
-					cinfo.setMsgTime(Long.parseLong(time));
-				}else{
-					cinfo.setMsgTime(-1);
-				}
-				cinfo.setImgPath(path);
-				c.close();
-				return cinfo;
+
+			long id = c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
+			String talkto = c.getString(c.getColumnIndex(COLUMN_NAME_FROM));
+			String path = c.getString(c.getColumnIndex(COLUMN_NAME_PATH));
+			String status=c.getString(c.getColumnIndex(COLUMN_NAME_STATUS));
+			String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
+			String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
+			String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+			String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+			int temp=c.getColumnIndex("NotRead");
+			int unread=0;
+			if(temp>-1){
+				unread=c.getInt(temp);
 			}
+			cinfo.setContent(content);
+			cinfo.setFrom(talkto);
+			Log.e("1",id+"");
+			cinfo.setMsgID(id);//id为空时返回0值
+			cinfo.setNotRead(unread);
+			cinfo.setShareId(share);
+			if(status!=null){
+				cinfo.setStatus(Integer.parseInt(status));
+			}else{
+				cinfo.setStatus(-1);
+			}
+			if(cType!=null){
+				cinfo.setType(Integer.parseInt(cType));
+			}else{
+				cinfo.setType(-1);
+			}
+			if(time!=null){
+				cinfo.setMsgTime(Long.parseLong(time));
+			}else{
+				cinfo.setMsgTime(-1);
+			}
+			cinfo.setImgPath(path);
+			c.close();
+			return cinfo;
+
 		}
 		db.close();
 		return null;
@@ -333,7 +329,7 @@ public class ChatEntityDao {
 
 	public List<String> getShareList(String groupId) {
 		// TODO Auto-generated method stub
-		List<String> list=new ArrayList<String>();
+		List<String> list=new ArrayList<>();
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_CONTENT},COLUMN_NAME_SHARE+">? and "+ COLUMN_NAME_FROM+"=?" , new String[]{"0",groupId}, COLUMN_NAME_SHARE, null, null, null);
@@ -341,6 +337,7 @@ public class ChatEntityDao {
 				String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
 				list.add(content);
 			}
+			c.close();
 		}
 		db.close();
 		return list;
@@ -348,18 +345,20 @@ public class ChatEntityDao {
 
 	public List<Map<String,String>> getShareScheduals(String groupId) {
 		// TODO Auto-generated method stub
-		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		List<Map<String,String>> list=new ArrayList<>();
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_CONTENT,COLUMN_NAME_SHARE},COLUMN_NAME_SHARE+">? and "+ COLUMN_NAME_FROM+"=?" , new String[]{"0",groupId}, COLUMN_NAME_SHARE, null, null, null);
 			while (c.moveToNext()) {
-				Map<String,String> map=new HashMap<String, String>();
+				Map<String,String> map=new HashMap<>();
 				String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
 				String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
 				map.put("shareId", share);
 				map.put("content", content);
 				list.add(map);
 			}
+
+			c.close();
 		}
 		db.close();
 		return list;

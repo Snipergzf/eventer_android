@@ -1,7 +1,7 @@
  
 package com.eventer.app.entity;
 
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class Schedual {
 	private long Schdeual_ID;
 	private String title;

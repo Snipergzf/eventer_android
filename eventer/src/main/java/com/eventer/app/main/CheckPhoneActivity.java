@@ -1,16 +1,5 @@
 package com.eventer.app.main;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.alibaba.fastjson.JSONObject;
-import com.eventer.app.Constant;
-import com.eventer.app.R;
-import com.eventer.app.receiver.SMSBroadcastReceiver;
-import com.eventer.app.ui.base.BaseActivity;
-import com.eventer.app.view.MyCountTimer;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -21,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,12 +22,25 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.receiver.SMSBroadcastReceiver;
+import com.eventer.app.service.CheckInternetService;
+import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.view.MyCountTimer;
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class CheckPhoneActivity extends BaseActivity implements OnClickListener, Callback {
+public class CheckPhoneActivity extends BaseActivityTest implements OnClickListener, Callback {
 
 	private EditText edit_tel,edit_code;
 	private TextView btn_send_code;
@@ -65,6 +68,7 @@ public class CheckPhoneActivity extends BaseActivity implements OnClickListener,
 
 		btn_send_code=(TextView)findViewById(R.id.btn_send_code);
 		context=CheckPhoneActivity.this;
+		setBaseTitle(R.string.check_phone);
 		instance=this;
 		init();
 		initSMSSDK();
@@ -96,12 +100,12 @@ public class CheckPhoneActivity extends BaseActivity implements OnClickListener,
 					IsUserCheck=false;
 				}
 				if(IsUserCheck&&IsCodeCheck){
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_blue));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_white));
+					btn_next.setBackground(ContextCompat.getDrawable(context,R.drawable.button_blue));
+					btn_next.setTextColor(ContextCompat.getColor(context,R.color.caldroid_white));
 					btn_next.setClickable(true);
 				}else{
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_gray));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_darker_gray));
+					btn_next.setBackground(ContextCompat.getDrawable(context,R.drawable.button_gray));
+					btn_next.setTextColor(ContextCompat.getColor(context,R.color.caldroid_darker_gray));
 					btn_next.setClickable(false);
 				}
 			}
@@ -139,12 +143,12 @@ public class CheckPhoneActivity extends BaseActivity implements OnClickListener,
 					IsCodeCheck=false;
 				}
 				if(IsUserCheck&&IsCodeCheck){
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_blue));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_white));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_white));
 					btn_next.setClickable(true);
 				}else{
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_gray));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_darker_gray));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_gray));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_darker_gray));
 					btn_next.setClickable(false);
 				}
 			}
@@ -179,6 +183,8 @@ public class CheckPhoneActivity extends BaseActivity implements OnClickListener,
 			case R.id.btn_next:
 				//发送验证码确认
 				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
+
+
 				break;
 			case R.id.btn_tel_clear:
 				edit_tel.setText("");
@@ -278,7 +284,12 @@ public class CheckPhoneActivity extends BaseActivity implements OnClickListener,
 			}catch(Exception ex){
 				ex.printStackTrace();
 				Log.e("1", data.toString());
-				Toast.makeText(context, "验证码错误！", Toast.LENGTH_SHORT).show();
+				if(!Constant.isConnectNet){
+					Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+				}else{
+					context.startService(new Intent(context, CheckInternetService.class));
+				}
+
 			}
 
 		}
@@ -312,8 +323,8 @@ public class CheckPhoneActivity extends BaseActivity implements OnClickListener,
 	}
 	/***
 	 * 获取短信中的验证码
-	 * @param str
-	 * @return
+	 * @param str msg
+	 * @return code
 	 */
 	public  String getStringNum(String str) {
 		String regEx="[^0-9]";

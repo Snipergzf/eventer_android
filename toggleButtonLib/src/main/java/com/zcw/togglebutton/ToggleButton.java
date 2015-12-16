@@ -23,8 +23,9 @@ import com.facebook.rebound.SpringUtil;
  * @author ThinkPad
  *
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class ToggleButton extends View{
-	private SpringSystem springSystem;
+	SpringSystem springSystem;
 	private Spring spring ;
 	/** */
 	private float radius;
@@ -47,7 +48,7 @@ public class ToggleButton extends View{
 	/** 垂直中心*/
 	private float centerY;
 	/** 按钮的开始和结束位置*/
-	private float startX, endX;
+	float startX, endX;
 	/** 手柄X位置的最小和最大值*/
 	private float spotMinX, spotMaxX;
 	/**手柄大小 */
@@ -147,10 +148,7 @@ public class ToggleButton extends View{
 	public void setToggleOn() {
 		setToggleOn(true);
 	}
-	
-	/**
-	 * @param animate
-	 */
+
 	public void setToggleOn(boolean animate){
 		toggleOn = true;
 		takeEffect(animate);
@@ -185,8 +183,8 @@ public class ToggleButton extends View{
 		final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 		final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 		
-		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+		int widthSize;
+		int heightSize;
 		
 		Resources r = Resources.getSystem();
 		if(widthMode == MeasureSpec.UNSPECIFIED || widthMode == MeasureSpec.AT_MOST){
@@ -194,7 +192,7 @@ public class ToggleButton extends View{
 			widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY);
 		}
 		
-		if(heightMode == MeasureSpec.UNSPECIFIED || heightSize == MeasureSpec.AT_MOST){
+		if(heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.AT_MOST){
 			heightSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, r.getDisplayMetrics());
 			heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.EXACTLY);
 		}
@@ -239,7 +237,6 @@ public class ToggleButton extends View{
 	
 	@Override
 	public void draw(Canvas canvas) {
-		//
 		rect.set(0, 0, getWidth(), getHeight());
 		paint.setColor(borderColor);
 		canvas.drawRoundRect(rect, radius, radius, paint);
@@ -259,19 +256,15 @@ public class ToggleButton extends View{
 		rect.set(spotX - spotR, centerY - spotR, spotX + spotR, centerY + spotR);
 		paint.setColor(spotColor);
 		canvas.drawRoundRect(rect, spotR, spotR, paint);
-		
+		super.draw(canvas);
 	}
 	
 	/**
-	 * @param value
 	 */
 	private void calculateEffect(final double value) {
-		final float mapToggleX = (float) SpringUtil.mapValueFromRangeToRange(value, 0, 1, spotMinX, spotMaxX);
-		spotX = mapToggleX;
-		
-		float mapOffLineWidth = (float) SpringUtil.mapValueFromRangeToRange(1 - value, 0, 1, 10, spotSize);
-		
-		offLineWidth = mapOffLineWidth;
+
+		spotX = (float) SpringUtil.mapValueFromRangeToRange(value, 0, 1, spotMinX, spotMaxX);
+		offLineWidth = (float) SpringUtil.mapValueFromRangeToRange(1 - value, 0, 1, 10, spotSize);
 		
 		final int fb = Color.blue(onColor);
 		final int fr = Color.red(onColor);
@@ -300,9 +293,8 @@ public class ToggleButton extends View{
 	 */
 	public interface OnToggleChanged{
 		/**
-		 * @param on
 		 */
-		public void onToggle(boolean on);
+		void onToggle(boolean on);
 	}
 
 

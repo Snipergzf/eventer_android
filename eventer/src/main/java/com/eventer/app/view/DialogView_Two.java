@@ -1,8 +1,6 @@
 package com.eventer.app.view;
 
 
-import java.util.Map;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
@@ -15,13 +13,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.widget.wheel.OnWheelScrollListener;
 import com.eventer.app.widget.wheel.WheelView;
 
+import java.util.Map;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class DialogView_Two {
 
 	
@@ -53,11 +54,11 @@ public class DialogView_Two {
 
 	private String positiveBtnStr="确定";
 	private String negativeBtnStr="取消";
-	private int layout_resource=0;
+	int layout_resource=0;
 
 	
 	 
-	private TextView tv_title;
+	TextView tv_title;
 //	private TextView tv_message;
 	public  Button btn_positive;
 	public Button btn_negative;
@@ -106,9 +107,9 @@ public class DialogView_Two {
 
 
 	public  Dialog initDialog(String title,String message) {
-		View mView = null;
+		View mView;
 		if(layout_resource==0)	{
-			mView=mInflater.inflate(R.layout.layout_wheel_term, null); 
+			mView=mInflater.inflate(R.layout.layout_wheel_term, new LinearLayout(mContext),false);
 		}
 		else {
 			mView=mInflater.inflate(layout_resource, null);
@@ -234,7 +235,7 @@ public class DialogView_Two {
 	}
 	
 	private int wheelViewIndex1=0,wheelViewIndex2=0;
-	private String wheelViewCurentText1,wheelViewCurentText2;
+	String wheelViewCurentText1,wheelViewCurentText2;
 
 
 	OnClickListener mOnClickListener = new OnClickListener() {
@@ -275,7 +276,7 @@ public class DialogView_Two {
 		this.btnPosClick = onWheelBtnPosClick;
 	}
 	public interface onWheelBtnPosClick{
-		public void onClick(String text,int position[]);
+		void onClick(String text,int position[]);
 	}
 	onWheelBtnNegClick btnNegClick;
 	public onWheelBtnNegClick getBtnNegClick() {
@@ -287,7 +288,7 @@ public class DialogView_Two {
 		this.btnNegClick = btnNegClick;
 	}
 	public interface onWheelBtnNegClick{
-		public void onClick(String text,int position[]);
+		void onClick(String text,int position[]);
 	}
 	public void setConnectable(boolean b) {
 		// TODO Auto-generated method stub

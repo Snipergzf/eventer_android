@@ -32,7 +32,6 @@ package com.eventer.app.widget.photoview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
@@ -40,12 +39,12 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 
 public abstract class VersionedGestureDetector {
-	static final String LOG_TAG = "VersionedGestureDetector";
+
 	OnGestureListener mListener;
 
 	public static VersionedGestureDetector newInstance(Context context, OnGestureListener listener) {
 		final int sdkVersion = Build.VERSION.SDK_INT;
-		VersionedGestureDetector detector = null;
+		VersionedGestureDetector detector;
 
 		if (sdkVersion < Build.VERSION_CODES.ECLAIR) {
 			detector = new CupcakeDetector(context);
@@ -64,12 +63,12 @@ public abstract class VersionedGestureDetector {
 
 	public abstract boolean isScaling();
 
-	public static interface OnGestureListener {
-		public void onDrag(float dx, float dy);
+	public  interface OnGestureListener {
+		 void onDrag(float dx, float dy);
 
-		public void onFling(float startX, float startY, float velocityX, float velocityY);
+		 void onFling(float startX, float startY, float velocityX, float velocityY);
 
-		public void onScale(float scaleFactor, float focusX, float focusY);
+		 void onScale(float scaleFactor, float focusX, float focusY);
 	}
 
 	private static class CupcakeDetector extends VersionedGestureDetector {

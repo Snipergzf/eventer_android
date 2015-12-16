@@ -1,10 +1,5 @@
 package com.eventer.app.view;
 
-import java.util.ArrayList;
-
-import com.eventer.app.R;
-import com.eventer.app.main.CourseFragment;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,6 +16,12 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.eventer.app.R;
+import com.eventer.app.main.CourseFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+@SuppressWarnings({"UnusedDeclaration"})
 public class PopMenu {
 	private ArrayList<String> itemList;
 	private Context context;
@@ -34,7 +35,7 @@ public class PopMenu {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 
-		itemList = new ArrayList<String>();
+		itemList = new ArrayList<>();
 
 		View view = LayoutInflater.from(context).inflate(R.layout.popmenu, null);
 
@@ -85,8 +86,9 @@ public class PopMenu {
 
 	//批量添加菜单项
 	public void addItems(String[] items) {
-		for (String s : items)
-			itemList.add(s);
+		itemList.addAll(Arrays.asList(items));
+//		for (String s : items)
+//			itemList.add(s);
 	}
 
 	//单个添加菜单项

@@ -1,14 +1,20 @@
 package com.eventer.app.adapter;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.eventer.app.Constant;
 import com.eventer.app.R;
@@ -16,40 +22,29 @@ import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
 import com.eventer.app.util.FileUtil;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import org.json.JSONArray;
+import org.json.JSONException;
 
-@SuppressLint({ "ViewHolder", "SimpleDateFormat" })
+import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+@SuppressLint({ "ViewHolder", "SimpleDateFormat" ,"SetTextI18n"})
 public class EventAdapter extends BaseAdapter {
 	private Context context;                        //运行上下文
 	private List<Event> listItems;
 	private LayoutInflater mInflater;
-	private Dialog mDialog;//视图容器
 	private String image="";
 	private FileUtil fileUtil;
 
-	public final class ListItemView{                //自定义控件集合
-		public ImageView image;
-		public TextView title;
-		public TextView info;
-		public Button detail;
-	}
+//	public final class ListItemView{                //自定义控件集合
+//		public ImageView image;
+//		public TextView title;
+//		public TextView info;
+//		public Button detail;
+//	}
 
 
 	public EventAdapter(Context context,  List<Event>  listItems) {
@@ -70,9 +65,9 @@ public class EventAdapter extends BaseAdapter {
 		listItems.add(0,e);
 	}
 
-	public void clearItem() {
-		listItems=new ArrayList<Event>();
-	}
+//	public void clearItem() {
+//		listItems=new ArrayList<>();
+//	}
 
 
 	@Override
@@ -87,7 +82,6 @@ public class EventAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 		TextView time,place,theme,content;
-		TextView publisher;
 		LinearLayout li_collect,li_share,li_comment;
 		ImageView iv_collect;
 		ImageView iv_pic;
@@ -97,10 +91,10 @@ public class EventAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO 自动生成的方法存根
-		ViewHolder holder = null;
+		ViewHolder holder;
 		final Event card =  listItems.get(position);
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_event_list, null);
+			convertView = mInflater.inflate(R.layout.item_event_list, parent ,false);
 			holder=new ViewHolder();
 
 			holder.content = (TextView) convertView.findViewById(R.id.tv_content);
@@ -181,7 +175,7 @@ public class EventAdapter extends BaseAdapter {
 		}
 
 		image="";
-		Spanned sp = Html.fromHtml(card.getContent(), new Html.ImageGetter() {
+		 Html.fromHtml(card.getContent(), new Html.ImageGetter() {
 			@Override
 			public Drawable getDrawable(String source) {
 				if(TextUtils.isEmpty(image))
@@ -364,7 +358,7 @@ public class EventAdapter extends BaseAdapter {
 			@Override
 			protected Bitmap doInBackground(String... params) {
 
-				InputStream is = null;
+				InputStream is;
 				String filename = url_avatar
 						.substring(url_avatar.lastIndexOf("/") + 1)+"_e";
 				String filepath = fileUtil.getAbsolutePath() + filename;
@@ -372,6 +366,7 @@ public class EventAdapter extends BaseAdapter {
 					Bitmap bitmap = BitmapFactory.decodeFile(filepath);
 					if(bitmap!=null){
 //								d = new BitmapDrawable(context.getResources(),bitmap);
+						return bitmap;
 					}else{
 						is = (InputStream) new URL(url_avatar).getContent();
 						bitmap = BitmapFactory.decodeStream(is,
@@ -388,28 +383,26 @@ public class EventAdapter extends BaseAdapter {
 				if(bitmap!=null&&iv_pic.getTag().equals(url_avatar)){
 					iv_pic.setImageBitmap(bitmap);
 				}
-			};
-		}.execute(new String[]{});
+			}
+		}.execute();
 	}
 
 
-	public String getFullTime(long now) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String date = sdf.format(new Date(now));
-		return date;
-	}
+//	public String getFullTime(long now) {
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//		return sdf.format(new Date(now));
+//	}
 
 	public String getDate(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String date = sdf.format(new Date(now));
-		return date;
+		return sdf.format(new Date(now));
 	}
 
 	private String getTimeSpan(long begin_time, long end_time) {
 		// TODO Auto-generated method stub
 		String begin=getDate(begin_time*1000);
 		String end=getDate(end_time*1000);
-		String time="";
+		String time;
 		if(begin.equals(end)){
 			time=begin;
 		}else{

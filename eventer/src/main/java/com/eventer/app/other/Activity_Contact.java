@@ -1,12 +1,6 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,20 +20,25 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ContactAdapter;
 import com.eventer.app.db.UserDao;
 import com.eventer.app.entity.User;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.widget.Sidebar;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint("SimpleDateFormat")
-public class Activity_Contact extends Activity implements OnClickListener{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+@SuppressLint({"SimpleDateFormat","SetTextI18n"})
+public class Activity_Contact extends BaseActivityTest implements OnClickListener{
 
     private ContactAdapter adapter;
     private List<User> contactList;
-    private ListView listView;
-    private boolean hidden;
-    private Sidebar sidebar;
-    private ImageView iv_back;
+    ListView listView;
+
+    Sidebar sidebar;
+    ImageView iv_back;
     private TextView tv_total;
-    private LayoutInflater infalter;
+    LayoutInflater infalter;
     public Context context;
 
     @Override
@@ -48,6 +47,7 @@ public class Activity_Contact extends Activity implements OnClickListener{
 
         setContentView(R.layout.activity_contactlist);
         context=this;
+        setBaseTitle(R.string.contact);
         listView = (ListView) findViewById(R.id.list);
         iv_back=(ImageView)findViewById(R.id.iv_back);
         iv_back.setOnClickListener(this);
@@ -55,15 +55,15 @@ public class Activity_Contact extends Activity implements OnClickListener{
         // 黑名单列表
         // blackList = EMContactManager.getInstance().getBlackListUsernames();
 
-        contactList = new ArrayList<User>();
+        contactList = new ArrayList<>();
         // 获取设置contactlist
         getContactList();
         infalter=LayoutInflater.from(this);
         View headView = infalter.inflate(R.layout.item_contact_list_header,
-                null);
+                listView, false);
         listView.addHeaderView(headView);
         View footerView = infalter.inflate(R.layout.item_contact_list_footer,
-                null);
+                listView, false);
         listView.addFooterView(footerView);
         sidebar = (Sidebar) findViewById(R.id.sidebar);
         sidebar.setListView(listView);
@@ -120,9 +120,9 @@ public class Activity_Contact extends Activity implements OnClickListener{
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        if (!hidden) {
-            refresh();
-        }
+
+        refresh();
+
     }
 
 
@@ -157,8 +157,6 @@ public class Activity_Contact extends Activity implements OnClickListener{
         // 对list进行排序
         Collections.sort(contactList, new FullPinyinComparator() {
         });
-
-
     }
 
     /***
@@ -201,8 +199,6 @@ public class Activity_Contact extends Activity implements OnClickListener{
 
     /***
      * 获取字符串的拼音
-     * @param input
-     * @return
      */
     public static String getPinYin(String input) {
         ArrayList<Token> tokens = HanziToPinyin.getInstance().get(input);

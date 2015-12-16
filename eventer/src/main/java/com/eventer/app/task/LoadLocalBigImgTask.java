@@ -24,7 +24,7 @@ import com.easemob.util.ImageUtils;
 import com.eventer.app.R;
 import com.eventer.app.util.ImageCache;
 import com.eventer.app.widget.photoview.PhotoView;
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 
 	private ProgressBar pb;
@@ -60,8 +60,7 @@ public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Void... params) {
-		Bitmap bitmap = ImageUtils.decodeScaleImage(path, width, height);
-		return bitmap;
+		return ImageUtils.decodeScaleImage(path, width, height);
 	}
 
 	@Override

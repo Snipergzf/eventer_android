@@ -1,9 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,7 +8,11 @@ import android.database.Cursor;
 import com.eventer.app.R;
 import com.eventer.app.entity.ClassInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressLint("DefaultLocale")
+@SuppressWarnings({"UnusedDeclaration"})
 public class ClassInfoDao {
 	public static final String TABLE_NAME = "dbCourse";
 	public static final String COLUMN_NAME_ID = "CourseID";
@@ -37,7 +38,7 @@ public class ClassInfoDao {
 
 	@SuppressLint("DefaultLocale")
 	public List<ClassInfo> getClassInfoList() {
-		List<ClassInfo> classlist=new ArrayList<ClassInfo>();
+		List<ClassInfo> classlist=new ArrayList<>();
 		dbHelper.openDatabase();
 		//dbHelper.deleteDatabase(context);
 		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
@@ -47,13 +48,13 @@ public class ClassInfoDao {
 			String name = c.getString(c.getColumnIndex(COLUMN_NAME_NAME));
 			String place = c.getString(c.getColumnIndex(COLUMN_NAME_PLACE ));
 			String week = c.getString(c.getColumnIndex(COLUMN_NAME_WEEK));
-			int kcweekday=-1,kcStart=-1,kcLen=-1;
+			int kcweekday,kcStart,kcLen;
 			kcweekday=c.getInt(c.getColumnIndex(COLUMN_NAME_WEEKDAY));
 			kcStart=c.getInt(c.getColumnIndex(COLUMN_NAME_START));
 			kcLen=c.getInt(c.getColumnIndex(COLUMN_NAME_LEN));
 
 
-			List<Integer> wlist=new ArrayList<Integer>();
+			List<Integer> wlist=new ArrayList<>();
 			String[] weeklist=week.split(";");
 			for (String string : weeklist) {
 				String[] weekSpan=string.split("-");

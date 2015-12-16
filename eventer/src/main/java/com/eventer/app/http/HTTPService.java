@@ -1,11 +1,13 @@
 package com.eventer.app.http;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,15 +24,13 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
- 
-
+@SuppressWarnings({"UnusedDeclaration"})
 public class HTTPService {
     private static final String TAG = HTTPService.class.getSimpleName();
     private static HTTPService instance = null;
@@ -48,17 +48,14 @@ public class HTTPService {
     }
 
     /**
-     * 是否有可用网�?
+     * 是否有可用网
      */
     public boolean hasActiveNet(Context context) {
         ConnectivityManager connManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (connManager.getActiveNetworkInfo() != null) {
-            return connManager.getActiveNetworkInfo().isAvailable();
-        }
+        return connManager.getActiveNetworkInfo() != null&&connManager.getActiveNetworkInfo().isAvailable();
 
-        return false;
     }
 
     public static boolean hasWifi(Context context) {
@@ -103,8 +100,7 @@ public class HTTPService {
 
     /**
      * Get 请求
-     * 
-     * @param url
+     *
      */
     public String[] getRequest(String url, String cookie) {
         HttpParams httpparams = new BasicHttpParams();
@@ -122,7 +118,7 @@ public class HTTPService {
             int statusCode = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity, "utf-8");
-            String message = "";
+            String message;
 
             if (statusCode == 200) {
                 message = "ok";
@@ -169,7 +165,7 @@ public class HTTPService {
             }
         }
 
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        List<NameValuePair> nvps = new ArrayList<>();
         // 添加 form 参数
         if (params != null) {
             for (Entry<String, String> item : params.entrySet()) {
@@ -191,7 +187,7 @@ public class HTTPService {
             HttpResponse response = client.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();
             String result = EntityUtils.toString(response.getEntity(), "utf-8");
-            String message = "";
+            String message;
 
             if (statusCode == 201) {
                 message = "ok";

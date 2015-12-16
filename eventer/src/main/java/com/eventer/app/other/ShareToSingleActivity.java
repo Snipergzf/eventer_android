@@ -1,14 +1,6 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +27,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
-import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.adapter.PickContactAdapter;
 import com.eventer.app.db.ChatEntityDao;
@@ -49,25 +40,32 @@ import com.eventer.app.entity.User;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.umeng.analytics.MobclickAgent;
 
-public class ShareToSingleActivity extends Activity {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
+public class ShareToSingleActivity extends BaseActivityTest {
     private ImageView iv_search;
     private TextView tv_checked;
     private ListView listView;
-    /** 是否为单选 */
-    private boolean isSignleChecked;
+
     private PickContactAdapter contactAdapter;
     /** group中一开始就有的成员 */
-    private List<String> exitingMembers = new ArrayList<String>();
+    List<String> exitingMembers = new ArrayList<>();
     // 可滑动的显示选中用户的View
     private LinearLayout menuLinerLayout;
     // 选中用户总数,右上角显示
     int total = 0;
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
     // 添加的列表
-    private List<String> addList = new ArrayList<String>();
+    private List<String> addList = new ArrayList<>();
     private Context context;
     private String eid,sid;
     private Event event;
@@ -81,6 +79,7 @@ public class ShareToSingleActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_to_single);
+        setBaseTitle(R.string.share_activity);
         context=this;
         instance=this;
         progressDialog = new ProgressDialog(this);
@@ -108,7 +107,7 @@ public class ShareToSingleActivity extends Activity {
 
         tv_checked = (TextView) this.findViewById(R.id.tv_checked);
         // 获取好友列表
-        final List<User> alluserList = new ArrayList<User>();
+        final List<User> alluserList = new ArrayList<>();
         UserDao dao=new UserDao(context);
         List<User> users=dao.getFriendList();
         for (User user : users) {
@@ -131,7 +130,7 @@ public class ShareToSingleActivity extends Activity {
                                       int count) {
                 if (s.length() > 0) {
                     String str_s = et_search.getText().toString().trim();
-                    List<User> users_temp = new ArrayList<User>();
+                    List<User> users_temp = new ArrayList<>();
                     for (User user : alluserList) {
                         String usernick = user.getNick();
                         if (usernick.contains(str_s)) {
@@ -206,7 +205,7 @@ public class ShareToSingleActivity extends Activity {
         android.widget.LinearLayout.LayoutParams menuLinerLayoutParames = new LinearLayout.LayoutParams(
                 108, 108, 1);
         View view = LayoutInflater.from(this).inflate(
-                R.layout.item_chatroom_header_item_1, null);
+                R.layout.item_chatroom_header_item_1, new LinearLayout(this), false);
         ImageView images = (ImageView) view.findViewById(R.id.iv_avatar1);
         menuLinerLayoutParames.setMargins(6, 6, 6, 6);
 
@@ -229,7 +228,7 @@ public class ShareToSingleActivity extends Activity {
     }
 
     public void deleteImage(User glufineid) {
-        View view = (View) menuLinerLayout.findViewWithTag(glufineid);
+        View view =  menuLinerLayout.findViewWithTag(glufineid);
         menuLinerLayout.removeView(view);
         total--;
         tv_checked.setText("确定(" + total + ")");
@@ -244,12 +243,15 @@ public class ShareToSingleActivity extends Activity {
     /**
      * 确认选择的members
      *
-     * @param v
      */
     public void save() {
         if (addList.size() == 0) {
             Toast.makeText(context, "请选择用户",
                     Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(!Constant.isConnectNet){
+            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
         }
         String shareTo=null;
@@ -327,7 +329,7 @@ public class ShareToSingleActivity extends Activity {
     }
 
     private void ShareFeedBack(){
-        Map<String,String> map=new HashMap<String, String>();
+        Map<String,String> map=new HashMap<>();
         map.put("event_id", eid);
         map.put("share_num", "1");
         map.put("click_num", "");
@@ -338,9 +340,9 @@ public class ShareToSingleActivity extends Activity {
             public void onDataCallBack(JSONObject data) {
                 // TODO Auto-generated method stub
                 try {
-                    int status=data.getInteger("status");
-                    if(status==0){
-                        return;
+                    int status = data.getInteger("status");
+                    if (status == 0) {
+                        Log.e("1", status + "");
                     }
 
                 } catch (Exception e) {
@@ -350,9 +352,6 @@ public class ShareToSingleActivity extends Activity {
         });
     }
 
-    public void back(View view) {
-        finish();
-    }
 
     @SuppressLint("DefaultLocale")
     public class PinyinComparator implements Comparator<User> {

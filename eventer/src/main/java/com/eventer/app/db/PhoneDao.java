@@ -1,9 +1,6 @@
 
 package com.eventer.app.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,6 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.eventer.app.entity.Phone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("DefaultLocale")
 public class PhoneDao {
@@ -29,7 +29,7 @@ public class PhoneDao {
 
 	@SuppressLint("DefaultLocale")
 	public List<Phone> getPhoneList() {
-		List<Phone> list=new ArrayList<Phone>();
+		List<Phone> list=new ArrayList<>();
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, null,
@@ -53,7 +53,7 @@ public class PhoneDao {
 		db.close();
 		return list;
 	}
-
+	@SuppressWarnings({"UnusedDeclaration"})
 	public void savePhoneList(List<Phone> list) {
 		// TODO Auto-generated method stub
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
@@ -72,7 +72,7 @@ public class PhoneDao {
 
 
 	public List<String> getTelList() {
-		List<String> list=new ArrayList<String>();
+		List<String> list=new ArrayList<>();
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_TEL},

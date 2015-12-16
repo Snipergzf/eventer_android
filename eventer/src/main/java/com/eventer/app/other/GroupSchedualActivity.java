@@ -1,9 +1,6 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,15 +21,19 @@ import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.umeng.analytics.MobclickAgent;
 
-public class GroupSchedualActivity extends BaseActivity {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
+public class GroupSchedualActivity extends BaseActivityTest {
 
-	private ListView listview;
-	private List<Map<String,String>> mData=new ArrayList<Map<String,String>>();
-	private MyAadpter adapter;
+	ListView listview;
+	private List<Map<String,String>> mData=new ArrayList<>();
+	MyAadpter adapter;
 	private Context context;
 
 
@@ -41,6 +42,7 @@ public class GroupSchedualActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_group_share);
 		context=this;
+		setBaseTitle(R.string.groupshare);
 		initView();
 	}
 
@@ -95,12 +97,12 @@ public class GroupSchedualActivity extends BaseActivity {
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			ViewHolder holder = null;
+			ViewHolder holder;
 			Map<String,String> map=mData.get(position);
 			if (convertView == null) {
 				holder=new ViewHolder();
 				//可以理解为从vlist获取view  之后把view返回给ListView
-				convertView = mInflater.inflate(R.layout.item_history_eventlist, null);
+				convertView = mInflater.inflate(R.layout.item_history_eventlist, parent, false);
 				holder.title = (TextView)convertView.findViewById(R.id.tv_title);
 				holder.info=(TextView)convertView.findViewById(R.id.tv_info);
 				convertView.setTag(holder);
@@ -108,7 +110,7 @@ public class GroupSchedualActivity extends BaseActivity {
 				holder = (ViewHolder)convertView.getTag();
 			}
 			String content=map.get("content");
-			String publisher="";
+			String publisher;
 			int type=0;
 			String title="";
 			int loc=content.indexOf("\n");
@@ -123,7 +125,7 @@ public class GroupSchedualActivity extends BaseActivity {
 				title=json.getString("schedual_title");
 				type=json.getInteger("schedual_type");
 			}catch(Exception e){
-
+                e.printStackTrace();
 			}
 			switch (type) {
 				case 2:
@@ -149,11 +151,11 @@ public class GroupSchedualActivity extends BaseActivity {
 					nick=beizhu;}
 				holder.info.setText("发布者: "+nick);
 
-			}else if(MyApplication.getInstance().getUserList().containsKey(publisher)){
-				UserInfo u=MyApplication.getInstance().getUserList().get(publisher);
-				String nick=u.getNick();
-				holder.info.setText("发布者: "+nick);
-			}else{
+			}else if(MyApplication.getInstance().getUserList().containsKey(publisher)) {
+				UserInfo u = MyApplication.getInstance().getUserList().get(publisher);
+				String nick = u.getNick();
+				holder.info.setText("发布者: " + nick);
+//			}else{
 
 			}
 
