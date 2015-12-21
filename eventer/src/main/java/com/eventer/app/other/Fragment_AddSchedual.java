@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 
@@ -303,6 +304,72 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 			Log.e("1",remindtime+ "-"+status);
 			getActivity().setResult(Calendar_ViewSchedual.REQUEST_EDIT, intent1);
 		}
+		IsTodayEvent(eventrepeat.getSelectedItemPosition(),remindtime,start);
+	}
+
+	public void IsTodayEvent(int _f,String remind,String end){
+		if(Constant.AlarmChange){
+			return;
+		}
+		DateTime Remind_dt = new DateTime(remind + ":00");
+		String[] remind_time = remind.split(" ");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+		String today_str = formatter.format(new Date());
+		String[] today_time = today_str.split(" ");
+		DateTime End_dt = new DateTime(end + ":00");
+		DateTime today_dt = new DateTime(today_str + ":00");
+		DateTime time_db = new DateTime(remind_time[0] + " 00:00:00");
+		DateTime today_db = new DateTime(today_time[0] + " 00:00:00");
+		int diff = today_db.numDaysFrom(time_db);
+		int i,j;
+		boolean isTodayEvent=false;
+		switch (_f) {
+			case 0:
+				isTodayEvent = true;
+				break;
+			case 1:
+				if (today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent= true;
+				break;
+			case 2:
+				// int i=Remind_dt.getWeekDay();
+				if (Remind_dt.getWeekDay() > 1 && Remind_dt.getWeekDay() < 7
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					Constant.AlarmChange = true;
+				break;
+			case 3:
+				i=today_dt.getWeekDay();
+				j=Remind_dt.getWeekDay();
+				if (i == j
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent= true;
+				break;
+			case 4:
+				i=today_dt.getDay();
+				j=Remind_dt.getDay();
+				if (i == j
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent = true;
+				break;
+			case 5:
+				int month1 = today_dt.getMonth();
+				int day1 = today_dt.getDay();
+				int month2 = Remind_dt.getMonth();
+				int day2 = Remind_dt.getDay();
+				if (month1 == month2 && day1 == day2
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent = true;
+				break;
+		}
+		if(isTodayEvent){
+			if (diff > 0) {
+				End_dt = End_dt.plusDays(diff);
+			}
+			if (!today_dt.gt(End_dt)) {
+				Constant.AlarmChange = true;
+			}
+		}
+
 	}
 
 	class MyDatePickerDialog extends DatePickerDialog {

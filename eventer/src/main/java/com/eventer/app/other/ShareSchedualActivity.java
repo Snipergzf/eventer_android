@@ -38,10 +38,10 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.CircleImageView;
 import com.eventer.app.widget.ExpandGridView;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;
@@ -49,12 +49,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import hirondelle.date4j.DateTime;
 
 @SuppressLint({ "SimpleDateFormat", "InflateParams","SetTextI18n" })
-public class ShareSchedualActivity extends BaseActivityTest {
+public class ShareSchedualActivity extends SwipeBackActivity {
 	private Context context;
 	private String shareId;
 	ChatEntity message;
@@ -133,7 +134,8 @@ public class ShareSchedualActivity extends BaseActivityTest {
 					int status=getStatus( schedual.getEndtime(), schedual.getStarttime());
 					schedual.setStatus(status);
 					schedual.setShareId(shareId);
-					schedual.setRemindtime(getRemindTime(schedual.getStarttime(),1));
+					String remind=getRemindTime(schedual.getStarttime(), 1);
+					schedual.setRemindtime(remind);
 					if(!array.contains(Constant.UID)){
 						array.add(Constant.UID);
 					}
@@ -142,6 +144,7 @@ public class ShareSchedualActivity extends BaseActivityTest {
 					json.put("share", shareTo);
 					schedual.setFriend(json.toJSONString());
 					dao.saveSchedual(schedual);
+					IsTodayEvent(schedual.getFrequency(),remind,schedual.getEndtime());
 					if(Constant.isConnectNet)
 						sendMsg(4,array.toJSONString());
 					else
@@ -151,6 +154,71 @@ public class ShareSchedualActivity extends BaseActivityTest {
 		});
 		initData();
 
+
+	}
+
+	public void IsTodayEvent(int _f,String remind,String end){
+		if(Constant.AlarmChange){
+			return;
+		}
+		DateTime Remind_dt = new DateTime(remind + ":00");
+		String[] remind_time = remind.split(" ");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+		String today_str = formatter.format(new Date());
+		String[] today_time = today_str.split(" ");
+		DateTime End_dt = new DateTime(end + ":00");
+		DateTime today_dt = new DateTime(today_str + ":00");
+		DateTime time_db = new DateTime(remind_time[0] + " 00:00:00");
+		DateTime today_db = new DateTime(today_time[0] + " 00:00:00");
+		int diff = today_db.numDaysFrom(time_db);
+		int i,j;
+		boolean isTodayEvent=false;
+		switch (_f) {
+			case 0:
+				isTodayEvent = true;
+				break;
+			case 1:
+				if (today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent= true;
+				break;
+			case 2:
+				// int i=Remind_dt.getWeekDay();
+				if (Remind_dt.getWeekDay() > 1 && Remind_dt.getWeekDay() < 7
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					Constant.AlarmChange = true;
+				break;
+			case 3:
+				i=today_dt.getWeekDay();
+				j=Remind_dt.getWeekDay();
+				if (i == j
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent= true;
+				break;
+			case 4:
+				i=today_dt.getDay();
+				j=Remind_dt.getDay();
+				if (i == j
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent = true;
+				break;
+			case 5:
+				int month1 = today_dt.getMonth();
+				int day1 = today_dt.getDay();
+				int month2 = Remind_dt.getMonth();
+				int day2 = Remind_dt.getDay();
+				if (month1 == month2 && day1 == day2
+						&& today_time[0].compareTo(remind_time[0]) >= 0)
+					isTodayEvent = true;
+				break;
+		}
+		if(isTodayEvent){
+			if (diff > 0) {
+				End_dt = End_dt.plusDays(diff);
+			}
+			if (!today_dt.gt(End_dt)) {
+				Constant.AlarmChange = true;
+			}
+		}
 
 	}
 
@@ -228,6 +296,7 @@ public class ShareSchedualActivity extends BaseActivityTest {
 				isCollect=false;
 				SchedualDao dao=new SchedualDao(context);
 				dao.delSchedualByShareId(shareId);
+				Constant.AlarmChange=true;
 				if(array.contains(Constant.UID)){
 					array.remove(Constant.UID);
 				}

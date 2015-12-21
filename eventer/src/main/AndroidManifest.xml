@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.eventer.app"
-    android:versionCode="2"
-    android:versionName="1.0.1" >
+    android:versionCode="3"
+    android:versionName="1.0.3" >
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".MyApplication"
@@ -43,16 +44,20 @@
         android:exported="true"
         android:supportsRtl="true"
         android:debuggable="true"
-        android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
         tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         </activity>
         <activity
             android:name=".main.LoginActivity"
             android:label="@string/title_activity_login"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"
             android:launchMode="singleTop" >
         </activity>
         <!-- 开屏页 -->
@@ -60,7 +65,6 @@
             android:name=".main.LoadActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:exported="true"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -83,7 +87,7 @@
         <activity
             android:name=".other.Activity_Chat"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name=".other.Activity_Course_View"
@@ -112,7 +116,8 @@
         </activity>
         <activity
             android:name=".other.Activity_Contact"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name=".other.Activity_Friends_New"
@@ -125,7 +130,8 @@
         </activity>
         <activity
             android:name=".other.Activity_UserInfo"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name=".other.Activity_Friends_Search"
@@ -161,7 +167,8 @@
         </activity>
         <activity
             android:name=".other.ShowBigImage"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name=".other.UpdateNickActivity"
@@ -202,6 +209,7 @@
         <activity
             android:name=".other.Activity_EventComment"
             android:label="@string/title_activity_event_comment"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
         <activity
@@ -269,13 +277,20 @@
         <service android:name=".service.CheckInternetService" >
         </service>
 
-        <receiver android:name=".receiver.NoNetReceiver" >
+        <receiver android:enabled="true" android:name=".receiver.BootBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.ISGOODORBAD" /><!-- 对网络不可用的情况进行反馈 -->
-
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.alarm.START" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <service android:name=".service.BootService"
+            android:label="TService"
+            android:icon="@drawable/ic_launcher"
+            android:enabled="true"
+            android:exported="true"
+            >
+        </service>
         <activity
             android:name=".other.GroupSchedualActivity"
             android:label="@string/title_activity_group_share" >
@@ -294,6 +309,8 @@
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:theme="@style/CustomTheme"/>
 
         <meta-data
             android:name="UMENG_APPKEY"

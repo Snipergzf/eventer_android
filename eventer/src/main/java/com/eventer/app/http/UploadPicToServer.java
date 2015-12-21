@@ -73,10 +73,13 @@ public class UploadPicToServer {
                         dataCallBack.onDataCallBack(jsonObject);
 
                     } else {
-
                         Toast.makeText(context, "访问服务器出错...", Toast.LENGTH_LONG)
                                 .show();
                     }
+                }else if(dataCallBack!=null){
+                    JSONObject jsonObject =new JSONObject();
+                    jsonObject.put("status",-1);
+                    dataCallBack.onDataCallBack(jsonObject);
                 }
             }
         };
@@ -101,8 +104,8 @@ public class UploadPicToServer {
                     conn.setDoInput(true);//允许输入
                     conn.setDoOutput(true);//允许输出
                     conn.setUseCaches(false);//不使用Cache
-                    conn.setConnectTimeout(6000);// 6秒钟连接超时
-                    conn.setReadTimeout(6000);// 6秒钟读数据超时
+                    conn.setConnectTimeout(3000);// 6秒钟连接超时
+                    conn.setReadTimeout(3000);// 6秒钟读数据超时
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Connection", "Keep-Alive");
                     conn.setRequestProperty("Charset", "UTF-8");
@@ -114,7 +117,9 @@ public class UploadPicToServer {
                         sb.append("--");
                         sb.append(BOUNDARY);
                         sb.append("\r\n");
-                        sb.append("Content-Disposition: form-data; name=\""+ entry.getKey() + "\"\r\n\r\n");
+                        sb.append("Content-Disposition: form-data; name=\"");
+                        sb.append(entry.getKey());
+                        sb.append("\"\r\n\r\n");
                         sb.append(entry.getValue());
                         sb.append("\r\n");
                     }
@@ -126,6 +131,7 @@ public class UploadPicToServer {
                     if (imageuri!=null&&!imageuri.equals("")) {
                         dos.writeBytes("Content-Disposition: form-data; name=\""+img+"\"; filename=\"" + imguri + "\"" + "\r\n"+"Content-Type: image/jpeg\r\n\r\n");
                         FileInputStream fis = new FileInputStream(imageuri);
+
                         byte[] buffer = new byte[1024]; // 8k
                         int count;
                         while ((count = fis.read(buffer)) != -1)
@@ -153,6 +159,10 @@ public class UploadPicToServer {
 
                 }  catch (Exception e) {
                     e.printStackTrace();
+                    Message msg = new Message();
+                    msg.what = 404;
+                    msg.obj = null;
+                    handler.sendMessage(msg);
                     Log.e("1",e.toString());
                 }
 

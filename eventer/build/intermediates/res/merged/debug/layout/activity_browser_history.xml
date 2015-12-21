@@ -31,7 +31,18 @@
     <ListView 
         android:id="@+id/listview"
         android:layout_width="match_parent"
+        android:divider="@color/caldroid_lighter_gray"
+        android:dividerHeight="0.01dp"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"/>
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_browser_event"
+        android:padding="6dp"
+        android:textSize="13sp"
+        android:textColor="@color/caldroid_darker_gray" />
 
 </LinearLayout>

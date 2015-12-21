@@ -21,15 +21,15 @@ import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class GroupSchedualActivity extends BaseActivityTest {
+public class GroupSchedualActivity extends SwipeBackActivity {
 
 	ListView listview;
 	private List<Map<String,String>> mData=new ArrayList<>();

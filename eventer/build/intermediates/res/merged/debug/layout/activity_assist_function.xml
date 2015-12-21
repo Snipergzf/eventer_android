@@ -1,63 +1,85 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:toggle="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     tools:context="${relativePackage}.${activityClass}" >
      <include
         android:id="@+id/title"
         layout="@layout/top_layout"/>
-     <LinearLayout
-                android:layout_below="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"              
-                android:orientation="vertical" >
-              <RelativeLayout 
-                  android:id="@+id/re_clear_cache"
+         <LinearLayout
+                    android:layout_below="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:background="@drawable/click_bg"
-                    android:visibility="gone"
-                    >
-                 <TextView                 
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:text="@string/clear_cache"
-                    android:textColor="#353535"
-                    android:textSize="14sp" />
-                </RelativeLayout>
-                <View
-                android:layout_width="match_parent"
-                android:layout_height="0.02dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:visibility="gone"
-                android:background="#DBDBDB" />
-                 <RelativeLayout 
-                     android:id="@+id/re_clear_msg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:background="@drawable/click_bg"
-                    >
-                 <TextView                     
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:text="@string/clear_msg"
-                    android:textColor="#353535"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical" >
 
-                </RelativeLayout>
-                
-               
-            </LinearLayout>
+
+                 <TextView
+                     android:id="@+id/tv_clear_msg"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="13dp"
+                     android:paddingBottom="13dp"
+                     android:paddingLeft="18dp"
+                     android:paddingRight="18dp"
+                     android:background="@drawable/click_bg"
+                     android:text="@string/clear_msg"
+                     android:textColor="#353535"
+                     android:textSize="14sp" />
+                 <View
+                     android:layout_width="match_parent"
+                     android:layout_height="0.02dp"
+                     android:layout_marginLeft="8dp"
+                     android:layout_marginRight="8dp"
+                     android:background="#DBDBDB" />
+
+                 <TextView
+                     android:id="@+id/tv_clear_event"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="13dp"
+                     android:paddingBottom="13dp"
+                     android:paddingLeft="18dp"
+                     android:paddingRight="18dp"
+                     android:text="@string/clear_useless_event"
+                     android:textColor="#353535"
+                     android:background="@drawable/click_bg"
+                     android:textSize="14sp" />
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="0.02dp"
+                 android:layout_marginLeft="8dp"
+                 android:layout_marginRight="8dp"
+                 android:background="#DBDBDB" />
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:paddingLeft="18dp"
+                 android:paddingRight="18dp"
+                 android:background="@drawable/click_bg"
+                 >
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:paddingTop="13dp"
+                     android:paddingBottom="13dp"
+                     android:text="@string/display_useless_event"
+                     android:textColor="#353535"
+                     android:textSize="14sp" />
+                 <com.zcw.togglebutton.ToggleButton
+                     android:id="@+id/toggle_event"
+                     android:layout_width="55dp"
+                     android:layout_height="30dp"
+                     toggle:onColor="@color/caldroid_holo_blue_light"
+                     android:layout_alignParentRight="true"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     />
+             </RelativeLayout>
+
+         </LinearLayout>
+
 
 </RelativeLayout>

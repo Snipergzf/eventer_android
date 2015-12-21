@@ -1,11 +1,6 @@
 package com.eventer.app.widget.calendar;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,12 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
-import com.eventer.app.main.MainActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+@SuppressLint("SetTextI18n")
+@SuppressWarnings({"UnusedDeclaration"})
 public class AlarmDialog extends Dialog {
-
+    private Context context;
 	public AlarmDialog(Context context) {
 		super(context);
 	}
@@ -31,17 +31,19 @@ public class AlarmDialog extends Dialog {
 		super(context, theme);
 	}
 
+
 	public static class Builder {
 		private Context context;
 		private String title;
-		private String message;
+		String message;
 		private String positiveButtonText;
 		private String negativeButtonText;
 		public String MSGTITLE="title";
 		public String MSGTIME="time";
 		public String MSGTDETAIL="detail";
+		private OnDetailListener mDetail;
 		private View contentView;
-		private String msgTitle,msgTime,msgDetail;
+		String msgTitle,msgTime,msgDetail;
 		private Schedual schedual;
 		private DialogInterface.OnClickListener positiveButtonClickListener;
 		private DialogInterface.OnClickListener negativeButtonClickListener;
@@ -64,8 +66,8 @@ public class AlarmDialog extends Dialog {
 		/**
 		 * Set the Dialog message from resource
 		 *
-		 * @param title
-		 * @return
+		 * @param message title msg title
+		 * @return Builder
 		 */
 		public Builder setMessage(int message) {
 			this.message = (String) context.getText(message);
@@ -75,8 +77,6 @@ public class AlarmDialog extends Dialog {
 		/**
 		 * Set the Dialog title from resource
 		 *
-		 * @param title
-		 * @return
 		 */
 		public Builder setTitle(int title) {
 			this.title = (String) context.getText(title);
@@ -86,8 +86,6 @@ public class AlarmDialog extends Dialog {
 		/**
 		 * Set the Dialog title from String
 		 *
-		 * @param title
-		 * @return
 		 */
 
 		public Builder setTitle(String title) {
@@ -109,8 +107,6 @@ public class AlarmDialog extends Dialog {
 		/**
 		 * Set the positive button resource and it's listener
 		 *
-		 * @param positiveButtonText
-		 * @return
 		 */
 		public Builder setPositiveButton(int positiveButtonText,
 										 DialogInterface.OnClickListener listener) {
@@ -142,6 +138,11 @@ public class AlarmDialog extends Dialog {
 			return this;
 		}
 
+		public Builder setOnDetailListen(OnDetailListener listener){
+			this.mDetail = listener;
+			return this;
+		}
+
 		public AlarmDialog create() {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -157,7 +158,7 @@ public class AlarmDialog extends Dialog {
 				((Button) layout.findViewById(R.id.positiveButton))
 						.setText(positiveButtonText);
 				if (positiveButtonClickListener != null) {
-					((Button) layout.findViewById(R.id.positiveButton))
+					(layout.findViewById(R.id.positiveButton))
 							.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
 									positiveButtonClickListener.onClick(dialog,
@@ -175,7 +176,7 @@ public class AlarmDialog extends Dialog {
 				((Button) layout.findViewById(R.id.negativeButton))
 						.setText(negativeButtonText);
 				if (negativeButtonClickListener != null) {
-					((Button) layout.findViewById(R.id.negativeButton))
+					( layout.findViewById(R.id.negativeButton))
 							.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
 									negativeButtonClickListener.onClick(dialog,
@@ -190,7 +191,7 @@ public class AlarmDialog extends Dialog {
 			}
 			// set the content message
 			if (schedual != null) {
-				Map<String,String> map=new HashMap<String, String>();
+//				Map<String,String> map=new HashMap<>();
 				String title=schedual.getTitle();
 				String start=schedual.getStarttime();
 				String end=schedual.getEndtime();
@@ -201,10 +202,10 @@ public class AlarmDialog extends Dialog {
 				}else{
 					((TextView) layout.findViewById(R.id.messagetitle)).setText("无标题");
 				}
-				SimpleDateFormat  sDateFormat  = new   SimpleDateFormat("yyyy年MM月dd日");
-				SimpleDateFormat  DateFormat  = new   SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat  sDateFormat  = new   SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
+				SimpleDateFormat  DateFormat  = new   SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
 				//final String date=sDateFormat.format(new Date());	
-				final String now=DateFormat.format(new Date());
+
 				String startdate=start.substring(0, 10);
 				String enddate=end.substring(0,10);
 				String sDate=startdate;
@@ -216,23 +217,20 @@ public class AlarmDialog extends Dialog {
 					e1.printStackTrace();
 				}
 				if(startdate.equals(enddate)){
-					((TextView) layout.findViewById(R.id.messagetime)).setText(sDate+" "+start.substring(11)+"-"+end.substring(11));
+					((TextView) layout.findViewById(R.id.messagetime)).setText(sDate+" "+end.substring(11));
 				}else{
 					startdate=startdate.replace('-', '/');
 					enddate=enddate.replace('-', '/');
-					((TextView) layout.findViewById(R.id.messagetime)).setText("开始:"+startdate+" "+start.substring(11)+"\r\n结束:"+enddate+" "+end.substring(11));
+					((TextView) layout.findViewById(R.id.messagetime)).setText("开始:" + startdate + " " + start.substring(11) + "\r\n结束:" + enddate + " " + end.substring(11));
 				}
-				((TextView) layout.findViewById(R.id.messagedetail)).setOnClickListener(new View.OnClickListener() {
+				(layout.findViewById(R.id.messagedetail)).setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						try {
 							dialog.dismiss();
-							SchedualDao sDao=new SchedualDao(context);
-							schedual.setStatus(0);
-							sDao.update(schedual);
-							AlarmReceiver.isCancel=true;
-							MainActivity.instance.setAlarmList();
-							MainActivity.instance.TurnToDetail(id+"", now);
 
+							if (mDetail != null) {
+								mDetail.onDetail();
+							}
 						} catch (Throwable e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -255,4 +253,9 @@ public class AlarmDialog extends Dialog {
 		}
 
 	}
+
+	public interface OnDetailListener {
+		void onDetail();
+	}
+
 }

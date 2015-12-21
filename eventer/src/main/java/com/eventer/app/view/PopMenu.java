@@ -3,6 +3,7 @@ package com.eventer.app.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,11 +160,11 @@ public class PopMenu {
 
 			holder.groupItem.setText(itemList.get(position));
 			if(position==checkedId){
-				holder.groupItem.setBackgroundColor(Color.parseColor(context.getResources().getString(R.color.caldroid_holo_blue_light)));
-				holder.groupItem.setTextColor(Color.parseColor(context.getResources().getString(R.color.caldroid_white)));
+				holder.groupItem.setBackgroundColor(ContextCompat.getColor(context, R.color.caldroid_holo_blue_light));
+				holder.groupItem.setTextColor(ContextCompat.getColor(context, R.color.caldroid_white));
 			}else{
 				holder.groupItem.setBackgroundColor(Color.TRANSPARENT);
-				holder.groupItem.setTextColor(Color.parseColor(context.getResources().getString(R.color.caldroid_holo_blue_light)));
+				holder.groupItem.setTextColor(ContextCompat.getColor(context, R.color.caldroid_holo_blue_light));
 			}
 			holder.groupItem.setOnClickListener(new OnClickListener() {
 

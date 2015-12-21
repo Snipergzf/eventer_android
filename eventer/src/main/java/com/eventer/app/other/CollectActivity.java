@@ -24,13 +24,13 @@ import com.eventer.app.R;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectActivity extends BaseActivityTest {
+public class CollectActivity extends SwipeBackActivity {
 	ListView listview;
 	private MyEventAadpter adapter;
 	private Context context;
@@ -50,6 +50,7 @@ public class CollectActivity extends BaseActivityTest {
 		// TODO Auto-generated method stub
 		listview=(ListView)findViewById(R.id.listview);
 		adapter=new MyEventAadpter(context);
+		listview.setEmptyView(findViewById(R.id.tv_empty));
 		listview.setAdapter(adapter);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override

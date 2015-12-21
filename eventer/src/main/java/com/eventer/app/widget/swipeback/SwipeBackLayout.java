@@ -39,6 +39,7 @@ public class SwipeBackLayout extends FrameLayout {
 	private int viewWidth;
 	private boolean isSilding;
 	private boolean isFinish;
+	private boolean hasVisibleViewPager=false;
 	private Drawable mShadowDrawable;
 	private Activity mActivity;
 	private List<ViewPager> mViewPagers = new LinkedList<>();
@@ -53,7 +54,6 @@ public class SwipeBackLayout extends FrameLayout {
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 		mScroller = new Scroller(context);
 		mShadowDrawable= ContextCompat.getDrawable(context, R.drawable.shadow_left);
-//		mShadowDrawable = getResources().getDrawable(R.drawable.shadow_left);
 	}
 
 
@@ -67,6 +67,7 @@ public class SwipeBackLayout extends FrameLayout {
 		ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
 		ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
 		decorChild.setBackgroundResource(background);
+		decorChild.getBackground().setAlpha(0);
 		decor.removeView(decorChild);
 		addView(decorChild);
 		setContentView(decorChild);
@@ -84,9 +85,9 @@ public class SwipeBackLayout extends FrameLayout {
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		//处理ViewPager冲突问题
 		ViewPager mViewPager = getTouchViewPager(mViewPagers, ev);
-		Log.i(TAG, "mViewPager = " + mViewPager);
+		Log.e("1", "mViewPager = " + mViewPager);
 
-		if(mViewPager != null && mViewPager.getCurrentItem() != 0){
+		if(hasVisibleViewPager){
 			return super.onInterceptTouchEvent(ev);
 		}
 
@@ -238,4 +239,7 @@ public class SwipeBackLayout extends FrameLayout {
 	}
 
 
+	public void setViewPagerExist(boolean isExist) {
+		this.hasVisibleViewPager = isExist;
+	}
 }

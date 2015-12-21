@@ -14,10 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class AboutActivity extends BaseActivityTest implements OnClickListener{
+public class AboutActivity extends SwipeBackActivity implements OnClickListener{
     RelativeLayout re_tell_friend,re_our_team;
     TextView tv_app_info;
     private Context context;
@@ -28,6 +28,7 @@ public class AboutActivity extends BaseActivityTest implements OnClickListener{
 //		TextView title=(TextView)findViewById(R.id.tv_title);
 //		title.setText(R.string.about);
 		setBaseTitle(R.string.about);
+
 		context=this;
 		initView();
 	}

@@ -1,12 +1,12 @@
 package com.eventer.app.widget.swipeback;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.eventer.app.R;
+import com.eventer.app.ui.base.BaseActivity;
 
 /**
  * 想要实现向右滑动删除Activity效果只需要继承SwipeBackActivity即可，如果当前页面含有ViewPager
@@ -15,7 +15,7 @@ import com.eventer.app.R;
  * @author xiaanming
  *
  */
-public class SwipeBackActivity extends Activity {
+public class SwipeBackActivity extends BaseActivity {
 	protected SwipeBackLayout layout;
 
 	@Override
@@ -31,6 +31,10 @@ public class SwipeBackActivity extends Activity {
 	public void startActivity(Intent intent) {
 		super.startActivity(intent);
 		overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
+	}
+
+	public void setViewPagerExist(boolean isExist){
+		layout.setViewPagerExist(isExist);
 	}
 
 

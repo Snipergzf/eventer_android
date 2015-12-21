@@ -1,30 +1,5 @@
 package com.eventer.app.main;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import com.eventer.app.R;
-import com.eventer.app.adapter.SchedualAdapter;
-import com.eventer.app.db.DBManager;
-import com.eventer.app.db.SchedualDao;
-import com.eventer.app.entity.Schedual;
-import com.eventer.app.other.Activity_EventDetail;
-import com.eventer.app.other.Calendar_AddSchedual;
-import com.eventer.app.other.Calendar_ViewSchedual;
-import com.eventer.app.other.ShareSchedualActivity;
-import com.eventer.app.widget.calendar.CaldroidFragment;
-import com.eventer.app.widget.calendar.CaldroidFragment.TurntoTodayListener;
-import com.eventer.app.widget.calendar.CaldroidListener;
-import com.eventer.app.widget.swipemenulistview.SwipeMenu;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuCreator;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuItem;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuListView;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +23,33 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.eventer.app.R;
+import com.eventer.app.adapter.SchedualAdapter;
+import com.eventer.app.db.DBManager;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.entity.Schedual;
+import com.eventer.app.other.Activity_EventDetail;
+import com.eventer.app.other.Calendar_AddSchedual;
+import com.eventer.app.other.Calendar_ViewSchedual;
+import com.eventer.app.other.ShareSchedualActivity;
+import com.eventer.app.widget.calendar.AlarmReceiver;
+import com.eventer.app.widget.calendar.CaldroidFragment;
+import com.eventer.app.widget.calendar.CaldroidFragment.TurntoTodayListener;
+import com.eventer.app.widget.calendar.CaldroidListener;
+import com.eventer.app.widget.swipemenulistview.SwipeMenu;
+import com.eventer.app.widget.swipemenulistview.SwipeMenuCreator;
+import com.eventer.app.widget.swipemenulistview.SwipeMenuItem;
+import com.eventer.app.widget.swipemenulistview.SwipeMenuListView;
+import com.eventer.app.widget.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import hirondelle.date4j.DateTime;
 
 
@@ -58,18 +60,16 @@ public  class CalendarFragment extends Fragment{
 	public static CalendarFragment instance;
 	private Date lastdate;
 	public static final int REQUEST_DETAIL = 0x110;
-	public static final int REQUEST_LIST = 0x109;
 	public static boolean IsRefresh = false;
 	private TextView eventlist_time;
 	final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	private SwipeMenuListView eventList;
 	private SchedualAdapter mAdapter;
-	private List<Schedual> sList=new ArrayList<Schedual>();
+	private List<Schedual> sList=new ArrayList<>();
 	public static String eventdate="";
 	private String today;
 	private Context context;
 	private float mLastY = -1;
-	protected final static float OFFSET_RADIO = 1.8f;
 
 
 	@Override
@@ -248,6 +248,10 @@ public  class CalendarFragment extends Fragment{
 						caldroidFragment.refreshView();
 						break;
 				}
+				long id=item.getSchdeual_ID();
+				if(AlarmReceiver.Alarmlist!=null&&AlarmReceiver.Alarmlist.containsKey(id+"")){
+					AlarmReceiver.Alarmlist.remove(id+"");
+				}
 				return false;
 			}
 		});
@@ -277,8 +281,7 @@ public  class CalendarFragment extends Fragment{
 	public void addSchedual(){
 		Intent intent = new Intent();
 		intent.setClass(getActivity(), Calendar_AddSchedual.class);
-		if(eventdate != null && eventdate.length() != 0){
-		}else{
+		if (eventdate == null || eventdate.length() == 0) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			eventdate= formatter.format(new Date());
 		}
@@ -321,9 +324,7 @@ public  class CalendarFragment extends Fragment{
 		DBManager dbHelper;
 		dbHelper = new DBManager(getActivity());
 		dbHelper.openDatabase();
-		if(eventdate != null && eventdate.length() != 0){
-
-		}else{
+		if (eventdate == null || eventdate.length() == 0) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			eventdate= formatter.format(new Date());
 		}
@@ -362,11 +363,12 @@ public  class CalendarFragment extends Fragment{
 						IsTodayEvent=true;
 					break;
 				case 3:
-					if(today_dt.getWeekDay()==Start_dt.getWeekDay()&&eventdate.compareTo(start_time[0])>=0)
+					if (today_dt.getWeekDay().equals(Start_dt.getWeekDay()) && eventdate.compareTo(start_time[0]) >= 0) {
 						IsTodayEvent=true;
+					}
 					break;
 				case 4:
-					if(today_dt.getDay()==Start_dt.getDay()&&eventdate.compareTo(start_time[0])>=0)
+					if(today_dt.getDay().equals(Start_dt.getDay())&&eventdate.compareTo(start_time[0])>=0)
 						IsTodayEvent=true;
 					break;
 				case 5:
@@ -435,10 +437,10 @@ public  class CalendarFragment extends Fragment{
 		dbHelper.closeDatabase();
 	}
 
-	public boolean isSelectDateEvent(){
-		boolean isEvent=false;
-		return isEvent;
-	}
+//	public boolean isSelectDateEvent(){
+//		boolean isEvent=false;
+//		return isEvent;
+//	}
 
 	//日历中的cell的事件监听
 	public	CaldroidListener listener = new CaldroidListener() {
@@ -482,9 +484,7 @@ public  class CalendarFragment extends Fragment{
 				eventdate=year+"-0"+month+"-0"+day;
 		}
 		SetEventListData();
-		if(month==CaldroidFragment.month){
-
-		}else{
+		if (month != CaldroidFragment.month) {
 			caldroidFragment.moveToDate(date);
 		}
 		String select_dt= formatter.format(date);
@@ -521,13 +521,13 @@ public  class CalendarFragment extends Fragment{
 				mLastY = ev.getRawY();
 				break;
 			case MotionEvent.ACTION_MOVE:
-				final float deltaY = ev.getRawY() - mLastY;
+//				final float deltaY = ev.getRawY() - mLastY;
 				mLastY = ev.getRawY();
-				if (deltaY > 0){
-//	          	       updateHeaderHeight(deltaY / OFFSET_RADIO);			
-				}else if ( deltaY < 0) {
-//						updateFooterHeight(-deltaY / OFFSET_RADIO);
-				}
+//				if (deltaY > 0){
+//				updateHeaderHeight(deltaY / OFFSET_RADIO);
+//			}else if ( deltaY < 0) {
+//				updateFooterHeight(-deltaY / OFFSET_RADIO);
+//			}
 				break;
 			default:
 				mLastY = -1; // reset	
@@ -583,8 +583,8 @@ public  class CalendarFragment extends Fragment{
 	public void onResume()
 	{
 		super.onResume();
-		if(IsRefresh){
-		}
+//		if(IsRefresh){
+//		}
 		refreshView();
 		IsRefresh=false;
 

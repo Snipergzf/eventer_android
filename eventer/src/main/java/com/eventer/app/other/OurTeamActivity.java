@@ -3,10 +3,10 @@ package com.eventer.app.other;
 import android.os.Bundle;
 
 import com.eventer.app.R;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class OurTeamActivity extends BaseActivityTest {
+public class OurTeamActivity extends SwipeBackActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

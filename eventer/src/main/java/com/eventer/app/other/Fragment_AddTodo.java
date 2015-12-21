@@ -1,11 +1,5 @@
 package com.eventer.app.other;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.eventer.app.R;
-import com.eventer.app.db.DBManager;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -28,6 +22,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.eventer.app.Constant;
+import com.eventer.app.R;
+import com.eventer.app.db.DBManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import hirondelle.date4j.DateTime;
 
 
@@ -99,7 +102,7 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		dbHelper = new DBManager(context);
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, "dbSchedule", null,
-				"ScheduleID=?", new String[]{id+""}, null, null,null,null);
+				"ScheduleID=?", new String[]{id + ""}, null, null, null, null);
 		while (c.moveToNext()) {
 			String start=c.getString(c.getColumnIndex("startTime"));
 			String end=c.getString(c.getColumnIndex("endTime"));
@@ -240,6 +243,23 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 			Log.e("1",remindtime+ "-"+status);
 			getActivity().setResult(Calendar_ViewSchedual.REQUEST_EDIT, intent1);
 		}
+		if(status>0)
+			IsTodayEvent(remindtime);
+	}
+
+	public void IsTodayEvent(String remind){
+		if(Constant.AlarmChange){
+			return;
+		}
+		DateTime Remind_dt = new DateTime(remind + ":00");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+		String today_str = formatter.format(new Date());
+		DateTime today_dt = new DateTime(today_str + ":00");
+
+		if (!today_dt.gt(Remind_dt)) {
+			Constant.AlarmChange=true;
+		}
+
 	}
 
 	class MyDatePickerDialog extends DatePickerDialog {

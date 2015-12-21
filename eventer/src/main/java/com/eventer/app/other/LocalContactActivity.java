@@ -34,10 +34,10 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.widget.CircleProgressBar;
 import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
 import com.eventer.app.widget.refreshlist.XListView;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -49,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class LocalContactActivity extends BaseActivityTest{
+public class LocalContactActivity extends SwipeBackActivity {
 
 	private MyAdapter adapter;
 	private List<Map<String, String>> SourceData=new ArrayList<>();

@@ -237,6 +237,8 @@
     <string name="xlistview_footer_hint_normal">上拉加载更多</string>
     <string name="xlistview_header_last_time">更新于：</string>
     <string name="no_comment">_(:з」∠)_还没有人参与评论...</string>
+    <string name="no_collect_event">_(:з」∠)_您还没有收藏任何活动...</string>
+    <string name="no_browser_event">_(:з」∠)_您还没有浏览任何活动...</string>
     <string name="title_activity_reset_pwd">ResetPwdActivity</string>
     <string name="theme_all">推荐</string>
     <string name="theme_lecture">讲座</string>
@@ -254,6 +256,11 @@
     <string name="search_f">搜索:</string>
     <string name="chatgroup">群聊</string>
     <string name="no_network">当前网络不稳定？！</string>
+    <string name="no_net_info">当前网络不可用</string>
+    <string name="empty">空</string>
+    <string name="load_contact">正在刷新联系人...</string>
+    <string name="clear_useless_event">清除过期活动</string>
+    <string name="display_useless_event">显示过期活动</string>
 
 </resources>
 

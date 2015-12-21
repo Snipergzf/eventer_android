@@ -22,7 +22,7 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.service.CheckInternetService;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -31,7 +31,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoadActivity extends BaseActivity {
+public class LoadActivity extends BaseFragmentActivity {
 
 	private static final int sleepTime = 2000;
 	private Context context;
@@ -54,6 +54,7 @@ public class LoadActivity extends BaseActivity {
 		setContentView(view);
 		super.onCreate(arg0);
 		context=this;
+		Constant.isExist=false;
 		PreferenceUtils.init(context);
 		initFile() ;
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);

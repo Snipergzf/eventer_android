@@ -7,13 +7,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.eventer.app.R;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.zcw.togglebutton.ToggleButton;
 import com.zcw.togglebutton.ToggleButton.OnToggleChanged;
 
-public class MsgAlertActivity extends BaseActivityTest {
+public class MsgAlertActivity extends SwipeBackActivity {
 	ToggleButton toggle_alert,toggle_detail,toggle_voice,toggle_shake;
 	Context context;
 	private LinearLayout li_alert;

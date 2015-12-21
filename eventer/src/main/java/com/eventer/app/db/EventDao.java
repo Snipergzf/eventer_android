@@ -136,6 +136,14 @@ public class EventDao {
 		return result;
 	}
 
+	public void delEventIDList(List<String> list) {
+		dbHelper.openDatabase();
+		for (String id:list) {
+			dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID+"=?", new String[]{id});
+		}
+		dbHelper.closeDatabase();
+	}
+
 	public void saveEvent(Event event) {
 		// TODO Auto-generated method stub
 		dbHelper.openDatabase();

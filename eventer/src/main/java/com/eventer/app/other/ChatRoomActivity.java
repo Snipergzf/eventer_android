@@ -15,13 +15,13 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ChatRoomAdapter;
 import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.entity.ChatRoom;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
 @SuppressLint({"InflateParams","SetTextI18n"})
-public class ChatRoomActivity extends BaseActivityTest {
+public class ChatRoomActivity extends SwipeBackActivity {
     ListView groupListView;
     protected List<ChatRoom> grouplist;
     ChatRoomAdapter groupAdapter;

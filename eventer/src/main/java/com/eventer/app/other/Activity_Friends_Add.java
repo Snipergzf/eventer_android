@@ -27,8 +27,8 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_Friends_Add extends BaseActivityTest {
+public class Activity_Friends_Add extends SwipeBackActivity {
 	TextView tv_send;
 	private EditText et_reason;
 	private Context context;

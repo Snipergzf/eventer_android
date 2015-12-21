@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEBEB"
+    android:background="@color/main_bg"
     android:orientation="vertical" >
 
   
@@ -24,6 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/title"
+                android:divider="@color/caldroid_lighter_gray"
+                android:dividerHeight="0.01dp"
                 android:background="@android:color/transparent"
                 android:footerDividersEnabled="false"
                 android:descendantFocusability="afterDescendants" />

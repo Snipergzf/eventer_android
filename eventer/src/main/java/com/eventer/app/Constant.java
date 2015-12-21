@@ -18,12 +18,14 @@ public class Constant {
 	  public static String TOKEN = "";
 	  public static String Phone="";
 	  public static boolean isLogin = false;
+	  public static boolean isExist = false;
 	  public static boolean isConnectNet = true;
 //	  public static boolean isWifiConnectNet = false;
 	  public static String TAG_FAILURE;
 	  public static String TAG_CONNECTFAILURE;
 	  public static SSLSocket socket=null;
 	  public static long LoginTime=0;
+	  public static boolean AlarmChange=false;
 	  
 	  public final static String SOCKER_ACTION = "com.eventer.app.Control";  
 	  public final static  String SOCKER_RCV = "com.eventer.app.ReceiveStr"; 

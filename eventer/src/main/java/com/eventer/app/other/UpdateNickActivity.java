@@ -14,14 +14,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateNickActivity extends BaseActivityTest{
+public class UpdateNickActivity extends SwipeBackActivity {
     private Context context;
     private String nick="";
     private EditText et_nick;

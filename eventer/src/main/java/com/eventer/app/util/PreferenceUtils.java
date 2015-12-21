@@ -24,6 +24,7 @@ public class PreferenceUtils {
 	private String SHARED_KEY_ALERT_DETAIL= "shared_key_alert_detail";
 	private String SHARED_KEY_ALERT_VOICE= "shared_key_alert_voice";
 	private String SHARED_KEY_ALERT_SHAKE= "shared_key_alert_shake";
+	private String SHARED_KEY_DISPLAY_EVENT= "shared_key_display_event";
 	private String EXIST_NEW_VERSION="exist_new_version";
 	private Context context;
 	private String deviceId;
@@ -107,6 +108,14 @@ public class PreferenceUtils {
 
 	public void setMsgAlertShake(boolean param){
 		mSharedPreferences.edit().putBoolean(SHARED_KEY_ALERT_SHAKE, param).apply();
+	}
+
+	public void setDisplayUserlessEvent(boolean param){
+		mSharedPreferences.edit().putBoolean(SHARED_KEY_DISPLAY_EVENT, param).apply();
+	}
+
+	public boolean getDisplayUserlessEvent(){
+		return mSharedPreferences.getBoolean(SHARED_KEY_DISPLAY_EVENT, false);
 	}
 
 	public void set(String param){

@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/height_top_bar"
         android:background="@color/caldroid_holo_blue_light"
         android:gravity="center_horizontal|center_vertical" >
 

@@ -40,8 +40,8 @@ import com.eventer.app.entity.User;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @SuppressLint({ "InflateParams", "SdCardPath" ,"SetTextI18n"})
-public class ChatRoomCreatActivity extends BaseActivityTest {
+public class ChatRoomCreatActivity extends SwipeBackActivity {
 	private ImageView iv_search;
 	private TextView tv_checked;
 	private ListView listView;

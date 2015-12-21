@@ -1,7 +1,6 @@
 package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,7 +36,6 @@ import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.db.ChatroomDao;
-import com.eventer.app.db.DBManager;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.InviteMessgeDao;
 import com.eventer.app.db.UserDao;
@@ -56,11 +53,9 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Friends_New;
-import com.eventer.app.other.Calendar_ViewSchedual;
 import com.eventer.app.socket.SocketService;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.util.SmileUtils;
-import com.eventer.app.widget.calendar.AlarmReceiver;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
@@ -68,16 +63,12 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-
-import hirondelle.date4j.DateTime;
 
 @SuppressLint("SimpleDateFormat")
 public class MainActivity extends FragmentActivity {
@@ -113,22 +104,21 @@ public class MainActivity extends FragmentActivity {
 	public static Map<String, Schedual> Alarmlist = new HashMap<>();
 	public static MainActivity instance = null;
 	public ScheduleFragment homefragment;
-	public AlarmManager am;// 消息管理者
 	public Queue<A> queued = new LinkedList<>();
 	public SocketService.SocketSendBinder binder;
-	final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		UmengUpdateAgent.setDeltaUpdate(false);
 		UmengUpdateAgent.setUpdateOnlyWifi(false);
 		UmengUpdateAgent.update(this);
-		MobclickAgent.setSessionContinueMillis(30*1000);
+		MobclickAgent.setSessionContinueMillis(30 * 1000);
 		UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
 
 			@Override
 			public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-				Log.e("1", updateStatus+"000");
+				Log.e("1", updateStatus + "000");
 				switch (updateStatus) {
 					// 有更新
 					case UpdateStatus.Yes:
@@ -142,8 +132,8 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(int arg0) {
 				// TODO Auto-generated method stub
-				Log.e("1", arg0+"00");
-				switch (arg0){
+				Log.e("1", arg0 + "00");
+				switch (arg0) {
 					case UpdateStatus.Ignore:
 					case UpdateStatus.NotNow:
 						PreferenceUtils.getInstance().setVersionAlert(true);
@@ -155,8 +145,10 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		context = this;
 		instance = this;
-		if (!Constant.isLogin&&TextUtils.isEmpty(Constant.UID)) {
+		Constant.AlarmChange=true;
+		if (Constant.isExist||TextUtils.isEmpty(Constant.UID)) {
 			startActivity(new Intent().setClass(context, LoginActivity.class));
+			finish();
 			MobclickAgent.onProfileSignOff();
 			MobclickAgent.onKillProcess(context);
 			System.exit(0);
@@ -176,6 +168,10 @@ public class MainActivity extends FragmentActivity {
 			profilefragment = (ProfileFragment) fm
 					.findFragmentByTag(FRAGMENT_TAG[3]);
 		}
+		Intent broadcastIntent = new Intent();
+		broadcastIntent.setAction("android.intent.alarm.START");
+		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+		sendBroadcast(broadcastIntent);
 	}
 
 
@@ -235,20 +231,20 @@ public class MainActivity extends FragmentActivity {
 		textviews[0].setSelected(true);
 
 		// 初始化日程提醒机制
-		if (am == null) {
-			am = (AlarmManager) getSystemService(ALARM_SERVICE);
-		}
-		try {
-			Intent intent = new Intent(getApplicationContext(),
-					AlarmReceiver.class);
-			PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
-			Long now_time = System.currentTimeMillis();
-			am.setRepeating(AlarmManager.RTC_WAKEUP, now_time + 3, 60 * 1000,
-					sender);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		if (am == null) {
+//			am = (AlarmManager) getSystemService(ALARM_SERVICE);
+//		}
+//		try {
+//			Intent intent = new Intent(getApplicationContext(),
+//					AlarmReceiver.class);
+//			PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent,
+//					PendingIntent.FLAG_UPDATE_CURRENT);
+//			Long now_time = System.currentTimeMillis();
+//			am.setRepeating(AlarmManager.RTC_WAKEUP, now_time + 3, 60 * 1000,
+//					sender);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 		// 刷新未读信息的提醒信息
 		updateUnreadLabel();
@@ -580,129 +576,6 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	/**
-	 * 初始化日程提醒的数据
-	 */
-	public void setAlarmList() {
-		Log.e("1", "alarmlist");
-		Alarmlist = new HashMap<>();
-		DBManager dbHelper;
-		dbHelper = new DBManager(context);
-		dbHelper.openDatabase();
-		String today = formatter.format(new Date());
-		String[] today_time = today.split(" ");
-		DateTime today_dt = new DateTime(today + ":00");
-		Cursor c = dbHelper.findList(true, "dbSchedule", new String[] {
-						"scheduleID", "status", "endTime", "startTime", "remindTime",
-						"frequency" }, "status>?", new String[] { "0" }, null, null,
-				"remindTime", null);
-		while (c.moveToNext()) {
-			Log.e("1", "alarmlist1");
-			int _f = c.getInt(c.getColumnIndex("frequency"));
-			long id = c.getLong(c.getColumnIndex("scheduleID"));
-			int status = c.getInt(c.getColumnIndex("status"));
-			String EndTime = c.getString(c.getColumnIndex("endTime"));
-			String StartTime = c.getString(c.getColumnIndex("startTime"));
-			// String[] end_time=EndTime.split(" ");
-
-			DateTime End_dt = new DateTime(EndTime + ":00");
-			DateTime Satrt_dt = new DateTime(StartTime + ":00");
-			String RemindTime = c.getString(c.getColumnIndex("remindTime"));
-			String[] remind_time = RemindTime.split(" ");
-			DateTime Remind_dt = new DateTime(RemindTime + ":00");
-			DateTime time_db = new DateTime(remind_time[0] + " 00:00:00");
-			DateTime today_db = new DateTime(today_time[0] + " 00:00:00");
-			int diff = today_db.numDaysFrom(time_db);
-
-			Schedual s = new Schedual();
-
-			boolean IsTodayEvent = false;
-			int i,j;
-			switch (_f) {
-				case 0:
-					IsTodayEvent = true;
-					break;
-				case 1:
-					if (today_time[0].compareTo(remind_time[0]) >= 0) {IsTodayEvent = true;
-					}
-					break;
-				case 2:
-					// int i=Remind_dt.getWeekDay();
-					if (Remind_dt.getWeekDay() > 1 && Remind_dt.getWeekDay() < 7
-							&& today_time[0].compareTo(remind_time[0]) >= 0) {
-						IsTodayEvent = true;
-					}
-					break;
-				case 3:
-					i=today_dt.getWeekDay();
-					j=Remind_dt.getWeekDay();
-					if (i == j
-							&& today_time[0].compareTo(remind_time[0]) >= 0) {
-						IsTodayEvent = true;
-					}
-					break;
-				case 4:
-					i=today_dt.getDay();
-					j=Remind_dt.getDay();
-					if (i == j
-							&& today_time[0].compareTo(remind_time[0]) >= 0) {
-						IsTodayEvent = true;
-					}
-					break;
-				case 5:
-					int month1 = today_dt.getMonth();
-					int day1 = today_dt.getDay();
-					int month2 = Remind_dt.getMonth();
-					int day2 = Remind_dt.getDay();
-					if (month1 == month2 && day1 == day2
-							&& today_time[0].compareTo(remind_time[0]) >= 0) {
-						IsTodayEvent = true;
-					}
-					break;
-			}
-			// 如果该日程是今日的日程
-			if (IsTodayEvent) {
-				if (diff > 0) {
-					Remind_dt = Remind_dt.plusDays(diff);
-					End_dt = End_dt.plusDays(diff);
-					Satrt_dt = Satrt_dt.plusDays(diff);
-				}
-
-				if (!today_dt.gt(End_dt)) {
-					if (!Alarmlist.containsKey(id + "")) {
-						s.setSchdeual_ID(id);
-						s.setEndtime(End_dt.toString().substring(0, 16));
-						s.setRemindtime(Remind_dt.toString().substring(0, 16));
-						s.setStarttime(Satrt_dt.toString().substring(0, 16));
-						s.setStatus(status);
-						Alarmlist.put(id + "", s);
-					}
-
-				}
-			}
-		}
-		dbHelper.closeDatabase();
-	}
-
-	class AlarmListThread implements Runnable {
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			setAlarmList();
-		}
-
-	}
-
-	public void TurnToDetail(String sid, String date) {
-		Intent intent = new Intent();
-		intent.setClass(MainActivity.this, Calendar_ViewSchedual.class);
-		Bundle bundle = new Bundle(); // 创建Bundle对象
-		bundle.putString(Calendar_ViewSchedual.ARGUMENT_ID, sid); // 装入数据
-		bundle.putString(Calendar_ViewSchedual.ARGUMENT_DATE, date);
-		bundle.putInt(Calendar_ViewSchedual.ARGUMENT_LOC, -1);
-		intent.putExtras(bundle);
-		startActivityForResult(intent, 0);
-	}
 
 	/**
 	 * 接收好友或者群组消息
@@ -1055,7 +928,8 @@ public class MainActivity extends FragmentActivity {
 			if (!Constant.isLogin) {
 				startActivity(new Intent().setClass(context,
 						LoginActivity.class));
-				Constant.UID=null;
+				finish();
+				Constant.isExist=true;
 				System.exit(0);
 			}
 		}
@@ -1085,7 +959,6 @@ public class MainActivity extends FragmentActivity {
 			mHandler.sendEmptyMessageDelayed(0, 2000);
 		} else {
 			System.exit(0);
-			// System.exit(0);
 		}
 	}
 
@@ -1100,10 +973,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		AlarmListThread thread_alarm = new AlarmListThread();// 创建新的Runnable，
-		Thread thread = new Thread(thread_alarm);// 利用Runnable对象生成Thread
-		thread.start();
-		AlarmReceiver.notify_id_list.clear();
 		Log.e("1", "Main___onStart");
 	}
 

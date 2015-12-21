@@ -41,7 +41,7 @@ import com.eventer.app.entity.Schedual;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class ShareToGroupActivity extends BaseActivityTest {
+public class ShareToGroupActivity extends SwipeBackActivity {
     private ImageView iv_search;
     private TextView tv_checked;
     private ListView listView;

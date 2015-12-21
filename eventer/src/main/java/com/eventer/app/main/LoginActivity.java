@@ -24,7 +24,7 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -35,7 +35,7 @@ import java.util.Map;
 import cn.smssdk.SMSSDK;
 
 
-public class LoginActivity extends BaseActivity implements OnClickListener {
+public class LoginActivity extends BaseFragmentActivity implements OnClickListener {
 
 	Button btn_login;
 	private ImageButton btn_user_clear,btn_pwd_clear;
@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.activity_login);
 		isActive=true;
 		context=this;
+		Constant.isExist=false;
 		SMSSDK.initSDK(LoginActivity.this, Constant.APPKEY, Constant.APPSECRET);
 		btn_login=(Button)findViewById(R.id.btn_login);
 		btn_pwd_clear=(ImageButton)findViewById(R.id.btn_pwd_clear);

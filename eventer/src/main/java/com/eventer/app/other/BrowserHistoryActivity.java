@@ -22,14 +22,14 @@ import com.eventer.app.R;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BrowserHistoryActivity extends BaseActivityTest {
+public class BrowserHistoryActivity extends SwipeBackActivity {
 
 	ListView listview;
 	private MyEventAadpter adapter;
@@ -51,6 +51,7 @@ public class BrowserHistoryActivity extends BaseActivityTest {
 		listview=(ListView)findViewById(R.id.listview);
 		btn_clear=(Button)findViewById(R.id.btn_clear);
 		adapter=new MyEventAadpter(context);
+		listview.setEmptyView(findViewById(R.id.tv_empty));
 		listview.setAdapter(adapter);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override

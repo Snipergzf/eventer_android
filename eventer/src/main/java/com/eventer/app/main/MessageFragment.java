@@ -1,44 +1,46 @@
 package com.eventer.app.main;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.adapter.ConversationAdapter;
 import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Contact;
+import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.widget.swipemenulistview.SwipeMenu;
 import com.eventer.app.widget.swipemenulistview.SwipeMenuCreator;
 import com.eventer.app.widget.swipemenulistview.SwipeMenuItem;
 import com.eventer.app.widget.swipemenulistview.SwipeMenuListView;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -46,36 +48,59 @@ import android.widget.TextView;
 public  class MessageFragment extends Fragment implements OnScrollListener {
 
 	private SwipeMenuListView listView;
-	private LayoutInflater infalter;
-	private List<ChatEntity> mData=new ArrayList<ChatEntity>();
+	LayoutInflater infalter;
+	private List<ChatEntity> mData=new ArrayList<>();
 	private Context context;
 	private ConversationAdapter adapter;
-	private RelativeLayout re_contact;
+	ImageView contact;
 	public static MessageFragment instance;
+	private NetReceiver netReceiver;
+	private final int NET_GOOD = 11;
+	private final int NET_BAD = 22;
+	private LinearLayout note;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+
+		final View rootView = inflater.inflate(R.layout.fragment_message, container, false);
 		context=getActivity();
-		return inflater.inflate(R.layout.fragment_message, container, false);
+		instance=MessageFragment.this;
+		initView(rootView);
+		netReceiver = new NetReceiver();
+		IntentFilter intentFilter1 = new IntentFilter();
+		intentFilter1.addAction("android.net.conn.ISGOODORBAD");
+		context.registerReceiver(netReceiver, intentFilter1);
+		return rootView;
 
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-		listView = (SwipeMenuListView) getView().findViewById(R.id.lv_conversation);
-		infalter=LayoutInflater.from(getActivity());
-		View headView = infalter.inflate(R.layout.item_conversation_header,
-				null);
-		listView.addHeaderView(headView);
-		re_contact=(RelativeLayout)headView.findViewById(R.id.re_contact);
+	private void initView(View rootView) {
+		listView = (SwipeMenuListView) rootView.findViewById(R.id.lv_conversation);
+		contact = (ImageView) rootView.findViewById(R.id.iv_contact);
+
+		note=(LinearLayout)rootView.findViewById(R.id.note);
+		note.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				context.startService(new Intent(context, CheckInternetService.class));
+				Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+				startActivity(intent);
+			}
+		});
+		infalter=LayoutInflater.from(context);
+//		View headView = infalter.inflate(R.layout.item_conversation_header,
+//				null);
+//		listView.addHeaderView(headView);
+//		re_contact=(RelativeLayout)headView.findViewById(R.id.re_contact);
 		adapter = new ConversationAdapter(context,mData);
 		listView.setAdapter(adapter);
-
+		listView.setEmptyView(rootView.findViewById(R.id.iv_empty));
+		if(!Constant.isConnectNet){
+			note.setVisibility(View.VISIBLE);
+		}
 		//给对话的item的添加左滑菜单
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -104,22 +129,22 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		// set creator
 		listView.setMenuCreator(creator);
 
-		listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener(){
+		listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 				ChatEntity item = mData.get(position);
 				switch (index) {
 					case 0:
-						Log.e("1","listview-count:"+listView.getCount());
-						ChatEntity msg=mData.get(position);
+						Log.e("1", "listview-count:" + listView.getCount());
+						ChatEntity msg = mData.get(position);
 						String username = msg.getFrom();
 
-						Intent intent=new Intent();
-						intent.setClass(getActivity(),Activity_Chat.class);
-						if(username.indexOf("@")!=-1){
+						Intent intent = new Intent();
+						intent.setClass(getActivity(), Activity_Chat.class);
+						if (username.contains("@")) {
 							intent.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
 							intent.putExtra("groupId", username);
-						}else{
+						} else {
 							intent.putExtra("userId", username);
 						}
 						startActivity(intent);
@@ -159,44 +184,44 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 			public void onMenuClose(int position) {
 			}
 		});
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 										   int position, long id) {
-				if(position!=0){
-					ChatEntity msg=mData.get(position-1);
-					showMyDialog("提示",msg,position-1);
-				}
+//				if (position != 0) {
+					ChatEntity msg = mData.get(position - 1);
+					showMyDialog("提示", msg, position - 1);
+//				}
 				return true;
 			}
 		});
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				if(position!=0&&position!=listView.getCount()){
-					Log.e("1","listview-count:"+listView.getCount());
-					ChatEntity msg=mData.get(position-1);
+//				if (position != listView.getCount()) {
+					Log.e("1", "listview-count:" + listView.getCount());
+					ChatEntity msg = mData.get(position);
 					String username = msg.getFrom();
 
-					Intent intent=new Intent();
-					intent.setClass(getActivity(),Activity_Chat.class);
-					if(username.indexOf("@")!=-1){
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), Activity_Chat.class);
+					if (username.contains("@")) {
 						intent.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
 						intent.putExtra("groupId", username);
-					}else{
+					} else {
 						intent.putExtra("userId", username);
 					}
 					startActivity(intent);
-				}
+//				}
 			}
 
 
 		});
-		re_contact.setOnClickListener(new OnClickListener() {
+		contact.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -206,11 +231,9 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 				startActivity(intent);
 			}
 		});
-
-		instance=MessageFragment.this;
 		refresh();
-
 	}
+
 	//删除对话
 	private void delete(ChatEntity item) {
 		ChatEntityDao dao=new ChatEntityDao(context);
@@ -267,7 +290,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 	}
 	//刷新页面
 	private void refresh(){
-		mData=new ArrayList<ChatEntity>();
+		mData=new ArrayList<>();
 		ChatEntityDao dao=new ChatEntityDao(context);
 		//获取对话列表
 		mData=dao.getChatEntityList(new String[]{"*","Max(addTime)"},null, null,ChatEntityDao.COLUMN_NAME_FROM,ChatEntityDao.COLUMN_NAME_TIME+" desc");
@@ -291,10 +314,51 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		listView.setAdapter(adapter);
 	}
 
+
+	/**
+	 * receive network situation
+	 *
+	 * @author LiuNana
+	 *
+	 */
+	@SuppressLint("NewApi")
+	public class NetReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			boolean net=intent.getBooleanExtra("net",false);
+			Log.e("1","rece"+net+"");
+			if(net){
+				mHandler.sendEmptyMessage(NET_GOOD);
+			}else{
+				mHandler.sendEmptyMessage(NET_BAD);
+			}
+		}
+	}
+
+	Handler mHandler = new Handler(new Handler.Callback() {
+		@Override
+		public boolean handleMessage(Message msg) {
+			switch (msg.what) {
+				case NET_BAD:
+					note.setVisibility(View.VISIBLE);
+					break;
+				case NET_GOOD:
+					note.setVisibility(View.GONE);
+					break;
+				default:
+					break;
+			}
+			return false;
+		}
+	});
+
+
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		getActivity().unregisterReceiver(netReceiver);
 	}
 
 	@Override

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ebebeb"
+    android:background="@color/main_bg"
     android:orientation="vertical" >
 
     <include
@@ -36,7 +36,9 @@
             android:layout_height="22dp"
             android:layout_alignBottom="@id/et_search"
             android:layout_alignLeft="@id/et_search"
+            android:layout_alignStart="@id/et_search"
             android:layout_margin="8dp"
+            android:contentDescription="@string/search"
             android:src="@drawable/ar5" />
     </RelativeLayout>
     <TextView
@@ -51,7 +53,6 @@
    <View
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
-                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:background="#DBDBDB" />
@@ -71,7 +72,9 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/contact"
                     android:src="@drawable/a_1" />
 
                 <TextView
@@ -79,7 +82,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
                     android:layout_toRightOf="@id/iv_lianxiren"
+                    android:layout_toEndOf="@id/iv_lianxiren"
                     android:text="@string/phone_contact"
                     android:textColor="#353535"
                     android:textSize="16sp" />
@@ -89,7 +94,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
                     android:layout_toRightOf="@id/iv_lianxiren"
+                    android:layout_toEndOf="@id/iv_lianxiren"
                     android:text="@string/add_contact_friend"
                     android:textColor="#BBBBBB"
                     android:textSize="12sp" />

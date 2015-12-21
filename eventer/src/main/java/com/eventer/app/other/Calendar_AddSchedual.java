@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
@@ -16,10 +15,11 @@ import android.widget.TextView;
 import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("SimpleDateFormat")
-public class Calendar_AddSchedual extends FragmentActivity implements OnClickListener {
+public class Calendar_AddSchedual extends SwipeBackActivity implements OnClickListener {
 
 	TextView event_finish;
 	private Button btn_schedual,btn_todo;

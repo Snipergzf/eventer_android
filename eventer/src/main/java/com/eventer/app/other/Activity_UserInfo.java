@@ -41,9 +41,9 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.CircleProgressBar;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class Activity_UserInfo extends BaseActivityTest {
+public class Activity_UserInfo extends SwipeBackActivity {
 	private TextView tv_name,tv_email,tv_school,tv_grade,tv_major,tv_nick;
 	private Context context;
 	private ImageView iv_avatar;
@@ -65,6 +65,7 @@ public class Activity_UserInfo extends BaseActivityTest {
 	private  String id;
 	private RelativeLayout rl_email;
 	private LinearLayout ll_class_info,layout_content,layout_loading;
+	private String avatar;
 	@SuppressLint("SdCardPath")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class Activity_UserInfo extends BaseActivityTest {
 	private void initData() {
 		// TODO Auto-generated method stub
 		String nick = user.getNick();
-		String avatar = user.getAvatar();
+		avatar = user.getAvatar();
 		String sex = user.getSex();
 		String major=user.getMajor();
 		String school=user.getSchool();
@@ -179,6 +180,14 @@ public class Activity_UserInfo extends BaseActivityTest {
 		}else{
 			iv_avatar.setImageResource(R.drawable.default_avatar);
 		}
+		iv_avatar.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, ShowBigImage.class);
+				intent.putExtra("avatar", avatar);
+				startActivity(intent);
+			}
+		});
 
 		if(!TextUtils.isEmpty(email)){
 			rl_email.setVisibility(View.VISIBLE);

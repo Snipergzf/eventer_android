@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <com.eventer.app.view.CourseView 
-        android:layout_below="@+id/title_rl"
+    <com.eventer.app.view.CourseView
         android:id="@+id/courseview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

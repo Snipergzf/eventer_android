@@ -20,8 +20,8 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ContactAdapter;
 import com.eventer.app.db.UserDao;
 import com.eventer.app.entity.User;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.widget.Sidebar;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 @SuppressLint({"SimpleDateFormat","SetTextI18n"})
-public class Activity_Contact extends BaseActivityTest implements OnClickListener{
+public class Activity_Contact extends SwipeBackActivity implements OnClickListener{
 
     private ContactAdapter adapter;
     private List<User> contactList;
@@ -175,7 +175,6 @@ public class Activity_Contact extends BaseActivityTest implements OnClickListene
             String py2 = o2.getNick();
             py1=getPinYin(py1);
             py2=getPinYin(py2);
-            // Log.e("1",py1+py2+getPinYin("$$#"));
             // 判断是否为空""
             if (isEmpty(py1) && isEmpty(py2))
                 return 0;

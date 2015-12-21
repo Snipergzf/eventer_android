@@ -57,9 +57,9 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.main.MessageFragment;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.SmileUtils;
 import com.eventer.app.widget.ExpandGridView;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.Field;
@@ -80,7 +80,7 @@ import hirondelle.date4j.DateTime;
  */
 @SuppressLint({ "HandlerLeak", "SimpleDateFormat" })
 @SuppressWarnings("deprecation")
-public class Activity_Chat extends BaseActivityTest implements OnClickListener {
+public class Activity_Chat extends SwipeBackActivity implements OnClickListener {
 	public static final int REQUEST_CODE_GROUP_DETAIL = 21;
 	public static final int RESULT_CODE_EXIT_GROUP = 7;
 	public static final int CHATTYPE_SINGLE = 1;
@@ -135,6 +135,7 @@ public class Activity_Chat extends BaseActivityTest implements OnClickListener {
 		context = Activity_Chat.this;
 		instance = this;
 		setBaseTitle(R.string.chat);
+//		layout.setViewPager();
 		initView();
 		setUpView();
 		iamge_path = this.getIntent().getStringExtra("iamge_path");
@@ -263,6 +264,7 @@ public class Activity_Chat extends BaseActivityTest implements OnClickListener {
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
 				iv_emoticons_checked.setVisibility(View.INVISIBLE);
 				emojiIconContainer.setVisibility(View.GONE);
+				setViewPagerExist(false);
 				btnContainer.setVisibility(View.GONE);
 			}
 		});
@@ -296,6 +298,7 @@ public class Activity_Chat extends BaseActivityTest implements OnClickListener {
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
 				iv_emoticons_checked.setVisibility(View.INVISIBLE);
 				emojiIconContainer.setVisibility(View.GONE);
+				setViewPagerExist(false);
 				btnContainer.setVisibility(View.GONE);
 				return false;
 			}
@@ -651,6 +654,7 @@ public class Activity_Chat extends BaseActivityTest implements OnClickListener {
 				iv_emoticons_checked.setVisibility(View.INVISIBLE);
 				btnContainer.setVisibility(View.VISIBLE);
 				emojiIconContainer.setVisibility(View.GONE);
+				setViewPagerExist(false);
 				more.setVisibility(View.GONE);
 				break;
 			case R.id.iv_emoticons_normal:
@@ -659,6 +663,7 @@ public class Activity_Chat extends BaseActivityTest implements OnClickListener {
 				iv_emoticons_checked.setVisibility(View.VISIBLE);
 				btnContainer.setVisibility(View.GONE);
 				emojiIconContainer.setVisibility(View.VISIBLE);
+				setViewPagerExist(true);
 				hideKeyboard();
 				break;
 			case R.id.iv_clear:

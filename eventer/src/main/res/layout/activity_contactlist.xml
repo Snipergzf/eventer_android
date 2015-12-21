@@ -2,26 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEBEB"
+    android:background="@color/main_bg"
     android:orientation="vertical" >
     <include
         layout="@layout/top_layout"/>
 
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <RelativeLayout
-            android:id="@+id/rl_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
             <LinearLayout
                 android:id="@+id/ll_loading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:gravity="center_vertical"
                 android:visibility="gone" >
@@ -35,7 +30,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:text="正在刷新联系人..." />
+                    android:layout_marginStart="6dp"
+                    android:text="@string/load_contact" />
             </LinearLayout>
 
             <ListView
@@ -45,6 +41,7 @@
                 android:layout_below="@id/ll_loading"
                 android:background="@android:color/transparent"
                 android:footerDividersEnabled="false"
+                android:divider="@color/caldroid_lighter_gray"
                 android:descendantFocusability="afterDescendants"           
                 android:fastScrollEnabled="false" />
  			<com.eventer.app.widget.Sidebar
@@ -52,6 +49,7 @@
                 android:layout_width="25dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@android:color/transparent"
                 android:clickable="true" />
 
@@ -67,8 +65,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="40sp"
                 android:visibility="invisible" />
-
-        </RelativeLayout>
-    </FrameLayout>
+    </RelativeLayout>
 
 </LinearLayout>

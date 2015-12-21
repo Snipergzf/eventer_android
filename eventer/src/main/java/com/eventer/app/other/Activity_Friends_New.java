@@ -15,12 +15,12 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.NewFriendsAdapter;
 import com.eventer.app.db.InviteMessgeDao;
 import com.eventer.app.entity.InviteMessage;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
-public class Activity_Friends_New extends BaseActivityTest {
+public class Activity_Friends_New extends SwipeBackActivity {
     ListView listView;
     RelativeLayout contact_rl;
     private Context context;

@@ -28,8 +28,8 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
 import com.eventer.app.service.CheckInternetService;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.view.MyCountTimer;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.regex.Matcher;
@@ -40,7 +40,7 @@ import cn.smssdk.SMSSDK;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class CheckPhoneActivity extends BaseActivityTest implements OnClickListener, Callback {
+public class CheckPhoneActivity extends SwipeBackActivity implements OnClickListener, Callback {
 
 	private EditText edit_tel,edit_code;
 	private TextView btn_send_code;

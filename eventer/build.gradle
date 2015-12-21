@@ -34,4 +34,5 @@ dependencies {
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile 'org.apache.httpcomponents:httpcore:4.4.2'
     compile 'com.android.support:appcompat-v7:23.1.1'
+    compile project(':lib')
 }

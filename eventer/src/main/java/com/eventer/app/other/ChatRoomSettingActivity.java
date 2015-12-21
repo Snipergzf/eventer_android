@@ -35,7 +35,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.ExpandGridView;
@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class ChatRoomSettingActivity extends BaseActivity implements
+public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 		OnClickListener {
 	private TextView tv_groupname;
 	// 成员总数

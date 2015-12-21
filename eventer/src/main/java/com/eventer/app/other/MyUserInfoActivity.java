@@ -1,6 +1,7 @@
 package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -34,24 +34,25 @@ import com.eventer.app.main.CheckPhoneActivity;
 import com.eventer.app.main.ProfileFragment;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressLint("SdCardPath")
-public class MyUserInfoActivity extends BaseActivityTest {
+public class MyUserInfoActivity extends SwipeBackActivity {
 
     RelativeLayout re_avatar;
     RelativeLayout re_name;
@@ -66,9 +67,6 @@ public class MyUserInfoActivity extends BaseActivityTest {
     private TextView tv_sex;
 
     private String imageName;
-    private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
-    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-    private static final int PHOTO_REQUEST_CUT = 3;// 结果
     private static final int UPDATE_NICK = 5;// 结果
     private LoadUserAvatar avatarLoader;
     private boolean isUpload=false;
@@ -78,6 +76,7 @@ public class MyUserInfoActivity extends BaseActivityTest {
     String avatar;
     String grade,school,major,mclass;
     private Context context;
+    private Activity activity;
     public static MyUserInfoActivity instance;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +84,7 @@ public class MyUserInfoActivity extends BaseActivityTest {
         setContentView(R.layout.activity_myinfo);
         avatarLoader = new LoadUserAvatar(this, Constant.IMAGE_PATH);
         context=this;
+        activity=this;
         setBaseTitle(R.string.my_info);
         instance=this;
         initView();
@@ -186,7 +186,8 @@ public class MyUserInfoActivity extends BaseActivityTest {
             if(!isUpload){
                 switch (v.getId()) {
                     case R.id.re_avatar:
-                        showPhotoDialog();
+//                        showPhotoDialog();
+                        Crop.pickImage(activity);
                         break;
                     case R.id.re_name:
                         startActivityForResult(new Intent(context,
@@ -226,51 +227,12 @@ public class MyUserInfoActivity extends BaseActivityTest {
     public void exit(){
         PreferenceUtils.getInstance().setLoginPwd("");
         Constant.isLogin=false;
+        Constant.isExist=true;
+        Constant.UID=null;
         setResult(ProfileFragment.IS_EXIT, new Intent().putExtra("exit", true));
         finish();
     }
 
-    private void showPhotoDialog() {
-        final AlertDialog dlg = new AlertDialog.Builder(this).create();
-        dlg.show();
-        Window window = dlg.getWindow();
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
-        window.setContentView(R.layout.alertdialog);
-        // 为确认按钮添加事件,执行退出应用操作
-        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
-        tv_paizhao.setText("拍一张照片");
-        tv_paizhao.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SdCardPath")
-            public void onClick(View v) {
-                imageName = getNowTime() + ".png";
-                File cameraFile = new File(Constant.IMAGE_PATH,
-                        imageName);
-
-                cameraFile.getParentFile().mkdirs();
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // 指定调用相机拍照后照片的储存路径
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(cameraFile));
-                startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
-                dlg.cancel();
-            }
-        });
-        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
-        tv_xiangce.setText("从相册中选择照片");
-        tv_xiangce.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                imageName = getNowTime() + ".png";
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setDataAndType(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-
-                dlg.cancel();
-            }
-        });
-
-    }
     /***
      * 设置性别的对话框
      */
@@ -319,67 +281,35 @@ public class MyUserInfoActivity extends BaseActivityTest {
     @SuppressLint("SdCardPath")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PHOTO_REQUEST_TAKEPHOTO:
-
-                    startPhotoZoom(
-                            Uri.fromFile(new File(Constant.IMAGE_PATH, imageName)),
-                            480);
-                    break;
-
-                case PHOTO_REQUEST_GALLERY:
-                    if (data != null)
-                        startPhotoZoom(data.getData(), 480);
-                    break;
-
-                case PHOTO_REQUEST_CUT:
-                    // BitmapFactory.Options options = new BitmapFactory.Options();
-                    //
-                    // /**
-                    // * 最关键在此，把options.inJustDecodeBounds = true;
-                    // * 这里再decodeFile()，返回的bitmap为空
-                    // * ，但此时调用options.outHeight时，已经包含了图片的高了
-                    // */
-                    // options.inJustDecodeBounds = true;
-                    isUpload=true;
-                    Bitmap bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
-                            + imageName);
-                    iv_avatar.setImageBitmap(bitmap);
-                    updateAvatarInServer(imageName);
-                    break;
-
-            }
-            super.onActivityResult(requestCode, resultCode, data);
-
+        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            beginCrop(data.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, data);
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
-    /***
-     * 对图片进行剪裁
-     * @param uri1 图片地址
-     * @param size 图片剪裁尺寸
-     */
-    @SuppressLint("SdCardPath")
-    private void startPhotoZoom(Uri uri1, int size) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri1, "image/*");
-        // crop为true是设置在开启的intent中设置显示的view可以剪裁
-        intent.putExtra("crop", "true");
 
-        // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+    private void beginCrop(Uri source) {
+        if(TextUtils.isEmpty(imageName)){
+            imageName = getNowTime() + ".png";
+        }
+        File cameraFile = new File(Constant.IMAGE_PATH,
+                imageName);
+        cameraFile.getParentFile().mkdirs();
 
-        // outputX,outputY 是剪裁图片的宽高
-        intent.putExtra("outputX", size);
-        intent.putExtra("outputY", size);
-        intent.putExtra("return-data", false);
+        Uri destination = Uri.fromFile(new File(Constant.IMAGE_PATH, imageName));
+        Log.e("1",destination+"");
+        Crop.of(source, destination).asSquare().start(this);
+    }
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                Uri.fromFile(new File(Constant.IMAGE_PATH, imageName)));
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-        intent.putExtra("noFaceDetection", true); // no face detection
-        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK&&!TextUtils.isEmpty(imageName)) {
+            isUpload=true;
+            updateAvatarInServer(imageName);
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -439,7 +369,6 @@ public class MyUserInfoActivity extends BaseActivityTest {
         Map<String, String> map = new HashMap<>();
         if ((new File(Constant.IMAGE_PATH + image)).exists()) {
             map.put("upload", Constant.IMAGE_PATH + image);
-            // map.put("image", image);
         } else {
             return;
         }
@@ -456,21 +385,23 @@ public class MyUserInfoActivity extends BaseActivityTest {
             public void onDataCallBack(JSONObject data) {
                 try {
                     int code = data.getInteger("status");
-                    Log.e("1", code+"");
+                    Log.e("1", "upload pic status:" + code + "");
                     if (code == 0) {
-                        JSONObject json=data.getJSONObject("user_action");
-                        String avatar=json.getString("avatar");
+                        JSONObject json = data.getJSONObject("user_action");
+                        String avatar = json.getString("avatar");
                         LocalUserInfo.getInstance(context)
                                 .setUserInfo("avatar", avatar);
-                        if(avatar!=null){
+                        if (avatar != null) {
+
                             String filename = avatar
                                     .substring(avatar.lastIndexOf("/") + 1);
                             Bitmap bitmap;
                             BitmapFactory.Options options = new BitmapFactory.Options();
                             options.inJustDecodeBounds = false;
-                            options.inSampleSize = 1; // width，hight设为原来的十分一
+                            options.inSampleSize = 1;
                             bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
                                     + imageName, options);
+                            iv_avatar.setImageBitmap(bitmap);
                             File f = new File(Constant.IMAGE_PATH, filename);
                             f.mkdirs();
                             if (f.exists()) {
@@ -481,10 +412,7 @@ public class MyUserInfoActivity extends BaseActivityTest {
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
                                 out.flush();
                                 out.close();
-                            } catch (FileNotFoundException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
@@ -498,7 +426,8 @@ public class MyUserInfoActivity extends BaseActivityTest {
                             }
                             File file = new File(Constant.IMAGE_PATH, imageName);
                             if (file.exists()) {
-                                file.delete();
+                                boolean file_del = file.delete();
+                                Log.e("1", "myinfo file del:" + file_del);
                             }
                             MyApplication.getInstance().setValueByKey("set_avatar", true);
                         }
@@ -513,9 +442,9 @@ public class MyUserInfoActivity extends BaseActivityTest {
                                 Toast.LENGTH_SHORT).show();
 
                     } else {
-                        if(!Constant.isConnectNet){
-                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
-                        }else{
+                        if (!Constant.isConnectNet) {
+                            Toast.makeText(context, getText(R.string.no_network) + "图片上传失败！", Toast.LENGTH_SHORT).show();
+                        } else {
                             Toast.makeText(context, "服务器繁忙请重试...",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -523,18 +452,63 @@ public class MyUserInfoActivity extends BaseActivityTest {
                     }
 
                 } catch (JSONException e) {
-
                     Toast.makeText(context, "数据解析错误...",
                             Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
-                }finally {
-                    isUpload=false;
+                } finally {
+                    isUpload = false;
                 }
 
             }
 
         });
 
+    }
+
+    private Bitmap compressImage(Bitmap image) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while ( baos.toByteArray().length / 1024>200) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;//每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        return BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+    }
+
+    private Bitmap comp(Bitmap image) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm;
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        newOpts.inJustDecodeBounds = true;
+        Bitmap bitmap;
+        newOpts.inJustDecodeBounds = false;
+        int w = newOpts.outWidth;
+        int h = newOpts.outHeight;
+        float hh = 480f;
+        float ww = 480f;
+        int be = 1;//be=1表示不缩放
+        if (w > h && w > ww) {
+            be = (int) (newOpts.outWidth / ww);
+        } else if (w < h && h > hh) {
+            be = (int) (newOpts.outHeight / hh);
+        }
+        if (be <= 0)
+            be = 1;
+        newOpts.inSampleSize = be;
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        isBm = new ByteArrayInputStream(baos.toByteArray());
+        bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
     /***

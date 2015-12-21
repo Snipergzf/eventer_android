@@ -20,15 +20,15 @@ import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.MyUserInfoActivity;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressLint("ShowToast")
-public class ResetPwdActivity extends BaseActivityTest implements OnClickListener{
+public class ResetPwdActivity extends SwipeBackActivity implements OnClickListener{
 
 	private EditText edit_pwd;
 	private ImageButton btn_pwd_clear;

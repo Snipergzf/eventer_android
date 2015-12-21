@@ -29,9 +29,9 @@ import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.view.MyCountTimer;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -44,7 +44,7 @@ import cn.smssdk.SMSSDK;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class RegisterActivity extends BaseActivityTest implements OnClickListener, Callback {
+public class RegisterActivity extends SwipeBackActivity implements OnClickListener, Callback {
 
 	private EditText edit_tel,edit_code,edit_pwd;
 	private TextView btn_send_code;

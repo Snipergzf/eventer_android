@@ -341,7 +341,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 			if (mAllowParentInterceptOnEdge && !mScaleDragDetector.isScaling()) {
 				if (mScrollEdge == EDGE_BOTH || (mScrollEdge == EDGE_LEFT && dx >= 1f)
 						|| (mScrollEdge == EDGE_RIGHT && dx <= -1f)) {
-					imageView.getParent().requestDisallowInterceptTouchEvent(false);
+					if(getScale() <= mMinScale)
+					    imageView.getParent().requestDisallowInterceptTouchEvent(false);
 				}
 			}
 		}

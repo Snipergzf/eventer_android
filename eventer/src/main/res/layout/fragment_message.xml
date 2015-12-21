@@ -6,25 +6,66 @@
     android:orientation="vertical" 
     android:background="#eee"
     tools:context="${relativePackage}.${activityClass}" >
-    >
 
-  <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/title"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="@color/caldroid_holo_blue_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical" >
 
-        
+
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_top_bar"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/tab_message"
+            android:background="@color/caldroid_holo_blue_light"
             android:textColor="#ffffff"
             android:textSize="20sp" />
-   
+        <ImageView
+            android:id="@+id/iv_contact"
+            android:layout_width="@dimen/height_top_bar"
+            android:layout_height="@dimen/height_top_bar"
+            android:padding="8dp"
+            android:src="@drawable/chatroom"
+            android:contentDescription="@string/contact"
+            android:background="@drawable/ib_bg"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+        <LinearLayout
+            android:id="@+id/note"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="#e2e0ca"
+            android:layout_below="@+id/tv_title"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            >
+            <View
+                android:background="@drawable/no_net"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginEnd="3dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/no_net_info"
+                android:textColor="#777"/>
+        </LinearLayout>
+
+
     </RelativeLayout>
 
 
@@ -39,6 +80,14 @@
          android:fadingEdge="none"
          android:listSelector="@color/transparent_background"
          android:scrollbars="none"/>
+    <ImageView
+        android:id="@+id/iv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/no_msg"
+        android:layout_marginTop="70dp"
+        android:contentDescription="@string/empty"/>
 
 
 </LinearLayout>

@@ -30,10 +30,10 @@ import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.http.UploadPicToServer;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
 import com.eventer.app.widget.SpinerPopWindow;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FillInUserInfoActivity extends BaseActivityTest{
+public class FillInUserInfoActivity extends SwipeBackActivity {
 	private EditText et_usernick,et_emial;
 	private TextView tv_sex;
 	TextView  tv_year,tv_school,tv_major,tv_class;

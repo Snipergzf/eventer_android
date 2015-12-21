@@ -38,11 +38,11 @@ import com.eventer.app.entity.Comment;
 import com.eventer.app.entity.Event;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.ui.base.BaseActivityTest;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.widget.refreshlist.IXListViewLoadMore;
 import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
 import com.eventer.app.widget.refreshlist.XListView;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -58,7 +58,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class Activity_EventComment extends BaseActivityTest {
+public class Activity_EventComment extends SwipeBackActivity {
 	private String eid;
 	private Event event;
 	private Context context;
@@ -117,6 +117,7 @@ public class Activity_EventComment extends BaseActivityTest {
 		iv_event_cover=(ImageView)findViewById(R.id.iv_event_cover);
 
 		btn_comment_send.setOnClickListener(new MyListener());
+//		listview.setEmptyView(findViewById(R.id.tv_empty));
 		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,

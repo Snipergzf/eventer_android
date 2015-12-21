@@ -22,7 +22,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
-import com.eventer.app.ui.base.BaseActivityTest;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressLint({ "Recycle", "InflateParams" })
-public class Calendar_ViewSchedual extends BaseActivityTest implements OnClickListener {
+public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickListener {
 
 	public TextView eventtitle;
 	ImageView iv_delete,iv_edit,iv_share,iv_finish;

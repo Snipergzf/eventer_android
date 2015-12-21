@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:2:1-307:12
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:2:1-324:12
 	package
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:4:5-30
 		INJECTED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml
@@ -126,387 +126,428 @@ ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:34:5-67
 	android:name
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:34:22-64
 application
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:36:5-305:19
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:37:5-322:19
 MERGED from [ProjectAS:sMSSDK:unspecified] F:\ProjectAS\eventer\build\intermediates\exploded-aar\ProjectAS\sMSSDK\unspecified\AndroidManifest.xml:12:5-13:19
 MERGED from [com.android.support:appcompat-v7:23.1.1] F:\ProjectAS\eventer\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.1.1] F:\ProjectAS\eventer\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] F:\ProjectAS\eventer\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:42:9-45
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:43:9-45
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:41:9-41
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:42:9-41
 	android:supportsRtl
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:44:9-35
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:45:9-35
 	android:exported
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:43:9-32
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:44:9-32
 	android:debuggable
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:45:9-34
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:46:9-34
 	tools:ignore
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:47:9-42
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:48:9-42
 	android:configChanges
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:39:9-55
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:40:9-55
 	android:allowBackup
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:38:9-35
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:39:9-35
 	android:icon
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:40:9-45
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:41:9-45
 	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:46:9-68
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:47:9-68
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:37:9-38
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:38:9-38
 activity#com.eventer.app.main.MainActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:48:9-52:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:49:9-54:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:50:13-45
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:51:13-45
 	android:launchMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:51:13-44
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:52:13-44
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:53:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:49:13-46
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:50:13-46
 activity#com.eventer.app.main.LoginActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:53:9-57:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:55:9-62:20
+	android:enabled
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:58:13-35
+	android:process
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:60:13-38
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:55:13-57
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:57:13-57
 	android:launchMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:56:13-43
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:54:13-47
-activity#com.eventer.app.main.LoadActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:59:9-70:20
-	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:61:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:61:13-43
 	android:exported
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:63:13-36
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:59:13-36
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:56:13-47
+activity#com.eventer.app.main.LoadActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:64:9-74:20
+	android:screenOrientation
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:66:13-49
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:64:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:68:13-72
 	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:62:13-52
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:67:13-52
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:60:13-46
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:65:13-46
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:65:13-69:29
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:69:13-73:29
 action#android.intent.action.MAIN
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:66:17-69
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:70:17-69
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:66:25-66
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:70:25-66
 category#android.intent.category.LAUNCHER
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:68:17-77
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:72:17-77
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:68:27-74
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:72:27-74
 activity#com.eventer.app.main.RegisterActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:71:9-74:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:75:9-78:20
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:72:13-50
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:76:13-50
 activity#com.eventer.app.main.ResetPwdActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:76:9-79:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:80:9-83:20
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:77:13-50
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:81:13-50
 activity#com.eventer.app.main.CheckPhoneActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:80:9-82:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:84:9-86:20
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:81:13-52
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:85:13-52
 activity#com.eventer.app.other.Activity_Chat
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:83:9-87:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:87:9-91:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:85:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:89:13-49
 	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:86:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:90:13-64
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:84:13-48
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:88:13-48
 activity#com.eventer.app.other.Activity_Course_View
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:88:9-91:20
-	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:90:13-49
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:89:13-55
-activity#com.eventer.app.other.Activity_Course_Edit
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:92:9-95:20
 	android:screenOrientation
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:94:13-49
 	android:name
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:93:13-55
-activity#com.eventer.app.other.Activity_Course_Setting
+activity#com.eventer.app.other.Activity_Course_Edit
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:96:9-99:20
 	android:screenOrientation
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:98:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:97:13-58
-activity#com.eventer.app.other.Activity_AddCourse
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:97:13-55
+activity#com.eventer.app.other.Activity_Course_Setting
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:100:9-103:20
 	android:screenOrientation
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:102:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:101:13-53
-activity#com.eventer.app.other.Activity_AddCourseTable
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:104:9-108:20
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:101:13-58
+activity#com.eventer.app.other.Activity_AddCourse
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:104:9-107:20
 	android:screenOrientation
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:106:13-49
-	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:107:13-46
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:105:13-58
-activity#com.eventer.app.other.Activity_CourseTable_View
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:109:9-112:20
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:105:13-53
+activity#com.eventer.app.other.Activity_AddCourseTable
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:108:9-112:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:111:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:110:13-49
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:111:13-46
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:110:13-60
-activity#com.eventer.app.other.Activity_Contact
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:109:13-58
+activity#com.eventer.app.other.Activity_CourseTable_View
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:113:9-116:20
 	android:screenOrientation
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:115:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:114:13-51
-activity#com.eventer.app.other.Activity_Friends_New
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:114:13-60
+activity#com.eventer.app.other.Activity_Contact
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:117:9-121:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:120:13-49
-	android:launchMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:119:13-44
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:119:13-49
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:120:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:118:13-55
-activity#com.eventer.app.other.LocalContactActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:122:9-125:20
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:118:13-51
+activity#com.eventer.app.other.Activity_Friends_New
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:122:9-126:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:124:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:125:13-49
+	android:launchMode
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:124:13-44
 	android:name
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:123:13-55
+activity#com.eventer.app.other.LocalContactActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:127:9-130:20
+	android:screenOrientation
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:129:13-49
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:128:13-55
 activity#com.eventer.app.other.Activity_UserInfo
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:126:9-129:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:131:9-135:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:128:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:133:13-49
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:134:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:127:13-52
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:132:13-52
 activity#com.eventer.app.other.Activity_Friends_Search
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:130:9-133:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:136:9-139:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:132:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:138:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:131:13-58
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:137:13-58
 activity#com.eventer.app.other.Calendar_AddSchedual
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:134:9-137:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:140:9-143:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:136:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:142:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:135:13-55
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:141:13-55
 activity#com.eventer.app.other.Calendar_ViewSchedual
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:138:9-141:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:144:9-147:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:140:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:146:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:139:13-56
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:145:13-56
 activity#com.eventer.app.other.Activity_Friends_Add
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:142:9-145:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:148:9-151:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:144:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:150:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:143:13-55
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:149:13-55
 activity#com.eventer.app.other.MyUserInfoActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:158:9-161:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:164:9-167:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:160:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:166:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:159:13-53
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:165:13-53
 activity#com.eventer.app.other.ShowBigImage
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:162:9-165:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:168:9-172:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:164:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:170:13-49
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:171:13-64
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:163:13-47
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:169:13-47
 activity#com.eventer.app.other.UpdateNickActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:166:9-169:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:173:9-176:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:168:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:175:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:167:13-53
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:174:13-53
 activity#com.eventer.app.other.ChatRoomActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:170:9-173:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:177:9-180:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:172:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:179:13-49
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:171:13-51
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:178:13-51
 activity#com.eventer.app.other.ChatRoomCreatActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:174:9-178:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:181:9-185:20
 	android:screenOrientation
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:176:13-49
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:183:13-49
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:177:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:184:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:175:13-56
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:182:13-56
 activity#com.mob.tools.MobUIShell
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:181:9-185:70
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:188:9-192:70
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:185:13-67
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:192:13-67
 	android:configChanges
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:183:13-74
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:190:13-74
 	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:184:13-60
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:191:13-60
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:182:13-52
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:189:13-52
 receiver#com.eventer.app.widget.calendar.AlarmReceiver
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:187:9-188:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:194:9-195:20
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:187:19-64
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:194:19-64
 service#com.eventer.app.socket.SocketService
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:190:9-191:19
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:197:9-198:19
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:190:18-54
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:197:18-54
 activity#com.eventer.app.other.Activity_EventDetail
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:193:9-197:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:200:9-204:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:195:13-74
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:202:13-74
 	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:196:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:203:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:194:13-55
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:201:13-55
 activity#com.eventer.app.main.FillInUserInfoActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:198:9-201:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:205:9-208:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:200:13-69
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:207:13-69
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:199:13-56
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:206:13-56
 activity#com.eventer.app.other.Activity_EventComment
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:202:9-206:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:209:9-214:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:204:13-65
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:211:13-65
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:205:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:213:13-72
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:212:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:203:13-56
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:210:13-56
 activity#com.eventer.app.other.ShareToSingleActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:207:9-211:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:215:9-219:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:209:13-67
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:217:13-67
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:210:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:218:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:208:13-56
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:216:13-56
 activity#com.eventer.app.other.ShareToGroupActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:212:9-216:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:220:9-224:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:214:13-67
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:222:13-67
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:215:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:223:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:213:13-55
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:221:13-55
 activity#com.eventer.app.other.ChatRoomSettingActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:217:9-220:20
-	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:219:13-69
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:218:13-58
-activity#com.eventer.app.other.CollectActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:221:9-224:20
-	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:223:13-59
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:222:13-50
-activity#com.eventer.app.other.BrowserHistoryActivity
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:225:9-228:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:227:13-67
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:227:13-69
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:226:13-57
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:226:13-58
+activity#com.eventer.app.other.CollectActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:229:9-232:20
+	android:label
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:231:13-59
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:230:13-50
+activity#com.eventer.app.other.BrowserHistoryActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:233:9-236:20
+	android:label
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:235:13-67
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:234:13-57
 activity#com.eventer.app.other.FeedbackActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:229:9-233:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:237:9-241:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:231:13-60
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:239:13-60
 	android:windowSoftInputMode
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:232:13-68
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:240:13-68
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:230:13-51
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:238:13-51
 activity#com.eventer.app.other.MsgAlertActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:234:9-237:20
-	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:236:13-61
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:235:13-51
-activity#com.eventer.app.other.ShareSchedualActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:238:9-241:20
-	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:240:13-61
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:239:13-56
-activity#com.eventer.app.other.AssistFunctionActivity
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:242:9-245:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:244:13-67
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:244:13-61
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:243:13-57
-activity#com.eventer.app.other.AboutActivity
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:243:13-51
+activity#com.eventer.app.other.ShareSchedualActivity
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:246:9-249:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:248:13-57
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:248:13-61
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:247:13-48
-activity#com.eventer.app.other.OurTeamActivity
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:247:13-56
+activity#com.eventer.app.other.AssistFunctionActivity
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:250:9-253:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:252:13-60
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:252:13-67
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:251:13-50
-receiver#com.eventer.app.receiver.NetworkReceiver
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:260:9-267:20
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:260:19-59
-intent-filter#android.intent.category.DEFAULT+android.net.conn.CONNECTIVITY_CHANGE
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:261:13-266:29
-	android:priority
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:261:28-57
-action#android.net.conn.CONNECTIVITY_CHANGE
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:262:17-79
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:262:25-76
-category#android.intent.category.DEFAULT
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:264:17-76
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:264:27-73
-service#com.eventer.app.service.CheckInternetService
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:269:9-270:19
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:269:18-62
-receiver#com.eventer.app.receiver.NoNetReceiver
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:272:9-278:20
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:272:19-57
-intent-filter#android.intent.category.DEFAULT+android.net.conn.ISGOODORBAD
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:273:13-277:29
-action#android.net.conn.ISGOODORBAD
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:274:17-71
-	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:274:25-68
-activity#com.eventer.app.other.GroupSchedualActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:279:9-282:20
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:251:13-57
+activity#com.eventer.app.other.AboutActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:254:9-257:20
 	android:label
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:281:13-63
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:256:13-57
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:280:13-56
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:255:13-48
+activity#com.eventer.app.other.OurTeamActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:258:9-261:20
+	android:label
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:260:13-60
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:259:13-50
+receiver#com.eventer.app.receiver.NetworkReceiver
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:268:9-275:20
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:268:19-59
+intent-filter#android.intent.category.DEFAULT+android.net.conn.CONNECTIVITY_CHANGE
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:269:13-274:29
+	android:priority
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:269:28-57
+action#android.net.conn.CONNECTIVITY_CHANGE
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:270:17-79
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:270:25-76
+category#android.intent.category.DEFAULT
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:272:17-76
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:272:27-73
+service#com.eventer.app.service.CheckInternetService
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:277:9-278:19
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:277:18-62
+receiver#com.eventer.app.receiver.BootBroadcastReceiver
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:280:9-286:20
+	android:enabled
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:280:19-41
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:280:42-88
+intent-filter#android.intent.action.BOOT_COMPLETED+android.intent.alarm.START+android.intent.category.DEFAULT
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:281:13-285:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:282:17-78
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:282:25-76
+action#android.intent.alarm.START
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:283:17-69
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:283:25-66
+service#com.eventer.app.service.BootService
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:287:9-293:19
+	android:enabled
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:290:13-35
+	android:label
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:288:13-37
+	android:exported
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:291:13-36
+	android:icon
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:289:13-49
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:287:18-53
+activity#com.eventer.app.other.GroupSchedualActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:294:9-297:20
+	android:label
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:296:13-63
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:295:13-56
 service#com.umeng.update.net.DownloadingService
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:288:8-291:19
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:303:8-306:19
 	android:process
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:290:13-50
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:305:13-50
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:289:13-67
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:304:13-67
 activity#com.umeng.update.UpdateDialogActivity
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:293:9-296:20
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:308:9-311:20
 	android:theme
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:295:13-72
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:310:13-72
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:294:13-65
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:309:13-65
+activity#com.soundcloud.android.crop.CropImageActivity
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:312:9-313:49
+	android:theme
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:313:13-47
+	android:name
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:312:19-79
 meta-data#UMENG_APPKEY
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:298:9-300:56
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:315:9-317:56
 	android:value
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:300:13-53
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:317:13-53
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:299:13-40
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:316:13-40
 meta-data#UMENG_CHANNEL
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:301:9-303:37
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:318:9-320:37
 	android:value
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:303:13-34
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:320:13-34
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:302:13-41
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:319:13-41
 uses-sdk
 INJECTED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [ProjectAS:toggleButtonLib:unspecified] F:\ProjectAS\eventer\build\intermediates\exploded-aar\ProjectAS\toggleButtonLib\unspecified\AndroidManifest.xml:7:5-9:41
 MERGED from [ProjectAS:sMSSDK:unspecified] F:\ProjectAS\eventer\build\intermediates\exploded-aar\ProjectAS\sMSSDK\unspecified\AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:23.1.1] F:\ProjectAS\eventer\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] F:\ProjectAS\eventer\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [ProjectAS:lib:unspecified] F:\ProjectAS\eventer\build\intermediates\exploded-aar\ProjectAS\lib\unspecified\AndroidManifest.xml:6:5-8:41
 MERGED from [com.android.support:support-v4:23.1.1] F:\ProjectAS\eventer\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
 	android:targetSdkVersion
 		INJECTED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml

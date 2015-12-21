@@ -11,10 +11,13 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -45,12 +48,14 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.xml.sax.XMLReader;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import hirondelle.date4j.DateTime;
@@ -136,9 +141,10 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 					return d;
 				}
 
-			}, null);
+			}, new MyImgTagHandler());
 			long pubtime=event.getIssueTime();
 			String place=event.getPlace();
+
 
 //		    int len=(new Long(pubtime)).toString().length();
 			if(pubtime>0)
@@ -175,7 +181,8 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				tv_place.setText(place);
 			}
 			tv.setText(sp);
-//		    tv.setAutoLinkMask(Linkify.ALL); 
+//		    tv.setAutoLinkMask(Linkify.ALL);
+			tv.setClickable(true);
 			tv.setMovementMethod(LinkMovementMethod.getInstance());
 			DownPage(content);
 			EventOp e=new EventOp();
@@ -192,6 +199,41 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}else{
 			Toast.makeText(context, "活动为空！", Toast.LENGTH_SHORT).show();
 			finish();
+		}
+	}
+
+
+
+	public class MyImgTagHandler implements Html.TagHandler {
+
+		public void handleTag(boolean opening, String tag, Editable output,
+							  XMLReader xmlReader) {
+			if(tag.toLowerCase().equals("img")) {
+				int len = output.length();
+				ImageSpan[] images = output.getSpans(len - 1, len, ImageSpan.class);
+				String imgURL = images[0].getSource();
+				Log.e("1",len+imgURL);
+				output.setSpan(new ImageClick(context, imgURL), len-1, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+		}
+	}
+	private class ImageClick extends ClickableSpan {
+
+		private String url;
+		private Context context;
+
+		public ImageClick(Context context, String url) {
+
+			this.context = context;
+			this.url = url;
+
+		}
+		@Override
+		public void onClick(View widget) {
+			Intent intent = new Intent(context, ShowBigImage.class);
+			intent.putExtra("avatar", url);
+			Log.e("1", url);
+			context.startActivity(intent);
 		}
 	}
 
@@ -352,7 +394,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							return d;
 						}
 					}
-				}, null);
+				}, new MyImgTagHandler());
 			}
 			protected void onPostExecute(Spanned sp) {
 				tv.setText(sp);
@@ -457,6 +499,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 					tv_collect_num.startAnimation(scale_anim_1);
 					iv_collect.startAnimation(scale_anim_1);
 					isCollect=false;
+					Constant.AlarmChange=true;
 					Toast.makeText(context,
 							"已取消收藏", Toast.LENGTH_SHORT ).show();
 				}else{
@@ -512,6 +555,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							s.setType(1);
 							s.setFrequency(0);
 							sdao.saveSchedual(s);
+							IsTodayEvent(starttime);
 						}
 						Toast.makeText(context,
 								"已收藏", Toast.LENGTH_SHORT ).show();
@@ -663,6 +707,21 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				}
 			}
 		});
+	}
+
+	public void IsTodayEvent(String remind){
+		if(Constant.AlarmChange){
+			return;
+		}
+		DateTime Remind_dt = new DateTime(remind + ":00");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+		String today_str = formatter.format(new Date());
+		DateTime today_dt = new DateTime(today_str + ":00");
+
+		if (!today_dt.gt(Remind_dt)) {
+			Constant.AlarmChange=true;
+		}
+
 	}
 
 	@Override
