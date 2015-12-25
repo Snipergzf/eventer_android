@@ -61,7 +61,7 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 	ChatEntity message;
 	private CircleImageView iv_avatar;
 	private TextView tv_nick,tv_title,tv_time,tv_place,
-			tv_detail,tv_page_title,tv_time_info,tv_attend_num;
+			tv_detail,tv_time_info,tv_attend_num;
 	ImageView iv_finish,iv_collect;
 	private TextView tv_collect;
 	private ExpandGridView gridview;
@@ -92,7 +92,6 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 		// TODO Auto-generated method stub
 		tv_detail=(TextView)findViewById(R.id.tv_detail);
 		tv_nick=(TextView)findViewById(R.id.tv_nick);
-		tv_page_title=(TextView)findViewById(R.id.page_title);
 		tv_place=(TextView)findViewById(R.id.tv_place);
 		tv_time=(TextView)findViewById(R.id.tv_time);
 		tv_time_info=(TextView)findViewById(R.id.tv_time_info);
@@ -388,7 +387,7 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 
 		switch (type) {
 			case 2:
-				tv_page_title.setText("日程详情");
+				setBaseTitle("日程详情");
 				tv_time_info.setText("时间");
 				if(_f>0){
 					String[] repeat=getResources().getStringArray(R.array.eventrepeat);
@@ -398,7 +397,7 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 				tv_time.setText(start);
 				break;
 			case 3:
-				tv_page_title.setText("代办事项详情");
+				setBaseTitle("代办事项详情");
 				tv_time_info.setText("截止");
 				tv_time.setText(end);
 				break;
@@ -451,31 +450,32 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 				user.setNick(LocalUserInfo.getInstance(context).getUserInfo("nick"));
 				user.setUsername(name);
 				members.add(user);
-//				synchronized (gridview){
+				synchronized (gridview){
 					gridview.notifyAll();
-//				}
+				}
 			}else if(MyApplication.getInstance().getContactList().containsKey(name)){
 				UserInfo user=new UserInfo();
 				User u=MyApplication.getInstance().getContactList().get(name);
 				user.setAvatar(u.getAvatar());
 				user.setUsername(name);
-				String Beizhu=u.getBeizhu();
+				String Beizhu =u.getBeizhu();
 				if(TextUtils.isEmpty(Beizhu)){
 					user.setNick(u.getNick());
 				}else{
 					user.setNick(Beizhu);
 				}
 				members.add(user);
-//				synchronized (gridview){
+
+				synchronized (gridview){
 					gridview.notifyAll();
-//				}
+				}
 
 			}else if(MyApplication.getInstance().getUserList().containsKey(name)){
 				UserInfo u=MyApplication.getInstance().getUserList().get(name);
 				members.add(u);
-//				synchronized (gridview){
+				synchronized (gridview){
 					gridview.notifyAll();
-//				}
+				}
 			}else{
 				Map<String,String> map=new HashMap<>();
 				map.put("uid", name);

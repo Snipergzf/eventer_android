@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +26,6 @@ import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.http.HttpUnit;
-import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.UploadPicToServer;
 import com.eventer.app.http.UploadPicToServer.DataCallBack;
 import com.eventer.app.main.CheckPhoneActivity;
@@ -38,12 +36,11 @@ import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.widget.CircleProgressBar;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -61,7 +58,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
     RelativeLayout re_grade,re_school,re_major,re_class,re_reset_pwd;
 
     private TextView tv_grade,tv_school,tv_major,tv_class;
-
+    AlertDialog upload_dlg;
     private ImageView iv_avatar;
     private TextView tv_name;
     private TextView tv_sex;
@@ -194,7 +191,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                                 UpdateNickActivity.class),UPDATE_NICK);
                         break;
                     case R.id.re_sex:
-                        showSexDialog();
+//                        showSexDialog();
                         break;
                     case R.id.re_reset_pwd:
                         startActivity(new Intent().setClass(context, CheckPhoneActivity.class).putExtra("isLogin", true));
@@ -228,55 +225,11 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         PreferenceUtils.getInstance().setLoginPwd("");
         Constant.isLogin=false;
         Constant.isExist=true;
-        Constant.UID=null;
+//        Constant.UID=null;
         setResult(ProfileFragment.IS_EXIT, new Intent().putExtra("exit", true));
         finish();
     }
 
-    /***
-     * 设置性别的对话框
-     */
-    private void showSexDialog() {
-        final AlertDialog dlg = new AlertDialog.Builder(this).create();
-        dlg.show();
-        Window window = dlg.getWindow();
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
-        window.setContentView(R.layout.alertdialog);
-        LinearLayout ll_title = (LinearLayout) window
-                .findViewById(R.id.ll_title);
-        ll_title.setVisibility(View.VISIBLE);
-        TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
-        tv_title.setText("性别");
-        // 为确认按钮添加事件,执行退出应用操作
-        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
-        tv_paizhao.setText("男");
-        tv_paizhao.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SdCardPath")
-            public void onClick(View v) {
-                if (!sex.equals("1")) {
-                    tv_sex.setText("男");
-                    updateSex("1");
-                }
-                dlg.cancel();
-            }
-        });
-        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
-        tv_xiangce.setText("女");
-        tv_xiangce.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                if (!sex.equals("2")) {
-
-                    tv_sex.setText("女");
-                    updateSex("2");
-                }
-
-                dlg.cancel();
-            }
-        });
-
-    }
 
     @SuppressLint("SdCardPath")
     @Override
@@ -297,7 +250,6 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         File cameraFile = new File(Constant.IMAGE_PATH,
                 imageName);
         cameraFile.getParentFile().mkdirs();
-
         Uri destination = Uri.fromFile(new File(Constant.IMAGE_PATH, imageName));
         Log.e("1",destination+"");
         Crop.of(source, destination).asSquare().start(this);
@@ -306,6 +258,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == RESULT_OK&&!TextUtils.isEmpty(imageName)) {
             isUpload=true;
+            showDialog();
             updateAvatarInServer(imageName);
         } else if (resultCode == Crop.RESULT_ERROR) {
             Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
@@ -392,7 +345,6 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                         LocalUserInfo.getInstance(context)
                                 .setUserInfo("avatar", avatar);
                         if (avatar != null) {
-
                             String filename = avatar
                                     .substring(avatar.lastIndexOf("/") + 1);
                             Bitmap bitmap;
@@ -403,9 +355,10 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                                     + imageName, options);
                             iv_avatar.setImageBitmap(bitmap);
                             File f = new File(Constant.IMAGE_PATH, filename);
-                            f.mkdirs();
-                            if (f.exists()) {
-                                f.delete();
+                            if(f.exists()) {
+                                if(f.delete()){
+                                    Log.e("1","my_info del file");
+                                }
                             }
                             try {
                                 FileOutputStream out = new FileOutputStream(f);
@@ -441,6 +394,11 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                         Toast.makeText(context, "图片上传失败...",
                                 Toast.LENGTH_SHORT).show();
 
+                    }else if (code == -2) {
+
+                        Toast.makeText(context, "图片过大，无法上传...",
+                                Toast.LENGTH_SHORT).show();
+
                     } else {
                         if (!Constant.isConnectNet) {
                             Toast.makeText(context, getText(R.string.no_network) + "图片上传失败！", Toast.LENGTH_SHORT).show();
@@ -457,6 +415,9 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                     e.printStackTrace();
                 } finally {
                     isUpload = false;
+                    if(upload_dlg!=null){
+                        upload_dlg.cancel();
+                    }
                 }
 
             }
@@ -465,50 +426,15 @@ public class MyUserInfoActivity extends SwipeBackActivity {
 
     }
 
-    private Bitmap compressImage(Bitmap image) {
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        int options = 100;
-        while ( baos.toByteArray().length / 1024>200) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;//每次都减少10
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-        return BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
-    }
-
-    private Bitmap comp(Bitmap image) {
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
-            baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
-        }
-        ByteArrayInputStream isBm;
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap;
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        float hh = 480f;
-        float ww = 480f;
-        int be = 1;//be=1表示不缩放
-        if (w > h && w > ww) {
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0)
-            be = 1;
-        newOpts.inSampleSize = be;
-        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
-        isBm = new ByteArrayInputStream(baos.toByteArray());
-        bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+    private void showDialog(){
+        upload_dlg = new AlertDialog.Builder(this).create();
+        upload_dlg.show();
+        Window window = upload_dlg.getWindow();
+        // *** 主要就是在这里实现这种效果的.
+        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+        window.setContentView(R.layout.upload_dialog);
+        CircleProgressBar progress=(CircleProgressBar)window.findViewById(R.id.progress);
+        progress.setColorSchemeResources(android.R.color.holo_orange_light);
     }
 
     /***
@@ -554,67 +480,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         }.execute(params);}
 
 
-    /***
-     * 修改性别
-     */
-    public void updateSex(final String sexnum) {
-        isUpload=true;
-        Map<String, String> map = new HashMap<>();
-
-        map.put("sex", sexnum);
-        map.put("uid", Constant.UID+"");
-        map.put("token", Constant.TOKEN);
-        map.put("name","");
-        map.put("email", "");
-        map.put("grade","");
-        map.put("school", "");
-        map.put("major", "");
-        map.put("class", "");
-        map.put("user_rank", "0");
-        LoadDataFromHTTP task = new LoadDataFromHTTP(
-                context, Constant.URL_UPDATE_SELFINFO, map);
-
-        task.getData(new com.eventer.app.http.LoadDataFromHTTP.DataCallBack() {
-
-            @SuppressLint("ShowToast")
-            @Override
-            public void onDataCallBack(JSONObject data) {
-                try {
-                    int code = data.getInteger("status");
-                    if (code == 0) {
-                        Toast.makeText(context, "更新成功...",
-                                Toast.LENGTH_SHORT).show();
-                        LocalUserInfo.getInstance(context)
-                                .setUserInfo("sex", sexnum);
-                    } else if (code == 17) {
-
-                        Toast.makeText(context, "更新失败,请稍后重试！",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        if(!Constant.isConnectNet){
-                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(context, "服务器繁忙请重试...",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                } catch (JSONException e) {
-
-                    Toast.makeText(context, "数据解析错误...",
-                            Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }catch (Exception e) {
-                    // TODO: handle exception
-                }finally {
-                    isUpload=false;
-                }
-
-            }
-
-        });
-    }
+//
 
     public void refreshNick() {
         // TODO Auto-generated method stub
@@ -634,5 +500,112 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
+//    /***
+//     * 设置性别的对话框
+//     */
+//    private void showSexDialog() {
+//        final AlertDialog dlg = new AlertDialog.Builder(this).create();
+//        dlg.show();
+//        Window window = dlg.getWindow();
+//        // *** 主要就是在这里实现这种效果的.
+//        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+//        window.setContentView(R.layout.alertdialog);
+//        LinearLayout ll_title = (LinearLayout) window
+//                .findViewById(R.id.ll_title);
+//        ll_title.setVisibility(View.VISIBLE);
+//        TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
+//        tv_title.setText("性别");
+//        // 为确认按钮添加事件,执行退出应用操作
+//        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
+//        tv_paizhao.setText("男");
+//        tv_paizhao.setOnClickListener(new View.OnClickListener() {
+//            @SuppressLint("SdCardPath")
+//            public void onClick(View v) {
+//                if (!sex.equals("1")) {
+//                    tv_sex.setText("男");
+//                    updateSex("1");
+//                }
+//                dlg.cancel();
+//            }
+//        });
+//        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
+//        tv_xiangce.setText("女");
+//        tv_xiangce.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//
+//                if (!sex.equals("2")) {
+//
+//                    tv_sex.setText("女");
+//                    updateSex("2");
+//                }
+//
+//                dlg.cancel();
+//            }
+//        });
+//
+//    }
+
+    /***
+     //     * 修改性别
+     //     */
+//    public void updateSex(final String sexnum) {
+//        isUpload=true;
+//        Map<String, String> map = new HashMap<>();
+//
+//        map.put("sex", sexnum);
+//        map.put("uid", Constant.UID+"");
+//        map.put("token", Constant.TOKEN);
+//        map.put("name","");
+//        map.put("email", "");
+//        map.put("grade","");
+//        map.put("school", "");
+//        map.put("major", "");
+//        map.put("class", "");
+//        map.put("user_rank", "0");
+//        LoadDataFromHTTP task = new LoadDataFromHTTP(
+//                context, Constant.URL_UPDATE_SELFINFO, map);
+//
+//        task.getData(new com.eventer.app.http.LoadDataFromHTTP.DataCallBack() {
+//
+//            @SuppressLint("ShowToast")
+//            @Override
+//            public void onDataCallBack(JSONObject data) {
+//                try {
+//                    int code = data.getInteger("status");
+//                    if (code == 0) {
+//                        Toast.makeText(context, "更新成功...",
+//                                Toast.LENGTH_SHORT).show();
+//                        LocalUserInfo.getInstance(context)
+//                                .setUserInfo("sex", sexnum);
+//                    } else if (code == 17) {
+//
+//                        Toast.makeText(context, "更新失败,请稍后重试！",
+//                                Toast.LENGTH_SHORT).show();
+//                    } else {
+//
+//                        if(!Constant.isConnectNet){
+//                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+//                        }else{
+//                            Toast.makeText(context, "服务器繁忙请重试...",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//
+//                    Toast.makeText(context, "数据解析错误...",
+//                            Toast.LENGTH_SHORT).show();
+//                    e.printStackTrace();
+//                }catch (Exception e) {
+//                    // TODO: handle exception
+//                }finally {
+//                    isUpload=false;
+//                }
+//
+//            }
+//
+//        });
+//    }
 
 }

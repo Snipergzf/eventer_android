@@ -47,7 +47,7 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        android:theme="@style/Theme.Translucent.NoTitleBar" >
         <activity
             android:name="com.eventer.app.main.MainActivity"
             android:label="@string/app_name"
@@ -56,11 +56,8 @@
         </activity>
         <activity
             android:name="com.eventer.app.main.LoginActivity"
-            android:enabled="true"
-            android:exported="true"
             android:label="@string/title_activity_login"
-            android:launchMode="singleTop"
-            android:process=":remote" >
+            android:launchMode="singleTop" >
         </activity>
         <!-- 开屏页 -->
         <activity
@@ -113,7 +110,7 @@
         <activity
             android:name="com.eventer.app.other.Activity_Contact"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.eventer.app.other.Activity_Friends_New"
@@ -127,7 +124,7 @@
         <activity
             android:name="com.eventer.app.other.Activity_UserInfo"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.eventer.app.other.Activity_Friends_Search"
@@ -196,7 +193,7 @@
         <activity
             android:name="com.eventer.app.other.Activity_EventDetail"
             android:label="@string/title_activity_activity__event_detail"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.eventer.app.main.FillInUserInfoActivity"
@@ -205,7 +202,7 @@
         <activity
             android:name="com.eventer.app.other.Activity_EventComment"
             android:label="@string/title_activity_event_comment"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
         <activity

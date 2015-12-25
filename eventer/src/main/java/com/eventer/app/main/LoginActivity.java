@@ -1,7 +1,7 @@
 package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.widget.CircleProgressBar;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -41,7 +43,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	private ImageButton btn_user_clear,btn_pwd_clear;
 	private EditText edit_user,edit_pwd;
 	TextView tv_login_help,tv_newuser;
-	ProgressDialog dialog;
+	AlertDialog dialog;
 	private Context context;
 	public static boolean isActive=false;
 	@Override
@@ -131,7 +133,19 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		btn_login.setOnClickListener(this);
 		tv_login_help.setOnClickListener(this);
 		tv_newuser.setOnClickListener(this);
-		dialog = new ProgressDialog(context);
+	}
+
+	private void showDialog(){
+		dialog = new AlertDialog.Builder(this).create();
+		dialog.show();
+		Window window = dialog.getWindow();
+		// *** 主要就是在这里实现这种效果的.
+		// 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+		window.setContentView(R.layout.upload_dialog);
+		CircleProgressBar progress=(CircleProgressBar)window.findViewById(R.id.progress);
+		progress.setColorSchemeResources(android.R.color.holo_orange_light);
+		TextView info=(TextView)window.findViewById(R.id.tv_info);
+		info.setText("正在登录中~");
 	}
 	/***
 	 * 各个控件的点击事件
@@ -144,9 +158,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				if(!TextUtils.isEmpty(edit_user.getText())&&!TextUtils.isEmpty(edit_pwd.getText())){
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0); //强制隐藏键盘
-					dialog.setMessage("正在登录...");
-					dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-					dialog.show();
+					showDialog();
 					UserLogin();
 				}else{
 					Toast.makeText(context, "请完善登录信息！", Toast.LENGTH_SHORT).show();
@@ -200,38 +212,43 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 							Log.e("1", "登录成功！");
 							PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
 							PreferenceUtils.getInstance().setLoginPwd(edit_pwd.getText().toString());
-							Constant.isLogin=true;
-							Constant.LoginTime=System.currentTimeMillis()/1000;
-							JSONObject jsonLogin= data.getJSONObject("user_action");
-							Constant.UID=jsonLogin.getInteger("uid")+"";
+							Constant.isLogin = true;
+							Constant.LoginTime = System.currentTimeMillis() / 1000;
+							JSONObject jsonLogin = data.getJSONObject("user_action");
+							Constant.UID = jsonLogin.getInteger("uid") + "";
 							PreferenceUtils.getInstance().setUserId(Constant.UID);
 							Log.e("1", Constant.UID + "---" + PreferenceUtils.getInstance().getUserId());
-							Constant.TOKEN=jsonLogin.getString("token");
+							Constant.TOKEN = jsonLogin.getString("token");
 							initSelfInfo();
 							MobclickAgent.onProfileSignIn(Constant.UID);
 							break;
 						case 1:
-							dialog.dismiss();
+							if(dialog!=null)
+								dialog.cancel();
 							Toast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
 									.show();
 							break;
 						case 2:
-							dialog.dismiss();
+							if(dialog!=null)
+								dialog.cancel();
 							Toast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
 									.show();
 						case 23:
-							dialog.dismiss();
-							Toast toast=Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
+							if(dialog!=null)
+								dialog.cancel();
+							Toast toast = Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
 							//toast.setGravity(Gravity.CENTER, 0, 0);
 							toast.show();
 							break;
 						case -1:
-							dialog.dismiss();
+							if(dialog!=null)
+								dialog.cancel();
 							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG)
 									.show();
 							break;
 						default:
-							dialog.dismiss();
+							if(dialog!=null)
+								dialog.cancel();
 							Toast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
 									.show();
 					}
@@ -281,7 +298,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("class", info.getString("class"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("major", info.getString("major"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("avatar", info.getString("avatar"));
-							dialog.dismiss();
+
 							Intent intent = new Intent();
 							intent.setClass(context, MainActivity.class);
 							startActivity(intent);
@@ -324,6 +341,8 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		if(dialog!=null)
+			dialog.cancel();
 		Log.e("1", "login--destory");
 	}
 

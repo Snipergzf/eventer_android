@@ -92,8 +92,10 @@ public class Activity_Contact extends SwipeBackActivity implements OnClickListen
 
         tv_total.setText(String.valueOf(contactList.size())+"位联系人");
 
-        RelativeLayout re_newfriends=(RelativeLayout) headView.findViewById(R.id.re_newfriends);
-        RelativeLayout re_chatroom=(RelativeLayout) headView.findViewById(R.id.re_chatroom);
+        RelativeLayout re_newfriends = (RelativeLayout) headView.findViewById(R.id.re_newfriends);
+        RelativeLayout re_chatroom = (RelativeLayout) headView.findViewById(R.id.re_chatroom);
+        RelativeLayout re_phone = (RelativeLayout) headView.findViewById(R.id.re_phone);
+        RelativeLayout re_search = (RelativeLayout) headView.findViewById(R.id.re_search);
         re_newfriends.setOnClickListener(new OnClickListener(){
 
             @Override
@@ -111,7 +113,22 @@ public class Activity_Contact extends SwipeBackActivity implements OnClickListen
             }
 
         });
+        re_phone.setOnClickListener(new OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context,LocalContactActivity.class));
+            }
+
+        });
+        re_search.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context,Activity_Friends_Search.class));
+            }
+
+        });
 
     }
 

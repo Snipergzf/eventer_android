@@ -2,6 +2,8 @@ package com.eventer.app.http;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -11,7 +13,11 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -76,9 +82,13 @@ public class UploadPicToServer {
                         Toast.makeText(context, "访问服务器出错...", Toast.LENGTH_LONG)
                                 .show();
                     }
-                }else if(dataCallBack!=null){
+                }else if(msg.what == 404&&dataCallBack!=null){
                     JSONObject jsonObject =new JSONObject();
                     jsonObject.put("status",-1);
+                    dataCallBack.onDataCallBack(jsonObject);
+                }else if(dataCallBack!=null){
+                    JSONObject jsonObject =new JSONObject();
+                    jsonObject.put("status",-2);
                     dataCallBack.onDataCallBack(jsonObject);
                 }
             }
@@ -88,6 +98,25 @@ public class UploadPicToServer {
 
             @SuppressWarnings("rawtypes")
             public void run() {
+                File file = new File(imageuri);
+                if (file.exists()) {
+                    try {
+                        compressBitmap(imageuri);
+                    } catch (Exception e) {
+                        Message msg = new Message();
+                        msg.what = 500;
+                        msg.obj = null;
+                        handler.sendMessage(msg);
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    Message msg = new Message();
+                    msg.what = 500;
+                    msg.obj = null;
+                    handler.sendMessage(msg);
+                    return;
+                }
                 String result;
                 String end = "\r\n";
                 String MULTIPART_FORM_DATA = "multipart/form-data";
@@ -157,6 +186,13 @@ public class UploadPicToServer {
                     msg.obj = jsonObject;
                     handler.sendMessage(msg);
 
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                    Message msg = new Message();
+                    msg.what = 500;
+                    msg.obj = null;
+                    handler.sendMessage(msg);
+                    Log.e("1",e.toString());
                 }  catch (Exception e) {
                     e.printStackTrace();
                     Message msg = new Message();
@@ -177,6 +213,41 @@ public class UploadPicToServer {
             in = in.substring(1);
         }
         return in;
+    }
+
+    public void compressBitmap(String imgPath){
+        File outputFile = new File(imgPath);
+        long fileSize = outputFile.length();
+        final long fileMaxSize = 160 * 1024;
+        if (fileSize >= fileMaxSize) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(imgPath, options);
+            int height = options.outHeight;
+            int width = options.outWidth;
+
+            double scale = Math.sqrt((float) fileSize / fileMaxSize);
+            options.outHeight = (int) (height / scale);
+            options.outWidth = (int) (width / scale);
+            options.inSampleSize = (int) (scale + 0.5);
+            options.inJustDecodeBounds = false;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
+            outputFile = new File(imgPath);
+            FileOutputStream fos ;
+            try {
+                fos = new FileOutputStream(outputFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+                fos.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            if (!bitmap.isRecycled()) {
+                bitmap.recycle();
+            }
+        }
     }
 
     /**

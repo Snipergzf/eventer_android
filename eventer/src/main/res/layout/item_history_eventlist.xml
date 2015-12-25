@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:paddingLeft="15dp"
-  android:paddingRight="15dp"
-  android:paddingTop="6dp"
-  android:paddingBottom="6dp"
-  android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
@@ -22,22 +22,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/tv_title"
         android:textSize="12sp"
-        android:singleLine="true"      
+        android:singleLine="true"
         android:textColor="@color/caldroid_gray"/>
 
-   <TextView
+    <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
         android:textSize="12sp"
-        android:singleLine="true" 
+        android:singleLine="true"
         android:textColor="@color/caldroid_gray"
         android:layout_toRightOf="@id/tv_info"
-        android:gravity="right"
+        android:layout_toEndOf="@id/tv_info"
+        android:gravity="end"
         android:layout_alignParentRight="true"
-         />
+        android:layout_alignParentEnd="true"
+        />
 
 </RelativeLayout>

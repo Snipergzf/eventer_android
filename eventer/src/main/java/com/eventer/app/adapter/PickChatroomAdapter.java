@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -279,25 +278,25 @@ public  class PickChatroomAdapter extends BaseAdapter {
         View convertView;
         switch (size) {
             case 1:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_1, new LinearLayout(context),
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_1, null,
                         false);
 
                 break;
             case 2:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_2, new LinearLayout(context),
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_2, null,
                         false);
                 break;
             case 3:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_3, new LinearLayout(context),
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_3, null,
                         false);
                 break;
             case 4:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, new LinearLayout(context),
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, null,
                         false);
                 break;
 
             default:
-                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, new LinearLayout(context),
+                convertView = layoutInflater.inflate(R.layout.item_chatroom_checkbox_4, null,
                         false);
                 break;
 

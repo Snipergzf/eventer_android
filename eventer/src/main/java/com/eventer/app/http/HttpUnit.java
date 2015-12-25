@@ -118,30 +118,7 @@ public class HttpUnit {
 			Log.e("1","add-friend" +info);
 		}else if(status==30001){
 			info="系统正在玩命维护中。。。";
-		} else if(status==1){
-			info="很遗憾，查无此人！";
-		}else{
-			info="搜索好友失败！";
-		}
-		map.put("status",status);
-		map.put("info", info);
-		return map;
-	}
-
-
-	public static Map<String,Object> sendSetAvatarRequest( Map<String, String> params) throws Exception{
-		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/user/set_avatar", params);
-		Log.e("1",jsonString);
-		JSONObject jsonObject= new  JSONObject(jsonString);
-		Map<String,Object> map=new HashMap<String, Object>();
-		int status=jsonObject.getInt("status");
-		String info="";
-		if(status==0){
-			info=jsonObject.getString("friend_action");
-			Log.e("1","add-friend" +info);
-		}else if(status==30001){
-			info="系统正在玩命维护中。。。";
-		} else if(status==12){
+		}else if(status==1){
 			info="很遗憾，查无此人！";
 		}else{
 			info="搜索好友失败！";

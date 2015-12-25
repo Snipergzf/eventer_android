@@ -41,16 +41,14 @@ public class ChatRoomActivity extends SwipeBackActivity {
         grouplist = dao.getRoomList();
 
         groupListView = (ListView) findViewById(R.id.groupListView);
-        View headerView = LayoutInflater.from(this).inflate(
-                R.layout.item_mychatroom_header, null);
         View footerView = LayoutInflater.from(this).inflate(
                 R.layout.item_mychatroom_footer, null);
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
         tv_total.setText(String.valueOf(grouplist.size()) + "个群聊");
         groupAdapter = new ChatRoomAdapter(this, grouplist);
-        groupListView.addHeaderView(headerView);
         groupListView.addFooterView(footerView);
         groupListView.setAdapter(groupAdapter);
+        groupListView.setEmptyView(findViewById(R.id.tv_empty));
 
         final ImageView iv_add = (ImageView) this.findViewById(R.id.iv_add);
         //ImageView iv_search = (ImageView) this.findViewById(R.id.iv_search);

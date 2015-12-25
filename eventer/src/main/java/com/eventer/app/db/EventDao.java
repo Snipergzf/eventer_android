@@ -222,6 +222,7 @@ public class EventDao {
 			String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
 			String theme= c.getString(c.getColumnIndex(COLUMN_NAME_THEME ));
 			String time= c.getString(c.getColumnIndex(COLUMN_NAME_TIME ));
+			String place= c.getString(c.getColumnIndex(COLUMN_NAME_PLACE));
 			long pubtime = c.getLong(c.getColumnIndex(COLUMN_NAME_PUBTIME));
 			String operator=c.getString(c.getColumnIndex(EventOpDao.COLUMN_NAME_OPERATOR));
 			int operation=c.getInt(c.getColumnIndex(EventOpDao.COLUMN_NAME_OPERATION));
@@ -235,6 +236,7 @@ public class EventDao {
 			info.setContent(content);
 			info.setTheme(theme);
 			info.setTime(time);
+			info.setPlace(place);
 			info.setOperation(operation);
 			info.setOperator(operator);
 			info.setOpTime(operatetime);

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,7 +58,7 @@ public class LocalContactActivity extends SwipeBackActivity {
 	private List<Phone> mData=new ArrayList<>();
 	private Map<String,UserInfo> isExist=new HashMap<>();
 	private XListView listView;
-//	private final int REFRESH_MORE = 1;
+	private final int INIT_LIST = 1;
 	private LinearLayout loading;
 
 	public Context context;
@@ -83,10 +85,10 @@ public class LocalContactActivity extends SwipeBackActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				String phone=mData.get(position).getTel();
+				String phone = mData.get(position).getTel();
 				UserInfo u;
-				if(isExist.containsKey(phone)){
-					u=isExist.get(phone);
+				if (isExist.containsKey(phone)) {
+					u = isExist.get(phone);
 					startActivity(new Intent().setClass(context, Activity_UserInfo.class).putExtra("user", u.getUsername()));
 
 				}
@@ -101,36 +103,57 @@ public class LocalContactActivity extends SwipeBackActivity {
 				handleTel(SourceData);
 			}
 		});
-		PhoneDao dao=new PhoneDao(context);
-		mData=dao.getPhoneList();
-		dao.getTelList();
-		UserDao d=new UserDao(context);
-		if(mData==null||mData.size()==0){
-			loading.setVisibility(View.VISIBLE);
-			getContactList();
-		}else{
-			loading.setVisibility(View.GONE);
-			for (Phone p: mData) {
-				String user=p.getUserId();
-				if(!TextUtils.isEmpty(user)){
-					UserInfo info=d.getInfo(user);
-					isExist.put(p.getTel()+"", info);
-				}
-				Map<String, String> map=new HashMap<>();
-				map.put("phone", p.getTel());
-				map.put("name", p.getRelName());
-				SourceData.add(map);
-			}
-			handleTel(SourceData);
-		}
+
 	}
+
+	Handler mHandler = new Handler(new Handler.Callback() {
+		@Override
+		public boolean handleMessage(Message msg) {
+			switch (msg.what) {
+				case INIT_LIST:
+					PhoneDao dao=new PhoneDao(context);
+					mData=dao.getPhoneList();
+					dao.getTelList();
+					UserDao d=new UserDao(context);
+					if(mData==null||mData.size()==0){
+						loading.setVisibility(View.VISIBLE);
+						refresh();
+						getContactList();
+					}else{
+						loading.setVisibility(View.GONE);
+						for (Phone p: mData) {
+							String user=p.getUserId();
+							if(!TextUtils.isEmpty(user)){
+								UserInfo info=d.getInfo(user);
+								isExist.put(p.getTel()+"", info);
+							}
+							Map<String, String> map=new HashMap<>();
+							map.put("phone", p.getTel());
+							map.put("name", p.getRelName());
+							SourceData.add(map);
+						}
+						refresh();
+						handleTel(SourceData);
+					}
+					break;
+				default:
+					break;
+			}
+			return false;
+		}
+	});
 
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
-		refresh();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				mHandler.sendEmptyMessageDelayed(INIT_LIST, 200);
+			}
+		}).start();
 	}
 
 
@@ -259,9 +282,6 @@ public class LocalContactActivity extends SwipeBackActivity {
 						map.put("name", p.getRelName());
 						SourceData.add(map);
 					}
-					if(!Constant.isConnectNet){
-						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
-					}
 
 					Collections.sort(mData, new FullPinyinComparator() {
 					});
@@ -320,11 +340,11 @@ public class LocalContactActivity extends SwipeBackActivity {
 	 *
 	 */
 	public void handleTel(final Object... params) {
-		new AsyncTask<Object, Object,Map<String,UserInfo>>() {
+		new AsyncTask<Object, Object,Boolean>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			protected Map<String,UserInfo> doInBackground(Object... params) {
-				Map<String,UserInfo> result=new HashMap<>();
+			protected Boolean doInBackground(Object... params) {
+				Boolean result=true;
 				try {
 					List<Map<String, String>> list=(List<Map<String, String>>) params[0];
 					Map<String,UserInfo> user=MyApplication.getInstance().getUserList();
@@ -374,11 +394,17 @@ public class LocalContactActivity extends SwipeBackActivity {
 				} catch (Throwable e) {
 					// TODO Auto-generated catch block
 					Log.e("1", e.toString());
-					return null;
+					return false;
 				}
 			}
-			protected void onPostExecute(Map<String,UserInfo> result) {
+			protected void onPostExecute(Boolean result) {
 				// 设置adapter
+				if(!result){
+					if(!Constant.isConnectNet){
+						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+					}
+				}
+
 				loading.setVisibility(View.GONE);
 				refresh();
 

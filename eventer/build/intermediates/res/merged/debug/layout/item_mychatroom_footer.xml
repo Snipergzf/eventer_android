@@ -6,11 +6,10 @@
 
     <TextView
         android:id="@+id/tv_total"
-        android:background="#EBEBEB"
+        android:background="@color/main_bg"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:text="0个群聊"
         android:textColor="#AAAAAA"
         android:textSize="15sp" />
 

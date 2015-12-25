@@ -87,7 +87,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F9F9F9"
-        
+        android:divider="@color/caldroid_lighter_gray"
+        android:dividerHeight="0.01dp"
         android:descendantFocusability="afterDescendants"
         android:fastScrollEnabled="false" />
 

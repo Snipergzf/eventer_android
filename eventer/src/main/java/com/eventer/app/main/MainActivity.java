@@ -146,13 +146,13 @@ public class MainActivity extends FragmentActivity {
 		context = this;
 		instance = this;
 		Constant.AlarmChange=true;
-		if (Constant.isExist||TextUtils.isEmpty(Constant.UID)) {
-			startActivity(new Intent().setClass(context, LoginActivity.class));
-			finish();
-			MobclickAgent.onProfileSignOff();
-			MobclickAgent.onKillProcess(context);
-			System.exit(0);
-		}
+//		if (Constant.isExist||TextUtils.isEmpty(Constant.UID)) {
+//			startActivity(new Intent().setClass(context, LoginActivity.class));
+//			finish();
+//			MobclickAgent.onProfileSignOff();
+//			MobclickAgent.onKillProcess(context);
+//			System.exit(0);
+//		}
 		initData();
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null) {

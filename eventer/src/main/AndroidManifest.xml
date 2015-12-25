@@ -44,7 +44,7 @@
         android:exported="true"
         android:supportsRtl="true"
         android:debuggable="true"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:theme="@style/Theme.Translucent.NoTitleBar"
         tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".main.MainActivity"
@@ -55,9 +55,6 @@
         <activity
             android:name=".main.LoginActivity"
             android:label="@string/title_activity_login"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":remote"
             android:launchMode="singleTop" >
         </activity>
         <!-- 开屏页 -->
@@ -117,7 +114,7 @@
         <activity
             android:name=".other.Activity_Contact"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name=".other.Activity_Friends_New"
@@ -131,7 +128,7 @@
         <activity
             android:name=".other.Activity_UserInfo"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name=".other.Activity_Friends_Search"
@@ -200,7 +197,7 @@
         <activity
             android:name=".other.Activity_EventDetail"
             android:label="@string/title_activity_activity__event_detail"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name=".main.FillInUserInfoActivity"
@@ -209,7 +206,7 @@
         <activity
             android:name=".other.Activity_EventComment"
             android:label="@string/title_activity_event_comment"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
         </activity>
         <activity

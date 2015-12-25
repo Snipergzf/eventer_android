@@ -76,7 +76,6 @@
                 android:background="#ffffff"
                 android:columnWidth="56dp"
                 android:gravity="start"
-       
                 android:listSelector="@android:color/transparent"
                 android:numColumns="4"
                 />
@@ -122,25 +121,35 @@
                 android:background="#dadada" />
 
 
-           
 
-            <RelativeLayout
-                android:id="@+id/re_clear"
+
+            <TextView
+                android:id="@+id/tv_group_schedule"
                 android:layout_width="match_parent"
-                android:layout_height="50dip"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:text="@string/group_schedual"
                 android:background="#ffffff"
-                android:padding="10dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="清空聊天记录"
-                    android:textColor="#353535"
-                    android:textSize="16sp"
-                    android:typeface="serif" />
-            </RelativeLayout>
+                android:padding="15dp"
+                android:layout_marginTop="20dp"
+                android:textColor="#353535"
+                android:textSize="16sp"
+                android:typeface="serif" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="#dadada" />
+            <TextView
+                android:id="@+id/tv_clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_mag"
+                android:background="#ffffff"
+                android:padding="15dp"
+                android:textColor="#353535"
+                android:textSize="16sp"
+                android:typeface="serif" />
 
             <Button
                 android:id="@+id/btn_exit_grp"

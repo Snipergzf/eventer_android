@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="64dp">
+        <LinearLayout
+            android:id="@+id/publisher"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="vertical">
+            <com.eventer.app.widget.CircleImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/default_avatar" />
+            <TextView
+                android:id="@+id/tv_nick"
+                android:layout_width="36dp"
+                android:paddingTop="2dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/nick"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+        <View
+            android:id="@+id/view_temp"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/publisher"
+            android:layout_toEndOf="@+id/publisher"
+            android:background="@color/btn_green_noraml"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/view_temp"
+            android:layout_toEndOf="@id/view_temp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="#353535"
+                android:text="@string/nick"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textSize="12sp"
+                android:text="@string/nick"
+                android:singleLine="true"
+                android:textColor="@color/caldroid_gray"/>
+        </RelativeLayout>
+
+</RelativeLayout>

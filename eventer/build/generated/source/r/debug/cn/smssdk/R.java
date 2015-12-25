@@ -47,32 +47,32 @@ public final class R {
 		public static final int smssdk_white = 0x7f0c0073;
 	}
 	public static final class drawable {
-		public static final int smssdk_back_arrow = 0x7f02016f;
-		public static final int smssdk_back_arrow2 = 0x7f020170;
-		public static final int smssdk_btn_disenable = 0x7f020171;
-		public static final int smssdk_btn_enable = 0x7f020172;
-		public static final int smssdk_cl_divider = 0x7f020173;
-		public static final int smssdk_clear_search = 0x7f020174;
-		public static final int smssdk_corners_bg = 0x7f020175;
-		public static final int smssdk_corners_bg_nor = 0x7f020176;
-		public static final int smssdk_corners_bg_pre = 0x7f020177;
-		public static final int smssdk_country_bg_selector = 0x7f020178;
-		public static final int smssdk_country_group_scroll_down = 0x7f020179;
-		public static final int smssdk_country_group_scroll_up = 0x7f02017a;
-		public static final int smssdk_cp_default_avatar = 0x7f02017b;
-		public static final int smssdk_default_avatar = 0x7f02017c;
-		public static final int smssdk_dialog_back = 0x7f02017d;
-		public static final int smssdk_dialog_bg = 0x7f02017e;
-		public static final int smssdk_dialog_btn_back = 0x7f02017f;
-		public static final int smssdk_dialog_btn_nor = 0x7f0201ac;
-		public static final int smssdk_dialog_btn_pre = 0x7f0201ad;
-		public static final int smssdk_edittext_bg_selector = 0x7f020180;
-		public static final int smssdk_input_bg_focus = 0x7f020181;
-		public static final int smssdk_input_bg_normal = 0x7f020182;
-		public static final int smssdk_input_bg_special_focus = 0x7f020183;
-		public static final int smssdk_input_bg_special_normal = 0x7f020184;
-		public static final int smssdk_search_icon = 0x7f020185;
-		public static final int smssdk_sharesdk_icon = 0x7f020186;
+		public static final int smssdk_back_arrow = 0x7f020173;
+		public static final int smssdk_back_arrow2 = 0x7f020174;
+		public static final int smssdk_btn_disenable = 0x7f020175;
+		public static final int smssdk_btn_enable = 0x7f020176;
+		public static final int smssdk_cl_divider = 0x7f020177;
+		public static final int smssdk_clear_search = 0x7f020178;
+		public static final int smssdk_corners_bg = 0x7f020179;
+		public static final int smssdk_corners_bg_nor = 0x7f02017a;
+		public static final int smssdk_corners_bg_pre = 0x7f02017b;
+		public static final int smssdk_country_bg_selector = 0x7f02017c;
+		public static final int smssdk_country_group_scroll_down = 0x7f02017d;
+		public static final int smssdk_country_group_scroll_up = 0x7f02017e;
+		public static final int smssdk_cp_default_avatar = 0x7f02017f;
+		public static final int smssdk_default_avatar = 0x7f020180;
+		public static final int smssdk_dialog_back = 0x7f020181;
+		public static final int smssdk_dialog_bg = 0x7f020182;
+		public static final int smssdk_dialog_btn_back = 0x7f020183;
+		public static final int smssdk_dialog_btn_nor = 0x7f0201c8;
+		public static final int smssdk_dialog_btn_pre = 0x7f0201c9;
+		public static final int smssdk_edittext_bg_selector = 0x7f020184;
+		public static final int smssdk_input_bg_focus = 0x7f020185;
+		public static final int smssdk_input_bg_normal = 0x7f020186;
+		public static final int smssdk_input_bg_special_focus = 0x7f020187;
+		public static final int smssdk_input_bg_special_normal = 0x7f020188;
+		public static final int smssdk_search_icon = 0x7f020189;
+		public static final int smssdk_sharesdk_icon = 0x7f02018a;
 	}
 	public static final class raw {
 		public static final int smssdk_pydb = 0x7f050001;
@@ -188,7 +188,7 @@ public final class R {
 		public static final int smssdk_search_contact = 0x7f060084;
 		public static final int smssdk_send_invitation = 0x7f060085;
 		public static final int smssdk_send_mobile_detail = 0x7f060086;
-		public static final int smssdk_send_sounds = 0x7f060167;
+		public static final int smssdk_send_sounds = 0x7f06017d;
 		public static final int smssdk_send_sounds_identify_code = 0x7f060087;
 		public static final int smssdk_send_sounds_success = 0x7f060088;
 		public static final int smssdk_smart_verify_already = 0x7f060089;

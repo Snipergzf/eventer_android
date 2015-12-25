@@ -221,8 +221,8 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 				break;
 			case R.id.note:
 				context.startService(new Intent(context, CheckInternetService.class));
-				Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
-				startActivity(intent);
+//				Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+//				startActivity(intent);
 				return;
 			default:
 				index=-1;

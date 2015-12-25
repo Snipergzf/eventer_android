@@ -19,8 +19,11 @@
             android:id="@+id/iv_add"
             android:layout_width="56dp"
             android:layout_height="match_parent"
+            android:padding="8dp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:clickable="true"
+            android:contentDescription="@string/add"
             android:src="@drawable/ib_add"
             android:background="@drawable/ib_bg" />
 
@@ -31,8 +34,21 @@
         android:id="@+id/groupListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@color/caldroid_lighter_gray"
+        android:dividerHeight="0.01dp"
         android:background="@android:color/transparent"
         android:descendantFocusability="afterDescendants"
         android:fastScrollEnabled="false" />
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_group"
+        android:padding="6dp"
+        android:textSize="13sp"
+        android:textColor="@color/caldroid_darker_gray"
+        android:visibility="gone"/>
+
 
 </LinearLayout>
