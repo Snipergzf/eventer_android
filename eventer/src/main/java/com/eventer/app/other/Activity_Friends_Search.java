@@ -2,7 +2,7 @@ package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -32,9 +33,9 @@ import com.eventer.app.entity.Phone;
 import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
+import com.eventer.app.widget.CircleProgressBar;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -46,7 +47,6 @@ import java.util.Map;
 public class Activity_Friends_Search extends Activity {
 	String search_info;
 	private Context context;
-	private ProgressDialog dialog;
 	private ListView listview;
 	private EditText et_search;
 	private TextView tv_search;
@@ -55,6 +55,7 @@ public class Activity_Friends_Search extends Activity {
 	private List<Phone> mData;
 	private List<Phone> totaldata;
 	private  MyAdapter adapter;
+	AlertDialog dialog;
 	private List<String> phonelist=new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,11 +169,7 @@ public class Activity_Friends_Search extends Activity {
 	 * @param friend_info tel
 	 */
 	private void searchUser(String friend_info) {
-		dialog = new ProgressDialog(
-				Activity_Friends_Search.this);
-		dialog.setMessage("正在查找联系人...");
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.show();
+		showDialog();
 		Map<String, String> map = new HashMap<>();
 		map.put("search_name", friend_info);
 		map.put("uid", Constant.UID+"");
@@ -208,51 +205,59 @@ public class Activity_Friends_Search extends Activity {
 				}
 			}
 			protected void onPostExecute(Map<String,Object> map) {
-				int status=(int)map.get("status");
-				String info=(String)map.get("info");
-				if(status==0){
 					try {
-						JSONObject jsonObject= new  JSONObject(info);
-						String uid=jsonObject.getString("id");
-						String avatar=jsonObject.getString("avatar");
-//						String user_rank=jsonObject.getString("user_rank");
-						String name=jsonObject.getString("name");
+						int status=(int)map.get("status");
+						String info=(String)map.get("info");
+						if(status==0){
+							JSONObject jsonObject= new  JSONObject(info);
+							String uid=jsonObject.getString("id");
+							String avatar=jsonObject.getString("avatar");
+							String name=jsonObject.getString("name");
 
-						User u=new User();
-						u.setAvatar(avatar);
-						u.setNick(name);
-						u.setUsername(uid);
-						u.setType(22);
-						UserDao dao=new UserDao(context);
-						if(!dao.isExistContactID(uid+"")){
-							dao.saveContact(u);
+							User u=new User();
+							u.setAvatar(avatar);
+							u.setNick(name);
+							u.setUsername(uid);
+							u.setType(22);
+							UserDao dao=new UserDao(context);
+							if(!dao.isExistContactID(uid+"")){
+								dao.saveContact(u);
+							}
+
+							Intent intent=new Intent();
+							intent.putExtra("user", uid);
+							intent.setClass(Activity_Friends_Search.this,Activity_UserInfo.class);
+							startActivity(intent);
+						}else{
+							Toast.makeText(context, info, Toast.LENGTH_LONG).show();
 						}
-
-						Intent intent=new Intent();
-						intent.putExtra("user", uid);
-						intent.setClass(Activity_Friends_Search.this,Activity_UserInfo.class);
-						startActivity(intent);
-					} catch (JSONException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(context, "无法连接服务器~请检查网络！", Toast.LENGTH_LONG).show();
+						}
 					}finally{
 						if(dialog!=null)
-							dialog.dismiss();
+							dialog.cancel();
 					}
-
-				}else {
-					if(!Constant.isConnectNet){
-						Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
-					}else{
-						Toast.makeText(context, info, Toast.LENGTH_LONG).show();
-					}
-
-				}
-				if(dialog!=null)
-					dialog.dismiss();
 
 			}
 		}.execute(params);}
+	private void showDialog(){
+		dialog = new AlertDialog.Builder(this).create();
+		dialog.show();
+		Window window = dialog.getWindow();
+		// *** 主要就是在这里实现这种效果的.
+		// 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+		window.setContentView(R.layout.upload_dialog);
+		CircleProgressBar progress=(CircleProgressBar)window.findViewById(R.id.progress);
+		progress.setColorSchemeResources(android.R.color.holo_orange_light);
+		TextView info=(TextView)window.findViewById(R.id.tv_info);
+		info.setText("我们正在努力搜索~");
+	}
 
 	public class MyAdapter extends BaseAdapter {
 

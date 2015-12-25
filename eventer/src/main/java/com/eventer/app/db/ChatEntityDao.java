@@ -282,42 +282,44 @@ public class ChatEntityDao {
 		SQLiteDatabase db=dbHelper.getWritableDatabase();
 		if(db.isOpen()){
 			Cursor c=db.query(true, TABLE_NAME, null,COLUMN_NAME_SHARE+"=?", new String[]{shareId}, null, null, COLUMN_NAME_TIME+" desc", "0,1");
+           if(c.moveToNext()){
+			   long id = c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
+			   String talkto = c.getString(c.getColumnIndex(COLUMN_NAME_FROM));
+			   String path = c.getString(c.getColumnIndex(COLUMN_NAME_PATH));
+			   String status=c.getString(c.getColumnIndex(COLUMN_NAME_STATUS));
+			   String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
+			   String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
+			   String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
+			   String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+			   int temp=c.getColumnIndex("NotRead");
+			   int unread=0;
+			   if(temp>-1){
+				   unread=c.getInt(temp);
+			   }
+			   cinfo.setContent(content);
+			   cinfo.setFrom(talkto);
+			   Log.e("1",id+"");
+			   cinfo.setMsgID(id);//id为空时返回0值
+			   cinfo.setNotRead(unread);
+			   cinfo.setShareId(share);
+			   if(status!=null){
+				   cinfo.setStatus(Integer.parseInt(status));
+			   }else{
+				   cinfo.setStatus(-1);
+			   }
+			   if(cType!=null){
+				   cinfo.setType(Integer.parseInt(cType));
+			   }else{
+				   cinfo.setType(-1);
+			   }
+			   if(time!=null){
+				   cinfo.setMsgTime(Long.parseLong(time));
+			   }else{
+				   cinfo.setMsgTime(-1);
+			   }
+			   cinfo.setImgPath(path);
+		   }
 
-			long id = c.getLong(c.getColumnIndex(COLUMN_NAME_ID));
-			String talkto = c.getString(c.getColumnIndex(COLUMN_NAME_FROM));
-			String path = c.getString(c.getColumnIndex(COLUMN_NAME_PATH));
-			String status=c.getString(c.getColumnIndex(COLUMN_NAME_STATUS));
-			String time=c.getString(c.getColumnIndex(COLUMN_NAME_TIME));
-			String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
-			String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
-			String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
-			int temp=c.getColumnIndex("NotRead");
-			int unread=0;
-			if(temp>-1){
-				unread=c.getInt(temp);
-			}
-			cinfo.setContent(content);
-			cinfo.setFrom(talkto);
-			Log.e("1",id+"");
-			cinfo.setMsgID(id);//id为空时返回0值
-			cinfo.setNotRead(unread);
-			cinfo.setShareId(share);
-			if(status!=null){
-				cinfo.setStatus(Integer.parseInt(status));
-			}else{
-				cinfo.setStatus(-1);
-			}
-			if(cType!=null){
-				cinfo.setType(Integer.parseInt(cType));
-			}else{
-				cinfo.setType(-1);
-			}
-			if(time!=null){
-				cinfo.setMsgTime(Long.parseLong(time));
-			}else{
-				cinfo.setMsgTime(-1);
-			}
-			cinfo.setImgPath(path);
 			c.close();
 			return cinfo;
 

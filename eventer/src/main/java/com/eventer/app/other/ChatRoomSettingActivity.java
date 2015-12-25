@@ -56,7 +56,7 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 	// 成员列表
 	ExpandGridView gridview;
 	private RelativeLayout re_change_groupname;
-	private RelativeLayout re_clear;
+	private TextView tv_clear,tv_group_schedule;
 	FileUtil fileUtil;
 	// 删除并退出
 	private Button exitBtn;
@@ -94,8 +94,8 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 		gridview = (ExpandGridView) findViewById(R.id.gridview);
 
 		re_change_groupname = (RelativeLayout) findViewById(R.id.re_change_groupname);
-
-		re_clear = (RelativeLayout) findViewById(R.id.re_clear);
+		tv_clear = (TextView) findViewById(R.id.tv_clear);
+		tv_group_schedule = (TextView) findViewById(R.id.tv_group_schedule);
 
 		exitBtn = (Button) findViewById(R.id.btn_exit_grp);
 		adapter = new GridAdapter(this, members);
@@ -124,7 +124,8 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 
 		getGroupMember(groupId);
 		re_change_groupname.setOnClickListener(this);
-		re_clear.setOnClickListener(this);
+		tv_group_schedule.setOnClickListener(this);
+		tv_clear.setOnClickListener(this);
 		exitBtn.setOnClickListener(this);
 		exitBtn.setVisibility(View.GONE);
 	}
@@ -139,12 +140,16 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.re_clear: // 清空聊天记录
+			case R.id.tv_clear: // 清空聊天记录
 				progressDialog.setMessage("正在清空群消息...");
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				progressDialog.show();
 				// 按照你们要求必须有个提示，防止记录太少，删得太快，不提示
 				clearGroupHistory();
+				break;
+			case R.id.tv_group_schedule:
+				startActivity(new Intent().setClass(context,GroupSchedualActivity.class)
+				.putExtra("groupId",groupId));
 				break;
 			case R.id.re_change_groupname:
 				//showNameAlert();
@@ -331,12 +336,12 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 								user.setNick(LocalUserInfo.getInstance(context).getUserInfo(
 										"nick"));
 								user.setUsername(info);
-								synchronized (members){
+//								synchronized (members){
 									members.set(i, user);
-								}
-								synchronized (adapter){
+//								}
+//								synchronized (adapter){
 									adapter.notifyDataSetChanged();
-								}
+//								}
 								try {
 									display[i]=LocalUserInfo.getInstance(context).getUserInfo(
 											"nick");
@@ -354,12 +359,12 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 									if(nick!=null){
 										user.setNick(nick);
 									}
-									synchronized (members){
+//									synchronized (members){
 										members.set(i, user);
-									}
-									synchronized (adapter){
+//									}
+//									synchronized (adapter){
 										adapter.notifyDataSetChanged();
-									}
+//									}
 									try {
 										display[i]=nick;
 										saveDisplay();
@@ -480,12 +485,12 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 							user.setType(22);
 							user.setUsername(name);
 							MyApplication.getInstance().addUser(user);
-							synchronized (members){
+//							synchronized (members){
 								members.set(pos, user);
-							}
-							synchronized (adapter){
+//							}
+//							synchronized (adapter){
 								adapter.notifyDataSetChanged();
-							}
+//							}
 							Toast.makeText(context, "http-"+pos,
 									Toast.LENGTH_SHORT).show();
 							try {

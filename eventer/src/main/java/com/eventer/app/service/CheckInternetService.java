@@ -13,6 +13,8 @@ import com.eventer.app.main.LoginActivity;
 import com.eventer.app.util.PreferenceUtils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,23 +29,47 @@ public class CheckInternetService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String s= Ping("www.baidu.com");//ping website
-        if (!s.trim().equals("")) {//ping failed
+        if(Constant.isWifiConnected){
+            new Thread(checkWifiRunnable).start();
+        }else{
+            new Thread(pingRunnable).start();
+        }
+    }
+
+    Runnable pingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            boolean s= Ping("www.baidu.com");//ping website
+            sendNetBroadcast(s);
+        }
+    };
+
+    Runnable checkWifiRunnable = new Runnable() {
+        @Override
+        public void run() {
+            boolean s= checkWifi();//ping website
+            sendNetBroadcast(s);
+        }
+    };
+
+    private void sendNetBroadcast(boolean susseed){
+        if (!susseed) {//ping failed
+            Constant.isConnectNet=false;
             Intent broadcastIntent = new Intent();
             broadcastIntent.putExtra("net",false);
             broadcastIntent.setAction("android.net.conn.ISGOODORBAD");
             sendBroadcast(broadcastIntent);
         }else{//ping succeed
+            Constant.isConnectNet=true;
             Intent broadcastIntent = new Intent();
             broadcastIntent.putExtra("net",true);
             broadcastIntent.setAction("android.net.conn.ISGOODORBAD");
             sendBroadcast(broadcastIntent);
         }
-
     }
 
-    public String Ping(String str) {
-        String result;
+    public boolean Ping(String str) {
+        boolean result;
         Process p;
         try {
             // ping -c 3 -w 100:-c frequency of ping, 3 means ping 3 times ，-w 100
@@ -52,9 +78,8 @@ public class CheckInternetService extends IntentService {
             int status = p.waitFor();
             Log.e("ping", "status:" + status); //status：0  success ；1 permission denied
             if (status == 0) {
-                result = "";//ping success
+                result = true;//ping success
                 if(!Constant.isConnectNet){
-                    Constant.isConnectNet=true;
 //                    Toast.makeText(getApplicationContext(),"网络恢复正常~", Toast.LENGTH_SHORT).show();
                     if(!Constant.isLogin){
                         String user= PreferenceUtils.getInstance().getLoginUser();
@@ -69,14 +94,33 @@ public class CheckInternetService extends IntentService {
                 }
 
             } else {
-                result = "failed";//ping failed
-                Constant.isConnectNet=false;
+                result = false;//ping failed
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            result = "failed";//ping failed
+            result = false;//ping failed
         }
         return result;
+    }
+
+    public boolean checkWifi(){
+        try{
+            return isCaptivePortal();
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public static boolean isCaptivePortal() throws Exception{
+        URL url = new URL("http://www.baidu.com");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        int responseCode;
+        con.setConnectTimeout(6000);
+        con.setReadTimeout( 6000 );
+        responseCode = con.getResponseCode();
+        return responseCode == 200;
     }
     /**
      * 执行异步任务

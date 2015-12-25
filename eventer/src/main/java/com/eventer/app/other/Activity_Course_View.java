@@ -1,8 +1,6 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,18 +17,18 @@ import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.db.CourseDao;
-import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.Course;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.List;
 
+@SuppressLint("SetTextI18n")
 public class Activity_Course_View extends Activity  implements OnClickListener{
 
-	private ImageView back_img;
-	private TextView kc_delete,kc_name,kc_teacher,kc_info;
-	private Button edit_course_btn;
+	private TextView kc_name;
+	private TextView kc_teacher;
+	private TextView kc_info;
 	private LinearLayout ll_timeblock;
-	private List<Course> mData=new ArrayList<Course>();
 	public static int REQUEST=0x34;
 	private int courseid;
 	private Context	context;
@@ -39,12 +37,12 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_info_view);
 		courseid=getIntent().getIntExtra("CourseID", -1);
-		back_img=(ImageView)findViewById(R.id.kc_view_back);
-		kc_delete=(TextView)findViewById(R.id.kc_delete_tv);
+		ImageView back_img = (ImageView) findViewById(R.id.kc_view_back);
+		TextView kc_delete = (TextView) findViewById(R.id.kc_delete_tv);
 		kc_name=(TextView)findViewById(R.id.view_kcname_tv);
 		kc_teacher=(TextView)findViewById(R.id.view_kcteacher_tv);
 		kc_info=(TextView)findViewById(R.id.view_kcinfo_tv);
-		edit_course_btn=(Button)findViewById(R.id.edit_course_info);
+		Button edit_course_btn = (Button) findViewById(R.id.edit_course_info);
 		ll_timeblock=(LinearLayout)findViewById(R.id.ll_timeblock);
 		context=Activity_Course_View.this;
 		if(courseid!=-1){
@@ -58,10 +56,10 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 
 	private void initView(){
 		CourseDao dao=new CourseDao(context);
-		mData=dao.getCourseList(courseid+"");
+		List<Course> mData = dao.getCourseList(courseid + "");
 		if(mData.size()>0){
-			String name=mData.get(0).getClassname();
-			String teacher=mData.get(0).getTeacher();
+			String name= mData.get(0).getClassname();
+			String teacher= mData.get(0).getTeacher();
 			if(!TextUtils.isEmpty(name)){
 				kc_name.setText(name);
 				kc_info.setText(name);
@@ -69,7 +67,7 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 			if(!TextUtils.isEmpty(teacher)){
 				kc_teacher.setText(teacher);
 			}
-			for (int i=0;i<mData.size();i++) {
+			for (int i=0;i< mData.size();i++) {
 				View item =LayoutInflater.from(Activity_Course_View.this).inflate(R.layout.item_course_detail_view, null);
 				LinearLayout info=(LinearLayout)item.findViewById(R.id.ll_info);
 				if(i==0){
@@ -81,10 +79,10 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 				TextView tv_week = (TextView) item.findViewById(R.id.tv_week);
 				TextView tv_time = (TextView) item.findViewById(R.id.tv_time);
 
-				String week=mData.get(i).getWeek();
-				String time=mData.get(i).getTime();
-				String loc=mData.get(i).getLoction();
-				int day=mData.get(i).getDay();
+				String week= mData.get(i).getWeek();
+				String time= mData.get(i).getTime();
+				String loc= mData.get(i).getLoction();
+				int day= mData.get(i).getDay();
 				if(!TextUtils.isEmpty(loc)){
 					tv_loc.setText(loc);
 				}

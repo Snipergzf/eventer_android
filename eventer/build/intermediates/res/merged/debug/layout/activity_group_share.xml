@@ -6,13 +6,15 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <include
-        android:id="@+id/top_title"
+        android:id="@+id/title"
         layout="@layout/top_layout"/>
     <ListView 
         android:id="@+id/listview"
         android:layout_below="@id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:dividerHeight="0.01dp"
+        android:divider="@color/caldroid_lighter_gray"
         android:background="@android:color/transparent"/>
 
 </RelativeLayout>

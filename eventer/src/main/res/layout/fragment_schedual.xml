@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
+    android:orientation="vertical"
     >
 
  <RelativeLayout
@@ -11,7 +11,7 @@
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/caldroid_holo_blue_light"
         android:gravity="center_vertical" >
-         <Spinner 
+         <Spinner
 		       android:id="@+id/spinner_view"
 		       android:visibility="gone"
 		       android:layout_width="wrap_content"
@@ -26,21 +26,21 @@
             android:text="@string/tab_schedual"
             android:textColor="#ffffff"
             android:textSize="20sp" />
-   
-		 <RelativeLayout 
+
+		 <RelativeLayout
             android:id="@+id/weekinfo_rl"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
 		    android:visibility="gone"
        		 >
-       		<LinearLayout 
+       		<LinearLayout
        		    android:id="@+id/weekinfo_ll"
        		    android:layout_width="wrap_content"
 			    android:layout_height="match_parent"
 			    android:layout_centerInParent="true"
 			    android:orientation="horizontal"
 			    android:background="@drawable/ib_bg">
-			    <TextView 
+			    <TextView
 			        android:id="@+id/weekinfo_tv"
 			        android:layout_width="wrap_content"
 			        android:layout_height="match_parent"
@@ -54,7 +54,7 @@
 		            android:scaleType="centerInside"
 		            android:src="@drawable/button2" />
 		     </LinearLayout>
-		</RelativeLayout> 
+		</RelativeLayout>
 		<LinearLayout
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
 		    android:layout_width="42dp"
 		    android:src="@drawable/ib_setting"
 		    android:background="@drawable/ib_bg"
-		    android:visibility="gone" 
+		    android:visibility="gone"
 		    android:padding="10dp"/>
       </LinearLayout>
     </RelativeLayout>
@@ -84,7 +84,7 @@
          android:id="@+id/fragment_container"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
-         android:orientation="vertical" 
+         android:orientation="vertical"
          />
 
 

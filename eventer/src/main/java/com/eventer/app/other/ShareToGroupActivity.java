@@ -234,24 +234,24 @@ public class ShareToGroupActivity extends SwipeBackActivity {
         View convertView;
         switch (size) {
             case 1:
-                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_1, new LinearLayout(this),
+                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_1, null,
                         false);
                 break;
             case 2:
-                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_2, new LinearLayout(this),
+                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_2, null,
                         false);
                 break;
             case 3:
-                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_3, new LinearLayout(this),
+                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_3, null,
                         false);
                 break;
             case 4:
-                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_4, new LinearLayout(this),
+                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_4, null,
                         false);
                 break;
 
             default:
-                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_4, new LinearLayout(this),
+                convertView = LayoutInflater.from(this).inflate(R.layout.item_chatroom_header_item_4, null,
                         false);
                 break;
         }

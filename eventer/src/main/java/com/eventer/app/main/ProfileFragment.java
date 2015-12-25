@@ -45,7 +45,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 
 	RelativeLayout re_myinfo;
 	RelativeLayout re_collect,re_history,re_msg_alert;
-	RelativeLayout re_assist,re_version,re_about,re_feedback;
+	RelativeLayout re_assist,re_version,re_about,re_feedback,re_course;
 	private Context context;
 	TextView tv_name;
 	private ImageView iv_avatar;
@@ -77,6 +77,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		iv_version_alert=rootView.findViewById(R.id.iv_version_alert);
 		re_myinfo=(RelativeLayout)rootView.findViewById(R.id.re_myinfo);
 		re_collect=(RelativeLayout)rootView.findViewById(R.id.re_collect);
+		re_course=(RelativeLayout) rootView.findViewById(R.id.re_course);
 		re_history=(RelativeLayout)rootView.findViewById(R.id.re_history);
 		re_about=(RelativeLayout)rootView.findViewById(R.id.re_about);
 		re_assist=(RelativeLayout)rootView.findViewById(R.id.re_assist);
@@ -95,6 +96,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		}
 		//设置监听器
 		re_collect.setOnClickListener(this);
+		re_course.setOnClickListener(this);
 		re_myinfo.setOnClickListener(this);
 		re_history.setOnClickListener(this);
 		re_about.setOnClickListener(this);
@@ -128,6 +130,8 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 				break;
 			case R.id.re_collect://我的收藏
 				startActivity(new Intent().setClass(context, CollectActivity.class));
+				break;
+			case R.id.re_course:
 				break;
 			case R.id.re_history://浏览历史
 				startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));

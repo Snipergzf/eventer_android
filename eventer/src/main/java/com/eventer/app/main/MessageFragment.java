@@ -86,8 +86,8 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 			@Override
 			public void onClick(View v) {
 				context.startService(new Intent(context, CheckInternetService.class));
-				Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
-				startActivity(intent);
+//				Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+//				startActivity(intent);
 			}
 		});
 		infalter=LayoutInflater.from(context);

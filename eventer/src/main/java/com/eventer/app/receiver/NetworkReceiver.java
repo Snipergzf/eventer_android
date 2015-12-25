@@ -32,6 +32,11 @@ public class NetworkReceiver extends BroadcastReceiver {
 
         if (activeNetInfo != null && activeNetInfo.isAvailable()
                 && activeNetInfo.isConnected()) { //net is available
+            if(activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI){
+                Constant.isWifiConnected=true;
+            }else{
+                Constant.isWifiConnected=false;
+            }
             context.startService(new Intent(context, CheckInternetService.class));//make sure the net is truly available
 
         }else if(Constant.isConnectNet){

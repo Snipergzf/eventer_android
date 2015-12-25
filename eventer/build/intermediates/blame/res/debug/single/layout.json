@@ -20,6 +20,10 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\notification_template_media.xml"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\umeng_update_dialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\umeng_update_dialog.xml"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_expression.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_expression.xml"
     },
@@ -172,6 +176,10 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\layout_wheel_term.xml"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_group_schedule.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_group_schedule.xml"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_sent_message.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_sent_message.xml"
     },
@@ -266,6 +274,10 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_register.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_register.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\upload_dialog.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\upload_dialog.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_main.xml",
@@ -398,6 +410,10 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_newfriendsmsag.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_newfriendsmsag.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\umeng_common_download_notification.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\umeng_common_download_notification.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\support_simple_spinner_dropdown_item.xml",

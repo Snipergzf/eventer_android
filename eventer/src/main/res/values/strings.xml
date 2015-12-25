@@ -239,6 +239,8 @@
     <string name="no_comment">_(:з」∠)_还没有人参与评论...</string>
     <string name="no_collect_event">_(:з」∠)_您还没有收藏任何活动...</string>
     <string name="no_browser_event">_(:з」∠)_您还没有浏览任何活动...</string>
+    <string name="no_group">_(:з」∠)_您还未加入任何群组...</string>
+    <string name="no_new_friend">_(:з」∠)_您还没有关于添加新伙伴的消息...</string>
     <string name="title_activity_reset_pwd">ResetPwdActivity</string>
     <string name="theme_all">推荐</string>
     <string name="theme_lecture">讲座</string>
@@ -261,6 +263,14 @@
     <string name="load_contact">正在刷新联系人...</string>
     <string name="clear_useless_event">清除过期活动</string>
     <string name="display_useless_event">显示过期活动</string>
+    <string name="avatar">头像</string>
+    <string name="boy">男</string>
+    <string name="uploading">我们正在努力上传中...</string>
+    <string name="group_schedual">群日程</string>
+    <string name="clear_mag">清空聊天记录</string>
+    <string name="搜索好友">搜索好友</string>
+    <string name="search_friend">搜索好友</string>
+    <string name="my_course">我的课程</string>
 
 </resources>
 

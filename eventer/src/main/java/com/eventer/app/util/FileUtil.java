@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
+
 @SuppressWarnings({"UnusedDeclaration"})
 public class FileUtil {
     private static final String TAG = FileUtil.class.getSimpleName();
@@ -40,6 +41,7 @@ public class FileUtil {
 
         try {
 
+
             File file = new File(local_image_path,filename);
             FileOutputStream outputstream = new FileOutputStream(file);
             if((filename.contains("png"))||(filename.contains("PNG")))
@@ -57,6 +59,8 @@ public class FileUtil {
         }
     }
 
+
+
     /**
      * 返回当前应用 SD 卡的绝对路径 like
      * /storage/sdcard0/Android/data/com.example.test/files
@@ -67,8 +71,6 @@ public class FileUtil {
         if(!root.exists()){
             root.mkdirs();
         }
-
-
         return local_image_path;
 
 

@@ -29,21 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/iv_collect"
-        android:layout_toLeftOf="@+id/iv_option"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_title"
         android:textSize="12sp"
         android:singleLine="true"       
         android:textColor="@color/caldroid_gray"
         android:gravity="center_vertical"/>
-
-    <com.eventer.app.widget.CircleImageView
-        android:id="@+id/iv_option"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_below="@+id/tv_title"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/option_bg" />
 
 </RelativeLayout>

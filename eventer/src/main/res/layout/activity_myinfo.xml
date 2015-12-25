@@ -22,18 +22,21 @@
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             app:border_width="2dp"
             app:border_color="@color/black"
             android:src="@drawable/default_avatar" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:text="头像"
+            android:layout_marginStart="20dp"
+            android:text="@string/avatar"
             android:textColor="#353535"
             android:textSize="16sp" />
 
@@ -45,7 +48,7 @@
             android:layout_marginRight="12dp"
             android:background="#dadada" />
     </RelativeLayout>
-   
+
     <RelativeLayout
         android:id="@+id/re_name"
         android:layout_width="match_parent"
@@ -58,9 +61,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:text="昵称"
+            android:layout_marginStart="20dp"
+            android:text="@string/nick"
             android:textColor="#353535"
             android:textSize="16sp" />
 
@@ -69,11 +74,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@id/tv_temp_name"
+            android:layout_toEndOf="@id/tv_temp_name"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
@@ -100,9 +108,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:text="性别"
+            android:layout_marginStart="20dp"
+            android:text="@string/sex"
             android:textColor="#353535"
             android:textSize="16sp" />
 
@@ -111,13 +121,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@id/tv_temp_sex"
+            android:layout_toEndOf="@id/tv_temp_sex"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
-            android:text="男"
+            android:text="@string/boy"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
          <View
@@ -140,15 +153,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="@string/reset_pwd"
             android:textColor="#353535"
             android:textSize="16sp" />
 
     </RelativeLayout>
- <LinearLayout 
-     android:id="@+id/li_class_info" 
+ <LinearLayout
+     android:id="@+id/li_class_info"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:orientation="vertical"
@@ -166,8 +181,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="@string/school_year"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -177,11 +194,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@id/tv_temp_grade"
+            android:layout_toEndOf="@id/tv_temp_grade"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
@@ -193,7 +213,7 @@
             android:layout_marginRight="12dp"
             android:background="#dadada" />
 
-       
+
     </RelativeLayout>
      <RelativeLayout
         android:id="@+id/re_school"
@@ -207,8 +227,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="@string/school"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -218,11 +240,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@id/tv_temp_school"
+            android:layout_toEndOf="@id/tv_temp_school"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
@@ -234,7 +259,7 @@
             android:layout_marginRight="12dp"
             android:background="#dadada" />
 
-       
+
     </RelativeLayout>
      <RelativeLayout
         android:id="@+id/re_major"
@@ -248,8 +273,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="@string/major"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -259,11 +286,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@id/tv_temp_major"
+            android:layout_toEndOf="@id/tv_temp_major"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
@@ -275,7 +305,7 @@
             android:layout_marginRight="12dp"
             android:background="#dadada" />
 
-       
+
     </RelativeLayout>
      <RelativeLayout
         android:id="@+id/re_class"
@@ -289,8 +319,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="@string/mclass"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -300,11 +332,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@id/tv_temp_class"
+            android:layout_toEndOf="@id/tv_temp_class"
             android:ellipsize="end"
-            android:gravity="right"
+            android:gravity="end"
             android:singleLine="true"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
@@ -316,7 +351,7 @@
             android:layout_marginRight="12dp"
             android:background="#dadada" />
 
-       
+
     </RelativeLayout>
     </LinearLayout>
      <RelativeLayout
@@ -335,6 +370,6 @@
             android:text="@string/exit"
             android:textColor="@color/caldroid_holo_blue_dark"
             android:textSize="16sp" />
-       
+
     </RelativeLayout>
 </LinearLayout>
