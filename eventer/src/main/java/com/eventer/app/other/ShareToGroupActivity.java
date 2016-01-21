@@ -367,6 +367,7 @@ public class ShareToGroupActivity extends SwipeBackActivity {
         map.put("share_num", "1");
         map.put("click_num", "");
         map.put("participate_num", "");
+        map.put("token", Constant.TOKEN);
         LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
         task.getData(new DataCallBack() {
             @Override

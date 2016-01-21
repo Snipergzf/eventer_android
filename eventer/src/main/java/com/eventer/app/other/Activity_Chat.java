@@ -194,7 +194,7 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 
 		ChatEntityDao dao = new ChatEntityDao(context);
 		dao.ClearUnReadMsg(talker);
-		MainActivity.instance.cancelNotify(talker);
+//		MainActivity.instance.cancelNotify(talker);
 		MessageFragment.instance.refreshData();
 	}
 

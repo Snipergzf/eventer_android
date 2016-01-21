@@ -27,6 +27,8 @@
             android:src="@drawable/back" />
         <View
             android:id="@+id/view_temp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
@@ -40,7 +42,7 @@
                 android:layout_toRightOf="@+id/view_temp"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/add_course" />
 
@@ -53,6 +55,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginRight="10dp"
                 android:text="@string/add"
+
                 android:textColor="@color/white" />
 
        
@@ -116,10 +119,8 @@
                 android:background="#ffffff"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:textSize="15sp" >
+                android:hint="@string/add_course_name"/>
 
-                <requestFocus />
-            </EditText>
         </LinearLayout>
          <View
             android:layout_width="match_parent"

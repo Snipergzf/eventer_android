@@ -195,6 +195,7 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		super.onDestroy();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

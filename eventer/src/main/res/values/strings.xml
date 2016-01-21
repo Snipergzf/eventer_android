@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
 
     <string name="app_name">伊文特</string>
     <string name="hello_world">Hello world!</string>
@@ -271,6 +273,12 @@
     <string name="搜索好友">搜索好友</string>
     <string name="search_friend">搜索好友</string>
     <string name="my_course">我的课程</string>
+    <string name="add_course_name">填写课程名</string>
+    <string name="class_info">班级信息</string>
+    <string name="commit">提交</string>
+    <string name="title_activity_activity__class_info__edit">Activity_ClassInfo_Edit</string>
+    <string name="edit_class_info">编辑班级信息</string>
+    <string name="check_course_table">查看课表</string>
 
 </resources>
 

@@ -1,14 +1,8 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,22 +20,24 @@ import com.eventer.app.entity.Course;
 import com.eventer.app.widget.ListViewForScrollView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 
 public class Activity_Course_Edit extends Activity  implements OnClickListener{
 
-	private TextView add_commit,title;
 	private EditText addkc_name,addkc_teacher;
-	private LinearLayout ll_add_time;
-	private ListViewForScrollView listview;
 	private CourseTimeAdapter adapter;
-	private ImageView back_img;
 	private int id;
 	private List<Course> mData;
 	private Context context;
 	public static Activity_Course_Edit instance;
 	private String teacher;
 	private String c_name;
-	private int classid;
 	private Course course;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +50,17 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 		initView();
 
 	}
-	//��ʼ������
+	//初始化界面
 	private void initView() {
 		// TODO Auto-generated method stub
-		back_img=(ImageView)findViewById(R.id.course_edit_back_iv);
-		add_commit=(TextView)findViewById(R.id.addkc_ok);
+		ImageView back_img = (ImageView) findViewById(R.id.course_edit_back_iv);
+		TextView add_commit = (TextView) findViewById(R.id.addkc_ok);
 		addkc_name=(EditText)findViewById(R.id.addkc_name_edit);
 		addkc_teacher=(EditText)findViewById(R.id.addkc_teacher_edit);
-		listview=(ListViewForScrollView)findViewById(R.id.listview);
-		mData=new ArrayList<Course>();
-		title=(TextView)findViewById(R.id.course_edit_title);
-		ll_add_time=(LinearLayout)findViewById(R.id.ll_add_time);
+		ListViewForScrollView listview = (ListViewForScrollView) findViewById(R.id.listview);
+		mData=new ArrayList<>();
+		TextView title = (TextView) findViewById(R.id.course_edit_title);
+		LinearLayout ll_add_time = (LinearLayout) findViewById(R.id.ll_add_time);
 		ll_add_time.setOnClickListener(this);
 		add_commit.setOnClickListener(this);
 		back_img.setOnClickListener(this);
@@ -73,11 +69,13 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 			initData();
 			if(mData.size()!=0){
 				Course c=mData.get(0);
-				String name=c.getClassname();
-				String teacher=c.getTeacher();
-				if(!TextUtils.isEmpty(name)){
-					title.setText(name);
-					addkc_name.setText(name);
+//				String name=c.getClassname();
+//				String teacher=c.getTeacher();
+				teacher=c.getTeacher();
+				c_name=c.getClassname();
+				if(!TextUtils.isEmpty(c_name)){
+					title.setText(c_name);
+					addkc_name.setText(c_name);
 				}
 				if(!TextUtils.isEmpty(teacher))
 					addkc_teacher.setText(c.getTeacher());
@@ -87,32 +85,35 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 		if(course!=null){
 			mData=getTimeList(course);
 			title.setText(course.getClassname());
-			addkc_name.setText(course.getClassname());
+			String name=course.getClassname();
+			if(!TextUtils.isEmpty(name)){
+				addkc_name.setText(course.getClassname());
+			}
+
 			addkc_teacher.setText(course.getTeacher());
 		}
-		//���ÿγ�ʱ�ε�listview��adapter
+		//设置课程时段的listview的adapter
 		adapter=new CourseTimeAdapter(context, R.layout.item_course_detail, mData);
 		listview.setAdapter(adapter);
 	}
 
-	//��ȡ�γ̵�����
-	//���γ̸���ʱ�ηֳɶ��Course����
+	//获取课程的详情
+	//将课程根据时段分成多个Course对象
 	private List<Course> getTimeList(Course course) {
 		// TODO Auto-generated method stub
-		List<Course> list=new ArrayList<Course>();
+		List<Course> list=new ArrayList<>();
 		teacher=course.getTeacher();
 		c_name=course.getClassname();
-		classid=course.getClassid();
 		try {
 			JSONObject json=new JSONObject(course.getInfo());
 			Iterator<String> it=json.keys();
 			int index=1;
 			while(it.hasNext()){
 				Course c=new Course();
-				JSONObject detail=json.getJSONObject(it.next().toString());
+				JSONObject detail=json.getJSONObject(it.next());
 				c.setClassname(c_name);
 				c.setTeacher(teacher);
-				c.setClassid(classid);
+				c.setClassid(id);
 				c.setLoction(detail.getString("place"));
 				c.setTime(detail.getString("time"));
 				c.setWeek(detail.getString("week"));
@@ -145,40 +146,42 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 			case R.id.course_edit_back_iv:
 				Activity_Course_Edit.this.finish();
 				break;
-			case R.id.addkc_ok://��ɿγ̵����
+			case R.id.addkc_ok://完成课程的添加
 				List<Course> list=adapter.getData();
-				List<Course> c_list=new ArrayList<Course>();
+				List<Course> c_list=new ArrayList<>();
 				String name=addkc_name.getText().toString();
 				String c_teacher=addkc_teacher.getText().toString();
 				if(TextUtils.isEmpty(name)){
-					Toast.makeText(context, "����д�γ�����", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "请填写课程名！", Toast.LENGTH_LONG).show();
 					return;
 				}
 				if(TextUtils.isEmpty(c_teacher)){
-					c_teacher="";
+					teacher="";
 				}
 				for (Course course : list) {
 					if(!TextUtils.isEmpty(course.getTime())&&!TextUtils.isEmpty(course.getWeek()))
 					{
-						course.setClassid(classid);
+						course.setClassid(id);
 						course.setClassname(name);
 						course.setTeacher(teacher);
 						c_list.add(course);
 					}
 				}
 				if(c_list.size()==0){
-					Toast.makeText(context, "�����ƿγ���Ϣ��", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "请完善课程信息！", Toast.LENGTH_LONG).show();
 					return;
 				}
 				CourseDao dao=new CourseDao(context);
-				dao.saveCourseList(c_list);
-				Fragment_Addkc_Search.instance.refresh();
+				dao.updateCourseList(c_list, id + "");
+				if(Fragment_Addkc_Search.instance!=null)
+				   Fragment_Addkc_Search.instance.refresh();
+				setResult(Activity_Course_View.REQUEST, new Intent().putExtra("ID",id));
 				finish();
 				break;
 
-			case R.id.ll_add_time://���ʱ��
+			case R.id.ll_add_time://添加时段
 				Course course=new Course();
-				course.setClassid(classid);
+				course.setClassid(id);
 				course.setTeacher(teacher);
 				course.setClassname(c_name);
 				adapter.addItem(course);

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.eventer.app"
-    android:versionCode="3"
-    android:versionName="1.0.3" >
+    android:versionCode="5"
+    android:versionName="1.0.5">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -38,114 +38,91 @@
         android:name=".MyApplication"
         android:allowBackup="true"
         android:configChanges="orientation|screenSize"
+        android:debuggable="true"
+        android:exported="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:exported="true"
         android:supportsRtl="true"
-        android:debuggable="true"
         android:theme="@style/Theme.Translucent.NoTitleBar"
         tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
         <activity
             android:name=".main.LoginActivity"
             android:label="@string/title_activity_login"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop"/>
         <!-- 开屏页 -->
         <activity
             android:name=".main.LoadActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".main.RegisterActivity"
-             >
-        </activity>
-        
-        <activity
-            android:name=".main.ResetPwdActivity"
-           >
-        </activity>
-        <activity
-            android:name=".main.CheckPhoneActivity" >
-        </activity>
+        <activity android:name=".main.RegisterActivity"/>
+        <activity android:name=".main.ResetPwdActivity"/>
+        <activity android:name=".main.CheckPhoneActivity"/>
         <activity
             android:name=".other.Activity_Chat"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".other.Activity_Course_View"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_Course_Edit"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <activity
             android:name=".other.Activity_Course_Setting"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_AddCourse"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_AddCourseTable"
-            android:screenOrientation="portrait"
-            android:theme="@style/TitleTheme" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_CourseTable_View"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_Contact"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".other.Activity_Friends_New"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.LocalContactActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_UserInfo"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".other.Activity_Friends_Search"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".other.Activity_Course"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Calendar_AddSchedual"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Calendar_ViewSchedual"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.Activity_Friends_Add"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <!--
         <activity android:name=".other.AlarmAlert" >
         </activity>
@@ -160,26 +137,21 @@
         -->
         <activity
             android:name=".other.MyUserInfoActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.ShowBigImage"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".other.UpdateNickActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.ChatRoomActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".other.ChatRoomCreatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <!-- 短信验证码 -->
 
         <activity
@@ -188,82 +160,66 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <receiver android:name=".widget.calendar.AlarmReceiver" >
-        </receiver>
+        <receiver android:name=".widget.calendar.AlarmReceiver"/>
 
-        <service android:name=".socket.SocketService" >
-        </service>
+        <service android:name=".socket.SocketService"/>
 
         <activity
             android:name=".other.Activity_EventDetail"
             android:label="@string/title_activity_activity__event_detail"
-            android:theme="@style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".main.FillInUserInfoActivity"
-            android:label="@string/title_activity_fill_in_user_info" >
-        </activity>
+            android:label="@string/title_activity_fill_in_user_info"/>
         <activity
             android:name=".other.Activity_EventComment"
             android:label="@string/title_activity_event_comment"
             android:theme="@style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <activity
             android:name=".other.ShareToSingleActivity"
             android:label="@string/title_activity_share_to_single"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <activity
             android:name=".other.ShareToGroupActivity"
             android:label="@string/title_activity_share_to_single"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
         <activity
             android:name=".other.ChatRoomSettingActivity"
-            android:label="@string/title_activity_chat_room_setting" >
-        </activity>
+            android:label="@string/title_activity_chat_room_setting"/>
         <activity
             android:name=".other.CollectActivity"
-            android:label="@string/title_activity_collect" >
-        </activity>
+            android:label="@string/title_activity_collect"/>
         <activity
             android:name=".other.BrowserHistoryActivity"
-            android:label="@string/title_activity_browser_history" >
-        </activity>
+            android:label="@string/title_activity_browser_history"/>
         <activity
             android:name=".other.FeedbackActivity"
             android:label="@string/title_activity_feedback"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity
             android:name=".other.MsgAlertActivity"
-            android:label="@string/title_activity_msg_alert" >
-        </activity>
+            android:label="@string/title_activity_msg_alert"/>
         <activity
             android:name=".other.ShareSchedualActivity"
-            android:label="@string/title_activity_msg_alert" >
-        </activity>
+            android:label="@string/title_activity_msg_alert"/>
         <activity
             android:name=".other.AssistFunctionActivity"
-            android:label="@string/title_activity_assist_function" >
-        </activity>
+            android:label="@string/title_activity_assist_function"/>
         <activity
             android:name=".other.AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
+            android:label="@string/title_activity_about"/>
         <activity
             android:name=".other.OurTeamActivity"
-            android:label="@string/title_activity_our_team" >
-        </activity>
+            android:label="@string/title_activity_our_team"/>
         <!--
         <activity
             android:name=".other.ShareEventActivity"
             android:label="@string/title_activity_share_event" >
         </activity>
         -->
-        <receiver android:name=".receiver.NetworkReceiver" >
-            <intent-filter android:priority="2147483647" >
+        <receiver android:name=".receiver.NetworkReceiver">
+            <intent-filter android:priority="2147483647">
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -271,43 +227,46 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.CheckInternetService" >
-        </service>
+        <service android:name=".service.CheckInternetService"/>
 
-        <receiver android:enabled="true" android:name=".receiver.BootBroadcastReceiver">
+        <receiver
+            android:name=".receiver.BootBroadcastReceiver"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.alarm.START" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <service android:name=".service.BootService"
-            android:label="TService"
-            android:icon="@drawable/ic_launcher"
+
+        <service
+            android:name=".service.BootService"
             android:enabled="true"
             android:exported="true"
-            >
-        </service>
+            android:icon="@drawable/ic_launcher"
+            android:label="TService"/>
+
         <activity
             android:name=".other.GroupSchedualActivity"
-            android:label="@string/title_activity_group_share" >
-        </activity>
-        <!--<activity
+            android:label="@string/title_activity_group_share"/>
+        <!--
+        <activity
             android:name=".other.ShareSingleShecdualActivity"
             android:label="@string/title_activity_share_single_shecdual" >
-        </activity>-->
+        </activity>
+        -->
 
-       <service
+        <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
-        </service>
+            android:process=":DownloadingService"/>
 
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity"
-            android:theme="@style/CustomTheme"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:theme="@style/CustomTheme" />
 
         <meta-data
             android:name="UMENG_APPKEY"
@@ -316,6 +275,9 @@
             android:name="UMENG_CHANNEL"
             android:value="baidu" />
 
+        <activity
+            android:name=".other.Activity_ClassInfo_Edit"
+            android:label="@string/title_activity_activity__class_info__edit"/>
     </application>
 
 </manifest>

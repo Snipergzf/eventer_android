@@ -106,7 +106,7 @@ public class HttpUnit {
 	}
 
 	public static Map<String,Object> sendSerachFriendRequest( Map<String, String> params) throws Exception{
-		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/friend/search", params);
+		String jsonString= sendPostRequest(Constant.URL_GET_FRIENDINFO, params);
 		Log.e("1",jsonString);
 		JSONObject jsonObject= new  JSONObject(jsonString);
 		Map<String,Object> map=new HashMap<>();

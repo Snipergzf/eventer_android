@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings({"UnusedDeclaration"})
 public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
-    private Context context;
 	public  interface IOnItemSelectListener{
 		void onItemClick(int pos);
 	}
@@ -23,7 +21,6 @@ public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 	 private LayoutInflater mInflater;
 	
 	 public  AbstractSpinerAdapter(Context context){
-		 this.context=context;
 		 init(context);
 	 }
 	 
@@ -57,7 +54,7 @@ public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 		 ViewHolder viewHolder;
     	 
 	     if (convertView == null) {
-	    	 convertView = mInflater.inflate(R.layout.spiner_item_layout, new LinearLayout(context),false);
+	    	 convertView = mInflater.inflate(R.layout.spiner_item_layout, arg2,false);
 	         viewHolder = new ViewHolder();
 	         viewHolder.mTextView = (TextView) convertView.findViewById(R.id.textView);
 	         convertView.setTag(viewHolder);

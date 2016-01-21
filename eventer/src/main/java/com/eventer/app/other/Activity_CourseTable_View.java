@@ -1,10 +1,6 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,40 +18,41 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.CourseAdapter;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class Activity_CourseTable_View extends Activity implements
+import java.util.ArrayList;
+import java.util.List;
+
+public class Activity_CourseTable_View extends SwipeBackActivity implements
 		OnClickListener{
-	private ImageView iv_back;
-	private TextView tv_add,tv_title;
 	private Context context;
-	private List<Course> mData=new ArrayList<Course>();
-	private ListView listview;
-	private CourseAdapter adapter;
+	private List<Course> mData=new ArrayList<>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coursetable_view);
+		setBaseTitle(R.string.course_table_detail);
 		context=Activity_CourseTable_View.this;
 		initView();
 	}
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		tv_add=(TextView)findViewById(R.id.tv_add_finish);
-		tv_title=(TextView)findViewById(R.id.tv_title);
-		iv_back=(ImageView)findViewById(R.id.iv_back);
-		listview=(ListView)findViewById(R.id.listview);
+		TextView tv_add = (TextView) findViewById(R.id.tv_add_finish);
+		TextView tv_title = (TextView) findViewById(R.id.tv_title);
+		ListView listview = (ListView) findViewById(R.id.listview);
 		mData=getIntent().getParcelableArrayListExtra("courseList");
-		adapter=new CourseAdapter(context, R.layout.item_course_list, mData);
+		CourseAdapter adapter = new CourseAdapter(context, R.layout.item_course_list, mData);
 		listview.setAdapter(adapter);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
 				// TODO Auto-generated method stub
-				Intent intent=new Intent();
+				Intent intent = new Intent();
 				intent.putExtra("c_detail", mData.get(position));
 				intent.setClass(Activity_CourseTable_View.this, Activity_Course_Edit.class);
 				startActivityForResult(intent, 11);
@@ -66,7 +62,6 @@ public class Activity_CourseTable_View extends Activity implements
 		String info=getIntent().getStringExtra("class");
 		info="以下是 <b><em>"+info+"</em></b> 的课表的课程列表";
 		tv_title.setText(Html.fromHtml(info));
-		iv_back.setOnClickListener(this);
 		tv_add.setOnClickListener(this);
 	}
 
@@ -76,9 +71,6 @@ public class Activity_CourseTable_View extends Activity implements
 		switch (v.getId()) {
 			case R.id.tv_add_finish:
 				showMyDialog("添加课程");
-				break;
-			case R.id.iv_back:
-				finish();
 				break;
 			default:
 				break;

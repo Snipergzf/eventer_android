@@ -16,6 +16,10 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_list_menu_item_layout.xml"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_editclassinfo.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_editclassinfo.xml"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\notification_template_media.xml"
     },
@@ -58,6 +62,10 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_view_list_nav_layout.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_course.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_course.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\addcourse_popmenu.xml",
@@ -278,10 +286,6 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\upload_dialog.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\upload_dialog.xml"
-    },
-    {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_main.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_main.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header.xml",
@@ -666,6 +670,10 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\row_received_picture.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\row_received_picture.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\sheduallist_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\sheduallist_header.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header_item_3.xml",

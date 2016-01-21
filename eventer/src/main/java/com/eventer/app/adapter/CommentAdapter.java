@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -78,7 +77,7 @@ public class CommentAdapter extends BaseAdapter {
 
 		if (convertView == null) {
 			holder=new ViewHolder();
-			convertView = inflater.inflate(R.layout.item_comment_single, new LinearLayout(context),false);
+			convertView = inflater.inflate(R.layout.item_comment_single, parent,false);
 			holder.iv_avatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
 			holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
 			holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);

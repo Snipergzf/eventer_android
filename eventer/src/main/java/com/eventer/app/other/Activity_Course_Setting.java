@@ -1,13 +1,5 @@
 package com.eventer.app.other;
 
-import hirondelle.date4j.DateTime;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,12 +15,19 @@ import android.widget.TextView;
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.ClassInfo;
-import com.eventer.app.main.CourseFragment;
 import com.eventer.app.util.WheelDialogShowUtil;
 import com.eventer.app.util.WheelDialogTwoShowUtil;
 import com.eventer.app.view.CourseView;
 import com.eventer.app.view.DialogView.onWheelBtnPosClick;
 import com.umeng.analytics.MobclickAgent;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import hirondelle.date4j.DateTime;
 
 public class Activity_Course_Setting extends Activity  implements OnClickListener{
 
@@ -133,7 +132,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 			case R.id.courseTable_backImg:
 				Intent intent=new Intent();
 				intent.putExtra("IsChange", IsChange);
-				setResult(CourseFragment.COURSE_SETTING, intent);
+				setResult(Activity_Course.COURSE_SETTING, intent);
 				this.finish();
 				break;
 			case R.id.coursetable_bg:

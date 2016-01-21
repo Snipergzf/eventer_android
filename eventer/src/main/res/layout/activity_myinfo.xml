@@ -168,11 +168,39 @@
      android:layout_height="wrap_content"
      android:orientation="vertical"
     >
+     <RelativeLayout
+
+         android:layout_width="match_parent"
+         android:layout_height="40dp"
+         android:layout_marginTop="10dp"
+         android:paddingLeft="12dp"
+         android:paddingStart="12dp"
+         android:paddingEnd="12dp"
+         android:paddingRight="12dp">
+         <ImageView
+             android:id="@+id/iv_class"
+             android:layout_width="40dp"
+             android:layout_height="match_parent"
+             android:padding="3dp"
+             android:visibility="gone"
+             android:contentDescription="@string/class_info"
+             android:src="@drawable/class_info"/>
+      <ImageView
+             android:id="@+id/iv_edit"
+             android:layout_width="36dp"
+             android:layout_height="match_parent"
+             android:padding="3dp"
+             android:contentDescription="@string/edit"
+             android:layout_alignParentEnd="true"
+             android:layout_alignParentRight="true"
+             android:src="@drawable/modify"/>
+
+
+     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/re_grade"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/btn_list_item_bg"
         android:clickable="true" >
 

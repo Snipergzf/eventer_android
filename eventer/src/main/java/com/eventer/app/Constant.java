@@ -6,7 +6,7 @@ import android.os.Environment;
 import javax.net.ssl.SSLSocket;
 @SuppressWarnings({"UnusedDeclaration"})
 public class Constant {
-	  public final static String WEB_SERVICE_URL = "http://123.56.142.241/";
+	  public final static String WEB_SERVICE_URL = "http://api.eventer.com.cn/";
 	  //public final static String WEB_SERVICE_URL = "http://104.236.74.226/";
 	  public final static String DomainName="messagehive.dhc.house";
 //	  public final static String DomainName="104.236.74.226";
@@ -44,33 +44,34 @@ public class Constant {
 	  
 	  public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	  
-	  public static final String URL_REGISTER="http://123.56.142.241/v1/user/register";
-	  public static final String URL_LOGIN="http://123.56.142.241/v1/user/login";
-	  public static final String URL_RESET_PWD = "http://123.56.142.241/v1/user/reset_pwd";
+	  public static final String URL_REGISTER= WEB_SERVICE_URL + "v1/user/register";
+	  public static final String URL_LOGIN= WEB_SERVICE_URL + "v1/user/login";
+	  public static final String URL_RESET_PWD = WEB_SERVICE_URL+"v1/user/reset_pwd";
 	  
-	  public static final String URL_UPDATE_Nick = "http://123.56.142.241/v1/user/set_name";
-	  public static final String URL_UPDATE_Avatar = "http://123.56.142.241/v1/user/set_avatar";
-	  public static final String URL_GET_Avatar = "http://123.56.142.241/v1/user/get_avatar";
-	  public static final String URL_GET_USERINFO ="http://123.56.142.241/v1/user/get_info";
-	  public static final String URL_GET_SELFINFO="http://123.56.142.241/v1/user/search";
-	  public static final String URL_UPDATE_SELFINFO="http://123.56.142.241/v1/user/update";
+	  public static final String URL_UPDATE_Nick = WEB_SERVICE_URL+"v1/user/set_name";
+	  public static final String URL_UPDATE_Avatar = WEB_SERVICE_URL+"v1/user/set_avatar";
+	  public static final String URL_GET_Avatar = WEB_SERVICE_URL+"v1/user/get_avatar";
+	  public static final String URL_GET_USERINFO = WEB_SERVICE_URL + "v1/user/get_info";
+	  public static final String URL_GET_SELFINFO= WEB_SERVICE_URL + "v1/user/search";
+	  public static final String URL_UPDATE_SELFINFO= WEB_SERVICE_URL + "v1/user/update";
 	  
-	  public static final String URL_Avatar = "http://123.56.142.241/images/avatar";
+	  public static final String URL_Avatar = WEB_SERVICE_URL+"images/avatar";
 	  
-	  public static final String URL_GET_FRIENDLIST="http://123.56.142.241/v1/friend/update";
-	  public static final String URL_DEL_FRIEND="http://123.56.142.241/v1/friend/delete";
+	  public static final String URL_GET_FRIENDLIST= WEB_SERVICE_URL + "v1/friend/update";
+	  public static final String URL_GET_FRIENDINFO= WEB_SERVICE_URL + "v1/friend/search";
+	  public static final String URL_DEL_FRIEND= WEB_SERVICE_URL + "v1/friend/delete";
 	  
-	  public static final String URL_ADD_COMMENT ="http://123.56.142.241/v1/comment/add";
-	  public static final String URL_DELETE_COMMENT ="http://123.56.142.241/v1/comment/delete";
-	  public static final String URL_GET_COMMENT ="http://123.56.142.241/v1/comment/get";
+	  public static final String URL_ADD_COMMENT = WEB_SERVICE_URL + "v1/comment/add";
+	  public static final String URL_DELETE_COMMENT = WEB_SERVICE_URL + "v1/comment/delete";
+	  public static final String URL_GET_COMMENT = WEB_SERVICE_URL + "v1/comment/get";
 	  
-	  public static final String URL_GET_EVENT ="http://123.56.142.241/v1/event/search";
+	  public static final String URL_GET_EVENT = WEB_SERVICE_URL + "v1/event/search";
 	  
-	  public static final String URL_SEND_EVENT_FEEDBACK ="http://123.56.142.241/v1/event/feedback_add";
-	  public static final String URL_DEL_EVENT_FEEDBACK ="http://123.56.142.241/v1/event/feedback_del";
-	  public static final String URL_UPDATE_EVENT_FEEDBACK ="http://123.56.142.241/v1/event/update";
+	  public static final String URL_SEND_EVENT_FEEDBACK = WEB_SERVICE_URL + "v1/event/feedback_add";
+	  public static final String URL_DEL_EVENT_FEEDBACK = WEB_SERVICE_URL + "v1/event/feedback_del";
+	  public static final String URL_UPDATE_EVENT_FEEDBACK = WEB_SERVICE_URL + "v1/event/update";
 	  
-	  public static final String URL_GET_GROUP_MEMBER ="http://123.56.142.241/v1/group/search_member";
+	  public static final String URL_GET_GROUP_MEMBER = WEB_SERVICE_URL + "v1/group/search_member";
 	  
 	  
 	  

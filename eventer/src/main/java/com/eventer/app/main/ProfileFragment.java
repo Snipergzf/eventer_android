@@ -21,6 +21,7 @@ import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.other.AboutActivity;
+import com.eventer.app.other.Activity_Course;
 import com.eventer.app.other.AssistFunctionActivity;
 import com.eventer.app.other.BrowserHistoryActivity;
 import com.eventer.app.other.CollectActivity;
@@ -132,6 +133,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 				startActivity(new Intent().setClass(context, CollectActivity.class));
 				break;
 			case R.id.re_course:
+				startActivity(new Intent().setClass(context, Activity_Course.class));
 				break;
 			case R.id.re_history://浏览历史
 				startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));

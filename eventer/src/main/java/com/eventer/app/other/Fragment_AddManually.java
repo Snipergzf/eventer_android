@@ -1,8 +1,5 @@
 package com.eventer.app.other;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +18,9 @@ import com.eventer.app.adapter.CourseTimeAdapter;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.widget.ListViewForScrollView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public  class Fragment_AddManually extends Fragment implements OnClickListener{
@@ -57,7 +57,7 @@ public  class Fragment_AddManually extends Fragment implements OnClickListener{
 		addkc_name=(EditText)view.findViewById(R.id.addkc_name_edit);
 		addkc_teacher=(EditText)view.findViewById(R.id.addkc_teacher_edit);
 		listview=(ListViewForScrollView)view.findViewById(R.id.listview);
-		mData=new ArrayList<Course>();
+		mData=new ArrayList<>();
 		title=(RelativeLayout)view.findViewById(R.id.rl_title);
 		ll_add_time=(LinearLayout)view.findViewById(R.id.ll_add_time);
 		ll_add_time.setOnClickListener(this);
@@ -77,8 +77,8 @@ public  class Fragment_AddManually extends Fragment implements OnClickListener{
 	public void saveCourse(){
 		List<Course> list=adapter.getData();
 		// TODO Auto-generated method stub
-		List<Course> c_list=new ArrayList<Course>();
-		int classid=(int)System.currentTimeMillis()/1000;
+		List<Course> c_list=new ArrayList<>();
+		int classid=(int)(System.currentTimeMillis()/1000);
 		String name=addkc_name.getText().toString();
 		String teacher=addkc_teacher.getText().toString();
 		if(TextUtils.isEmpty(name)){

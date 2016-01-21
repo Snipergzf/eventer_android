@@ -134,9 +134,9 @@ public class Activity_EventComment extends SwipeBackActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				Comment comment=mData.get(position);
+				Comment comment=mData.get(position-1);
 				if(comment.getSpeaker().equals(Constant.UID))
-					showMyDialog("评论",comment,position);
+					showMyDialog("评论",comment,position-1);
 
 			}
 		});

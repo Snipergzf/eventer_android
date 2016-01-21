@@ -18,7 +18,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.main.CourseFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +28,7 @@ public class PopMenu {
 	private PopupWindow popupWindow ;
 	private ListView listView;
 	private static int checkedId=0;
+	private ChangeListener listener;
 	//private OnItemClickListener listener;
 
 
@@ -71,6 +71,10 @@ public class PopMenu {
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		//this.listener = listener;
 		listView.setOnItemClickListener(listener);
+	}
+
+	public  void setChangeListener(ChangeListener listener){
+		this.listener=listener;
 	}
 
 //	OnItemClickListener listener=new OnItemClickListener() {
@@ -173,7 +177,10 @@ public class PopMenu {
 					// TODO Auto-generated method stub
 					Log.e("1", "po"+position);
 					popupWindow.dismiss();
-					CourseFragment.instance.changeWeek(position+1);
+					if(listener!=null){
+						listener.onChange(position+1);
+					}
+//					CourseFragment.instance.changeWeek(position+1);
 				}
 			});
 			return convertView;
@@ -182,5 +189,8 @@ public class PopMenu {
 		private final class ViewHolder {
 			TextView groupItem;
 		}
+	}
+	public interface ChangeListener{
+		void onChange(int position);
 	}
 }

@@ -1,33 +1,30 @@
 package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
 @SuppressLint("SetTextI18n")
-public class Activity_Course_View extends Activity  implements OnClickListener{
+public class Activity_Course_View extends SwipeBackActivity  implements OnClickListener{
 
 	private TextView kc_name;
 	private TextView kc_teacher;
-	private TextView kc_info;
 	private LinearLayout ll_timeblock;
 	public static int REQUEST=0x34;
 	private int courseid;
@@ -36,39 +33,42 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_info_view);
+		setBaseTitle(R.string.course_info);
 		courseid=getIntent().getIntExtra("CourseID", -1);
-		ImageView back_img = (ImageView) findViewById(R.id.kc_view_back);
 		TextView kc_delete = (TextView) findViewById(R.id.kc_delete_tv);
 		kc_name=(TextView)findViewById(R.id.view_kcname_tv);
 		kc_teacher=(TextView)findViewById(R.id.view_kcteacher_tv);
-		kc_info=(TextView)findViewById(R.id.view_kcinfo_tv);
 		Button edit_course_btn = (Button) findViewById(R.id.edit_course_info);
 		ll_timeblock=(LinearLayout)findViewById(R.id.ll_timeblock);
 		context=Activity_Course_View.this;
+
 		if(courseid!=-1){
 			initView();
 		}
-		back_img.setOnClickListener(this);
 		kc_delete.setOnClickListener(this);
 		edit_course_btn.setOnClickListener(this);
 	}
 
 
 	private void initView(){
+		ll_timeblock.removeAllViews();
 		CourseDao dao=new CourseDao(context);
-		List<Course> mData = dao.getCourseList(courseid + "");
-		if(mData.size()>0){
-			String name= mData.get(0).getClassname();
-			String teacher= mData.get(0).getTeacher();
+		List<Course> mData=dao.getCourseList(courseid + "");
+		if(mData!=null&&mData.size()>0){
+			Course course=mData.get(0);
+			String name= course.getClassname();
+			String teacher= course.getTeacher();
 			if(!TextUtils.isEmpty(name)){
 				kc_name.setText(name);
-				kc_info.setText(name);
+				setBaseTitle(name);
 			}
 			if(!TextUtils.isEmpty(teacher)){
 				kc_teacher.setText(teacher);
+			}else{
+				kc_teacher.setText("--");
 			}
 			for (int i=0;i< mData.size();i++) {
-				View item =LayoutInflater.from(Activity_Course_View.this).inflate(R.layout.item_course_detail_view, null);
+				View item =LayoutInflater.from(context).inflate(R.layout.item_course_detail_view, null);
 				LinearLayout info=(LinearLayout)item.findViewById(R.id.ll_info);
 				if(i==0){
 					info.setVisibility(View.GONE);
@@ -78,18 +78,20 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 				TextView tv_loc = (TextView) item.findViewById(R.id.tv_location);
 				TextView tv_week = (TextView) item.findViewById(R.id.tv_week);
 				TextView tv_time = (TextView) item.findViewById(R.id.tv_time);
-
-				String week= mData.get(i).getWeek();
-				String time= mData.get(i).getTime();
-				String loc= mData.get(i).getLoction();
-				int day= mData.get(i).getDay();
+                Course course1=mData.get(i);
+				String week= course1.getWeek();
+				String time= course1.getTime();
+				String loc= course1.getLoction();
+				int day= course1.getDay();
 				if(!TextUtils.isEmpty(loc)){
 					tv_loc.setText(loc);
+				}else{
+					tv_loc.setText("--");
 				}
 				if(!TextUtils.isEmpty(week)){
 					tv_week.setText(week+"周");
 				}
-				if(!TextUtils.isEmpty(loc)){
+				if(!TextUtils.isEmpty(time)){
 					String[] weeks=context.getResources().getStringArray(R.array.weeks);
 					tv_time.setText(weeks[day]+" "+time+"节");
 				}
@@ -106,9 +108,6 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 		// TODO Auto-generated method stub
 
 		switch(v.getId()){
-			case R.id.kc_view_back:
-				this.finish();
-				break;
 			case R.id.kc_delete_tv:
 				CourseDao dao=new CourseDao(context);
 				dao.deleteCourse(courseid);
@@ -133,13 +132,13 @@ public class Activity_Course_View extends Activity  implements OnClickListener{
 		if (requestCode == REQUEST&&data!=null)
 		{
 			int id=data.getIntExtra("ID", -1);
-			Log.e("1", "138--view--"+id);
-			if(id!=-1){
-				courseid=id;
+			if(id!=-1&&courseid==id){
 				initView();
 			}
 		}
 	}
+
+
 
 	@Override
 	protected void onResume() {

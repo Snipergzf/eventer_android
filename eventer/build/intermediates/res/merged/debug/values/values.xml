@@ -706,6 +706,7 @@
     <string name="add">添加</string>
     <string name="add_contact_friend">邀请或添加通讯录中的朋友</string>
     <string name="add_course">添加课程</string>
+    <string name="add_course_name">填写课程名</string>
     <string name="add_group">发起群聊</string>
     <string name="add_manully">手动添加</string>
     <string name="add_more">添加其他信息</string>
@@ -733,9 +734,11 @@
     <string name="cancel_enter">你确定要取消参与该日程吗？</string>
     <string name="chat">聊天</string>
     <string name="chatgroup">群聊</string>
+    <string name="check_course_table">查看课表</string>
     <string name="check_phone">验证手机号</string>
     <string name="choose_time">请选择课程节数</string>
     <string name="choose_week">请选择课程周数</string>
+    <string name="class_info">班级信息</string>
     <string name="classfriend">同课的朋友</string>
     <string name="classinfo">班级信息(非必填)</string>
     <string name="classmate">同学的总数</string>
@@ -750,6 +753,7 @@
     <string name="comment_et">你怎么看</string>
     <string name="commenter">匿名</string>
     <string name="commentroom">讨论室</string>
+    <string name="commit">提交</string>
     <string name="contact">通讯录</string>
     <string name="copyright">©2015 eventer, all rights reserved</string>
     <string name="course">课程</string>
@@ -773,6 +777,7 @@
     <string name="discussionRoom">讨论室</string>
     <string name="display_useless_event">显示过期活动</string>
     <string name="edit">编辑</string>
+    <string name="edit_class_info">编辑班级信息</string>
     <string name="editevent">编辑</string>
     <string name="email">邮箱</string>
     <string name="email_hint">填写您的邮箱地址</string>
@@ -1056,6 +1061,7 @@
     <string name="time">时间</string>
     <string name="title">标题</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_activity__class_info__edit">Activity_ClassInfo_Edit</string>
     <string name="title_activity_activity__event_detail">Activity_EventDetail</string>
     <string name="title_activity_assist_function">AssistFunctionActivity</string>
     <string name="title_activity_browser_history">BrowserHistoryActivity</string>

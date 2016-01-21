@@ -59,14 +59,15 @@ public class MyUserInfoActivity extends SwipeBackActivity {
 
     private TextView tv_grade,tv_school,tv_major,tv_class;
     AlertDialog upload_dlg;
-    private ImageView iv_avatar;
+    private ImageView iv_avatar,iv_edit;
     private TextView tv_name;
     private TextView tv_sex;
-
+    public static int EDIT_CLASS=0x29;
     private String imageName;
     private static final int UPDATE_NICK = 5;// 结果
     private LoadUserAvatar avatarLoader;
     private boolean isUpload=false;
+
     String sex;
     String sign;
     String nick;
@@ -107,17 +108,15 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         tv_major = (TextView) this.findViewById(R.id.tv_major);
         tv_class = (TextView) this.findViewById(R.id.tv_class);
         re_reset_pwd=(RelativeLayout) this.findViewById(R.id.re_reset_pwd);
+        iv_edit=(ImageView) this.findViewById(R.id.iv_edit);
 
         re_avatar.setOnClickListener(new MyListener());
         re_name.setOnClickListener(new MyListener());
         re_sex.setOnClickListener(new MyListener());
         re_exit.setOnClickListener(new MyListener());
-        re_class.setOnClickListener(new MyListener());
-        re_major.setOnClickListener(new MyListener());
-        re_school.setOnClickListener(new MyListener());
-        re_grade.setOnClickListener(new MyListener());
         re_reset_pwd.setOnClickListener(new MyListener());
         iv_avatar.setOnClickListener(new MyListener());
+        iv_edit.setOnClickListener(new MyListener());
 
     }
 
@@ -199,10 +198,12 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                     case R.id.re_exit:
                         exit();
                         break;
-                    case R.id.re_grade:
-                    case R.id.re_school:
-                    case R.id.re_major:
-                    case R.id.re_class:
+                    case R.id.iv_edit:
+                        startActivityForResult(new Intent().setClass(context, Activity_ClassInfo_Edit.class)
+                                .putExtra("grade", grade)
+                                .putExtra("school", school)
+                                .putExtra("major", major)
+                                .putExtra("class", mclass), EDIT_CLASS);
                         break;
                     case R.id.iv_avatar:
                         avatar = LocalUserInfo.getInstance(context)
@@ -220,7 +221,6 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         }
 
     }
-
     public void exit(){
         PreferenceUtils.getInstance().setLoginPwd("");
         Constant.isLogin=false;
@@ -238,6 +238,12 @@ public class MyUserInfoActivity extends SwipeBackActivity {
             beginCrop(data.getData());
         } else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, data);
+        } else if (requestCode == EDIT_CLASS&&data!=null)
+        {
+            boolean isEdit=data.getBooleanExtra("isEdit",false);
+            if(isEdit){
+                initData();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
 

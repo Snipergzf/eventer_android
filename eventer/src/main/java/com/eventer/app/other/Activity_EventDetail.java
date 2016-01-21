@@ -244,6 +244,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		map.put("share_num", "");
 		map.put("click_num", "1");
 		map.put("participate_num", "");
+		map.put("token", Constant.TOKEN);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -596,6 +597,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		map.put("share_num", "");
 		map.put("click_num", "");
 		map.put("participate_num", "1");
+		map.put("token", Constant.TOKEN);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -625,6 +627,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
 		map.put("participate_num", "1");
+		map.put("token", Constant.TOKEN);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_DEL_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -652,6 +655,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	private void UpdateFeedBack(){
 		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
+		map.put("token", Constant.TOKEN);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_UPDATE_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override

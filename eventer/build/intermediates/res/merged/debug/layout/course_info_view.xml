@@ -5,37 +5,9 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/caldroid_holo_blue_light" >
-
-        <ImageView
-            android:id="@+id/kc_view_back"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="centerInside"
-            android:background="@drawable/ib_bg"
-            android:src="@drawable/back"/>
-
-        <TextView
-            android:id="@+id/view_kcinfo_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/course_info"
-            android:textColor="#fff"
-            android:textSize="17sp" />
-        
-
-    </RelativeLayout>
+    <include
+        android:id="@+id/title"
+        layout="@layout/top_layout"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -141,82 +113,7 @@
                   android:paddingRight="20dp"
                         />
 
-           
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/findfriend"
-                    android:textColor="#3366cc"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#6699ff" />
-
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/view_kcfriend_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/classfriend"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/view_kcclassmate_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30dp"
-                            android:layout_toRightOf="@+id/view_kcfriend_tv"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/classmate"
-                            android:textSize="13sp" />
-
-                        <Button
-                            android:id="@+id/view_kcfriend_btn"
-                            android:layout_width="60dp"
-                            android:layout_height="25dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="15dp"
-                            android:background="@drawable/button"
-                            android:text="@string/look"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="horizontal" >
-
-                        <GridView
-                            android:id="@+id/gridView1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="30dp"
-                            android:layout_marginStart="30dp"
-                            android:numColumns="5" >
-                        </GridView>
-                    </LinearLayout>
-
-                   
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.1dp"

@@ -70,6 +70,37 @@ public class CourseDao {
 		return list;
 	}
 
+	public Course getCourse(String id) {
+		// TODO Auto-generated method stub
+		Course cinfo=new Course();
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
+				COLUMN_NAME_ID+"=?", new String[]{id}, null, null,"extra_Id",null);
+		if (c.moveToNext()) {
+			int classid = c.getInt(c.getColumnIndex(COLUMN_NAME_ID));
+			String name = c.getString(c.getColumnIndex(COLUMN_NAME_NAME));
+			String place = c.getString(c.getColumnIndex(COLUMN_NAME_PLACE ));
+			String teacher = c.getString(c.getColumnIndex("Teacher"));
+			String week = c.getString(c.getColumnIndex(COLUMN_NAME_WEEK));
+			int ex_id = c.getInt(c.getColumnIndex("extra_Id"));
+			int kcweekday,kcStart,kcLen;
+			kcweekday=c.getInt(c.getColumnIndex(COLUMN_NAME_WEEKDAY));
+			kcStart=c.getInt(c.getColumnIndex(COLUMN_NAME_START));
+			kcLen=c.getInt(c.getColumnIndex(COLUMN_NAME_LEN));
+
+			cinfo.setClassid(classid);
+			cinfo.setClassname(name);
+			cinfo.setTeacher(teacher);
+			cinfo.setLoction(place);
+			cinfo.setWeek(week);
+			cinfo.setDay(kcweekday);
+			cinfo.setTime(kcStart+"-"+(kcStart+kcLen-1));
+			cinfo.setExtra_ID(ex_id);
+		}
+		dbHelper.closeDatabase();
+		return cinfo;
+	}
+
 
 
 	public void saveCourseByInfo(Course course) {
@@ -134,7 +165,14 @@ public class CourseDao {
 	public void saveCourseList(List<Course> list) {
 		// TODO Auto-generated method stub
 		dbHelper.openDatabase();
-		//dbHelper.deleteDatabase(context);
+		saveList(list);
+		dbHelper.closeDatabase();
+	}
+
+	public void updateCourseList(List<Course> list,String id) {
+		// TODO Auto-generated method stub
+		dbHelper.openDatabase();
+		dbHelper.delete(TABLE_NAME,"CourseID=?",new String[]{id+"" });
 		saveList(list);
 		dbHelper.closeDatabase();
 	}
