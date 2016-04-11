@@ -15,6 +15,7 @@
 
         <LinearLayout
             android:id="@+id/ll_changeview"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ib_bg"
@@ -26,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/search_course"
+                android:text="@string/add_course"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -36,30 +37,119 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/add_course_name"
                 android:scaleType="centerInside"
+                android:visibility="gone"
                 android:src="@drawable/button2" />
         </LinearLayout>
 
-
-
-        <TextView
-            android:id="@+id/tv_add_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:padding="5dp"
-            android:background="@drawable/ib_bg"
-            android:gravity="center"
-            android:visibility="gone"
-            android:text="@string/finish"
-            android:textColor="@color/white" />
     </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffff" >
-        </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_add_table"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
 
+                android:background="@drawable/edit_normal"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/add_table"
+                android:textSize="13sp"
+                android:layout_margin="5dp"
+                android:textColor="@color/orange"
+                />
+            <Button
+                android:id="@+id/btn_add_manually"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edit_normal"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/add_course_manually"
+                android:textSize="13sp"
+                android:layout_margin="5dp"
+                android:textColor="@color/orange"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="10dp"
+            android:background="#fff" >
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_margin="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btn_search"
+                android:layout_toStartOf="@+id/btn_search"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginEnd="12dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:singleLine="true"
+                android:background="@drawable/edit_bg_normal"
+                android:hint="@string/course_search_hint"
+                android:textColorHint="@color/caldroid_darker_gray"
+                android:textColor="#484c4c"
+                android:textSize="16sp" />
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignBottom="@id/et_search"
+                android:layout_alignLeft="@id/et_search"
+                android:layout_alignStart="@id/et_search"
+                android:contentDescription="@string/search_result"
+                android:layout_margin="8dp"
+                android:src="@drawable/ar5" />
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:background="@drawable/button"
+                android:textSize="14sp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_centerVertical="true"
+                android:textColor="#FFFFFF"
+                android:text="@string/search"/>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:divider="@color/caldroid_lighter_gray"
+            android:dividerHeight="0.1dp"
+            android:footerDividersEnabled="false"
+            android:descendantFocusability="afterDescendants"
+            android:fastScrollEnabled="false" />
+        <TextView
+            android:id="@id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_search_class"
+            android:padding="6dp"
+            android:textSize="13sp"
+            android:textColor="@color/caldroid_darker_gray"
+            />
+    </LinearLayout>
 </LinearLayout>

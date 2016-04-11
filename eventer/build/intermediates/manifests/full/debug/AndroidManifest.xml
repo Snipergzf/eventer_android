@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eventer.app"
-    android:versionCode="5"
-    android:versionName="1.0.5" >
+    android:versionCode="7"
+    android:versionName="1.0.7" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -280,6 +280,10 @@
         <activity
             android:name="com.eventer.app.other.Activity_ClassInfo_Edit"
             android:label="@string/title_activity_activity__class_info__edit" />
+        <activity android:name="com.eventer.app.other.Activity_AddCourse_Manually" />
+        <activity
+            android:name="com.eventer.app.other.ResetGroupNameActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
     </application>
 
 </manifest>

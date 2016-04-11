@@ -130,7 +130,8 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 				getActivity().startActivityForResult(intent, IS_EXIT);
 				break;
 			case R.id.re_collect://我的收藏
-				startActivity(new Intent().setClass(context, CollectActivity.class));
+				startActivity(new Intent()
+						.setClass(context, CollectActivity.class));
 				break;
 			case R.id.re_course:
 				startActivity(new Intent().setClass(context, Activity_Course.class));

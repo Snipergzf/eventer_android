@@ -1,37 +1,50 @@
 package com.eventer.app.other;
 
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
+import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.adapter.CourseAdapter;
+import com.eventer.app.db.CourseDao;
+import com.eventer.app.entity.Course;
+import com.eventer.app.http.HttpUnit;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Activity_AddCourse extends SwipeBackActivity implements
 		OnClickListener {
-	private TextView tv_title;
-	private TextView tv_finish;
-	private PopupWindow popupdownWindow;// 弹出菜单
-	private Fragment[] fragments;
+
 	public static Activity_AddCourse instance;
-	private int index;
-	private int currentIndex;
-	private String[] views;
+
+
+	private EditText et_search;
+	private InputMethodManager manager;
+	ListView listview;
+	Button btn_search, btn_add_table, btn_add_manually;
+
+	private CourseAdapter adapter;
+	private List<Course> mData = new ArrayList<>();
+	public static List<String> ClassIdList;
+
 	private Context context;
+	public static int REQUEST=0x38;
 
 	public Activity_AddCourse() {
 		// TODO Auto-generated constructor stub
@@ -42,13 +55,11 @@ public class Activity_AddCourse extends SwipeBackActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_add);
-		initView();
+		setBaseTitle(getString(R.string.add_course));
+
 		instance=this;
 		context=this;
-		views=getResources().getStringArray(R.array.add_course);
-
-		RecevierMainActivityIntent();
-
+		initView();
 	}
 
 	public void back(){
@@ -57,151 +68,124 @@ public class Activity_AddCourse extends SwipeBackActivity implements
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		Fragment_AddManually fragment_AddManually = new Fragment_AddManually();
-		Fragment_Addkc_Search fragscan_addkc_search = new Fragment_Addkc_Search();
 
-		fragments = new Fragment[] {fragscan_addkc_search, fragment_AddManually};
+		et_search = (EditText) findViewById(R.id.et_search);
+		listview = (ListView) findViewById(R.id.listview);
+		btn_search = (Button) findViewById(R.id.btn_search);
+		btn_add_table = (Button) findViewById(R.id.btn_add_table);
+		btn_add_manually = (Button) findViewById(R.id.btn_add_manually);
+		adapter = new CourseAdapter(context, R.layout.item_course_list, mData);
+		listview.setAdapter(adapter);
+		manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		btn_search.setOnClickListener(this);
+		btn_add_manually.setOnClickListener(this);
+		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+									int position, long id) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent();
+				intent.putExtra("c_detail", mData.get(position));
+				intent.setClass(context, Activity_Course_Edit.class);
+				startActivityForResult(intent, 11);
 
-		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment_container, fragments[0])
-				.add(R.id.fragment_container, fragments[1])
-				.hide(fragments[1]).show(fragments[0]).commit();
-
-		ImageView iv_back = (ImageView) findViewById(R.id.iv_back);
-		iv_back.setOnClickListener(this);
-		tv_title = (TextView) findViewById(R.id.add_popdownmenu_text);
-		LinearLayout ll_changeview = (LinearLayout) findViewById(R.id.ll_changeview);
-		ll_changeview.setOnClickListener(this);
-
-
-		tv_finish=(TextView)findViewById(R.id.tv_add_finish);
-		tv_finish.setOnClickListener(this);
-
-	}
-
-	private void RecevierMainActivityIntent() {
-		Intent FS_searchIntent = getIntent();
-		if (FS_searchIntent != null) {
-			Bundle bundlesao = FS_searchIntent.getExtras();
-			if (bundlesao != null) {
-				String search = bundlesao.getString("search");
-				if (search != null && search.equals("openscanR")) {
-					changeView(1);
-				}
 			}
-		}
-	}
+		});
 
-	private void initpopwindows() {
-		// TODO Auto-generated method stub
-		if (popupdownWindow == null) {
-			View view = getLayoutInflater().inflate(
-					R.layout.addcourse_popmenu, new LinearLayout(context),false);
-			popupdownWindow = new PopupWindow(view, 300, 350);
-			inittv_title(view);
-			// 使其聚集 ，要想监听菜单里控件的事件就必须要调用此方法
-			popupdownWindow.setFocusable(true);
-			// 设置允许在外点击消失
-			popupdownWindow.setOutsideTouchable(true);
-			// 设置背景，这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
-			popupdownWindow.setBackgroundDrawable(new BitmapDrawable());
-//			 监听菜单的关闭事件
-			popupdownWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-				@Override
-				public void onDismiss() {
-					// 改变显示的按钮图片为正常状态
-					// chickshoudongadd();
-				}
-			});
-
-			// 监听触屏事件
-			popupdownWindow.setTouchInterceptor(new OnTouchListener() {
-				public boolean onTouch(View view, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-						// 改变显示的按钮图片为正常状态
-					}
-					return false;
-				}
-			});
-		}
+		CourseDao dao =new CourseDao(context);
+		ClassIdList=dao.getCourseIdList();
+		btn_add_table.setOnClickListener(this);
 
 	}
+
+	/**
+	 * 获取课程列表
+	 */
+	private void refresh(String str) {
+		mData.clear();
+		Map<String, String> params = new HashMap<>();
+		params.put("uid", Constant.UID+"");
+		params.put("search_name", str);
+		GetCourseByHTTP(params);
+	}
+
+	public void refresh() {
+		adapter.notifyDataSetChanged();
+	}
+
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-			case R.id.ll_changeview:
-				if (popupdownWindow != null && popupdownWindow.isShowing()) {
-					popupdownWindow.dismiss();
-					popupdownWindow = null;
-				} else {
-					initpopwindows();
-					popupdownWindow.showAsDropDown(v, 0, 5);
+			case R.id.btn_search:
+				String str=et_search.getText().toString();
+				adapter.setHint(str);
+				if(!str.equals("")){
+					refresh(str);
 				}
 				break;
-			case R.id.iv_back:
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						Instrumentation instrumentation = new Instrumentation();
-						instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
-					}
-				}).start();
+			case R.id.btn_add_table:
+				Intent intent=new Intent();
+				intent.setClass(context, Activity_AddCourseTable.class);
+				startActivityForResult(intent, REQUEST);
 				break;
-			case R.id.tv_add_finish:
-				if(index==1){
-					Fragment_AddManually.instance.saveCourse();
+			case R.id.btn_add_manually:
+				Intent intent1=new Intent();
+				intent1.setClass(context, Activity_AddCourse_Manually.class);
+				startActivityForResult(intent1, REQUEST);
+				break;
+			default:
+				break;
+		}
+		hideKeyboard();
+	}
+
+	/**
+	 * 隐藏软键盘
+	 */
+	private void hideKeyboard() {
+		if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+			if (getCurrentFocus() != null)
+				manager.hideSoftInputFromWindow(getCurrentFocus()
+						.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
+
+	/**
+	 * 执行异步任务
+	 *
+	 *
+	 */
+	public void GetCourseByHTTP(final Object... params) {
+		new AsyncTask<Object, Object,List<Course>>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			protected List<Course> doInBackground(Object... params) {
+				List<Course> list;
+				try {
+					list= HttpUnit.sendCourseRequest((Map<String, String>) params[0]);
+					return list;
+
+				} catch (Throwable e) {
+					// TODO Auto-generated catch block
+					Log.e("search class error", e.toString());
+					return null;
 				}
-				break;
-		}
-	}
-
-	private void inittv_title(View view) {
-		TextView shoudong_add = (TextView) view.findViewById(R.id.pop_shoudong);
-		TextView search_add = (TextView) view.findViewById(R.id.pop_search);
-
-		search_add.setOnClickListener(new onpopchicklistener());
-		shoudong_add.setOnClickListener(new onpopchicklistener());
-
-	}
-
-	class onpopchicklistener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {//选择选课方式
-			// TODO Auto-generated method stub
-			switch (v.getId()) {
-				case R.id.pop_search:
-					index=0;
-					tv_finish.setVisibility(View.GONE);
-					break;
-				case R.id.pop_shoudong:
-					index=1;
-					tv_finish.setVisibility(View.VISIBLE);
-					break;
 			}
-			popupdownWindow.dismiss();
-			if (currentIndex != index) {
-				changeView(index);
-			}
-		}
-	}
+			protected void onPostExecute(List<Course> list) {
+				if(list!=null){
+					mData.addAll(list);
+				}else{
+					mData.clear();
+				}
 
-	//切换视图
-	private void changeView(int index2){
-		FragmentTransaction trx = getSupportFragmentManager()
-				.beginTransaction();
-		trx.hide(fragments[currentIndex]);
-		if (!fragments[index2].isAdded()) {
-			trx.add(R.id.fragment_container, fragments[index2]);
-		}
-		trx.show(fragments[index2]).commit();
-		currentIndex=index2;
-		tv_title.setText(views[index]);
-	}
+//				adapter.setData(mData);
+				adapter.notifyDataSetChanged();
+				listview.setEmptyView(findViewById(R.id.tv_empty));
+			}
+		}.execute(params);}
+
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

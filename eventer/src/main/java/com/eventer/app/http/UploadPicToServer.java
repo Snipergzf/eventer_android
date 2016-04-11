@@ -157,7 +157,7 @@ public class UploadPicToServer {
                     sb.append("\r\n");
                     DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
                     dos.write(sb.toString().getBytes());
-                    if (imageuri!=null&&!imageuri.equals("")) {
+                    if (imageuri != null && !imageuri.equals("")) {
                         dos.writeBytes("Content-Disposition: form-data; name=\""+img+"\"; filename=\"" + imguri + "\"" + "\r\n"+"Content-Type: image/jpeg\r\n\r\n");
                         FileInputStream fis = new FileInputStream(imageuri);
 
@@ -231,6 +231,10 @@ public class UploadPicToServer {
             options.outWidth = (int) (width / scale);
             options.inSampleSize = (int) (scale + 0.5);
             options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+//            options.inPurgeable = true;// 同时设置才会有效
+//            options.inInputShareable = true;//。当系统内存不够时候图片自动被回收
+
 
             Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
             outputFile = new File(imgPath);

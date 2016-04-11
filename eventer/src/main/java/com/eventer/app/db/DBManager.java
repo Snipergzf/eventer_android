@@ -99,11 +99,39 @@ public class DBManager {
         this.database = this.openDatabase(DB_PATH + "/" + DB_NAME);
     }
 
+    public void openDatabase(String db, int raw) {
+        this.database = this.openDatabaseByRaw(DB_PATH + "/" + db, raw);
+    }
+
     private SQLiteDatabase openDatabase(String dbfile) {
         try {
             if (!(new File(dbfile).exists())) {//判断数据库文件是否存在，若不存在则执行导入，否则直接打开数据库
                 InputStream is = this.context.getResources().openRawResource(
                         R.raw.event); //欲导入的数据库
+                Log.e("1", "File11");
+                FileOutputStream fos = new FileOutputStream(dbfile);
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int count ;
+                while ((count = is.read(buffer)) > 0) {
+                    fos.write(buffer, 0, count);
+                }
+                fos.flush();
+                fos.close();
+                is.close();
+            }
+            return SQLiteDatabase.openOrCreateDatabase(dbfile,
+                    null);
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private SQLiteDatabase openDatabaseByRaw(String dbfile, int raw) {
+        try {
+            if (!(new File(dbfile).exists())) {//判断数据库文件是否存在，若不存在则执行导入，否则直接打开数据库
+                InputStream is = this.context.getResources().openRawResource(
+                        raw); //欲导入的数据库
                 Log.e("1", "File11");
                 FileOutputStream fos = new FileOutputStream(dbfile);
                 byte[] buffer = new byte[BUFFER_SIZE];
@@ -290,4 +318,6 @@ public class DBManager {
         }
         return result;
     }
+
+
 }

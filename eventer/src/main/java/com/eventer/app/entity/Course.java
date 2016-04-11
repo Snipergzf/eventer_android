@@ -13,7 +13,7 @@ public class Course implements Parcelable {
 				+ time + ", week=" + week + ", status=" + status + ", day="
 				+ day + "]";
 	}
-	private int classid;
+	private String classid;
 	private String classname;
 	private String teacher;
 	private String loction;
@@ -82,11 +82,14 @@ public class Course implements Parcelable {
 	public void setInfo(String info) {
 		Info = info;
 	}
-	public int getClassid() {
+	public String getClassid() {
 		return classid;
 	}
-	public void setClassid(int classid) {
+	public void setClassid(String classid) {
 		this.classid = classid;
+	}
+	public void setClassid(int classid) {
+		this.classid = classid+"";
 	}
 	public String getClassname() {
 		return classname;
@@ -133,7 +136,7 @@ public class Course implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
 		// TODO Auto-generated method stub
-		 out.writeInt(classid);
+		 out.writeString(classid);
 		 out.writeString(classname);
 	     out.writeString(teacher);	     
 	     out.writeString(loction);
@@ -168,7 +171,7 @@ public class Course implements Parcelable {
 		    
 	 public Course(Parcel in)
 	    {
-		    classid = in.readInt();
+		    classid = in.readString();
 	        classname = in.readString();
 	        teacher = in.readString();
 	        loction = in.readString();

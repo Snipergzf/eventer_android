@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,15 +51,15 @@ import java.util.Map;
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends SwipeBackActivity {
 
-    RelativeLayout re_avatar;
-    RelativeLayout re_name;
-    RelativeLayout re_sex;
-    RelativeLayout re_exit;
-    RelativeLayout re_grade,re_school,re_major,re_class,re_reset_pwd;
+    LinearLayout re_avatar, re_name, re_sex;
+    LinearLayout re_grade, re_school, re_major, re_class;
 
-    private TextView tv_grade,tv_school,tv_major,tv_class;
+    private TextView tv_grade;
+    private TextView tv_school;
+    private TextView tv_major;
+    private TextView tv_class;
     AlertDialog upload_dlg;
-    private ImageView iv_avatar,iv_edit;
+    private ImageView iv_avatar;
     private TextView tv_name;
     private TextView tv_sex;
     public static int EDIT_CLASS=0x29;
@@ -92,14 +92,14 @@ public class MyUserInfoActivity extends SwipeBackActivity {
 
     private void initView() {
 
-        re_avatar = (RelativeLayout) this.findViewById(R.id.re_avatar);
-        re_name = (RelativeLayout) this.findViewById(R.id.re_name);
-        re_sex = (RelativeLayout) this.findViewById(R.id.re_sex);
-        re_exit=(RelativeLayout)findViewById(R.id.re_exit);
-        re_grade=(RelativeLayout)findViewById(R.id.re_grade);
-        re_school=(RelativeLayout)findViewById(R.id.re_school);
-        re_class=(RelativeLayout)findViewById(R.id.re_class);
-        re_major=(RelativeLayout)findViewById(R.id.re_major);
+        re_avatar = (LinearLayout) this.findViewById(R.id.re_avatar);
+        re_name = (LinearLayout) this.findViewById(R.id.re_name);
+        re_sex = (LinearLayout) this.findViewById(R.id.re_sex);
+        TextView tv_exit = (TextView) findViewById(R.id.tv_exit);
+        re_grade=(LinearLayout)findViewById(R.id.re_grade);
+        re_school=(LinearLayout)findViewById(R.id.re_school);
+        re_class=(LinearLayout)findViewById(R.id.re_class);
+        re_major=(LinearLayout)findViewById(R.id.re_major);
         iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
         tv_name = (TextView) this.findViewById(R.id.tv_name);
         tv_sex = (TextView) this.findViewById(R.id.tv_sex);
@@ -107,14 +107,14 @@ public class MyUserInfoActivity extends SwipeBackActivity {
         tv_school = (TextView) this.findViewById(R.id.tv_school);
         tv_major = (TextView) this.findViewById(R.id.tv_major);
         tv_class = (TextView) this.findViewById(R.id.tv_class);
-        re_reset_pwd=(RelativeLayout) this.findViewById(R.id.re_reset_pwd);
-        iv_edit=(ImageView) this.findViewById(R.id.iv_edit);
+        TextView tv_reset_pwd = (TextView) this.findViewById(R.id.tv_reset_pwd);
+        ImageView iv_edit = (ImageView) this.findViewById(R.id.iv_edit);
 
         re_avatar.setOnClickListener(new MyListener());
         re_name.setOnClickListener(new MyListener());
         re_sex.setOnClickListener(new MyListener());
-        re_exit.setOnClickListener(new MyListener());
-        re_reset_pwd.setOnClickListener(new MyListener());
+        tv_exit.setOnClickListener(new MyListener());
+        tv_reset_pwd.setOnClickListener(new MyListener());
         iv_avatar.setOnClickListener(new MyListener());
         iv_edit.setOnClickListener(new MyListener());
 
@@ -192,10 +192,10 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                     case R.id.re_sex:
 //                        showSexDialog();
                         break;
-                    case R.id.re_reset_pwd:
+                    case R.id.tv_reset_pwd:
                         startActivity(new Intent().setClass(context, CheckPhoneActivity.class).putExtra("isLogin", true));
                         break;
-                    case R.id.re_exit:
+                    case R.id.tv_exit:
                         exit();
                         break;
                     case R.id.iv_edit:
@@ -289,6 +289,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
     private void showUserAvatar(final ImageView iamgeView, String avatar) {
         final String url_avatar = avatar;
         iamgeView.setTag(url_avatar);
+        Log.e("imgview", iamgeView.getWidth() + "+++" + iamgeView.getHeight());
         if (url_avatar != null && !url_avatar.equals("")&&!avatar.equals("default")) {
             Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
                     new ImageDownloadedCallBack() {
@@ -300,8 +301,8 @@ public class MyUserInfoActivity extends SwipeBackActivity {
                                 if (imageView.getTag() == url_avatar) {
                                     imageView.setImageBitmap(bitmap);
                                 }
-                            }else{
-                                LocalUserInfo.getInstance(context).setUserInfo("avatar", null);
+                            }else if(status ==400){
+                                Log.e("myinfo-bitmap","server error");
                             }
 
                         }

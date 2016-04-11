@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,6 +34,7 @@ import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.ui.base.BaseFragmentActivity;
@@ -60,10 +62,12 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 	FileUtil fileUtil;
 	// 删除并退出
 	private Button exitBtn;
+	private boolean isGroupMember = false;
 	List<UserInfo> members = new ArrayList<>();
 	String[] member;
 	String[] display;
 	int display_index=0;
+
 
 
 	private String groupId;
@@ -88,7 +92,7 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 
 	private void initView() {
 		progressDialog = new ProgressDialog(context);
-		tv_groupname = (TextView) findViewById(R.id.tv_groupname);
+		tv_groupname = (TextView) findViewById(R.id.tv_group_name);
 		tv_m_total = (TextView) findViewById(R.id.tv_m_total);
 
 		gridview = (ExpandGridView) findViewById(R.id.gridview);
@@ -122,12 +126,22 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 		// 获取传过来的groupid
 		groupId = getIntent().getStringExtra("groupId");
 
+//		ChatroomDao dao = new ChatroomDao(context);
+//		group = dao.getRoom(groupId);
+//		// 获取封装的群名（里面封装了显示的群名和群组成员的信息）
+//
+//		if( group != null ){
+//			String group_name = group.getRoomname();
+//			if(!TextUtils.isEmpty(group_name)){
+//				tv_groupname.setText(group_name);
+//			}
+//		}
 		getGroupMember(groupId);
 		re_change_groupname.setOnClickListener(this);
 		tv_group_schedule.setOnClickListener(this);
 		tv_clear.setOnClickListener(this);
 		exitBtn.setOnClickListener(this);
-		exitBtn.setVisibility(View.GONE);
+//		exitBtn.setVisibility(View.GONE);
 	}
 
 	// 显示群成员头像昵称的gridview
@@ -152,9 +166,34 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 				.putExtra("groupId",groupId));
 				break;
 			case R.id.re_change_groupname:
-				//showNameAlert();
+//				showNameAlert();
+				startActivity(new Intent().setClass(context,ResetGroupNameActivity.class)
+						.putExtra("groupId",groupId));
 				break;
 			case R.id.btn_exit_grp:
+				//leave the chatroom
+				JSONObject obj = new JSONObject();
+				obj.put("action", "leave");
+				obj.put("data", new String[]{Constant.UID});
+				Log.e("1", obj.toJSONString());
+				MainActivity.instance.newMsg("group", groupId, obj.toJSONString(),
+						49);
+				JSONObject send_json_ = new JSONObject();
+				send_json_.put("id", Constant.UID);
+				send_json_.put("nick", LocalUserInfo.getInstance(context).getUserInfo("nick"));
+				JSONObject send_json = new JSONObject();
+				send_json.put("action", "send");
+				send_json.put("data", send_json_.toJSONString());
+				send_json.put("type", Constant.GROUP_LEAVE_NOTIFICATION);
+				String body = send_json.toJSONString();
+				MainActivity.instance.newMsg(groupId, groupId, body, 49);
+				ChatEntityDao dao1 = new ChatEntityDao(context);
+				dao1.deleteMessageByUser(groupId);
+				ChatroomDao dao = new ChatroomDao(context);
+				dao.delRoom(groupId);
+				setResult(Activity_Chat.RESULT_CODE_EXIT_GROUP,
+						new Intent().putExtra("Id",groupId));
+				finish();
 				break;
 
 			default:
@@ -185,7 +224,6 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 		public GridAdapter(Context context, List<UserInfo> members2) {
 			this.objects = members2;
 			this.context = context;
-
 		}
 
 		public final class ViewHolder {
@@ -209,19 +247,25 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 				holder = (ViewHolder)convertView.getTag();
 			}
 			holder.tv_username.setText("");
+			holder.iv_avatar.setVisibility(View.VISIBLE);
 			if (position == getCount() - 1){ // 添加群组成员按钮
-				holder.iv_avatar.setImageResource(R.drawable.jy_drltsz_btn_addperson);
-				holder.iv_avatar.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
+				if(isGroupMember){
+					holder.iv_avatar.setImageResource(R.drawable.jy_drltsz_btn_addperson);
+					holder.iv_avatar.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
 
-						// 进入选人页面
-						startActivity((new Intent(context,
-								ChatRoomCreatActivity.class).putExtra(
-								"groupId", groupId)));
+							// 进入选人页面
+							startActivity((new Intent(context,
+									ChatRoomCreatActivity.class).putExtra(
+									"groupId", groupId)));
 
-					}
-				});
+						}
+					});
+				}else{
+					holder.iv_avatar.setVisibility(View.GONE);
+				}
+
 			}
 
 			else { // 普通item，显示群组成员
@@ -309,9 +353,8 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 		Map<String, String> map = new HashMap<>();
 		map.put("group_id", groupId);
 		map.put("uid", Constant.UID);
-
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_GET_GROUP_MEMBER, map);
+				context, Constant.URL_GET_GROUP_INFO, map);
 		task.getData(new DataCallBack() {
 			@SuppressLint("ShowToast")
 			@Override
@@ -319,69 +362,93 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 				try {
 					int status = data.getInteger("status");
 					if (status == 0) {
-						JSONObject json=data.getJSONObject("group_action");
-						String memberinfo=json.getString("members");
-						member=memberinfo.split(";");
-						display=new String[member.length];
-						display_index=0;
-						for (int i = 0; i < member.length; i++) {
-							members.add(i,null);
+						JSONObject action = data.getJSONObject("group_action");
+						JSONObject group_info = action.getJSONObject("group_info");
+						String memberinfo = null;
+						String group_name = null;
+						try{
+							memberinfo = group_info.getString("group_member");
+						}catch (Exception e){
+							Log.e("get group member", "error");
 						}
-						for (int i = 0; i < member.length; i++) {
-							String info=member[i];
-							if (info.equals(Constant.UID)) {
-								UserInfo user = new UserInfo();
-								user.setAvatar(LocalUserInfo.getInstance(context).getUserInfo(
-										"avatar"));
-								user.setNick(LocalUserInfo.getInstance(context).getUserInfo(
-										"nick"));
-								user.setUsername(info);
+
+						try{
+							group_name = group_info.getString("group_name");
+						}catch (Exception e){
+							Log.e("get group member", "error");
+						}
+						if( !TextUtils.isEmpty(memberinfo) ){
+							member = memberinfo.split(";");
+							display = new String[member.length];
+							display_index = 0;
+							for (int i = 0; i < member.length; i++) {
+								members.add(i, null);
+							}
+							exitBtn.setVisibility(View.GONE);
+							for (int i = 0; i < member.length; i++) {
+								String info = member[i];
+								if (info.equals(Constant.UID)) {
+									isGroupMember = true;
+									exitBtn.setVisibility(View.VISIBLE);
+									UserInfo user = new UserInfo();
+									user.setAvatar(LocalUserInfo.getInstance(context).getUserInfo(
+											"avatar"));
+									user.setNick(LocalUserInfo.getInstance(context).getUserInfo(
+											"nick"));
+									user.setUsername(info);
 //								synchronized (members){
 									members.set(i, user);
 //								}
 //								synchronized (adapter){
 									adapter.notifyDataSetChanged();
 //								}
-								try {
-									display[i]=LocalUserInfo.getInstance(context).getUserInfo(
-											"nick");
-									saveDisplay();
-								} catch (Exception e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							} else {
-								Map<String, UserInfo> map = MyApplication.getInstance()
-										.getUserList();
-								if (map.containsKey(info)){
-									UserInfo user=map.get(info);
-									String nick=new UserDao(context).getNick(info);
-									if(nick!=null){
-										user.setNick(nick);
+									try {
+										display[i] = LocalUserInfo.getInstance(context).getUserInfo(
+												"nick");
+										saveDisplay();
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
 									}
+								} else {
+									Map<String, UserInfo> map = MyApplication.getInstance()
+											.getUserList();
+									if (map.containsKey(info)) {
+										UserInfo user = map.get(info);
+										String nick = new UserDao(context).getNick(info);
+										if (nick != null) {
+											user.setNick(nick);
+										}
 //									synchronized (members){
 										members.set(i, user);
 //									}
 //									synchronized (adapter){
 										adapter.notifyDataSetChanged();
 //									}
-									try {
-										display[i]=nick;
-										saveDisplay();
-									} catch (Exception e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
+										try {
+											display[i] = nick;
+											saveDisplay();
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									} else {
+										getUserInfo(info, i);
 									}
-								}else{
-									getUserInfo(info,i);
 								}
 							}
+							ContentValues values = new ContentValues();
+							if(!TextUtils.isEmpty(memberinfo))
+								values.put(ChatroomDao.COLUMN_NAME_MEMVBER, memberinfo.replace(";",","));
+							if(!TextUtils.isEmpty(group_name)){
+								values.put(ChatroomDao.COLUMN_NAME_ROOMNAME, group_name);
+								tv_groupname.setText(group_name);
+							}
+							ChatroomDao dao = new ChatroomDao(context);
+							dao.update(values, groupId);
+							tv_m_total.setText("(" + member.length + ")");
 						}
-						ContentValues values = new ContentValues();
-						values.put(ChatroomDao.COLUMN_NAME_MEMVBER,ListToString(member));
-						ChatroomDao dao = new ChatroomDao(context);
-						dao.update(values,groupId);
-						tv_m_total.setText("("+member.length+")");
+
 
 					} else if (status == 27) {
 
@@ -407,11 +474,11 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 					ChatroomDao dao = new ChatroomDao(context);
 					group = dao.getRoom(groupId);
 					// 获取封装的群名（里面封装了显示的群名和群组成员的信息）
-					if(group==null){
+
+					if( group == null ){
 						return;
 					}
-					String group_name = group.getRoomname();
-					tv_groupname.setText(group_name);
+
 					member = group.getMember();
 					m_total = member.length;
 					tv_m_total.setText("(" + String.valueOf(m_total) + ")");
@@ -424,17 +491,18 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 							user.setNick(LocalUserInfo.getInstance(context).getUserInfo(
 									"nick"));
 							user.setUsername(member[i]);
-							members.add(i,user);
+							members.add(i, user);
 						} else {
 							Map<String, UserInfo> map = MyApplication.getInstance()
 									.getUserList();
 							UserInfo user = map.get(member[i]);
 							if (user != null)
-								members.add(i,user);
+								members.add(i, user);
 						}
 					}
 					adapter.notifyDataSetChanged();
 				}
+
 
 			}
 		});
@@ -445,7 +513,7 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 		String str="";
 		for(int i=0;i<list.length;i++){
 			if(i<list.length-1){
-				str+=list[i]+",";
+				str+=list[i]+";";
 			}else{
 				str+=list[i];
 			}
@@ -491,8 +559,7 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 //							synchronized (adapter){
 								adapter.notifyDataSetChanged();
 //							}
-							Toast.makeText(context, "http-"+pos,
-									Toast.LENGTH_SHORT).show();
+
 							try {
 								display[pos]=name;
 								saveDisplay();
@@ -533,6 +600,16 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		ChatroomDao dao = new ChatroomDao(context);
+		ChatRoom room = dao.getRoom(groupId);
+		if(room != null){
+			String groupName = room.getRoomname();
+			if(!TextUtils.isEmpty(groupName)){
+				tv_groupname.setText(groupName);
+			}else{
+				tv_groupname.setText(getText(R.string.no_name));
+			}
+		}
 		MobclickAgent.onResume(this);
 	}
 

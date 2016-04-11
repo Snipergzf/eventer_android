@@ -6,10 +6,8 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -31,6 +29,8 @@ import android.widget.TimePicker;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.entity.Schedual;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +49,7 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	public int Repeat=2;
 	private Long id;
 	private Context context;
+	private Schedual schedual;
 	private boolean IsNew=true;
 	public static final String RESPONSE = "response";
 	public static  Fragment_AddSchedual instance;
@@ -135,22 +136,19 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	}
 
 	public void setData(){
-		DBManager dbHelper;
-		dbHelper = new DBManager(context);
-		dbHelper.openDatabase();
-		Cursor c=dbHelper.findList(true, "dbSchedule", null,
-				"ScheduleID=?", new String[]{id+""}, null, null,null,null);
-		while (c.moveToNext()) {
-			String start=c.getString(c.getColumnIndex("startTime"));
+		SchedualDao dao = new SchedualDao(context);
+		schedual = dao.getSchedual(id+"");
+
+		if(schedual != null){
+			String start = schedual.getStarttime();
 //			String end=c.getString(c.getColumnIndex("endTime"));
-			String title=c.getString(c.getColumnIndex("title"));
-			String place=c.getString(c.getColumnIndex("place"));
-			String detail =c.getString(c.getColumnIndex("detail"));
-			String remind=c.getString(c.getColumnIndex("remind"));
-			String _f=c.getString(c.getColumnIndex("frequency"));
-//			String friend= c.getString(c.getColumnIndex("companion"));
+			String title = schedual.getTitle();
+			String place = schedual.getPlace();
+			String detail = schedual.getDetail();
+			int remind = schedual.getRemind();
+			int _f = schedual.getFrequency();
+
 			String event_date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
-			//Log.e("1",id+"");
 			if(start!=null&&start.trim().length() != 0){
 				eventdate.setText(event_date);
 				String[] time=start.split(" ");
@@ -170,23 +168,11 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 			if(detail!=null&&detail.trim().length() != 0){
 				eventdetail.setText(detail);
 			}
-//			if(friend!=null&&friend.trim().length() != 0){
-//
-//			}
-			if(_f!=null&&_f.trim().length() != 0){
-				int loc=Integer.parseInt(_f);
-				eventrepeat.setSelection(loc);
-			}
-			if(remind!=null&&remind.trim().length() != 0){
-				int loc=Integer.parseInt(remind);
-
-				eventalarm.setSelection(loc);
 
 
-			}
-
+			eventrepeat.setSelection(_f);
+			eventalarm.setSelection(remind);
 		}
-		dbHelper.closeDatabase();
 	}
 
 	@Override
@@ -270,39 +256,39 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		DBManager dbHelper;
 		dbHelper = new DBManager(context);
 		dbHelper.openDatabase();
-		Log.e("1",dbHelper.isColumnExist("dbSchedule","title")+"");
-		Log.e("1",dbHelper.isColumnExist("dbSchedule","cc")+""+eventalarm.getSelectedItemPosition());
 		String start=eventdate.getText().toString()+ " "+eventtime.getText().toString();
 
-		String remindtime=getRemindTime(start,eventalarm.getSelectedItemPosition());
+		String remindtime=getRemindTime(start, eventalarm.getSelectedItemPosition());
 		int status=getStatus(getTime(),start,remindtime);
-		ContentValues cv=new ContentValues();
-		cv.put("title", eventtitle.getText().toString());
-		cv.put("place", eventplace.getText().toString());
-		cv.put("detail", eventdetail.getText().toString());
-		cv.put("remind", eventalarm.getSelectedItemPosition());
-		cv.put("companion", "");
-		cv.put("frequency", eventrepeat.getSelectedItemPosition());
-		cv.put("startTime",start);
-		cv.put("endTime", start);
-		cv.put("status", status);
-		cv.put("type",2);
-		cv.put("RemindTime", remindtime);
+		if(schedual == null){
+			schedual = new Schedual();
+		}
+		schedual.setTitle(eventtitle.getText().toString());
+		schedual.setPlace(eventplace.getText().toString());
+		schedual.setDetail(eventdetail.getText().toString());
+		schedual.setRemind(eventalarm.getSelectedItemPosition());
+		schedual.setFrequency(eventrepeat.getSelectedItemPosition());
+		schedual.setFriend("");
+		schedual.setStarttime(start);
+		schedual.setEndtime(start);
+		schedual.setStatus(status);
+		schedual.setType(2);
+		schedual.setRemindtime(remindtime);
+
 		if(IsNew){
 			long Sid=System.currentTimeMillis()/1000;
-			cv.put("ScheduleID", Sid);
-			dbHelper.insert("dbSchedule", cv);
-			dbHelper.closeDatabase();
-			Log.e("1","22222222222222222222222222222");
+			schedual.setSchdeual_ID(Sid);
+			SchedualDao dao = new SchedualDao(context);
+			dao.saveSchedualNoShare(schedual, 1);
 			Intent intent1 = new Intent();
 			intent1.putExtra(RESPONSE,true);
-//          this.setResult(HomeFragment_1.REQUEST_DETAIL, intent1);
 		} else{
-			dbHelper.update("DbSchedule", cv, "ScheduleID=?", new String[]{id+""});
-			dbHelper.closeDatabase();
+			schedual.setShareId(null);
+			Log.e("s---id",schedual.getSchdeual_ID()+"");
+			SchedualDao dao = new SchedualDao(context);
+			dao.saveSchedualNoShare(schedual, 1);
 			Intent intent1 = new Intent();
-			intent1.putExtra(RESPONSE,true);
-			Log.e("1",remindtime+ "-"+status);
+			intent1.putExtra(RESPONSE, true);
 			getActivity().setResult(Calendar_ViewSchedual.REQUEST_EDIT, intent1);
 		}
 		IsTodayEvent(eventrepeat.getSelectedItemPosition(),remindtime,start);

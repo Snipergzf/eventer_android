@@ -1,18 +1,24 @@
 package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.eventer.app.R;
+import com.eventer.app.adapter.ClassNameAdapter;
 import com.eventer.app.db.ClassInfoDao;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.ClassInfo;
@@ -42,6 +48,7 @@ public class Activity_Course extends SwipeBackActivity implements OnClickListene
     private List<ClassInfo> classList;
     private List<ClassInfo> AllClassList;
     private int NowWeek=1;
+    private int inentWeek = -1;
     private int showWeek=1;
     private DateTime startDay;
     public static int totalWeek;
@@ -55,7 +62,10 @@ public class Activity_Course extends SwipeBackActivity implements OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
         context=this;
+        inentWeek = getIntent().getIntExtra("week",-1);
         initView();
+
+
     }
 
     private void initView() {
@@ -82,18 +92,58 @@ public class Activity_Course extends SwipeBackActivity implements OnClickListene
                 .setOnItemClassClickListener(new CourseView.OnItemClassClickListener() {
 
                     @Override
-                    public void onClick(ClassInfo classInfo) {
+                    public void onClick(List<ClassInfo> list) {
 //                        Toast.makeText(context,
 //                                "您点击的课程是：" + classInfo.getClassname(),
 //                                Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
-                        intent.setClass(context, Activity_Course_View.class);
-                        intent.putExtra("CourseID", classInfo.getClassid());
-                        startActivity(intent);
+                        if(list != null){
+                            if(list.size() == 1){
+                                Intent intent = new Intent();
+                                intent.setClass(context, Activity_Course_View.class);
+                                intent.putExtra("CourseID", list.get(0).getClassid());
+                                startActivity(intent);
+                            }else if(list.size() > 1){
+                                showMyDialog(list);
+                            }
+
+                        }
+
                     }
                 });
         weekinfo_tv.setText("第"+NowWeek+"周");
         showWeek=NowWeek;
+    }
+
+    private void showMyDialog(final List<ClassInfo> courseList) {
+
+        final AlertDialog dlg = new AlertDialog.Builder(context).create();
+        dlg.show();
+        Window window = dlg.getWindow();
+        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+        window.setContentView(R.layout.click_class_list);
+        ListView listView = (ListView) window.findViewById(R.id.list);
+        ClassNameAdapter adapter = new ClassNameAdapter(context, courseList);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ClassInfo classInfo = courseList.get(position);
+                try{
+                    dlg.cancel();
+                    Intent intent = new Intent();
+                    intent.setClass(context, Activity_Course_View.class);
+                    intent.putExtra("CourseID", classInfo.getClassid());
+                    startActivity(intent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+
+
     }
     /***
      * 初始化课表设置
@@ -108,6 +158,7 @@ public class Activity_Course extends SwipeBackActivity implements OnClickListene
         String   time =sDateFormat.format(new Date());
         DateTime Today=new DateTime(time);
         int weekday=Today.getWeekDay();
+        Log.e("course_setting", weekday+ Today.toString());
         boolean isNew=true;
         while (c.moveToNext()){
             isNew=false;
@@ -127,7 +178,7 @@ public class Activity_Course extends SwipeBackActivity implements OnClickListene
             }
         }
         if(isNew){
-            startDay=Today.minusDays(weekday-1);
+            startDay=Today.minusDays(weekday-2);
             showType=0;
             startWeekday=1;
             classTotal=12;
@@ -212,7 +263,13 @@ public class Activity_Course extends SwipeBackActivity implements OnClickListene
         params.put("StartDay", startDay.toString());
         courseView.initSetting(params);
         courseView.setWeek(NowWeek);
-        showWeek=NowWeek;
+        if(showWeek <= 0){
+            showWeek = NowWeek;
+        }
+        if(inentWeek != -1){
+            showWeek = inentWeek;
+            inentWeek = -1;
+        }
         courseView.setClassList(classList);// 将课程信息导入到课表中
         changeWeek(showWeek);
     }

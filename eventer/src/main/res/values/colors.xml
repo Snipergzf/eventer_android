@@ -68,4 +68,5 @@
      <color name="gray_f0f0f0">#f0f0f0</color>
     <color name="main_text_color">#3366cc</color>
     <color name="main_bg">#eee</color>
+    <color name="text">#484848</color>
 </resources>

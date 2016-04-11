@@ -170,7 +170,7 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
         note.startAnimation(anim);
 
     }
-	    private void animateViewOut() {
+	private void animateViewOut() {
 
         Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_out);
         anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -209,7 +209,7 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 				break;
 			case R.id.tv_theme_fun:
 				index=2;
-				theme = "文体";
+				theme = "娱乐";
 				break;
 			case R.id.tv_theme_job:
 				index=3;
@@ -253,29 +253,33 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 
 	}
 
+	private void refreshData(){
+		List<Event> eventlist = (List<Event>) MyApplication.getInstance()
+				.getCacheByKey("CacheEventList");
+		MyApplication.getInstance()
+				.setCacheByKey("CacheEventList", null);
+		if(eventlist!=null){
+			for (Event event : eventlist) {
+				event=getEventItem(event);
+				if(event!=null){
+					if(event.getTheme()!=null&&theme.equals(event.getTheme())){
+						listItems.add(0,event);
+					}
+					all_event.add(event);
+				}
+			}
+		}
+
+		listViewAdapter.notifyDataSetChanged();
+
+	}
+
 	Handler mHandler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
 			switch (msg.what) {
 				case REFRESH_MORE:
-					@SuppressWarnings("unchecked")
-					List<Event> eventlist = (List<Event>) MyApplication.getInstance()
-							.getCacheByKey("CacheEventList");
-					if(eventlist!=null){
-						for (Event event : eventlist) {
-							event=getEventItem(event);
-							if(event!=null){
-								if(event.getTheme()!=null&&theme.equals(event.getTheme())){
-									listItems.add(0,event);
-								}
-								all_event.add(event);
-							}
-						}
-					}
-
-					listViewAdapter.notifyDataSetChanged();
-					MyApplication.getInstance()
-							.setCacheByKey("CacheEventList", null);
+					refreshData();
 					listView.stopRefresh();
 					break;
 				case NET_BAD:
@@ -457,7 +461,8 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onPageStart("MainScreen"); //统计页面
-		listViewAdapter.notifyDataSetChanged();
+		refreshData();
+//		listViewAdapter.notifyDataSetChanged();
 	}
 	public void onPause() {
 		super.onPause();

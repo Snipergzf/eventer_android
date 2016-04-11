@@ -39,12 +39,17 @@ public class SocketService extends Service{
 	private int total=50;
 	private myX509TrustManager xtm = new myX509TrustManager();
 
+
 	public class SocketSendBinder extends Binder{
 		public boolean sendOne(Container msg){
 			taskQueue.add(msg);
 			return true;
 		}
 	}
+	private byte[] cache_data = new byte[1024*1024];
+	private int cache_total = 0;
+	private int cache_len = 0;
+	private boolean isNew = true;
 	class myX509TrustManager implements X509TrustManager
 	{
 
@@ -71,6 +76,14 @@ public class SocketService extends Service{
 	public void onCreate() {
 		super.onCreate();
 		Log.e("SocketService", "onCreate");
+//		try {
+////			socket.setReceiveBufferSize(8096);
+////			socket.setSendBufferSize(4096);
+//		} catch (SocketException e) {
+//			e.printStackTrace();
+//			Log.e("socket_setting_error",e.toString());
+//		}
+
 		send = new Thread(){
 			@Override
 			public void run() {
@@ -157,6 +170,7 @@ public class SocketService extends Service{
 							int buff=socket.getReceiveBufferSize();
 							byte[] buf=new byte[(buff<1?1:buff)];
 							int len = input.read(buf);
+
 							if(len==-1){//断线重连
 								SSLContext context;
 								try {
@@ -182,52 +196,133 @@ public class SocketService extends Service{
 								for (int i = 0; i < 4; i++) {
 									rece_len[i] = buf[i];  //数据长度
 								}
-								for (int i = 4; i < len; i++) {
 
-									rece_data[i-4] = buf[i]; //数据内容
-								}
-								Log.e("1", rece_data.length+"");
-								Container rmsg = Container.parseFrom(rece_data);
-								if(rmsg!= null && (rmsg.getSID().equals("00000001"))){
-									String msgBody="{\"type\":\"receipt\",\"mid\":\""+rmsg.getMID()+"\"}";
-									long time=System.currentTimeMillis()/1000;
-									Container msg = Container.newBuilder()
-											.setMID("").setSID(rmsg.getRID()).setRID(rmsg.getSID())
-											.setTYPE(1).setSTIME(time).setBODY(msgBody)
-											.build();
-									taskQueue.add(msg);
-									intent_a.putExtra("msg", rmsg.getBODY());
-									sendBroadcast(intent_a);
-								} else if (rmsg!= null && (!rmsg.getBODY().equals(""))) {
-//								   switch (rmsg.getTYPE()) {
-//									case 17:
-//									   intent.putExtra("msg", rmsg.getBODY());
-//									   intent.putExtra("talker",rmsg.getSID());
-//									   intent.putExtra("mid", rmsg.getMID());
-//									   intent.putExtra("time", rmsg.getSTIME());
-//				                       sendBroadcast(intent);
-//									   break;
-//									case 49:
-//									   intent.putExtra("msg", rmsg.getBODY());
-//									   intent.putExtra("talker",rmsg.getSID());
-//									   intent.putExtra("mid", rmsg.getMID());
-//									   intent.putExtra("time", rmsg.getSTIME());
-//					                   sendBroadcast(intent);
-//									   break;
-//	
-//									default:
-//										break;
-//								}
-									intent.putExtra("msg", rmsg.getBODY());
-									intent.putExtra("talker",rmsg.getSID());
-									intent.putExtra("mid", rmsg.getMID());
-									intent.putExtra("time", rmsg.getSTIME());
-//			                       sendBroadcast(intent);
-									sendOrderedBroadcast(intent, null);
+								int data_len = byte2int(rece_len);
+								if(data_len + 4  == len){
+											for (int i = 4; i < len; i++) {
+
+												rece_data[i-4] = buf[i]; //数据内容
+											}
+											Container rmsg = Container.parseFrom(rece_data);
+											if(rmsg!= null && (rmsg.getSID().equals("00000001"))){
+												String msgBody="{\"type\":\"receipt\",\"mid\":\""+rmsg.getMID()+"\"}";
+												long time=System.currentTimeMillis()/1000;
+												Container msg = Container.newBuilder()
+														.setMID("").setSID(rmsg.getRID()).setRID(rmsg.getSID())
+														.setTYPE(1).setSTIME(time).setBODY(msgBody)
+														.build();
+												taskQueue.add(msg);
+												intent_a.putExtra("msg", rmsg.getBODY());
+												sendBroadcast(intent_a);
+											} else if (rmsg!= null && (!rmsg.getBODY().equals(""))) {
+		//								   switch (rmsg.getTYPE()) {
+		//									case 17:
+		//									   intent.putExtra("msg", rmsg.getBODY());
+		//									   intent.putExtra("talker",rmsg.getSID());
+		//									   intent.putExtra("mid", rmsg.getMID());
+		//									   intent.putExtra("time", rmsg.getSTIME());
+		//				                       sendBroadcast(intent);
+		//									   break;
+		//									case 49:
+		//									   intent.putExtra("msg", rmsg.getBODY());
+		//									   intent.putExtra("talker",rmsg.getSID());
+		//									   intent.putExtra("mid", rmsg.getMID());
+		//									   intent.putExtra("time", rmsg.getSTIME());
+		//					                   sendBroadcast(intent);
+		//									   break;
+		//
+		//									default:
+		//										break;
+		//								}
+												intent.putExtra("msg", rmsg.getBODY());
+												intent.putExtra("talker",rmsg.getSID());
+												intent.putExtra("mid", rmsg.getMID());
+												intent.putExtra("time", rmsg.getSTIME());
+		//			                       sendBroadcast(intent);
+												sendOrderedBroadcast(intent, null);
+
+											}
+											if(rmsg!=null){
+												Log.e("socket", "received:MID="+rmsg.getMID()+"; RID=" + rmsg.getRID()+"; SID="+rmsg.getSID()+"; Type="+rmsg.getTYPE()+"; Time="+rmsg.getSTIME()+"; Body="+rmsg.getBODY());
+
+											}else{
+												Log.e("socket_recv",buf.toString());
+											}
+
+								}else{
+									if(len == 16 * 1024 && data_len < 1024 * 1024){//判断长度是否在正常范围内
+										cache_total = data_len;
+										for (int i = 4; i < len; i++) {
+											cache_data[i-4] = buf[i]; //数据内容
+										}
+										cache_len += len - 4;
+										isNew = false;
+									}else{
+
+										for (int i = 0; i < len; i++) {
+											cache_data[i + cache_len] = buf[i]; //数据内容
+										}
+										cache_len += len;
+										Log.e("1","cache_len:"+cache_len+"-----------cache_total:"+cache_total);
+										if(cache_len == cache_total){
+											Log.e("socket_long_msg","long msg to Container");
+											byte[] recv = new byte[cache_total];
+
+
+											for (int i = 0; i < cache_total; i++) {
+												recv[i] = cache_data[i]; //数据内容
+											}
+											cache_data = new byte[1024*1024];
+											cache_total = 0;
+											cache_len = 0;
+											isNew = true;
+											Container rmsg = Container.parseFrom(recv);
+											Log.e("socket_long_msg","succeed");
+
+											if(rmsg!= null && (rmsg.getSID().equals("00000001"))){
+												String msgBody="{\"type\":\"receipt\",\"mid\":\""+rmsg.getMID()+"\"}";
+												long time=System.currentTimeMillis()/1000;
+												Container msg = Container.newBuilder()
+														.setMID("").setSID(rmsg.getRID()).setRID(rmsg.getSID())
+														.setTYPE(1).setSTIME(time).setBODY(msgBody)
+														.build();
+												taskQueue.add(msg);
+												intent_a.putExtra("msg", rmsg.getBODY());
+												sendBroadcast(intent_a);
+											} else if (rmsg!= null && (!rmsg.getBODY().equals(""))) {
+												intent.putExtra("msg", rmsg.getBODY());
+												intent.putExtra("talker",rmsg.getSID());
+												intent.putExtra("mid", rmsg.getMID());
+												intent.putExtra("time", rmsg.getSTIME());
+												sendOrderedBroadcast(intent, null);
+
+											}
+											if(rmsg!=null){
+												Log.e("socket", "received:MID="+rmsg.getMID()+"; RID=" + rmsg.getRID()+"; SID="+rmsg.getSID()+"; Type="+rmsg.getTYPE()+"; Time="+rmsg.getSTIME()+"; Body="+rmsg.getBODY());
+
+											}else{
+												Log.e("socket_recv",buf.toString());
+											}
+										}else if(cache_len > cache_total){
+											cache_data = new byte[1024*1024];
+											cache_total = 0;
+											cache_len = 0;
+//											isNew = true;
+											cache_total = data_len;
+											for (int i = 4; i < len; i++) {
+												cache_data[i-4] = buf[i]; //数据内容
+											}
+											cache_len += len - 4;
+											isNew = false;
+										}
+
+
+									}
+
 
 								}
-								if(rmsg!=null)
-								Log.e("socket", "received:MID="+rmsg.getMID()+"; RID=" + rmsg.getRID()+"; SID="+rmsg.getSID()+"; Type="+rmsg.getTYPE()+"; Time="+rmsg.getSTIME()+"; Body="+rmsg.getBODY());
+
+
 
 							}
 
@@ -243,7 +338,7 @@ public class SocketService extends Service{
 
 					} catch (IOException | InterruptedException e) {
 						e.printStackTrace();
-
+                        Log.e("socket_recv_error",e.toString());
 
 					}
 				}
@@ -277,9 +372,17 @@ public class SocketService extends Service{
 //		heart_msg.start();
 	}
 
+	public static int byte2int(byte[] res) {
+		ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
+		buffer.put(res, 0, res.length);
+		buffer.flip();//need flip
+		return buffer.getInt();
+	}
+
 	public static byte[] GetBytes(int value)
 	{
 		ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
+
 		buffer.putInt(value);
 		return buffer.array();
 	}

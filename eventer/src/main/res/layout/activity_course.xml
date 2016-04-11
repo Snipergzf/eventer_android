@@ -61,6 +61,7 @@
         android:id="@+id/courseview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+
         />
 
 </RelativeLayout>

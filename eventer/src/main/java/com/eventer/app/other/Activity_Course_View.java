@@ -27,14 +27,14 @@ public class Activity_Course_View extends SwipeBackActivity  implements OnClickL
 	private TextView kc_teacher;
 	private LinearLayout ll_timeblock;
 	public static int REQUEST=0x34;
-	private int courseid;
+	private String courseid;
 	private Context	context;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_info_view);
 		setBaseTitle(R.string.course_info);
-		courseid=getIntent().getIntExtra("CourseID", -1);
+		courseid=getIntent().getStringExtra("CourseID");
 		TextView kc_delete = (TextView) findViewById(R.id.kc_delete_tv);
 		kc_name=(TextView)findViewById(R.id.view_kcname_tv);
 		kc_teacher=(TextView)findViewById(R.id.view_kcteacher_tv);
@@ -42,7 +42,7 @@ public class Activity_Course_View extends SwipeBackActivity  implements OnClickL
 		ll_timeblock=(LinearLayout)findViewById(R.id.ll_timeblock);
 		context=Activity_Course_View.this;
 
-		if(courseid!=-1){
+		if(!TextUtils.isEmpty(courseid)){
 			initView();
 		}
 		kc_delete.setOnClickListener(this);
@@ -131,8 +131,8 @@ public class Activity_Course_View extends SwipeBackActivity  implements OnClickL
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST&&data!=null)
 		{
-			int id=data.getIntExtra("ID", -1);
-			if(id!=-1&&courseid==id){
+			String id=data.getStringExtra("ID");
+			if(courseid.equals(id)){
 				initView();
 			}
 		}

@@ -9,11 +9,11 @@ import android.text.TextUtils;
 
 import com.eventer.app.entity.Course;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @SuppressLint("DefaultLocale")
@@ -113,15 +113,13 @@ public class CourseDao {
 		List<Course> list=new ArrayList<>();
 		String teacher=course.getTeacher();
 		String c_name=course.getClassname();
-		int classid=course.getClassid();
+		String classid=course.getClassid();
 
 		try {
-			JSONObject json=new JSONObject(course.getInfo());
-			Iterator<String> it=json.keys();
-			int index=1;
-			while(it.hasNext()){
+			JSONArray json=new JSONArray(course.getInfo());
+			for (int i = 0; i < json.length(); i++) {
 				Course c=new Course();
-				JSONObject detail=json.getJSONObject(it.next());
+				JSONObject detail=json.getJSONObject(i);
 				c.setClassname(c_name);
 				c.setTeacher(teacher);
 				c.setClassid(classid);
@@ -129,9 +127,8 @@ public class CourseDao {
 				c.setTime(detail.getString("time"));
 				c.setWeek(detail.getString("week"));
 				c.setDay(detail.getInt("day"));
-				c.setExtra_ID(index);
+				c.setExtra_ID(i);
 				list.add(c);
-				index++;
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -140,20 +137,20 @@ public class CourseDao {
 		return list;
 	}
 
-	public void deleteCourse(int classid) {
+	public void deleteCourse(String classid) {
 		// TODO Auto-generated method stub
 		dbHelper.openDatabase();
-		dbHelper.delete("dbCourse","CourseID=?",new String[]{classid+"" });
+		dbHelper.delete("dbCourse","CourseID=?",new String[]{classid});
 		dbHelper.closeDatabase();
 	}
 
-	public List<Integer> getCourseIdList(){
+	public List<String> getCourseIdList(){
 		dbHelper.openDatabase();
-		List<Integer> list=new ArrayList<>();
+		List<String> list=new ArrayList<>();
 		Cursor c=dbHelper.findList(true, TABLE_NAME,new String[]{COLUMN_NAME_ID},null,null,null,null,null, null);
 		while (c.moveToNext()) {
-			int id = c.getInt(c.getColumnIndex(COLUMN_NAME_ID));
-			if(id>0){
+			String id = c.getString(c.getColumnIndex(COLUMN_NAME_ID));
+			if(!TextUtils.isEmpty(id)){
 				list.add(id);
 			}
 		}

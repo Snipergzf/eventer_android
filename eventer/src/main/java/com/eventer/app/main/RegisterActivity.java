@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,6 +30,7 @@ import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
+import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.view.MyCountTimer;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
@@ -230,8 +232,8 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 		switch (v.getId()) {
 			//"注册"按钮
 			case R.id.btn_next:
-			TelString=edit_tel.getText().toString();
-			UserRegister();
+			    TelString=edit_tel.getText().toString();
+			    UserRegister();
 				//发送验证码确认
 //				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
 				break;
@@ -278,8 +280,14 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 	public void UserRegister() {
 		Map<String, String> params = new HashMap<>();
 //		TelString=edit_tel.getText().toString();
-		pwd=edit_pwd.getText().toString();
+		pwd = edit_pwd.getText().toString();
 		params.put("phone", TelString);
+		if(TextUtils.isEmpty(pwd)){
+			Toast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
+			return;
+		}else{
+			pwd = MD5Util.getMD5(pwd);
+		}
 		params.put("pwd", pwd);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
 				context, Constant.URL_REGISTER, params);
@@ -300,6 +308,10 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 							break;
 						case 3:
 							Toast.makeText(context, "该用户已注册过！", Toast.LENGTH_LONG)
+									.show();
+							break;
+						case 25:
+							Toast.makeText(context, "系统维护中，请稍候再来注册~", Toast.LENGTH_LONG)
 									.show();
 							break;
 						default:
@@ -335,12 +347,11 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 	 */
 	public void UserLogin() {
 		Map<String, String> params = new HashMap<String, String>();
-		pwd=edit_pwd.getText().toString();
 		params.put("phone", TelString);
 		params.put("pwd", pwd);
 		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_LOGIN, params);
+				context, Constant.URL_LOGIN_NEW, params);
 		task.getData(new DataCallBack() {
 
 			@Override

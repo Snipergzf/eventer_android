@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.db.MajorDao;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.AbstractSpinerAdapter;
@@ -33,7 +34,8 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
     private TextView  tv_year,tv_school,tv_major,tv_class;
     private TextView[] tv_list;
     private List<String> valueList = new ArrayList<>();
-    private List<String> yearList,schoolList,majorList,classList;
+    private List<String> yearList = new ArrayList<>();
+    private MajorDao dao;
     private String year;
     private String major;
     private String mclass;
@@ -46,26 +48,30 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editclassinfo);
         setBaseTitle(getString(R.string.edit_class_info));
-        Intent intent=getIntent();
-        year=intent.getStringExtra("grade");
+        context=this;
+        dao = new MajorDao(context);
+        initData();
+        initView();
+    }
+
+    private void initData() {
+        LocalUserInfo userInfo = LocalUserInfo.getInstance(context);
+        year = userInfo.getUserInfo("grade");
         if(TextUtils.isEmpty(year)){
             year="";
         }
-        major=intent.getStringExtra("major");
+        major = userInfo.getUserInfo("major");
         if(TextUtils.isEmpty(major)){
             major="";
         }
-        school=intent.getStringExtra("school");
+        school = userInfo.getUserInfo("school");
         if(TextUtils.isEmpty(school)){
             school="";
         }
-        mclass=intent.getStringExtra("class");
+        mclass = userInfo.getUserInfo("class");
         if(TextUtils.isEmpty(mclass)){
             mclass="";
         }
-
-        context=this;
-        initView();
     }
 
 
@@ -83,25 +89,10 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
         btn_commit.setOnClickListener(this);
         tv_class.setText(mclass);
         tv_major.setText(major);
-        tv_school.setText(major);
+        tv_school.setText(school);
         tv_year.setText(year);
-        yearList=new ArrayList<>();
-        yearList.add("2014");
-        schoolList=new ArrayList<>();
-        schoolList.add("电子信息与通信学院");
-        majorList=new ArrayList<>();
-        majorList.add("通信工程");
-        classList=new ArrayList<>();
-        classList.add("1班");
-        classList.add("2班");
-        classList.add("通中英");
-        classList.add("电中英");
-
-        String[] names = getResources().getStringArray(R.array.weeks);
-//		for(int i = 0; i < names.length; i++){
-//			valueList.add(names[i]);
-//		}
-        Collections.addAll(valueList, names);
+        String[] grade = getResources().getStringArray(R.array.grade);
+        Collections.addAll(yearList, grade);
         mSpinerPopWindow = new SpinerPopWindow(this);
         mSpinerPopWindow.refreshData(valueList, 0);
         mSpinerPopWindow.setItemListener(this);
@@ -111,29 +102,52 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_year:
-                index=0;
-                valueList=yearList;
+                index = 0;
+                valueList = yearList;
                 mSpinerPopWindow.refreshData(valueList, 0);
                 break;
             case R.id.tv_school:
-                index=1;
-                valueList=schoolList;
-                mSpinerPopWindow.refreshData(valueList, 0);
+                year = tv_year.getText().toString().trim();
+                if (!TextUtils.isEmpty(year)){
+                    valueList = dao.getSchool(year);
+                    mSpinerPopWindow.refreshData(valueList, 0);
+                    index = 1;
+                } else {
+                    Toast.makeText(context, "请先选择年级~", Toast.LENGTH_SHORT).show();
+                    index = -1;
+                }
+
                 break;
             case R.id.tv_major:
-                index=2;
-                valueList=majorList;
-                mSpinerPopWindow.refreshData(valueList, 0);
+
+                year = tv_year.getText().toString().trim();
+                school = tv_school.getText().toString().trim();
+                if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(school)){
+                    valueList = dao.getMajor(year, school);
+                    mSpinerPopWindow.refreshData(valueList, 0);
+                    index=2;
+                }  else {
+                    Toast.makeText(context, "请先选择年级和学院~", Toast.LENGTH_SHORT).show();
+                    index=-1;
+                }
                 break;
             case R.id.tv_class:
-                index=3;
-                valueList=classList;
-                mSpinerPopWindow.refreshData(valueList, 0);
+
+                year = tv_year.getText().toString().trim();
+                school = tv_school.getText().toString().trim();
+                major = tv_major.getText().toString().trim();
+                if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(school) && !TextUtils.isEmpty(major)){
+                    valueList = dao.getClass(year, school, major);
+                    mSpinerPopWindow.refreshData(valueList, 0);
+                    index=3;
+                }  else {
+                    Toast.makeText(context, "请先选择年级、学院和专业~", Toast.LENGTH_SHORT).show();
+                    index=-1;
+                }
                 break;
             case R.id.btn_commit:
 
                 index=-1;
-                Map<String, String> params = new HashMap<>();
                 year=tv_year.getText().toString();
                 school = tv_school.getText().toString();
                 major=tv_major.getText().toString();

@@ -303,7 +303,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		params.put("phone", user);
 		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_LOGIN, params);
+				context, Constant.URL_LOGIN_NEW, params);
 		task.getData(new DataCallBack() {
 
 			@Override
@@ -343,8 +343,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 	 */
 	public void setAlarmList() {
 		Alarmlist = new HashMap<>();
+		new SchedualDao(context);
 		DBManager dbHelper;
 		dbHelper = new DBManager(context);
+
 		dbHelper.openDatabase();
 		String today = formatter.format(new Date());
 		String[] today_time = today.split(" ");

@@ -2,6 +2,8 @@ package com.eventer.app.adapter;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,12 +15,12 @@ import android.widget.TextView;
 import com.eventer.app.R;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
-import com.eventer.app.other.Fragment_Addkc_Search;
+import com.eventer.app.other.Activity_AddCourse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -109,7 +111,7 @@ public class CourseAdapter  extends BaseAdapter {
 
 		String name=item.getClassname();
 		String teacher=item.getTeacher();
-		if(hint!=null&&hint.equals("")){
+		if(hint != null && !hint.equals("")){
 			if(name!=null){
 				name=name.replace(hint, "<font color=" + "\"" + "#F89012" + "\">"   +hint + "</font>" );
 			}else{
@@ -127,46 +129,48 @@ public class CourseAdapter  extends BaseAdapter {
 
 		holder.teacher.setText(Html.fromHtml(teacher));
 		holder.mclass.setText(item.getS_class());
-		final int id=item.getClassid();
+		final String id=item.getClassid();
 		String detail=item.getInfo();
 		String time="";
 		String week="";
 		String place="";
 		try {
-			JSONObject json=new JSONObject(detail);
-			Iterator<String> it=json.keys();
-			int index=0;
-			while(it.hasNext()){
-				if(index==0){
-					JSONObject info=json.getJSONObject(it.next());
-					String[] weeklist=info.getString("week").split(",");
-					for (String aWeeklist : weeklist) {
-						week += aWeeklist + "周 ";
-					}
-					String day=context.getResources().getStringArray(R.array.weeks)[info.getInt("day")];
-					time=day+" "+info.getString("time")+"节";
-					place=info.getString("place");
-					index++;
-				}else{
+			JSONArray json=new JSONArray(detail);
+			if( json.length()>0){
+				JSONObject info=json.getJSONObject(0);
+				String[] weeklist=info.getString("week").split(",");
+				for (String aWeeklist : weeklist) {
+					week += aWeeklist + "周 ";
+				}
+				int weekday = info.getInt("day") % 7;
+				String day=context.getResources().getStringArray(R.array.weeks)[weekday];
+				time=day+" "+info.getString("time")+"节";
+				place=info.getString("place");
+				if(json.length()>1){
 					week+="...";
 					time+="...";
 					place+="...";
-					break;
 				}
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Log.e("1",e.toString());
 		}
 
 		holder.time.setText(time);
 		holder.week.setText(week);
-		holder.loction.setText(place);
+		if(!TextUtils.isEmpty(place)){
+			holder.loction.setText(place);
+		}else {
+			holder.loction.setText(Html.fromHtml(context.getResources().getString(R.string.empty_msg)));
+		}
 
-		if(Fragment_Addkc_Search.ClassIdList.contains(id)){
+
+		if(Activity_AddCourse.ClassIdList.contains(id)){
 			holder.addCourse.setText("退出课程");
 			holder.addCourse.setBackgroundResource(R.drawable.button_gray);
-		}else{
+		}else {
 			holder.addCourse.setText("加入课程");
 			holder.addCourse.setBackgroundResource(R.drawable.button_blue);
 		}
@@ -174,15 +178,15 @@ public class CourseAdapter  extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(!Fragment_Addkc_Search.ClassIdList.contains(id)){
+				if(!Activity_AddCourse.ClassIdList.contains(id)){
 					CourseDao dao=new CourseDao(context);
 					dao.saveCourseByInfo(listItems.get(loc));
-					Fragment_Addkc_Search.ClassIdList.add(id);
+					Activity_AddCourse.ClassIdList.add(id);
 				}else{
 					CourseDao dao=new CourseDao(context);
 					dao.deleteCourse(listItems.get(loc).getClassid());
-					Integer num=id;
-					Fragment_Addkc_Search.ClassIdList.remove(num);
+					String num=id;
+					Activity_AddCourse.ClassIdList.remove(num);
 				}
 				notifyDataSetChanged();
 			}

@@ -8,7 +8,7 @@ public class ClassInfo {
 	private int toX;
 	private int toY;
 
-	private int classid;
+	private String classid;
 	private String classname;
 	private int fromClassNum;
 	private int classNumLen;
@@ -64,14 +64,16 @@ public class ClassInfo {
 		this.toY = toY;
 	}
 
-	public int getClassid() {
+	public String getClassid() {
 		return classid;
 	}
 
-	public void setClassid(int classid) {
+	public void setClassid(String classid) {
 		this.classid = classid;
 	}
-
+//	public void setClassid(int classid) {
+//		this.classid = classid+"";
+//	}
 	public String getClassname() {
 		return classname;
 	}

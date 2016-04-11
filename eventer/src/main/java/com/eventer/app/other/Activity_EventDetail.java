@@ -40,6 +40,7 @@ import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Event;
 import com.eventer.app.entity.EventOp;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
@@ -239,12 +240,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 
 	private void ClickFeedBack() {
 		// TODO Auto-generated method stub
-		Map<String,String> map=new HashMap<>();
-		map.put("event_id", id);
-		map.put("share_num", "");
-		map.put("click_num", "1");
-		map.put("participate_num", "");
-		map.put("token", Constant.TOKEN);
+		Map<String,String> map= HttpParamUnit.eventAddFeedback(id, "", "1", "");
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -304,7 +300,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							initData();
 							break;
 						case 24:
-							Toast.makeText(context, "活动已过期!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(context, "活动已过期或者已删除!", Toast.LENGTH_SHORT).show();
 							finish();
 						default:
 							break;
@@ -592,12 +588,8 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}
 	}
 	private void CollectFeedBack(){
-		Map<String,String> map=new HashMap<>();
-		map.put("event_id", id);
-		map.put("share_num", "");
-		map.put("click_num", "");
-		map.put("participate_num", "1");
-		map.put("token", Constant.TOKEN);
+
+		Map<String,String> map= HttpParamUnit.eventAddFeedback(id, "", "", "1");
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -605,7 +597,10 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				// TODO Auto-generated method stub
 				try {
 					int status=data.getInteger("status");
-					if(status!=0){
+					if(status == 24){
+						Toast.makeText(context,
+								"活动已过期或者已删除!", Toast.LENGTH_SHORT ).show();
+					}else if(status!=0){
 						if(!Constant.isConnectNet){
 							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
 						}else{
@@ -628,6 +623,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		map.put("event_id", id);
 		map.put("participate_num", "1");
 		map.put("token", Constant.TOKEN);
+		map.put("uid",Constant.UID);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_DEL_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -635,7 +631,10 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 				// TODO Auto-generated method stub
 				try {
 					int status=data.getInteger("status");
-					if(status!=0){
+					if(status == 24){
+						Toast.makeText(context,
+								"活动已过期或者已删除!", Toast.LENGTH_SHORT ).show();
+					}else if(status!=0){
 						if(!Constant.isConnectNet){
 							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
 						}else{
@@ -656,6 +655,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		Map<String,String> map=new HashMap<>();
 		map.put("event_id", id);
 		map.put("token", Constant.TOKEN);
+		map.put("uid",Constant.UID);
 		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_UPDATE_EVENT_FEEDBACK, map);
 		task.getData(new DataCallBack() {
 			@Override
@@ -696,6 +696,9 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 							tv_comment_num.setVisibility(View.GONE);
 						}
 
+					}else if(status == 24){
+						Toast.makeText(context,
+								"活动已过期或者已删除!", Toast.LENGTH_SHORT ).show();
 					}else{
 						if(!Constant.isConnectNet){
 							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();

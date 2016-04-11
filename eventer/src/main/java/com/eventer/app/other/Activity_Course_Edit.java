@@ -20,11 +20,11 @@ import com.eventer.app.entity.Course;
 import com.eventer.app.widget.ListViewForScrollView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -32,7 +32,7 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 
 	private EditText addkc_name,addkc_teacher;
 	private CourseTimeAdapter adapter;
-	private int id;
+	private String id;
 	private List<Course> mData;
 	private Context context;
 	public static Activity_Course_Edit instance;
@@ -45,7 +45,7 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 		setContentView(R.layout.course_info_edit);
 		context=Activity_Course_Edit.this;
 		instance=this;
-		id=getIntent().getIntExtra("CourseID", -1);
+		id=getIntent().getStringExtra("CourseID");
 		course=getIntent().getParcelableExtra("c_detail");
 		initView();
 
@@ -65,7 +65,7 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 		add_commit.setOnClickListener(this);
 		back_img.setOnClickListener(this);
 
-		if(id!=-1){
+		if(!TextUtils.isEmpty(id)){
 			initData();
 			if(mData.size()!=0){
 				Course c=mData.get(0);
@@ -105,12 +105,10 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 		teacher=course.getTeacher();
 		c_name=course.getClassname();
 		try {
-			JSONObject json=new JSONObject(course.getInfo());
-			Iterator<String> it=json.keys();
-			int index=1;
-			while(it.hasNext()){
+			JSONArray json=new JSONArray(course.getInfo());
+			for (int i = 0; i < json.length(); i++) {
 				Course c=new Course();
-				JSONObject detail=json.getJSONObject(it.next());
+				JSONObject detail=json.getJSONObject(i);
 				c.setClassname(c_name);
 				c.setTeacher(teacher);
 				c.setClassid(id);
@@ -118,10 +116,10 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 				c.setTime(detail.getString("time"));
 				c.setWeek(detail.getString("week"));
 				c.setDay(detail.getInt("day"));
-				c.setExtra_ID(index);
+				c.setExtra_ID(i);
 				list.add(c);
-				index++;
 			}
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,9 +129,9 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 
 	private void initData() {
 		// TODO Auto-generated method stub	
-		if(id!=-1){
+		if(!TextUtils.isEmpty(id)){
 			CourseDao dao=new CourseDao(context);
-			mData=dao.getCourseList(id+"");
+			mData=dao.getCourseList(id);
 		}
 
 	}

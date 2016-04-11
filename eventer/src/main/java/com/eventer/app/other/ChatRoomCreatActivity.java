@@ -74,8 +74,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 	private List<String> addList = new ArrayList<>();
 	private ChatRoom group;
 	private Context context;
-	int GROUP_CREATED_NOTIFICATION = 6;
-	int GROUP_INVITE_NOTIFICATION=8;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -339,7 +338,11 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 				display.add(LocalUserInfo.getInstance(context)
 						.getUserInfo("nick"));
 			}
-
+			StringBuffer sb = new StringBuffer();
+			for(int i =0;i<display.size()-1;i++){
+				sb.append(display.get(i).toString()+", ");
+			}
+			sb.append(display.get(display.size()-1).toString());
 			JSONObject obj = new JSONObject();
 			obj.put("action", "join");
 			obj.put("data",
@@ -360,19 +363,19 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			dao.saveChatROOM(room);
 			//向群组成员发送群消息，目的是告知群成员群信息
 			JSONObject send_json_ = new JSONObject();
-			send_json_.put("memberlist",  members.toArray(new String[members.size()]));
-			send_json_.put("displaylist",  display.toArray(new String[display.size()]));
-			send_json_.put("owner", Constant.UID);
+			send_json_.put("id",  Constant.UID);
+			send_json_.put("nick",  LocalUserInfo.getInstance(context)
+					.getUserInfo("nick"));
+			send_json_.put("invite", sb);
 
 			JSONObject send_json = new JSONObject();
 			send_json.put("action", "send");
 			send_json.put("data", send_json_.toJSONString());
-			send_json.put("shareId", "");
-			send_json.put("type", GROUP_CREATED_NOTIFICATION);
+			send_json.put("type", Constant.GROUP_CREATED_NOTIFICATION);
 			String body = send_json.toJSONString();
 			MainActivity.instance.newMsg(groupmame, groupmame, body, 49);
 			ChatEntity entity = new ChatEntity();
-			entity.setType(GROUP_CREATED_NOTIFICATION);
+			entity.setType(Constant.GROUP_CREATED_NOTIFICATION);
 			entity.setFrom(groupmame);
 			entity.setContent(Constant.UID+":\n"+send_json_.toJSONString());
 			entity.setMsgTime(System.currentTimeMillis() / 1000);
@@ -381,14 +384,11 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			ChatEntityDao dao1 = new ChatEntityDao(context);
 			dao1.saveMessage(entity);
 			progressDialog.dismiss();
-			String roomname;
-			if (!TextUtils.isEmpty(room.getRoomname()))
-				roomname = room.getRoomname();
-			else
-				roomname = ListToString(room.getDisplayname());
+			String roomname = room.getDefaultName();
 			startActivity(new Intent(getApplicationContext(),
 					Activity_Chat.class).putExtra("groupId", room.getRoomId())
 					.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP)
+					.putExtra("isNew", true)
 					.putExtra("groupName", roomname));
 
 		} else {
@@ -426,8 +426,8 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 					oldDisplay.addAll(new ArrayList<>(display));
 					alldisplay=oldDisplay.toArray(new String[oldDisplay.size()]);
 				}
-				roomname=ListToString(alldisplay);
-			}catch(Exception e){
+				roomname= ListToString(alldisplay);
+			}catch (Exception e){
 				e.printStackTrace();
 			}
 
@@ -441,25 +441,29 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			dao.saveChatROOM(room);
 
 
+			StringBuffer sb = new StringBuffer();
+			for(int i =0;i<display.size()-1;i++){
+				sb.append(display.get(i).toString()+ ", ");
+			}
+			sb.append(display.get(display.size() - 1).toString());
+
 			JSONObject send_json_ = new JSONObject();
-			send_json_.put("newMemberIdList", members.toArray(new String[members.size()]));
-			send_json_.put("newMemberList",  display.toArray(new String[display.size()]));
-			send_json_.put("owner", owner);
-			send_json_.put("chatroomName", roomname);
-			send_json_.put("memberlist", allmember);
-			send_json_.put("displaylist", alldisplay);
+			send_json_.put("id",  Constant.UID);
+			send_json_.put("nick", LocalUserInfo.getInstance(context)
+					.getUserInfo("nick"));
+			send_json_.put("invite", sb);
+
 
 			JSONObject send_json = new JSONObject();
 			send_json.put("action", "send");
 			send_json.put("data", send_json_.toJSONString());
-			send_json.put("shareId", "");
-			send_json.put("type", GROUP_INVITE_NOTIFICATION);
+			send_json.put("type", Constant.GROUP_INVITE_NOTIFICATION);
 			String body = send_json.toJSONString();
 			MainActivity.instance.newMsg(groupId, groupId, body, 49);
 			ChatEntity entity = new ChatEntity();
-			entity.setType(GROUP_INVITE_NOTIFICATION);
+			entity.setType(Constant.GROUP_INVITE_NOTIFICATION);
 			entity.setFrom(groupId);
-			entity.setContent(Constant.UID+":\n"+send_json_.toJSONString());
+			entity.setContent(Constant.UID + ":\n" + send_json_.toJSONString());
 			entity.setMsgTime(System.currentTimeMillis() / 1000);
 			entity.setStatus(2);
 			entity.setMsgID(System.currentTimeMillis());
@@ -469,7 +473,9 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			startActivity(new Intent(getApplicationContext(),
 					Activity_Chat.class).putExtra("groupId", room.getRoomId())
 					.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP)
+					.putExtra("isNew", true)
 					.putExtra("groupName", roomname));
+
 
 		}
 

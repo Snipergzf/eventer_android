@@ -37,7 +37,7 @@ public  class Fragment_Addkc_Search extends Fragment implements OnClickListener{
 
 	private CourseAdapter adapter;
 	private List<Course>  mData;
-	public static List<Integer> ClassIdList;
+	public static List<String> ClassIdList;
 
 	private Context context;
 	public static Fragment_Addkc_Search instance;

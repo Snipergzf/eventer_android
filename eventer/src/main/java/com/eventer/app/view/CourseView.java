@@ -16,9 +16,12 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 
 import com.eventer.app.R;
 import com.eventer.app.entity.ClassInfo;
@@ -85,7 +88,25 @@ public class CourseView extends View implements OnTouchListener {
 		weekdays = context.getResources().getStringArray(R.array.weeks);
 		TEXT_SIZE=spTopx(context, 12);
 		mPaint = new Paint();
-		bmp=BitmapFactory.decodeResource(context.getResources(), R.drawable.course_bg);
+		DisplayMetrics dm = new DisplayMetrics();
+		WindowManager wm = (WindowManager) getContext()
+				.getSystemService(Context.WINDOW_SERVICE);
+		wm.getDefaultDisplay().getMetrics(dm);
+		int screenWidth = dm.widthPixels;
+		int screenHeight = dm.heightPixels;
+//		BitmapFactory.Options measureOptions = new BitmapFactory.Options();
+//		measureOptions.inJustDecodeBounds = true;
+//		BitmapFactory.decodeResource(
+//				getResources(), R.drawable.course_bg, measureOptions);
+//		int scale = Math.min(measureOptions.outWidth / screenWidth, measureOptions.outHeight / screenHeight);
+//		scale = Math.max(scale, 1);
+//
+//		BitmapFactory.Options options = new BitmapFactory.Options();
+//		options.inPreferredConfig = Bitmap.Config.RGB_565;
+//		options.inJustDecodeBounds = false;
+//		options.inSampleSize = scale;
+		bmp = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.course_bg);
 		setOnTouchListener(this);
 
 	}
@@ -133,14 +154,10 @@ public class CourseView extends View implements OnTouchListener {
 		}else{
 			eachBoxH = (getHeight() - sideheight) / classTotal;
 		}
-
-
 		printMarker(canvas);
 		printContent(canvas);
 		printLeftBar(canvas);
 		printTopBar(canvas);
-
-
 	}
 
 
@@ -402,7 +419,7 @@ public class CourseView extends View implements OnTouchListener {
 
 		mPaint.setColor(barBgHrLine);
 
-		canvas.drawRect(startX  - 1, sideheight-1, startX + getWidth()-1, sideheight, mPaint);
+		canvas.drawRect(startX - 1, sideheight - 1, startX + getWidth() - 1, sideheight, mPaint);
 		// 画第一个边框线
 		mPaint.setTextSize(30);
 		String month_str=StartWeekday.getMonth()+"月";
@@ -414,7 +431,7 @@ public class CourseView extends View implements OnTouchListener {
 		int textWidth = textBounds.right - textBounds.left;
 		float mText = mPaint.measureText(month_str);
 		float numWidth = mPaint.measureText("1");
-		canvas.drawText(month_str, startX + sidewidth/2 - mText / 2, textHeight+15
+		canvas.drawText(month_str, startX + sidewidth / 2 - mText / 2, textHeight + 15
 				, mPaint);
 		DateTime weekday;
 		int day;
@@ -482,25 +499,28 @@ public class CourseView extends View implements OnTouchListener {
 				int focusX = (int) event.getX();
 				int focusY = (int) event.getY();
 				// 是点击效果，遍历是哪个课程的点击效果
+				List<ClassInfo> list = new ArrayList<>();
 				for (int i = 0; i < classList.size(); i++) {
 					ClassInfo classInfo = classList.get(i);
 					if (focusX > classInfo.getFromX()
 							&& focusX < classInfo.getToX()
 							&& focusY > classInfo.getFromY()
 							&& focusY < classInfo.getToY()) {
-						if (onItemClassClickListener != null) {
-							onItemClassClickListener.onClick(classInfo);
-						}
-						break;
+						Log.e("course_onclick",classInfo.getClassname());
+						list.add(classInfo);
 					}
 				}
+				if(onItemClassClickListener != null && list.size()>0){
+					onItemClassClickListener.onClick(list);
+				}
+
 			}
 		}
 		return true;
 	}
 
 	public interface OnItemClassClickListener {
-		 void onClick(ClassInfo classInfo);
+		 void onClick(List<ClassInfo> classInfo);
 	}
 
 	public OnItemClassClickListener getOnItemClassClickListener() {

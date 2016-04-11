@@ -8,6 +8,10 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable-hdpi\\abc_list_selector_disabled_holo_light.9.png"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\delete_event.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\delete_event.png"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_location.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_location.png"
     },
@@ -52,16 +56,16 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_33.png"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\crop__ic_done.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\lib\\unspecified\\res\\drawable-hdpi-v4\\crop__ic_done.png"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_5.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_5.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_comment.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_comment.png"
-    },
-    {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\crop__ic_done.png",
-        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\lib\\unspecified\\res\\drawable-hdpi-v4\\crop__ic_done.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_16.png",
@@ -164,12 +168,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\appitem_del_btn.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_search.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_search.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_14.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_14.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_search.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_search.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_search_api_mtrl_alpha.png",
@@ -192,16 +196,16 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\voice_rcd_btn_pressed.9.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_pic.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_pic.png"
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\update.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\update.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_forwarding_down.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_forwarding_down.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\update.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\update.png"
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_pic.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_pic.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\discussion_avatar.png",
@@ -236,12 +240,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\empty.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\rename_group_over.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\rename_group_over.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_list_longpressed_holo.9.png",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable-hdpi\\abc_list_longpressed_holo.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\rename_group_over.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\rename_group_over.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_cancel_pressed.9.png",
@@ -332,12 +336,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_9.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\concern.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\concern.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_textfield_search_default_mtrl_alpha.9.png",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable-hdpi\\abc_textfield_search_default_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\concern.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\concern.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\e_29.png",
@@ -500,12 +504,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_51.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_sex_male.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ic_sex_male.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\umeng_update_btn_check_on_pressed_holo_light.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\umeng_update_btn_check_on_pressed_holo_light.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_sex_male.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ic_sex_male.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\close.png",
@@ -632,6 +636,10 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_17.png"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\share_event.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\share_event.png"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_menu_share_mtrl_alpha.png",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable-hdpi\\abc_ic_menu_share_mtrl_alpha.png"
     },
@@ -708,6 +716,10 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_30.png"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\feedback.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\feedback.png"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\menu_bg_normal.9.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\menu_bg_normal.9.png"
     },
@@ -740,12 +752,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\tab_settings_pressed.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\appitem_del_btn_normal.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\appitem_del_btn_normal.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\my_class_schedule.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\my_class_schedule.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\appitem_del_btn_normal.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\appitem_del_btn_normal.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\input_bar_bg_normal.9.png",
@@ -916,12 +928,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\e_16.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_voice_search_api_mtrl_alpha.png",
-        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable-hdpi\\abc_ic_voice_search_api_mtrl_alpha.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\umeng_update_btn_check_off_focused_holo_light.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\umeng_update_btn_check_off_focused_holo_light.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_voice_search_api_mtrl_alpha.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable-hdpi\\abc_ic_voice_search_api_mtrl_alpha.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png",
@@ -1120,12 +1132,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_voice.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_12.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_12.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_comment_down.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_comment_down.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_12.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\ee_12.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\iv_add.png",

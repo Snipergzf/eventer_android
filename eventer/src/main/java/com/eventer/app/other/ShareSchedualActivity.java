@@ -2,6 +2,7 @@ package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,11 +19,9 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
@@ -33,6 +32,7 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
+import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
@@ -55,23 +55,26 @@ import java.util.Map;
 import hirondelle.date4j.DateTime;
 
 @SuppressLint({ "SimpleDateFormat", "InflateParams","SetTextI18n" })
-public class ShareSchedualActivity extends SwipeBackActivity {
+public class ShareSchedualActivity extends SwipeBackActivity implements OnClickListener {
 	private Context context;
 	private String shareId;
 	ChatEntity message;
 	private CircleImageView iv_avatar;
+	private ImageView iv_delete;
 	private TextView tv_nick,tv_title,tv_time,tv_place,
 			tv_detail,tv_time_info,tv_attend_num;
-	ImageView iv_finish,iv_collect;
+	ImageView iv_finish,iv_collect,iv_share;
 	private TextView tv_collect;
 	private ExpandGridView gridview;
 	Schedual schedual_db=new Schedual();
 	private Schedual schedual=new Schedual();
 	GridAdapter adapter;
 	private String publisher;
+	private String shareTo;
 	private LoadUserAvatar avatarLoader;
-	LinearLayout li_collect;
+	private AlertDialog dlg;
 	private boolean isCollect=false;
+	private Dialog mDialog;
 	List<UserInfo> members = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 		context=this;
 		setBaseTitle(R.string.share_activity);
 		shareId=getIntent().getStringExtra("shareId");
+		shareTo = getIntent().getStringExtra("groupId");
 		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
 		if(!TextUtils.isEmpty(shareId)){
 			initView();
@@ -100,8 +104,9 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 		tv_attend_num=(TextView)findViewById(R.id.tv_attend_num);
 		iv_finish=(ImageView)findViewById(R.id.iv_finish);
 		iv_collect=(ImageView)findViewById(R.id.iv_collect);
+		iv_share = (ImageView) findViewById(R.id.iv_share);
 		iv_avatar=(CircleImageView)findViewById(R.id.iv_avatar);
-		li_collect=(LinearLayout)findViewById(R.id.li_collect);
+		iv_delete = (ImageView)findViewById(R.id.iv_delete);
 		gridview=(ExpandGridView)findViewById(R.id.gridview);
 
 		iv_finish.setOnClickListener(new OnClickListener() {
@@ -113,47 +118,26 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 			}
 		});
 
-		li_collect.setOnClickListener(new OnClickListener() {
+		iv_collect.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String friend_json=schedual.getFriend();
-				JSONObject json=JSONObject.parseObject(friend_json);
-				JSONArray array=json.getJSONArray("friend");
-				JSONArray shareTo=json.getJSONArray("share");
-
+//				String friend_json=schedual.getFriend();
+//				JSONObject json=JSONObject.parseObject(friend_json);
+//				JSONArray array=json.getJSONArray("friend");
+//				String shareTo=json.getString("share");
+//				JSONArray array1 = JSON.parseArray(friend_json);
 				if(isCollect){
 					showAlert();
 				}else{
-					iv_collect.setSelected(true);
-					tv_collect.setText("取消");
-					isCollect=true;
-					SchedualDao dao=new SchedualDao(context);
-					schedual.setSchdeual_ID(System.currentTimeMillis() / 1000);
-					int status=getStatus( schedual.getEndtime(), schedual.getStarttime());
-					schedual.setStatus(status);
-					schedual.setShareId(shareId);
-					String remind=getRemindTime(schedual.getStarttime(), 1);
-					schedual.setRemindtime(remind);
-					if(!array.contains(Constant.UID)){
-						array.add(Constant.UID);
-					}
-					json=new JSONObject();
-					json.put("friend", array);
-					json.put("share", shareTo);
-					schedual.setFriend(json.toJSONString());
-					dao.saveSchedual(schedual);
-					IsTodayEvent(schedual.getFrequency(),remind,schedual.getEndtime());
-					if(Constant.isConnectNet)
-						sendMsg(4,array.toJSONString());
-					else
-						Toast.makeText(getApplicationContext(),getText(R.string.no_network),Toast.LENGTH_SHORT).show();
+					joinGroupSchedual();
 				}
 			}
 		});
+
+		iv_share.setOnClickListener(this);
+		iv_delete.setOnClickListener(this);
 		initData();
-
-
 	}
 
 	public void IsTodayEvent(int _f,String remind,String end){
@@ -221,46 +205,35 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 
 	}
 
-	private void sendMsg(int type,String friend){
-		String body;
-		JSONObject content_json = new JSONObject();
-		String friend_json=schedual.getFriend();
-		JSONObject json=JSONObject.parseObject(friend_json);
-		JSONArray shareTo=json.getJSONArray("share");
-		content_json.put("schedule_place", schedual.getPlace());
-		content_json.put("schedule_detail", schedual.getDetail());
-		content_json.put("schedule_title", schedual.getTitle());
-		content_json.put("schedule_start", schedual.getStarttime());
-		content_json.put("schedule_f", schedual.getFrequency());
-		content_json.put("schedule_end", schedual.getEndtime());
-		content_json.put("schedule_friend",friend);
-		content_json.put("schedule_type", schedual.getType());
-
-		JSONObject send_json = new JSONObject();
-		send_json.put("action", "send");
-		send_json.put("data", content_json);
-		send_json.put("shareId", shareId);
-		send_json.put("type", type);
-		body = send_json.toJSONString();
-
-		ChatEntity msg=new ChatEntity();
-		long time=System.currentTimeMillis();
-		msg.setType(type);
-		msg.setContent(content_json.toJSONString());
-		msg.setMsgTime(time/1000);
-		msg.setStatus(2);
-		msg.setMsgID(time);
-		msg.setShareId(shareId);
-		ChatEntityDao dao =new ChatEntityDao(context);
-		for (Object share : shareTo) {
-			String id=(String) share;
-			msg.setFrom(id);
-			dao.saveMessage(msg);
-
-			if(id.contains("@")){
-				MainActivity.instance.newMsg(id, id, body, 49);
+	private void sendMsg(int type){
+		if(!TextUtils.isEmpty(shareTo)){
+			String body;
+			JSONObject content_json = new JSONObject();
+			content_json.put("member", Constant.UID);
+			content_json.put("event_id", shareId);
+			content_json.put("event_name", schedual.getTitle());
+			content_json.put("nick", LocalUserInfo.getInstance(context).getUserInfo("nick"));
+			JSONObject send_json = new JSONObject();
+			send_json.put("action", "send");
+			send_json.put("data", content_json);
+			send_json.put("type", type);
+			String content=content_json.toJSONString();
+			body = send_json.toJSONString();
+			ChatEntity msg=new ChatEntity();
+			long time=System.currentTimeMillis();
+			msg.setType(type);
+			msg.setFrom(shareTo);
+			msg.setContent(content);
+			msg.setMsgTime(time / 1000);
+			msg.setStatus(2);
+			msg.setMsgID(time);
+			msg.setShareId(shareId);
+			ChatEntityDao dao1 =new ChatEntityDao(context);
+			dao1.saveMessage(msg);
+			if(shareTo.contains("@")){
+				MainActivity.instance.newMsg(shareTo, shareTo, body, 49);
 			}else{
-				MainActivity.instance.newMsg("1", id, body,17);
+				MainActivity.instance.newMsg("1", shareTo, body,17);
 			}
 		}
 		initData();
@@ -268,7 +241,7 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 
 	private void showAlert() {
 
-		final AlertDialog dlg = new AlertDialog.Builder(this).create();
+		dlg = new AlertDialog.Builder(this).create();
 		dlg.show();
 		Window window = dlg.getWindow();
 		// *** 主要就是在这里实现这种效果的.
@@ -287,25 +260,7 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 		ok.setOnClickListener(new View.OnClickListener() {
 			@SuppressLint("ShowToast")
 			public void onClick(View v) {
-				String friend_json=schedual.getFriend();
-				JSONObject json=JSONObject.parseObject(friend_json);
-				JSONArray array=json.getJSONArray("friend");
-				iv_collect.setSelected(false);
-				tv_collect.setText("参与");
-				isCollect=false;
-				SchedualDao dao=new SchedualDao(context);
-				dao.delSchedualByShareId(shareId);
-				Constant.AlarmChange=true;
-				if(array.contains(Constant.UID)){
-					array.remove(Constant.UID);
-				}
-				if(Constant.isConnectNet){
-					sendMsg(5,array.toJSONString());
-				}else{
-					Toast.makeText(getApplicationContext(),getText(R.string.no_network),Toast.LENGTH_SHORT).show();
-				}
-
-				dlg.cancel();
+				exitGroupSchedual();
 			}
 		});
 		// 关闭alert对话框架
@@ -318,6 +273,42 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 
 	}
 
+	private void showDeleteAlert() {
+
+		dlg = new AlertDialog.Builder(this).create();
+		dlg.show();
+		Window window = dlg.getWindow();
+		// *** 主要就是在这里实现这种效果的.
+		// 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+		window.setContentView(R.layout.info_alertdialog);
+		// 设置能弹出输入法
+		dlg.getWindow().clearFlags(
+				WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+		// 为确认按钮添加事件,执行退出应用操作
+		Button ok = (Button) window.findViewById(R.id.btn_ok);
+		TextView content = (TextView) window.findViewById(R.id.tv_info);
+		TextView title = (TextView) window.findViewById(R.id.tv_title);
+		title.setText(getResources().getString(R.string.prompt));
+		content.setText(getResources().getString(R.string.delete_share));
+		ok.setText(getResources().getString(R.string.submit));
+		ok.setOnClickListener(new View.OnClickListener() {
+			@SuppressLint("ShowToast")
+			public void onClick(View v) {
+				deleteGroupSchedual();
+			}
+		});
+		// 关闭alert对话框架
+		Button cancel = (Button) window.findViewById(R.id.btn_cancel);
+		cancel.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				dlg.cancel();
+			}
+		});
+
+	}
+
+
+
 	private void initData() {
 		// TODO Auto-generated method stub
 		ChatEntityDao cdao=new ChatEntityDao(context);
@@ -325,65 +316,35 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 		publisher=shareId.split("@")[0];
 		SchedualDao dao=new SchedualDao(context);
 		schedual_db=dao.getSchedualByShare(shareId);
-		if(schedual_db!=null){
-			iv_collect.setSelected(true);
-			tv_collect.setText("取消");
-			isCollect=true;
+        if(!TextUtils.isEmpty(publisher) && publisher.equals(Constant.UID)){
+			iv_delete.setVisibility(View.VISIBLE);
 		}
-		String detail="",end="",start="",place="",title="",friend="";
+
 		members=new ArrayList<>();
-		int _f=0,type=0;
-		if(message!=null){
-			String content=message.getContent();
-			int loc=content.indexOf("\n");
-			if(loc!=-1){
-				content=content.substring(loc+1);
-			}
-			try{
-				JSONObject json=JSONObject.parseObject(content);
-				detail=json.getString("schedule_detail");
-				end=json.getString("schedule_end");
-				start=json.getString("schedule_start");
-				_f=json.getInteger("schedule_f");
-				place=json.getString("schedule_place");
-				title=json.getString("schedule_title");
-				type=json.getInteger("schedule_type");
-				friend=json.getString("schedule_friend");
-				schedual.setDetail(detail);
-				schedual.setEndtime(end);
-				schedual.setFrequency(_f);
-				schedual.setPlace(place);
-				schedual.setShareId(shareId);
-				schedual.setTitle(title);
-				schedual.setType(type);
-				schedual.setStarttime(start);
-				JSONArray array=JSONArray.parseArray(friend);
-				JSONObject share_json = new JSONObject();
-				friend=array.toJSONString();
-				share_json.put("friend",array);
-				array=new JSONArray();
-				array.add(message.getFrom());
-				share_json.put("share",array);
-				schedual.setFriend(share_json.toJSONString());
-			}catch(Exception e){
-                e.printStackTrace();
-			}
-		}else if(schedual_db!=null){
-			detail=schedual_db.getDetail();
-			title=schedual_db.getTitle();
-			end=schedual_db.getEndtime();
-			start=schedual_db.getStarttime();
-			_f=schedual_db.getFrequency();
-			place=schedual_db.getPlace();
-			type=schedual_db.getType();
-			String friend_json=schedual_db.getFriend();
-			JSONObject json=JSONObject.parseObject(friend_json);
-			friend=json.getString("friend");
+		if(schedual_db!=null){
 			schedual=schedual_db;
+			initSchedule();
+			checkGroupSchedual();
 		} else{
-			Toast.makeText(context, "该日程不存在！", Toast.LENGTH_SHORT).show();
-			finish();
+			checkGroupSchedual();
+
 		}
+
+
+	}
+
+	private void initSchedule(){
+		String detail,end,start,place,title,friend;
+		int _f,type;
+		detail=schedual.getDetail();
+		title=schedual.getTitle();
+		end=schedual.getEndtime();
+		start=schedual.getStarttime();
+		_f=schedual.getFrequency();
+		place=schedual.getPlace();
+		type=schedual.getType();
+		friend=schedual.getFriend();
+
 
 		switch (type) {
 			case 2:
@@ -423,27 +384,23 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 			tv_detail.setTextColor(ContextCompat.getColor(context, R.color.caldroid_lighter_gray));
 		}
 
-		JSONArray array=JSONArray.parseArray(friend);
-		tv_attend_num.setText("("+array.size()+")");
+//		JSONArray array=JSONArray.parseArray(friend);
+		String[] array = new String[]{};
+		if(!TextUtils.isEmpty(friend)){
+			array = friend.split(";");
+		}
+		List<String> list = new ArrayList<>();
+		for(String user:array){
+			if(!list.contains(user))
+				list.add(user);
+		}
+
+		tv_attend_num.setText("("+array.length+")");
+		members.clear();
 		adapter=new GridAdapter(context, members);
+
 		gridview.setAdapter(adapter);
-		for (int i = 0; i < array.size(); i++) {
-			String name=array.getString(i);
-//				if(name.equals(Constant.UID)){
-//					UserInfo user=new UserInfo();
-//					user.setAvatar(LocalUserInfo.getInstance(context).getUserInfo("avatar"));
-//					user.setNick(LocalUserInfo.getInstance(context).getUserInfo("nick"));
-//					user.setUsername(name);
-//					members.add(user);
-//					gridview.notifyAll();
-//				}else{
-//					Map<String,UserInfo> map=MyApplication.getInstance().getUserList();
-//				    UserInfo user=map.get(name);
-//				    if(user!=null){
-//				    	members.add(user);
-//				    	gridview.notify();
-//				    }			      
-//				}
+		for (String name: list) {
 			if(name.equals(Constant.UID)){
 				UserInfo user=new UserInfo();
 				user.setAvatar(LocalUserInfo.getInstance(context).getUserInfo("avatar"));
@@ -453,6 +410,9 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 				synchronized (gridview){
 					gridview.notifyAll();
 				}
+				iv_collect.setSelected(true);
+				tv_collect.setText("取消");
+				isCollect=true;
 			}else if(MyApplication.getInstance().getContactList().containsKey(name)){
 				UserInfo user=new UserInfo();
 				User u=MyApplication.getInstance().getContactList().get(name);
@@ -606,6 +566,207 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 
 
 
+	private void joinGroupSchedual(){
+		Map<String,String> map= HttpParamUnit.activityParam(shareId);
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_JOIN, map);
+		task.getData(new DataCallBack() {
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int status = data.getInteger("status");
+					if (status == 0) {
+						Log.e("create activity", status + "");
+
+						iv_collect.setSelected(true);
+						tv_collect.setText("取消");
+						isCollect=true;
+						JSONObject action = data.getJSONObject("web_action");
+						String participants = action.getString("a_participants");
+						schedual.setFriend(participants);
+
+						SchedualDao dao=new SchedualDao(context);
+						schedual.setSchdeual_ID(System.currentTimeMillis() / 1000);
+						status=getStatus( schedual.getEndtime(), schedual.getStarttime());
+						schedual.setStatus(status);
+
+						schedual.setRemindtime(getRemindTime(schedual.getStarttime(), 1));
+						dao.saveSchedual(schedual);
+						sendMsg(21);
+						initSchedule();
+					}else if(status == 35){
+						Toast.makeText(context, "该群日程已删除~", Toast.LENGTH_SHORT).show();
+						SchedualDao dao=new SchedualDao(context);
+						dao.deleteSchedual(schedual.getSchdeual_ID() + "");
+						finish();
+					}else{
+						Toast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					Toast.makeText(context, "加入失败~", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+
+	private void checkGroupSchedual() {
+		Map<String, String> map= HttpParamUnit.activityParam(shareId);
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_CHECK, map);
+		task.getData(new DataCallBack() {
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int status = data.getInteger("status");
+					if (status == 0) {
+						JSONObject action = data.getJSONObject("web_action");
+						JSONObject activity = action.getJSONObject("activity");
+						if(schedual == null){
+							schedual.setSchdeual_ID(System.currentTimeMillis()/1000);
+						}
+						schedual.setTitle(activity.getString("a_name"));
+						schedual.setPlace(activity.getString("a_place"));
+						schedual.setShareId(activity.getString("a_id"));
+						schedual.setDetail(activity.getString("a_desc"));
+						schedual.setFrequency(Integer.parseInt(activity.getString("a_frequency")));
+						schedual.setType(Integer.parseInt(activity.getString("a_type")));
+						schedual.setSharer(activity.getString("uid"));
+
+						String time = activity.getString("a_time");
+						schedual.setStarttime(time);
+						schedual.setEndtime(time);
+						schedual.setRemind(1);
+						schedual.setRemindtime(getRemindTime(time, 1));
+
+
+                        String participants = activity.getString("participants");
+
+						String[] members = participants.split(";");
+						boolean hasEnter = false;
+						for (String user : members) {
+							if (!TextUtils.isEmpty(user) && user.equals(Constant.UID)){
+								hasEnter = true;
+							}
+						}
+						schedual.setFriend(participants);
+						SchedualDao dao = new SchedualDao(context);
+						if(hasEnter){
+							dao.saveSchedual(schedual,1);
+						}else{
+							dao.saveSchedual(schedual,0);
+						}
+
+						initSchedule();
+					}else if(status == 35){
+						Toast.makeText(context, "该群日程已删除~", Toast.LENGTH_SHORT).show();
+						SchedualDao dao=new SchedualDao(context);
+						dao.deleteSchedual(schedual.getSchdeual_ID() + "");
+						finish();
+					}else{
+						Toast.makeText(context, "刷新异常~", Toast.LENGTH_SHORT).show();
+//						finish();
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					Log.e("error", e.toString());
+					Toast.makeText(context, "刷新失败~", Toast.LENGTH_SHORT).show();
+//					finish();
+				}
+			}
+		});
+	}
+
+	private void exitGroupSchedual(){
+		Map<String,String> map= HttpParamUnit.activityParam(shareId);
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_EXIT, map);
+		task.getData(new DataCallBack() {
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+//				try {
+					int status = data.getInteger("status");
+					if (status == 0) {
+						Log.e("create activity", status + "");
+						iv_collect.setSelected(false);
+						tv_collect.setText("参与");
+						isCollect=false;
+						JSONObject action = data.getJSONObject("web_action");
+						String participants = action.getString("a_participants");
+						schedual.setFriend(participants);
+						SchedualDao dao=new SchedualDao(context);
+						dao.saveSchedual(schedual);
+						dao.delSchedualByShareId(shareId);
+						Constant.AlarmChange=true;
+                        sendMsg(22);
+						initSchedule();
+						dlg.cancel();
+					}else if(status == 35){
+						dlg.cancel();
+						Toast.makeText(context, "该群日程已删除~", Toast.LENGTH_SHORT).show();
+						SchedualDao dao=new SchedualDao(context);
+						dao.deleteSchedual(schedual.getSchdeual_ID() + "");
+						finish();
+					}else{
+						dlg.cancel();
+						Toast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
+
+					}
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//					dlg.cancel();
+//					Toast.makeText(context, "退出失败~", Toast.LENGTH_SHORT).show();
+//
+//				}
+			}
+		});
+	}
+
+	private void deleteGroupSchedual() {
+		Map<String,String> map= HttpParamUnit.activityParam(shareId);
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_DELETE, map);
+		task.getData(new DataCallBack() {
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+//				try {
+					int status = data.getInteger("status");
+					if (status == 0) {
+
+						iv_collect.setSelected(false);
+						tv_collect.setText("参与");
+						isCollect=false;
+						schedual.setFriend("");
+						SchedualDao dao=new SchedualDao(context);
+						dao.deleteSchedual(schedual.getSchdeual_ID()+"");
+						Constant.AlarmChange=true;
+						sendMsg(23);
+						initSchedule();
+						dlg.cancel();
+						finish();
+					}else if(status == 35){
+						dlg.cancel();
+						Toast.makeText(context, "该群日程已删除~", Toast.LENGTH_SHORT).show();
+						SchedualDao dao=new SchedualDao(context);
+						dao.deleteSchedual(schedual.getSchdeual_ID() + "");
+						finish();
+					}else{
+						dlg.cancel();
+						Toast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
+
+					}
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//					dlg.cancel();
+//					e.printStackTrace();
+//					Toast.makeText(context, "删除失败~", Toast.LENGTH_SHORT).show();
+//
+//				}
+			}
+		});
+	}
+
+
 	private int getStatus( String end, String remindtime) {
 		// TODO Auto-generated method stub
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -648,6 +809,59 @@ public class ShareSchedualActivity extends SwipeBackActivity {
 			iamgeView.setImageBitmap(bitmap);
 
 	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.iv_finish:
+			case R.id.iv_back:
+				this.finish();
+				break;
+			case R.id.iv_share:
+				if (mDialog == null) {
+					mDialog = new Dialog(context, R.style.login_dialog);
+					mDialog.setCanceledOnTouchOutside(true);
+					Window win = mDialog.getWindow();
+					WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+					params.width = WindowManager.LayoutParams.MATCH_PARENT;
+					params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					params.x = 0;
+					params.y = 0;
+					win.setAttributes(params);
+					mDialog.setContentView(R.layout.dialog_share);
+					mDialog.findViewById(R.id.share_by_chatroom).setOnClickListener(this);
+					mDialog.findViewById(R.id.share_by_user).setOnClickListener(this);
+					mDialog.findViewById(R.id.share_cancel).setOnClickListener(this);
+					mDialog.findViewById(R.id.share_layout).setOnClickListener(this);
+				}
+				mDialog.show();
+				break;
+			case R.id.share_by_chatroom:
+				Log.e("1", schedual.getSchdeual_ID()+"");
+				startActivity(new Intent().setClass(context, ShareToGroupActivity.class)
+						.putExtra("schedual_id", schedual.getSchdeual_ID()+"")
+						.putExtra("sharetype", ShareToSingleActivity.SHARE_SCHEDUAL));
+				mDialog.dismiss();
+				break;
+			case R.id.share_by_user:
+				Log.e("1", schedual.getSchdeual_ID()+"");
+				startActivity(new Intent().setClass(context, ShareToSingleActivity.class)
+						.putExtra("schedual_id", schedual.getSchdeual_ID()+"")
+						.putExtra("sharetype", ShareToSingleActivity.SHARE_SCHEDUAL));
+				mDialog.dismiss();
+				break;
+			case R.id.share_cancel:
+			case R.id.share_layout:
+				mDialog.dismiss();
+				break;
+			case R.id.iv_delete:
+				showDeleteAlert();
+				break;
+			default:
+				break;
+		}
+	}
+
 	/**
 	 * 群组成员gridadapter
 	 *

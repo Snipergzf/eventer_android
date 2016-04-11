@@ -18,6 +18,8 @@ public class Schedual {
     private int type;
     private String shareId;
     private String friend;
+	private String shareTo;
+	private String sharer;
     
 	
 	public String getEventId() {
@@ -41,6 +43,23 @@ public class Schedual {
 				+ ", frequency=" + frequency + ", status=" + status
 				+ ", friend=" + friend + "]";
 	}
+
+	public String getSharer() {
+		return sharer;
+	}
+
+	public void setSharer(String sharer) {
+		this.sharer = sharer;
+	}
+
+	public String getShareTo() {
+		return shareTo;
+	}
+
+	public void setShareTo(String shareTo) {
+		this.shareTo = shareTo;
+	}
+
 	public String getTitle() {
 		return title;
 	}

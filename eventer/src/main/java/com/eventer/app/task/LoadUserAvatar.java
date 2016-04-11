@@ -31,6 +31,7 @@ public class LoadUserAvatar {
     private BitmapCache bitmapCache;
     // 二级文件缓存
     private FileUtil fileUtil;
+    private int IMG_SCALE = 80;
 
     // 线程池
     private ExecutorService threadPools = null;
@@ -39,6 +40,8 @@ public class LoadUserAvatar {
         bitmapCache = new BitmapCache();
         fileUtil = new FileUtil(context, local_image_path);
         threadPools = Executors.newFixedThreadPool(MAX_THREAD_NUM);
+        int density = (int)context.getResources().getDisplayMetrics().density;
+        IMG_SCALE = density * IMG_SCALE;
     }
 
 
@@ -59,7 +62,16 @@ public class LoadUserAvatar {
         // 从文件中找
         if (fileUtil.isBitmapExists(filename)) {
             Log.e("1", "image exists in file" + filename);
-            bitmap = BitmapFactory.decodeFile(filepath);
+            BitmapFactory.Options measureOptions = new BitmapFactory.Options();
+            measureOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filepath, measureOptions);
+            int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / IMG_SCALE;
+            scale = Math.max(scale, 1);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = scale;
+            bitmap = BitmapFactory.decodeFile(filepath, options);
             // 先缓存到内存
             bitmapCache.putBitmap(imageUrl, bitmap);
             return bitmap;
@@ -76,9 +88,9 @@ public class LoadUserAvatar {
                         Bitmap bitmap = (Bitmap) msg.obj;
                         imageDownloadedCallBack.onImageDownloaded(imageView,
                                 bitmap,-1);
-                    }else if(msg.what == 404 && imageDownloadedCallBack != null){
+                    }else if(imageDownloadedCallBack != null){
                         imageDownloadedCallBack.onImageDownloaded(imageView,
-                                null,404);
+                                null,msg.what);
                     }
                 }
             };
@@ -103,6 +115,18 @@ public class LoadUserAvatar {
                         options.inSampleSize = 5; // width，hight设为原来的十分一
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream,
                                 null, options);
+//                        InputStream inputStream = (InputStream)result.get("inputstream");
+////                        BitmapFactory.Options measureOptions = new BitmapFactory.Options();
+////                        measureOptions.inJustDecodeBounds = true;
+////                        BitmapFactory.decodeStream(inputStream,null, measureOptions);
+////                        int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / (IMG_SCALE * 2);
+////                        scale = Math.max(scale, 1);
+//                        BitmapFactory.Options options = new BitmapFactory.Options();
+//                        options.inPreferredConfig = Bitmap.Config.RGB_565;
+//                        options.inJustDecodeBounds = false;
+//                        options.inSampleSize = 3;
+//                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream,
+//                                null, options);
                         // 图片下载成功后缓存并执行回调刷新界面
                         if (bitmap != null) {
                             // 先缓存到内存
@@ -113,6 +137,12 @@ public class LoadUserAvatar {
                             msg.what = 111;
                             msg.obj = bitmap;
                             handler.sendMessage(msg);
+                        }else{
+                            Message msg = new Message();
+                            msg.what = 400;
+                            msg.obj = 400;
+                            handler.sendMessage(msg);
+                            Log.e("1","bitmap is null");
                         }
                     }else{
                         //更新网址

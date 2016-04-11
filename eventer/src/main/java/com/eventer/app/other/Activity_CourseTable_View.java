@@ -28,6 +28,7 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 		OnClickListener{
 	private Context context;
 	private List<Course> mData=new ArrayList<>();
+	private TextView tv_add;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		TextView tv_add = (TextView) findViewById(R.id.tv_add_finish);
+		tv_add = (TextView) findViewById(R.id.tv_add_finish);
 		TextView tv_title = (TextView) findViewById(R.id.tv_title);
 		ListView listview = (ListView) findViewById(R.id.listview);
 		mData=getIntent().getParcelableArrayListExtra("courseList");

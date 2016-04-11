@@ -1,6 +1,5 @@
 package com.eventer.app.other;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +18,7 @@ import com.eventer.app.util.WheelDialogShowUtil;
 import com.eventer.app.util.WheelDialogTwoShowUtil;
 import com.eventer.app.view.CourseView;
 import com.eventer.app.view.DialogView.onWheelBtnPosClick;
+import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 import hirondelle.date4j.DateTime;
 
-public class Activity_Course_Setting extends Activity  implements OnClickListener{
+public class Activity_Course_Setting extends SwipeBackActivity implements OnClickListener{
 
 	private CourseView courseView;
 	private ArrayList<ClassInfo> classList;
@@ -47,6 +47,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.coursetable_setting);
+		setBaseTitle(R.string.course_setting);
 		initData();
 		termInfo_tv=(TextView)findViewById(R.id.coursetable_term);
 		totalWeek_tv=(TextView)findViewById(R.id.coursetable_totalweek);
@@ -54,7 +55,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 		StartWeekday_tv=(TextView)findViewById(R.id.coursetable_weekstart);
 		classTotal_tv=(TextView)findViewById(R.id.coursetable_maxhour);
 		showType_tv=(TextView)findViewById(R.id.coursetable_show);
-		back_img=(ImageView)findViewById(R.id.courseTable_backImg);
+		back_img=(ImageView)findViewById(R.id.iv_back);
 		back_img.setOnClickListener(this);
 		termInfo_tv.setText(termInfo);
 		termInfo_tv.setOnClickListener(this);
@@ -97,7 +98,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 			}
 		}
 		if(isNew){
-			startDay=Today.minusDays(weekday-1);
+			startDay=Today.minusDays(weekday - 2);
 			showType=0;
 			startWeekday=1;
 			classTotal=12;
@@ -129,7 +130,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 		// TODO Auto-generated method stub
 
 		switch(v.getId()){
-			case R.id.courseTable_backImg:
+			case R.id.iv_back:
 				Intent intent=new Intent();
 				intent.putExtra("IsChange", IsChange);
 				setResult(Activity_Course.COURSE_SETTING, intent);
@@ -174,7 +175,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 						// TODO Auto-generated method stub
 						wheelUtil.dissmissWheel();
 						wheelUtil.setTextToView(showType_tv, text);
-						if(showType!=position){
+						if(showType != position){
 							showType=position;
 							ContentValues cv=new ContentValues();
 							cv.put("ShowType", showType);
@@ -284,7 +285,7 @@ public class Activity_Course_Setting extends Activity  implements OnClickListene
 							String   time =sDateFormat.format(new   Date());
 							DateTime Today=new DateTime(time);
 							int weekday=Today.getWeekDay();
-							startDay=Today.minusDays(weekday-1);
+							startDay=Today.minusDays(weekday - 2);
 							startDay=startDay.plusDays(startWeekday);
 							startDay=startDay.minusDays((NowWeek-1)*7);
 

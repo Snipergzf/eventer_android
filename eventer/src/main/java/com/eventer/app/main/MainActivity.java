@@ -35,7 +35,6 @@ import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
-import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.InviteMessgeDao;
 import com.eventer.app.db.UserDao;
@@ -589,8 +588,6 @@ public class MainActivity extends FragmentActivity {
 			// 拿到进度，更新UI
 			String id = intent.getStringExtra("talker");
 			UserDao uDao=new UserDao(context);
-			final int GROUP_CREATED_NOTIFICATION = 6;
-			final int GROUP_INVITE_NOTIFICATION=8;
 			String nick=uDao.getNick(id);
 			if(nick==null){
 				nick="路人";
@@ -603,6 +600,18 @@ public class MainActivity extends FragmentActivity {
 			String mid = intent.getStringExtra("mid");
 			String msg = intent.getStringExtra("msg");
 			JSONObject recvJs;
+			String bodyString = null,shareId = null;
+			int type = -1;
+			try{
+				recvJs = JSONObject.parseObject(msg);
+				bodyString = recvJs.getString("data");
+				type = recvJs.getInteger("type");
+				JSONObject json = JSONObject.parseObject(bodyString);
+				shareId = json.getString("event_id");
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+
 			try {
 				if (mid.equals("ADD")) {
 					// 加好友
@@ -611,9 +620,7 @@ public class MainActivity extends FragmentActivity {
 					String msgBody = "";
 
 					recvJs = JSONObject.parseObject(msg);
-					String bodyString = recvJs.getString("data");
 					String certificate = recvJs.getString("certificate");
-					int status = recvJs.getInteger("type");
 					Log.e("1", "main:msgRecv+" + bodyString);
 					String name = recvJs.getString("name");
 					String avatar = recvJs.getString("avatar");
@@ -629,14 +636,14 @@ public class MainActivity extends FragmentActivity {
 					u.setAvatar(avatar);
 					u.setNick(name);
 					u.setUsername(id + "");
-					if (status == 4) {
+					if (type == 4) {
 						invite.setStatus(InviteMesageStatus.BEINVITEED);
 						ticker = "收到一条好友请求";
 						title = "好友请求";
 						msgBody = name + "发来一条好友请求！";
 						u.setType(22);
 
-					} else if (status == 2) {
+					} else if (type == 2) {
 						invite.setStatus(InviteMesageStatus.BEAGREED);
 						ticker = name + "同意了您的好友请求！";
 						title = "好友请求";
@@ -644,7 +651,7 @@ public class MainActivity extends FragmentActivity {
 						u.setType(1);
 					}
 
-					else if (status == 3) {
+					else if (type == 3) {
 						invite.setStatus(InviteMesageStatus.BEREFUSED);
 						ticker = name + "拒绝了您的好友请求！";
 						title = "好友请求";
@@ -652,7 +659,7 @@ public class MainActivity extends FragmentActivity {
 						u.setType(22);
 					}
 
-					else if (status == 1) {
+					else if (type == 1) {
 						invite.setStatus(InviteMesageStatus.BEAPPLYED);
 						ticker = "收到一条好友请求";
 						title = "好友请求";
@@ -672,11 +679,11 @@ public class MainActivity extends FragmentActivity {
 				} else if (mid.contains("@")) {
 					// 群组消息
 					recvJs = JSONObject.parseObject(msg);
-					String bodyString = recvJs.getString("data");
-					String shareId = recvJs.getString("shareId");
-					int type = recvJs.getInteger("type");
+					if(TextUtils.isEmpty(shareId) && recvJs.containsKey("shareId")){
+						shareId = recvJs.getString("shareId");
+					}
 					Log.e("1", "main:msgRecv+" + bodyString);
-					if (type == GROUP_CREATED_NOTIFICATION) {
+					if (type == Constant.GROUP_CREATED_NOTIFICATION) {
 						Intent intent1 = new Intent(context,
 								Activity_Chat.class);
 						intent1.putExtra("groupId", mid);
@@ -694,19 +701,37 @@ public class MainActivity extends FragmentActivity {
 						dao.saveMessage(entity);
 						updateUnreadLabel();
 						MessageFragment.instance.refreshView();
-						UpdateRoom(bodyString,mid,id);
-					}else if(type == GROUP_INVITE_NOTIFICATION){
+						ChatRoom.updateGroupMember(context, mid);
+
+//						UpdateRoom(bodyString,mid,id);
+					}else if(type == Constant.GROUP_INVITE_NOTIFICATION){
 						ChatEntity entity = new ChatEntity();
 						entity.setType(type);
 						entity.setFrom(mid);
-						entity.setContent(id + ":\n"+bodyString);
+						entity.setContent(id + ":\n" + bodyString);
 						entity.setMsgTime(time);
 						entity.setStatus(0);
 						entity.setMsgID(System.currentTimeMillis());
 						ChatEntityDao dao = new ChatEntityDao(context);
 						dao.saveMessage(entity);
-						UpdateRoom(bodyString,mid,id);
-					} else {
+						ChatRoom.updateGroupMember(context, mid);
+						updateUnreadLabel();
+						MessageFragment.instance.refreshView();
+//						UpdateRoom(bodyString, mid, id);
+					}else if(type == Constant.GROUP_LEAVE_NOTIFICATION){
+						ChatEntity entity = new ChatEntity();
+						entity.setType(type);
+						entity.setFrom(mid);
+						entity.setContent(id + ":\n" + bodyString);
+						entity.setMsgTime(time);
+						entity.setStatus(0);
+						entity.setMsgID(System.currentTimeMillis());
+						ChatEntityDao dao = new ChatEntityDao(context);
+						dao.saveMessage(entity);
+						ChatRoom.updateGroupMember(context, mid);
+						updateUnreadLabel();
+						MessageFragment.instance.refreshView();
+					}else {
 						Intent intent1 = new Intent(context,
 								Activity_Chat.class);
 						intent1.putExtra("groupId", mid);
@@ -738,9 +763,10 @@ public class MainActivity extends FragmentActivity {
 					if(MyApplication.getInstance().getContactIDList()
 							.contains(id)){
 						recvJs = JSONObject.parseObject(msg);
-						String bodyString = recvJs.getString("data");
-						int type = recvJs.getInteger("type");
-						String shareId = recvJs.getString("shareId");
+						if(TextUtils.isEmpty(shareId) && recvJs.containsKey("shareId")){
+							shareId = recvJs.getString("shareId");
+						}
+
 						Log.e("1", "main:msgRecv+" + bodyString);
 						Intent intent1 = new Intent(context, Activity_Chat.class);
 						intent1.putExtra("userId", id);
@@ -769,47 +795,48 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 
-		private void UpdateRoom(String bodyString,String name,String owner) {
-			// TODO Auto-generated method stub
-			ChatRoom room = new ChatRoom();
-			room.setRoomId(name);
-			room.setTime(System.currentTimeMillis() / 1000);
-			try {
-				owner=name.split("@")[0];
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				room.setOwner(owner);
-				JSONObject groupObject = JSONObject.parseObject(bodyString);
-				//从groupObject中获取displayList的JsonArray，并转换成String[]
-				JSONArray displayJsonArray = groupObject.getJSONArray("displaylist");
-				int size_2 = displayJsonArray.size();
-				String[] displays = new String[size_2];
-				for(int i =0;i<size_2;i++){
-					displays[i] = displayJsonArray.get(i).toString();
-				}
-				//从groupObject中获取member的JsonArray，并转换成String[]
-				JSONArray memberJsonArray = groupObject.getJSONArray("memberlist");
-				int size_1 = memberJsonArray.size();
-				String[] members = new String[size_1];
-				for (int i = 0;i<size_1;i++){
-					members[i] = memberJsonArray.get(i).toString();
-				}
-				room.setMember(members);
-				room.setDisplayname(displays);
-				ChatroomDao dao = new ChatroomDao(context);
-				dao.saveChatROOM(room);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		private void UpdateRoom(String bodyString,String name,String owner) {
+//			// TODO Auto-generated method stub
+//			ChatRoom room = new ChatRoom();
+//			room.setRoomId(name);
+//			room.setTime(System.currentTimeMillis() / 1000);
+//			try {
+//				owner=name.split("@")[0];
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			try {
+//				room.setOwner(owner);
+//				JSONObject groupObject = JSONObject.parseObject(bodyString);
+//				//从groupObject中获取displayList的JsonArray，并转换成String[]
+//				JSONArray displayJsonArray = groupObject.getJSONArray("displaylist");
+//				int size_2 = displayJsonArray.size();
+//				String[] displays = new String[size_2];
+//				for(int i =0;i<size_2;i++){
+//					displays[i] = displayJsonArray.get(i).toString();
+//				}
+//				//从groupObject中获取member的JsonArray，并转换成String[]
+//				JSONArray memberJsonArray = groupObject.getJSONArray("memberlist");
+//				int size_1 = memberJsonArray.size();
+//				String[] members = new String[size_1];
+//				for (int i = 0;i<size_1;i++){
+//					members[i] = memberJsonArray.get(i).toString();
+//				}
+//				room.setMember(members);
+//				room.setDisplayname(displays);
+//				ChatroomDao dao = new ChatroomDao(context);
+//				dao.saveChatROOM(room);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 
 	}
 
 	private void handleText(String txt, int type,String nick,Intent intent,int msgtype){
+		boolean needNotify = true;
 		switch (type) {
 			case 1:
 				Spannable span = SmileUtils
@@ -819,32 +846,36 @@ public class MainActivity extends FragmentActivity {
 			case 2:
 				txt="[活动分享]";
 				break;
-			case 3:
-				txt="[日程分享]";
+			case 24:
+				txt="[分享日程]";
 				break;
-			case 4:
-			case 5:
-				txt="[对日程进行了操作]";
+			case 21:
+			case 22:
+			case 23:
+				needNotify = false;
 				break;
 			default:
 				break;
 		}
-		switch (msgtype) {
-			case 1:
-				String group=intent.getStringExtra("userId");
-				if(!TextUtils.isEmpty(group)){
-					notifyMsg("收到来自好友的消息！", "消息通知", nick + ":" + txt,
-							intent,group);
-				}
-				break;
-			default:
-				String user=intent.getStringExtra("groupId");
-				if(!TextUtils.isEmpty(user)){
-					notifyMsg("收到来自群组的消息！", "消息通知", nick + ":" + txt,
-							intent,user);
-				}
-				break;
+		if(needNotify){
+			switch (msgtype) {
+				case 1:
+					String group=intent.getStringExtra("userId");
+					if(!TextUtils.isEmpty(group)){
+						notifyMsg("收到来自好友的消息！", "消息通知", nick + ":" + txt,
+								intent,group);
+					}
+					break;
+				default:
+					String user=intent.getStringExtra("groupId");
+					if(!TextUtils.isEmpty(user)){
+						notifyMsg("收到来自群组的消息！", "消息通知", nick + ":" + txt,
+								intent,user);
+					}
+					break;
+			}
 		}
+
 
 	}
 

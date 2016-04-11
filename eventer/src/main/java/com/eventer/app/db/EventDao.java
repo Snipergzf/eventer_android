@@ -213,8 +213,11 @@ public class EventDao {
 		List<Event> list=new ArrayList<>();
 		dbHelper.openDatabase();
 		//a.[operator]=? and a.[operation]=?;
-		Cursor c=dbHelper.rawQuery("select b.*,a.operator,a.operation,a.operate_time from dbEvent a,dbEventDetail b where a.Id=b.Id and a.operator=? and a.operation=? order by operate_time desc",
-				args);
+//		Cursor c= dbHelper.rawQuery()
+		Cursor c=dbHelper.findList(true, "dbEvent a,dbEventDetail b", new String[]{"b.*","a.operator","a.operation","a.operate_time" },
+				"a.Id=b.Id and a.operator=? and a.operation=?", args, null, null,"operate_time desc",null);
+//		Cursor c=dbHelper.rawQuery("select b.*,a.operator,a.operation,a.operate_time from dbEvent a,dbEventDetail b where a.Id=b.Id and a.operator=? and a.operation=? order by operate_time desc",
+//				args);
 		while (c.moveToNext()) {
 			String id = c.getString(c.getColumnIndex(COLUMN_NAME_ID));
 			String title = c.getString(c.getColumnIndex(COLUMN_NAME_TITLE));

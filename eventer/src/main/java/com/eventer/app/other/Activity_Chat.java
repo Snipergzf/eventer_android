@@ -3,6 +3,7 @@ package com.eventer.app.other;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -82,7 +83,7 @@ import hirondelle.date4j.DateTime;
 @SuppressWarnings("deprecation")
 public class Activity_Chat extends SwipeBackActivity implements OnClickListener {
 	public static final int REQUEST_CODE_GROUP_DETAIL = 21;
-	public static final int RESULT_CODE_EXIT_GROUP = 7;
+	public static final int RESULT_CODE_EXIT_GROUP = 9;
 	public static final int CHATTYPE_SINGLE = 1;
 	public static final int CHATTYPE_GROUP = 2;
 	private ListView listView;
@@ -91,6 +92,7 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	private View buttonPressToSpeak;
 	private LinearLayout emojiIconContainer;
 	private LinearLayout btnContainer;
+	private boolean isGroupMember = true;
 	ImageView iv_clear;
 	private RelativeLayout re_notify;
 	private View more;
@@ -151,12 +153,20 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 						Bundle b = (Bundle) msg.obj;
 						String body = b.getString("body");
 						String msg1 = b.getString("msg");
+						String content = b.getString("content");
 						if (body != null && !body.equals("")) {
 
 							JSONObject recvJs = JSONObject.parseObject(msg1);
 							String shareId = "";
-							if (recvJs.containsKey("shareId"))
+							try{
+								JSONObject json = JSONObject.parseObject(content);
+								shareId = json.getString("event_id");
+							}catch (Exception e){
+								e.printStackTrace();
+							}
+							if (TextUtils.isEmpty(shareId) && recvJs.containsKey("shareId")){
 								shareId = recvJs.getString("shareId");
+							}
 							int type = recvJs.getInteger("type");
 
 							ChatEntity entity1 = new ChatEntity();
@@ -282,7 +292,8 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 
 		} else {
 			talker = getIntent().getStringExtra("groupId");
-
+			getGroupMember(talker);
+//			getGroupMember(talker);
 		}
 		listView.setOnScrollListener(new ListScrollListener());
 		listView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -396,6 +407,8 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 		}
 
 	}
+
+
 
 
 
@@ -554,7 +567,9 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 			ChatRoom room = dao.getRoom(talker);
 			String roomName = "群聊";
 			if (room != null) {
-				roomName = room.getRoomname();
+				roomName = room.getDefaultName();
+			} else {
+				ChatRoom.updateGroupMember(context, talker);
 			}
 			if (TextUtils.isEmpty(roomName)) {
 				roomName = "群聊";
@@ -630,6 +645,91 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 		// scrollToFinishActivity();
 		finish();
 	}
+
+	private void getGroupMember(final String groupId) {
+
+		Map<String, String> map = new HashMap<>();
+		map.put("group_id", groupId);
+		map.put("uid", Constant.UID);
+		LoadDataFromHTTP task = new LoadDataFromHTTP(
+				context, Constant.URL_GET_GROUP_INFO, map);
+		task.getData(new DataCallBack() {
+			@SuppressLint("ShowToast")
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				try {
+					int status = data.getInteger("status");
+					if (status == 0) {
+						JSONObject action = data.getJSONObject("group_action");
+						JSONObject group_info = action.getJSONObject("group_info");
+						String memberinfo = null;
+						String group_name = null;
+						try {
+							memberinfo = group_info.getString("group_member");
+						} catch (Exception e) {
+							Log.e("get group member", "error");
+						}
+
+						try {
+							group_name = group_info.getString("group_name");
+						} catch (Exception e) {
+							Log.e("get group member", "error");
+						}
+
+						ContentValues values = new ContentValues();
+						if(!TextUtils.isEmpty(memberinfo))
+						    values.put(ChatroomDao.COLUMN_NAME_MEMVBER, memberinfo.replace(";",","));
+						if (!TextUtils.isEmpty(group_name)) {
+							values.put(ChatroomDao.COLUMN_NAME_ROOMNAME, group_name);
+							setBaseTitle(group_name);
+						}
+						ChatroomDao dao = new ChatroomDao(context);
+						dao.update(values, groupId);
+
+					} else if (status == 27) {
+						boolean isNew = getIntent().getBooleanExtra("isNew", false);
+						if(isNew){
+							Toast.makeText(context, "不存在该群组信息...",
+									Toast.LENGTH_SHORT).show();
+						    finish();
+						}
+
+					} else {
+
+						Toast.makeText(context, "服务器繁忙请重试...",
+								Toast.LENGTH_SHORT).show();
+					}
+
+				} catch (JSONException e) {
+
+					Toast.makeText(context, "数据解析错误...",
+							Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO: handle exception
+					Toast.makeText(context, "更新群信息失败...",
+							Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
+				}
+
+
+			}
+		});
+
+
+	}
+	private String ListToString(String[] list){
+		String str="";
+		for(int i=0;i<list.length;i++){
+			if(i<list.length-1){
+				str+=list[i]+",";
+			}else{
+				str+=list[i];
+			}
+		}
+		return str;
+	}
+
 	/**
 	 * 消息图标点击事件
 	 *
@@ -645,6 +745,8 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 					isFriend(talker,s);
 				} else if (TextUtils.isEmpty(s)) {
 					Toast.makeText(context, "内容不能为空！", Toast.LENGTH_SHORT).show();
+				} else if(chatType == CHATTYPE_GROUP && !isGroupMember){
+					Toast.makeText(context, "您已退出该群组！", Toast.LENGTH_SHORT).show();
 				} else {
 					sendText(s);
 				}
@@ -890,6 +992,7 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 					else if (talker.equals(mid)) {
 						bundle.putString("body", id + ":\n" + bodyString);
 					}
+					bundle.putString("content", bodyString);
 					// 往Bundle中存放数据
 					bundle.putLong("time", time); // 往Bundle中put数据
 					bundle.putString("msg", msg); // 往Bundle中存放数据
@@ -901,8 +1004,6 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 				}
 				abortBroadcast();
 			}
-
-
 		}
 
 	}
@@ -918,7 +1019,11 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 
 		if (resultCode == RESULT_CODE_EXIT_GROUP) {
 			setResult(RESULT_OK);
-			finish();
+			String id = data.getStringExtra("Id");
+			if( id != null && id.equals(talker)){
+				finish();
+			}
+
 		}
 //		if (requestCode == REQUEST_CODE_CONTEXT_MENU) {
 //

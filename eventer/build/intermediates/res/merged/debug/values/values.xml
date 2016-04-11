@@ -32,6 +32,12 @@
 			<item>全天</item>
 			<item>自定义</item>
      </string-array>
+    <string-array name="grade">
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+    </string-array>
     <string-array name="hours">
         <item>00:00 </item>
         <item>01:00 </item>
@@ -502,6 +508,7 @@
     <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
     <color name="tb_munion_item_force">#e3e3e3</color>
+    <color name="text">#484848</color>
     <color name="top_bar_normal_bg">#4ebcd3</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_background">#30000000</color>
@@ -706,11 +713,12 @@
     <string name="add">添加</string>
     <string name="add_contact_friend">邀请或添加通讯录中的朋友</string>
     <string name="add_course">添加课程</string>
+    <string name="add_course_manually">手动添加课程</string>
     <string name="add_course_name">填写课程名</string>
     <string name="add_group">发起群聊</string>
     <string name="add_manully">手动添加</string>
     <string name="add_more">添加其他信息</string>
-    <string name="add_table">直接添加整张课表？</string>
+    <string name="add_table">直接添加整张课表</string>
     <string name="add_time">添加其他时段</string>
     <string name="addevent">新建事件</string>
     <string name="addto_contact">添加到通讯录</string>
@@ -733,7 +741,10 @@
     <string name="cancel_collect">取消收藏</string>
     <string name="cancel_enter">你确定要取消参与该日程吗？</string>
     <string name="chat">聊天</string>
+    <string name="chat_msg">聊天信息</string>
     <string name="chatgroup">群聊</string>
+    <string name="chatroom">群组</string>
+    <string name="chatroom_name">群聊名称</string>
     <string name="check_course_table">查看课表</string>
     <string name="check_phone">验证手机号</string>
     <string name="choose_time">请选择课程节数</string>
@@ -760,6 +771,7 @@
     <string name="course_info">课程信息</string>
     <string name="course_name">课程名称</string>
     <string name="course_search_hint">课程名/老师</string>
+    <string name="course_setting">课程设置</string>
     <string name="course_table_add">添加课表</string>
     <string name="course_table_detail">课表详情</string>
     <string name="course_time">节数</string>
@@ -773,6 +785,7 @@
     <string name="delete">删除</string>
     <string name="delete_course">删除本节课</string>
     <string name="delete_friend">删除好友</string>
+    <string name="delete_share">你确定要删除该日程并取消相关的分享吗？</string>
     <string name="dialog_title">日程提醒</string>
     <string name="discussionRoom">讨论室</string>
     <string name="display_useless_event">显示过期活动</string>
@@ -782,6 +795,7 @@
     <string name="email">邮箱</string>
     <string name="email_hint">填写您的邮箱地址</string>
     <string name="empty">空</string>
+    <string name="empty_msg"><font color="#F89012">未填写</font></string>
     <string name="enter">收藏到个人事项中</string>
     <string name="entertainmentview">娱乐</string>
     <string name="event_detail">活动详情</string>
@@ -810,15 +824,19 @@
     <string name="finish">完成</string>
     <string name="friend_hint">你需要发送验证申请，等对方通过</string>
     <string name="gotofriends">通讯录</string>
+    <string name="group_info">群组信息</string>
+    <string name="group_name">群名称</string>
     <string name="group_schedual">群日程</string>
+    <string name="group_share_list">群组分享情况</string>
     <string name="groupshare">群日程列表</string>
     <string name="guide">上课导航</string>
     <string name="hello_world">Hello world!</string>
     <string name="lable">标签</string>
+    <string name="leave_griup">退出群组</string>
     <string name="lifeview">生活</string>
-    <string name="list_is_for">正在获取好友和群聊列表...</string>
-    <string name="load_contact">正在刷新联系人...</string>
-    <string name="loading">正在加载...</string>
+    <string name="list_is_for">正在获取好友和群聊列表…</string>
+    <string name="load_contact">正在刷新联系人…</string>
+    <string name="loading">正在加载…</string>
     <string name="local_phone">手机通讯录</string>
     <string name="location">地点</string>
     <string name="location_1">教室:</string>
@@ -853,14 +871,16 @@
     <string name="next">下一步</string>
     <string name="nick">昵称</string>
     <string name="nick_hint">必填项</string>
-    <string name="no_browser_event">_(:з」∠)_您还没有浏览任何活动...</string>
-    <string name="no_collect_event">_(:з」∠)_您还没有收藏任何活动...</string>
-    <string name="no_comment">_(:з」∠)_还没有人参与评论...</string>
+    <string name="no_browser_event">_(:з」∠)_您还没有浏览任何活动…</string>
+    <string name="no_collect_event">_(:з」∠)_您还没有收藏任何活动…</string>
+    <string name="no_comment">_(:з」∠)_还没有人参与评论…</string>
     <string name="no_contacts_permission">应用无权限读取通讯录</string>
-    <string name="no_group">_(:з」∠)_您还未加入任何群组...</string>
+    <string name="no_group">_(:з」∠)_您还未加入任何群组…</string>
+    <string name="no_name">未命名</string>
     <string name="no_net_info">当前网络不可用</string>
     <string name="no_network">当前网络不稳定？！</string>
-    <string name="no_new_friend">_(:з」∠)_您还没有关于添加新伙伴的消息...</string>
+    <string name="no_new_friend">_(:з」∠)_您还没有关于添加新伙伴的消息…</string>
+    <string name="no_search_class">_(:з」∠)_没有符合条件的课程…</string>
     <string name="not_friend_hint">你们还不是好友，是否添加该好友?</string>
     <string name="notify">通知:请查看群日程！</string>
     <string name="ok">确定</string>
@@ -910,6 +930,7 @@
     <string name="shake">振动</string>
     <string name="share">分享</string>
     <string name="share_activity">分享</string>
+    <string name="share_event">日程分享</string>
     <string name="share_group">分享给群组</string>
     <string name="share_single">分享给好友</string>
     <string name="smssdk_add_contact">添加</string>
@@ -1053,8 +1074,8 @@
     <string name="text_delivered_msg">送达</string>
     <string name="textchange">改变标题</string>
     <string name="theme">主题</string>
-    <string name="theme_all">推荐</string>
-    <string name="theme_fun">文体</string>
+    <string name="theme_all">全部</string>
+    <string name="theme_fun">娱乐</string>
     <string name="theme_job">招聘</string>
     <string name="theme_lecture">讲座</string>
     <string name="theme_other">其他</string>
@@ -1138,7 +1159,7 @@
     <string name="umeng_fb_time_this_year_format">MM/dd HH:mm:ss</string>
     <string name="umeng_fb_title">Feedback</string>
     <string name="umeng_fb_write_contact_title">Write contact Info</string>
-    <string name="uploading">我们正在努力上传中...</string>
+    <string name="uploading">我们正在努力上传中…</string>
     <string name="user_res">用户资料</string>
     <string name="version_info">检查更新</string>
     <string name="video">[视频]</string>
@@ -1152,7 +1173,7 @@
     <string name="xlistview_footer_hint_no_more">已经是最后一页了</string>
     <string name="xlistview_footer_hint_normal">上拉加载更多</string>
     <string name="xlistview_footer_hint_ready">释放加载更多</string>
-    <string name="xlistview_header_hint_loading">加载中...</string>
+    <string name="xlistview_header_hint_loading">加载中…</string>
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">释放刷新</string>
     <string name="xlistview_header_last_time">更新于：</string>

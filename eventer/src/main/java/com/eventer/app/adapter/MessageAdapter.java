@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.easemob.util.DateUtils;
 import com.eventer.app.Constant;
@@ -56,8 +55,6 @@ public class MessageAdapter extends BaseAdapter {
 	private static final int MESSAGE_TYPE_TXT = 1;
 	private static final int MESSAGE_TYPE_EVENT = 2;
 	private static final int MESSAGE_TYPE_SCHEDUAL = 3;
-	private static final int GROUP_CREATED_NOTIFICATION = 6;
-	private static final int GROUP_INVITE_NOTIFICATION=8;
 	private LayoutInflater inflater;
 	private LoadUserAvatar avatarLoader;
 	private List<ChatEntity> msglist = new ArrayList<>();
@@ -106,9 +103,15 @@ public class MessageAdapter extends BaseAdapter {
 				case 4:
 				case 5:
 					return inflater.inflate(R.layout.row_share_message, null);
-				case GROUP_CREATED_NOTIFICATION:
-				case GROUP_INVITE_NOTIFICATION:
+				case Constant.GROUP_INVITE_NOTIFICATION:
+				case Constant.GROUP_LEAVE_NOTIFICATION:
+				case Constant.GROUP_CREATED_NOTIFICATION:
+				case Constant.GROUP_ACTIVITY_JOIN:
+				case Constant.GROUP_ACTIVITY_EXIT:
+				case Constant.GROUP_ACTIVITY_DELETE:
 					return inflater.inflate(R.layout.row_share_message, null);
+				case Constant.GROUP_ACTIVITY_CREATE:
+					return inflater.inflate(R.layout.row_create_message, null);
 				default:
 					// 语音电话
 					return message.getStatus() > 1 ? inflater.inflate(
@@ -135,9 +138,7 @@ public class MessageAdapter extends BaseAdapter {
 			}
 		}
 		final String speaker = toChat;
-		if (message.getFrom().equals("admin")) {
-			return convertView;
-		} else {
+
 			ViewHolder holder;
 			holder = new ViewHolder();
 			convertView = createViewByMessage(message);
@@ -148,6 +149,8 @@ public class MessageAdapter extends BaseAdapter {
 			switch (message.getType()) {
 				case 4:
 				case 5:
+
+
 					holder.tv_sharemsg = (TextView) convertView
 							.findViewById(R.id.tv_share_msg);
 					holder.tv_sharemsg.setOnClickListener(new OnClickListener() {
@@ -161,9 +164,88 @@ public class MessageAdapter extends BaseAdapter {
 						}
 					});
 					break;
-				case GROUP_CREATED_NOTIFICATION:
-				case GROUP_INVITE_NOTIFICATION:
+				case Constant.GROUP_ACTIVITY_JOIN:
+				case Constant.GROUP_ACTIVITY_EXIT:
+					holder.tv_sharemsg = (TextView) convertView
+							.findViewById(R.id.tv_share_msg);
+					holder.tv_sharemsg.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							try {
+								String bodyString = message.getContent();
+								int loc = bodyString.indexOf(":\n");
+								if (loc != -1) {
+									bodyString = bodyString.substring(loc + 2);
+								}
+								JSONObject groupObject = JSONObject.parseObject(bodyString);
+								String event_id = groupObject.getString("event_id");
+								context.startActivity(new Intent()
+										.setClass(context, ShareSchedualActivity.class)
+										.putExtra("groupId", message.getFrom())
+										.putExtra("shareId", event_id));
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+					});
+					break;
+
+				case Constant.GROUP_INVITE_NOTIFICATION:
+				case Constant.GROUP_LEAVE_NOTIFICATION:
+				case Constant.GROUP_CREATED_NOTIFICATION:
+				case Constant.GROUP_ACTIVITY_DELETE:
 					holder.tv_sharemsg = (TextView) convertView.findViewById(R.id.tv_share_msg);
+
+					break;
+				case Constant.GROUP_ACTIVITY_CREATE:
+					holder.tv = (TextView) convertView.findViewById(R.id.tv_title);
+					holder.head_iv = (ImageView) convertView
+							.findViewById(R.id.iv_userhead);
+					holder.tv_nick = (TextView) convertView.findViewById(R.id.tv_nick);
+					final String user = toChat;
+					convertView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							try {
+								String bodyString = message.getContent();
+								int loc = bodyString.indexOf(":\n");
+								if (loc != -1) {
+									bodyString = bodyString.substring(loc + 2);
+								}
+								JSONObject groupObject = JSONObject.parseObject(bodyString);
+								String event_id = groupObject.getString("event_id");
+								context.startActivity(new Intent()
+										.setClass(context, ShareSchedualActivity.class)
+										.putExtra("groupId", message.getFrom())
+										.putExtra("shareId", event_id));
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					});
+//					holder.head_iv.setTag(avatar);
+					holder.head_iv.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+
+							if (!user.equals(Constant.UID)) {
+								Intent intent = new Intent();
+								intent.putExtra("user", user);
+								intent.setClass(context, Activity_UserInfo.class);
+								context.startActivity(intent);
+							} else {
+								Intent intent = new Intent();
+								intent.setClass(context, MyUserInfoActivity.class);
+								context.startActivity(intent);
+							}
+
+						}
+					});
 					break;
 				default:
 					try {
@@ -334,14 +416,14 @@ public class MessageAdapter extends BaseAdapter {
 							});
 						}
 					}
-					final String user = toChat;
+					final String user1 = toChat;
 					holder.head_iv.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
-							if (!user.equals(Constant.UID)) {
+							if (!user1.equals(Constant.UID)) {
 								Intent intent = new Intent();
-								intent.putExtra("user", user);
+								intent.putExtra("user", user1);
 								intent.setClass(context, Activity_UserInfo.class);
 								context.startActivity(intent);
 							} else {
@@ -440,8 +522,8 @@ public class MessageAdapter extends BaseAdapter {
 					}
 				}
 
-			}else if (type == GROUP_CREATED_NOTIFICATION) {
-				StringBuffer display=new StringBuffer();
+			}else if (type == Constant.GROUP_CREATED_NOTIFICATION) {
+				String  display = null;
 				try {
 					String bodyString = message.getContent();
 					int loc = bodyString.indexOf(":\n");
@@ -449,12 +531,8 @@ public class MessageAdapter extends BaseAdapter {
 						bodyString = bodyString.substring(loc + 2);
 					}
 					JSONObject groupObject = JSONObject.parseObject(bodyString);
-					JSONArray displayJsonArray = groupObject.getJSONArray("displaylist");
-					int size = displayJsonArray.size();
-					for(int i =0;i<size-1;i++){
-						display.append(displayJsonArray.get(i).toString()+", ");
-					}
-					display.append(displayJsonArray.get(size-1).toString());
+					display = groupObject.getString("invite");
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -472,8 +550,8 @@ public class MessageAdapter extends BaseAdapter {
 					}
 				}
 
-			}else if(type == GROUP_INVITE_NOTIFICATION){
-				StringBuffer display=new StringBuffer();
+			}else if(type == Constant.GROUP_INVITE_NOTIFICATION){
+				String display = null;
 				try {
 					String bodyString = message.getContent();
 					int loc = bodyString.indexOf(":\n");
@@ -481,12 +559,7 @@ public class MessageAdapter extends BaseAdapter {
 						bodyString = bodyString.substring(loc + 2);
 					}
 					JSONObject groupObject = JSONObject.parseObject(bodyString);
-					JSONArray displayJsonArray = groupObject.getJSONArray("newMemberList");
-					int size = displayJsonArray.size();
-					for(int i =0;i<size-1;i++){
-						display.append(displayJsonArray.get(i).toString()+", ");
-					}
-					display.append(displayJsonArray.get(size-1).toString());
+					display = groupObject.getString("invite");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -504,8 +577,201 @@ public class MessageAdapter extends BaseAdapter {
 					}
 				}
 
+			}else if(type == Constant.GROUP_LEAVE_NOTIFICATION){
+				String uid = null,nick = null;
+				try {
+					String bodyString = message.getContent();
+					int loc = bodyString.indexOf(":\n");
+					if (loc != -1) {
+						bodyString = bodyString.substring(loc + 2);
+					}
+					JSONObject groupObject = JSONObject.parseObject(bodyString);
+					uid = groupObject.getString("id");
+					nick = groupObject.getString("nick");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(!TextUtils.isEmpty(nick)){
+					if(Constant.UID.equals(uid)){
+						if(Constant.UID.equals(speaker)){
+							holder.tv_sharemsg.setText("我退出群聊");
+						}else {
+							holder.tv_sharemsg.setText("我被移除群聊");
+						}
+
+					}else{
+						holder.tv_sharemsg.setText(nick+"退出群聊");
+					}
+				}
+			}else if(type == Constant.GROUP_ACTIVITY_CREATE){
+				String id = null,nick = null,name = null;
+				try {
+					String bodyString = message.getContent();
+					int loc = bodyString.indexOf(":\n");
+					if (loc != -1) {
+						bodyString = bodyString.substring(loc + 2);
+					}
+					JSONObject groupObject = JSONObject.parseObject(bodyString);
+					id = groupObject.getString("member");
+					name = groupObject.getString("event_name");
+					nick = groupObject.getString("nick");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(!TextUtils.isEmpty(name)){
+					holder.tv.setText(name);
+				}else{
+					holder.tv.setText("（无标题）");
+				}
+
+				if(!TextUtils.isEmpty(nick)){
+					holder.tv_nick.setText(nick);
+				}else{
+					holder.tv_nick.setText("");
+				}
+				final String uid = id;
+				if(!TextUtils.isEmpty(uid)){
+					if (uid.equals(Constant.UID)) {
+						String avatar = LocalUserInfo.getInstance(context)
+								.getUserInfo("avatar");
+						showUserAvatar(holder.head_iv, avatar);
+					} else if (MyApplication.getInstance().getContactList()
+							.containsKey(uid)) {
+						User u = MyApplication.getInstance().getContactList()
+								.get(uid);
+						String avatar = u.getAvatar();
+						showUserAvatar(holder.head_iv, avatar);
+					} else if (MyApplication.getInstance().getUserList()
+							.containsKey(uid)) {
+						UserInfo u = MyApplication.getInstance().getUserList()
+								.get(uid);
+						String avatar = u.getAvatar();
+						showUserAvatar(holder.head_iv, avatar);
+					} else {
+						Map<String, String> map = new HashMap<>();
+						map.put("uid", uid);
+						LoadDataFromHTTP task = new LoadDataFromHTTP(context,
+								Constant.URL_GET_USERINFO, map);
+						task.getData(new DataCallBack() {
+							@Override
+							public void onDataCallBack(JSONObject data) {
+								// TODO Auto-generated method stub
+								try {
+									int status = data.getInteger("status");
+									switch (status) {
+										case 0:
+											JSONObject user_action = data
+													.getJSONObject("user_action");
+											JSONObject info = user_action
+													.getJSONObject("info");
+											String name = info.getString("name");
+											String avatar = info.getString("avatar");
+											showUserAvatar(((ImageView) view
+															.findViewById(R.id.iv_userhead)),
+													avatar);
+											UserInfo user = new UserInfo();
+											user.setAvatar(avatar);
+											user.setNick(name);
+											user.setType(22);
+											user.setUsername(uid);
+											MyApplication.getInstance().addUser(user);
+											break;
+										default:
+											// Toast.makeText(context, "获取用户信息失败！",
+											// Toast.LENGTH_SHORT).show();
+											Log.e("1", "获取用户信息失败：");
+											break;
+									}
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
+					}
+				}
+
+
+
+
+
+
+
+			}else if(type == Constant.GROUP_ACTIVITY_JOIN){
+				String uid = null,nick = null,name = null;
+				try {
+					String bodyString = message.getContent();
+					int loc = bodyString.indexOf(":\n");
+					if (loc != -1) {
+						bodyString = bodyString.substring(loc + 2);
+					}
+					JSONObject groupObject = JSONObject.parseObject(bodyString);
+					uid = groupObject.getString("member");
+					name = groupObject.getString("event_name");
+					nick = groupObject.getString("nick");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(!TextUtils.isEmpty(nick)){
+					if(Constant.UID.equals(uid)){
+						holder.tv_sharemsg.setText("我加入日程："+name);
+					}else{
+						holder.tv_sharemsg.setText(nick+"加入日程："+name);
+					}
+				}
+			}else if(type == Constant.GROUP_ACTIVITY_EXIT){
+				String uid = null,nick = null,name = null;
+
+				try {
+					String bodyString = message.getContent();
+					int loc = bodyString.indexOf(":\n");
+					if (loc != -1) {
+						bodyString = bodyString.substring(loc + 2);
+					}
+					JSONObject groupObject = JSONObject.parseObject(bodyString);
+					uid = groupObject.getString("member");
+					name = groupObject.getString("event_name");
+					nick = groupObject.getString("nick");
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(!TextUtils.isEmpty(nick)){
+					if(Constant.UID.equals(uid)){
+						holder.tv_sharemsg.setText("我退出日程："+name);
+					}else{
+						holder.tv_sharemsg.setText(nick+"退出日程："+name);
+					}
+				}
+
+			}else if(type == Constant.GROUP_ACTIVITY_DELETE){
+				String uid = null,nick = null,name = null;
+				try {
+					String bodyString = message.getContent();
+					int loc = bodyString.indexOf(":\n");
+					if (loc != -1) {
+						bodyString = bodyString.substring(loc + 2);
+					}
+					JSONObject groupObject = JSONObject.parseObject(bodyString);
+					uid = groupObject.getString("member");
+					name = groupObject.getString("event_name");
+					nick = groupObject.getString("nick");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(!TextUtils.isEmpty(nick)){
+					if(Constant.UID.equals(uid)){
+						holder.tv_sharemsg.setText("我删除日程："+name);
+					}else{
+						holder.tv_sharemsg.setText(nick+"删除日程："+name);
+					}
+				}
 			}
-		}
 		return convertView;
 	}
 
@@ -647,6 +913,7 @@ public class MessageAdapter extends BaseAdapter {
 		ProgressBar pb;
 //		ImageView staus_iv;
 		ImageView head_iv;
+		TextView tv_nick;
 //		TextView tv_userId;
 		TextView tv_sharemsg;
 	}

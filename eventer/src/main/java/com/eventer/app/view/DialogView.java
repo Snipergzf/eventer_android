@@ -43,7 +43,7 @@ public class DialogView {
 
 	public DialogView(Context mContext) {
 		this.mContext = mContext;
-		this.mInflater=LayoutInflater.from(mContext); 
+		this.mInflater=LayoutInflater.from(mContext);
 	}
 
 	int layout_resource=0;

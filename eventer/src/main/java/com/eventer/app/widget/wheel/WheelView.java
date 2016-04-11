@@ -523,8 +523,7 @@ public class WheelView extends View {
 			height = heightSize;
 		} else {
 			height = getDesiredHeight(itemsLayout);
-
-			if (heightMode == MeasureSpec.AT_MOST) {
+   			if (heightMode == MeasureSpec.AT_MOST) {
 				height = Math.min(height, heightSize);
 			}
 		}

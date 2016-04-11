@@ -153,7 +153,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingStart="8dp"
-                android:text="@string/email"
+                android:text="@string/school"
                 android:textColor="#353535"
                 android:textSize="16sp" />
 
@@ -188,7 +188,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingStart="8dp"
-                android:text="@string/school"
+                android:text="@string/school_year"
                 android:textColor="#353535"
                 android:textSize="16sp" />
 

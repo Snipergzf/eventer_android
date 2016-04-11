@@ -8,7 +8,7 @@
  <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/height_top_bar"
         android:background="@color/caldroid_holo_blue_light" >
 
 
@@ -40,7 +40,13 @@
                 style="@style/text_title"
                 android:layout_toEndOf="@+id/view_temp"
                 android:layout_toRightOf="@+id/view_temp"
+                android:layout_toLeftOf="@+id/addkc_ok"
+                android:layout_toStartOf="@+id/addkc_ok"
                 android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:paddingRight="40dp"
+                android:paddingEnd="40dp"
+                android:ellipsize="middle"
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -54,7 +60,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:layout_marginRight="10dp"
-                android:text="@string/add"
+                android:text="@string/finish"
 
                 android:textColor="@color/white" />
 
@@ -119,6 +125,8 @@
                 android:background="#ffffff"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:textSize="15sp"
+                android:textColor="@android:color/tertiary_text_light"
                 android:hint="@string/add_course_name"/>
 
         </LinearLayout>
@@ -146,6 +154,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:background="#ffffff"
+                android:textColor="@android:color/tertiary_text_light"
                 android:ems="10"
                 android:textSize="15sp" />
 

@@ -91,9 +91,9 @@ public class CourseTimeAdapter  extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO 自动生成的方法存根		
-		ViewHolder holder = null;
+		ViewHolder holder ;
 		Course item =  listItems.get(position);
-		final int loc=position;
+		final int loc = position;
 		if (convertView == null) {
 			convertView = mInflater.inflate(res, null);
 			holder=new ViewHolder();
@@ -323,7 +323,10 @@ public class CourseTimeAdapter  extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				listItems.remove(loc);
+				if(listItems.size() > loc+1){
+					listItems.remove(loc);
+				}
+
 				notifyDataSetChanged();
 			}
 		});

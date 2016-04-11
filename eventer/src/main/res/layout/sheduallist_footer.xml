@@ -9,8 +9,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/orange"
-            android:padding="10dp"
-            android:textSize="18sp"
+            android:padding="6dp"
+            android:textSize="16sp"
             android:text="@string/addevent" />
 
 </LinearLayout>

@@ -107,33 +107,35 @@ public  class PickChatroomAdapter extends BaseAdapter {
         final String groupId=group.getRoomId();
         int membersNum ;
 
-        String groupName =  group.getRoomname();
+        String groupName =  group.getDefaultName();
 
-        String groupName_temp2 = "";
+
         String[] members=group.getMember();
-        String[] displayName=group.getDisplayname();
+
         membersNum = members.length;
         Bitmap[] b=new Bitmap[membersNum];
         bitmaps.put(position+"", b);
         convertView = creatConvertView(membersNum);
         final View view=convertView;
-        for (int i = 0; i < membersNum; i++) {
-            if (i == 0) {
-                groupName_temp2 = displayName[i];
-            } else if (i < 4) {
-                groupName_temp2 += "、" + displayName[i];
-
-            } else if (i == 4) {
-                groupName_temp2 += "...("+membersNum+")";
-            }
-        }
-
-        if (groupName==null||groupName.equals("")) {
-            groupName = groupName_temp2;
-        }
-        if (groupName==null||groupName.equals("")) {
-            groupName = "群组";
-        }
+//        String groupName_temp2 = "";
+//        String[] displayName=group.getDisplayname();
+//        for (int i = 0; i < membersNum; i++) {
+//            if (i == 0) {
+//                groupName_temp2 = displayName[i];
+//            } else if (i < 4) {
+//                groupName_temp2 += "、" + displayName[i];
+//
+//            } else if (i == 4) {
+//                groupName_temp2 += "...("+membersNum+")";
+//            }
+//        }
+//
+//        if (groupName==null||groupName.equals("")) {
+//            groupName = groupName_temp2;
+//        }
+//        if (groupName==null||groupName.equals("")) {
+//            groupName = "群组";
+//        }
 
         holder.tv_name = (TextView)view.findViewById(R.id.tv_name);
         holder.tv_name.setText(groupName);

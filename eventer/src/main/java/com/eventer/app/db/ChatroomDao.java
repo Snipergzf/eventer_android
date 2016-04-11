@@ -56,19 +56,29 @@ public class ChatroomDao {
 
 	public synchronized void update(ContentValues values,String room){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		boolean isSuccess;
 		if(db.isOpen()){
-			isSuccess=db.update(TABLE_NAME, values,COLUMN_NAME_ID+ " = ?", new String[]{room})>-1;
-			if(!isSuccess){
+			Cursor cursor = db.query(TABLE_NAME, null, COLUMN_NAME_ID + " = ?", new String[]{room}, null, null, null);
+			if(cursor != null && cursor.getCount() > 0){
+				db.update(TABLE_NAME, values,COLUMN_NAME_ID+ " = ?", new String[]{room});
+				cursor.close();
+			}else {
 				values.put(COLUMN_NAME_ID,room);
 				String owner=room.split("@")[0];
 				values.put(COLUMN_NAME_OWNER, owner);
 				db.insert(TABLE_NAME, null, values);
 			}
+
 		}
 		db.close();
 	}
 
+
+	public synchronized boolean delRoom(String id){
+		dbHelper.openDatabase();
+		boolean result=dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID+" = ? ", new String[]{id});
+		dbHelper.closeDatabase();
+		return result;
+	}
 
 	private String ListToString(String[] list){
 		String str="";
@@ -96,15 +106,15 @@ public class ChatroomDao {
 				room.setOwner(c.getString(c.getColumnIndex(COLUMN_NAME_OWNER)));
 				room.setTime(c.getLong(c.getColumnIndex(COLUMN_NAME_TIME)));
 				String member=c.getString(c.getColumnIndex(COLUMN_NAME_MEMVBER));
-				room.setMember(member.split(","));
+				room.setRoomname(c.getString(c.getColumnIndex(COLUMN_NAME_ROOMNAME)));
 				String displayname=c.getString(c.getColumnIndex(COLUMN_NAME_MEMBERNAME));
-				room.setDisplayname(displayname.split(","));
-				String roomname=c.getString(c.getColumnIndex(COLUMN_NAME_ROOMNAME));
-				if(!TextUtils.isEmpty(roomname)){
-					room.setRoomname(roomname);
-				}else{
-					room.setRoomname(displayname);
+				if (!TextUtils.isEmpty(displayname)){
+					room.setDisplayname(displayname.split(","));
 				}
+				if (TextUtils.isEmpty(member)){
+					break;
+				}
+                room.setMember(member.split(","));
 				list.add(room);
 			}
 			c.close();
@@ -125,15 +135,16 @@ public class ChatroomDao {
 				room.setOwner(c.getString(c.getColumnIndex(COLUMN_NAME_OWNER)));
 				room.setTime(c.getLong(c.getColumnIndex(COLUMN_NAME_TIME)));
 				String member=c.getString(c.getColumnIndex(COLUMN_NAME_MEMVBER));
+				room.setRoomname(c.getString(c.getColumnIndex(COLUMN_NAME_ROOMNAME)));
+				if (TextUtils.isEmpty(member)){
+					return null;
+				}
 				String[] memberlist=member.split(",");
 				room.setMember(memberlist);
 				String displayname=c.getString(c.getColumnIndex(COLUMN_NAME_MEMBERNAME));
-				room.setDisplayname(displayname.split(","));
-				String roomname=c.getString(c.getColumnIndex(COLUMN_NAME_ROOMNAME));
-				if(!TextUtils.isEmpty(roomname)){
-					room.setRoomname(roomname);
-				}else{
-					room.setRoomname(displayname+"("+memberlist.length+")");
+
+				if(!TextUtils.isEmpty(displayname)){
+					room.setDisplayname(displayname.split(","));
 				}
 			}
 			c.close();

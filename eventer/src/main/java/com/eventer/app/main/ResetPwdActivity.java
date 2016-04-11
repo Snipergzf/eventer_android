@@ -20,6 +20,7 @@ import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.MyUserInfoActivity;
+import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
@@ -122,8 +123,16 @@ public class ResetPwdActivity extends SwipeBackActivity implements OnClickListen
 	 *
 	 */
 	public void UserResetPwd() {
-		Map<String, String> params = new HashMap<>();
+
 		pwd=edit_pwd.getText().toString();
+
+		if(TextUtils.isEmpty(pwd)){
+			Toast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
+			return;
+		}else{
+			pwd = MD5Util.getMD5(pwd);
+		}
+		Map<String, String> params = new HashMap<>();
 		params.put("phone", TelString);
 		params.put("pwd", pwd);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(

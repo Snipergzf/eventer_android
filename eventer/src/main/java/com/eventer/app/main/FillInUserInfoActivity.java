@@ -1,6 +1,7 @@
 package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -27,17 +28,23 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.db.MajorDao;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.http.UploadPicToServer;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
+import com.eventer.app.widget.CircleProgressBar;
 import com.eventer.app.widget.SpinerPopWindow;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,19 +60,25 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 	private String imageName;
 	private int index;
 	private List<String> valueList = new ArrayList<>();
-	private List<String> yearList,schoolList,majorList,classList;
+	private List<String> yearList = new ArrayList<>() ;
 	private String name,sex="2",email;
 	private String[] classinfo=new String[4];
 	private SpinerPopWindow mSpinerPopWindow;
-	private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
-	private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-	private static final int PHOTO_REQUEST_CUT = 3;// 结果
+	AlertDialog upload_dlg;
+	private String year ;
+	private String major ;
+
+	private String school;
+	private MajorDao dao;
+	private Activity activity;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fill_in_user_info);
-		context=this;
+		context = this;
+		activity = this;
 		setBaseTitle(R.string.fillin_info);
+		dao = new MajorDao(context);
 		initView();
 	}
 	private void initView() {
@@ -112,18 +125,9 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		tv_school.setOnClickListener(new ClassListener());
 		tv_year.setOnClickListener(new ClassListener());
 
-		yearList=new ArrayList<>();
-		yearList.add("2014");
-		schoolList=new ArrayList<>();
-		schoolList.add("电子信息与通信学院");
-		majorList=new ArrayList<>();
-		majorList.add("通信工程");
-		classList=new ArrayList<>();
-		classList.add("1班");
-		classList.add("2班");
-		classList.add("通中英");
-		classList.add("电中英");
 
+		String[] grade = getResources().getStringArray(R.array.grade);
+		Collections.addAll(yearList, grade);
 		mSpinerPopWindow = new SpinerPopWindow(this);
 		mSpinerPopWindow.refreshData(valueList, 0);
 		mSpinerPopWindow.setItemListener(new IOnItemSelectListener() {
@@ -154,7 +158,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 
 					break;
 				case R.id.iv_photo:
-					showPhotoDialog();
+					Crop.pickImage(activity);
 					break;
 
 				default:
@@ -169,24 +173,48 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 				case R.id.tv_year:
-					index=0;
-					valueList=yearList;
+					index = 0;
+					valueList = yearList;
 					mSpinerPopWindow.refreshData(valueList, 0);
 					break;
 				case R.id.tv_school:
-					index=1;
-					valueList=schoolList;
-					mSpinerPopWindow.refreshData(valueList, 0);
+					year = tv_year.getText().toString().trim();
+					if (!TextUtils.isEmpty(year)){
+						valueList = dao.getSchool(year);
+						mSpinerPopWindow.refreshData(valueList, 0);
+						index = 1;
+					} else {
+						Toast.makeText(context, "请先选择年级~", Toast.LENGTH_SHORT).show();
+						index = -1;
+					}
+
 					break;
 				case R.id.tv_major:
-					index=2;
-					valueList=majorList;
-					mSpinerPopWindow.refreshData(valueList, 0);
+
+					year = tv_year.getText().toString().trim();
+					school = tv_school.getText().toString().trim();
+					if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(school)){
+						valueList = dao.getMajor(year, school);
+						mSpinerPopWindow.refreshData(valueList, 0);
+						index=2;
+					}  else {
+						Toast.makeText(context, "请先选择年级和学院~", Toast.LENGTH_SHORT).show();
+						index=-1;
+					}
 					break;
 				case R.id.tv_class:
-					index=3;
-					valueList=classList;
-					mSpinerPopWindow.refreshData(valueList, 0);
+
+					year = tv_year.getText().toString().trim();
+					school = tv_school.getText().toString().trim();
+					major = tv_major.getText().toString().trim();
+					if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(school) && !TextUtils.isEmpty(major)){
+						valueList = dao.getClass(year, school, major);
+						mSpinerPopWindow.refreshData(valueList, 0);
+						index=3;
+					}  else {
+						Toast.makeText(context, "请先选择年级、学院和专业~", Toast.LENGTH_SHORT).show();
+						index=-1;
+					}
 					break;
 				default:
 					index=-1;
@@ -212,106 +240,75 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 	}
 
 
-	private void showPhotoDialog() {
-		final AlertDialog dlg = new AlertDialog.Builder(context).create();
-		dlg.show();
-		Window window = dlg.getWindow();
-		window.setContentView(R.layout.alertdialog);
-		TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
-		tv_paizhao.setText("拍一张照片");
-		tv_paizhao.setOnClickListener(new View.OnClickListener() {
-			@SuppressLint("SdCardPath")
-			public void onClick(View v) {
-				imageName = (System.currentTimeMillis()/1000) + ".png";
-				File cameraFile = new File(Constant.IMAGE_PATH,
-						imageName);
 
-				cameraFile.getParentFile().mkdirs();
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				// 指定调用相机拍照后照片的储存路径
-				intent.putExtra(MediaStore.EXTRA_OUTPUT,
-						Uri.fromFile(cameraFile));
-				startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
-				dlg.cancel();
-			}
-		});
-		TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
-		tv_xiangce.setText("从相册中选择照片");
-		tv_xiangce.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				imageName = (System.currentTimeMillis()/1000) + ".png";
-				Intent intent = new Intent(Intent.ACTION_PICK, null);
-				intent.setDataAndType(
-						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-				startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-
-				dlg.cancel();
-			}
-		});
-
+	private void beginCrop(Uri source) {
+		if(TextUtils.isEmpty(imageName)){
+			imageName = getNowTime() + ".png";
+		}
+		File cameraFile = new File(Constant.IMAGE_PATH,
+				imageName);
+		cameraFile.getParentFile().mkdirs();
+		Uri destination = Uri.fromFile(new File(Constant.IMAGE_PATH, imageName));
+		Log.e("1", destination + "");
+		Crop.of(source, destination).asSquare().start(this);
 	}
+
+	private void handleCrop(int resultCode, Intent result) {
+		if (resultCode == RESULT_OK&&!TextUtils.isEmpty(imageName)) {
+			String filePath = Constant.IMAGE_PATH + imageName;
+			BitmapFactory.Options measureOptions = new BitmapFactory.Options();
+			/**
+			 * most important:  options.inJustDecodeBounds = true;
+			 * decodeFile()，return bitmap=null，but options.outHeight = img's height
+			 */
+			measureOptions.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(filePath, measureOptions);
+			int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / 240;
+			scale = Math.max(scale, 1);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inPreferredConfig = Bitmap.Config.RGB_565;
+			options.inJustDecodeBounds = false;
+			options.inSampleSize = scale;
+			Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+			iv_avatar.setImageBitmap(bitmap);
+		} else if (resultCode == Crop.RESULT_ERROR) {
+			Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	private String getNowTime() {
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSS");
+		return dateFormat.format(date);
+	}
+
+
+	private void showDialog(){
+		upload_dlg = new AlertDialog.Builder(this).create();
+		upload_dlg.show();
+		Window window = upload_dlg.getWindow();
+		// *** 主要就是在这里实现这种效果的.
+		// 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+		window.setContentView(R.layout.upload_dialog);
+		CircleProgressBar progress=(CircleProgressBar)window.findViewById(R.id.progress);
+		progress.setColorSchemeResources(android.R.color.holo_orange_light);
+	}
+
+
 
 	@SuppressLint("SdCardPath")
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			switch (requestCode) {
-				case PHOTO_REQUEST_TAKEPHOTO:
-
-					startPhotoZoom(
-							Uri.fromFile(new File(Constant.IMAGE_PATH, imageName)),
-							480);
-					break;
-
-				case PHOTO_REQUEST_GALLERY:
-					if (data != null)
-						startPhotoZoom(data.getData(), 480);
-					break;
-
-				case PHOTO_REQUEST_CUT:
-					// BitmapFactory.Options options = new BitmapFactory.Options();
-					//
-					// /**
-					// * 最关键在此，把options.inJustDecodeBounds = true;
-					// * 这里再decodeFile()，返回的bitmap为空
-					// * ，但此时调用options.outHeight时，已经包含了图片的高了
-					// */
-					// options.inJustDecodeBounds = true;
-					Bitmap bitmap = BitmapFactory.decodeFile(Constant.IMAGE_PATH
-							+ imageName);
-					iv_avatar.setImageBitmap(bitmap);
-					break;
-
-			}
-			super.onActivityResult(requestCode, resultCode, data);
-
+		if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+			beginCrop(data.getData());
+		} else if (requestCode == Crop.REQUEST_CROP) {
+			handleCrop(resultCode, data);
 		}
+		super.onActivityResult(requestCode, resultCode, data);
+
 	}
-	/***
-	 * 对图片进行剪切
-	 */
-	@SuppressLint("SdCardPath")
-	private void startPhotoZoom(Uri uri1, int size) {
-		Intent intent = new Intent("com.android.camera.action.CROP");
-		intent.setDataAndType(uri1, "image/*");
-		// crop为true是设置在开启的intent中设置显示的view可以剪裁
-		intent.putExtra("crop", "true");
 
-		// aspectX aspectY 是宽高的比例
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
-
-		// outputX,outputY 是剪裁图片的宽高
-		intent.putExtra("outputX", size);
-		intent.putExtra("outputY", size);
-		intent.putExtra("return-data", false);
-
-		intent.putExtra(MediaStore.EXTRA_OUTPUT,
-				Uri.fromFile(new File(Constant.IMAGE_PATH, imageName)));
-		intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-		intent.putExtra("noFaceDetection", true); // no face detection
-		startActivityForResult(intent, PHOTO_REQUEST_CUT);
-	}
 
 //	@SuppressLint("SimpleDateFormat")
 //	private String getNowTime() {
@@ -393,6 +390,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 						LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("class", classinfo[3]);
 						LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("major", classinfo[2]);
 						if (imageName != null && !imageName.equals("")) {
+							showDialog();
 							updateAvatarInServer(imageName);
 						} else {
 							Intent intent = new Intent();
@@ -474,6 +472,9 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 					e.printStackTrace();
 				}finally {
 					Intent intent = new Intent();
+					if(upload_dlg != null){
+						upload_dlg.cancel();
+					}
 					intent.setClass(context, MainActivity.class);
 					startActivity(intent);
 					finish();

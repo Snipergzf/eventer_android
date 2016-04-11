@@ -44,7 +44,7 @@ public class ClassInfoDao {
 		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
 				null, null, null, null,null,null);
 		while (c.moveToNext()) {
-			int id = c.getInt(c.getColumnIndex(COLUMN_NAME_ID));
+			String id = c.getString(c.getColumnIndex(COLUMN_NAME_ID));
 			String name = c.getString(c.getColumnIndex(COLUMN_NAME_NAME));
 			String place = c.getString(c.getColumnIndex(COLUMN_NAME_PLACE ));
 			String week = c.getString(c.getColumnIndex(COLUMN_NAME_WEEK));

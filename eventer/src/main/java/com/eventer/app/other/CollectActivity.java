@@ -69,8 +69,8 @@ public class CollectActivity extends SwipeBackActivity {
 		EventDao dao=new EventDao(context);
 		listItems=dao.getEventListByInfo(new String[]{Constant.UID + "", "1"});
 		for (Event event : listItems) {
-			event=getEventItem(event);
-			if(event!=null){
+			event = getEventItem(event);
+			if(event != null){
 				mData.add(event);
 			}
 		}

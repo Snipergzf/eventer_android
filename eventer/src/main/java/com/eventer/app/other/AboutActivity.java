@@ -17,9 +17,12 @@ import com.eventer.app.R;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class AboutActivity extends SwipeBackActivity implements OnClickListener{
     RelativeLayout re_tell_friend,re_our_team;
-    TextView tv_app_info;
+    TextView tv_app_info,tv_copyright;
     private Context context;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +37,10 @@ public class AboutActivity extends SwipeBackActivity implements OnClickListener{
 	}
 	private void initView() {
 		// TODO Auto-generated method stub
-		re_our_team=(RelativeLayout)findViewById(R.id.re_our_team);
-		re_tell_friend=(RelativeLayout)findViewById(R.id.re_tell_friend);
-		tv_app_info=(TextView)findViewById(R.id.tv_app_info);
+		re_our_team = (RelativeLayout) findViewById(R.id.re_our_team);
+		re_tell_friend = (RelativeLayout) findViewById(R.id.re_tell_friend);
+		tv_app_info = (TextView) findViewById(R.id.tv_app_info);
+		tv_copyright = (TextView) findViewById(R.id.tv_copyright);
 		
 		PackageManager pm = context.getPackageManager();
 		PackageInfo pi;
@@ -55,7 +59,16 @@ public class AboutActivity extends SwipeBackActivity implements OnClickListener{
 		if(!TextUtils.isEmpty(version)){
 			info=appname+" v"+version;
 		}
-		
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("©2015-");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int year = calendar.get(Calendar.YEAR);
+		sb.append(year);
+		sb.append(" eventer, all rights reserved");
+		tv_copyright.setText(sb.toString());
+
 		tv_app_info.setText(info);
 		re_our_team.setOnClickListener(this);
 		re_tell_friend.setOnClickListener(this);

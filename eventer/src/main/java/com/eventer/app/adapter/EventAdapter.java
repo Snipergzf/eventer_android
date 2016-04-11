@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class EventAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private String image="";
 	private FileUtil fileUtil;
+	private int IMG_SCALE = 100;
 
 //	public final class ListItemView{                //自定义控件集合
 //		public ImageView image;
@@ -205,20 +207,45 @@ public class EventAdapter extends BaseAdapter {
 				String filename = url_avatar
 						.substring(url_avatar.lastIndexOf("/") + 1)+"_e";
 				String filepath = fileUtil.getAbsolutePath() + filename;
+
 				try {
-					Bitmap bitmap = BitmapFactory.decodeFile(filepath);
+					Bitmap bitmap = null;
+
+					if(fileUtil.isBitmapExists(filename)){
+
+						BitmapFactory.Options measureOptions = new BitmapFactory.Options();
+						measureOptions.inJustDecodeBounds = true;
+						BitmapFactory.decodeFile(filepath, measureOptions);
+						int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / 40;
+						scale = Math.max(scale, 1);
+
+						BitmapFactory.Options options = new BitmapFactory.Options();
+						options.inPreferredConfig = Bitmap.Config.RGB_565;
+						options.inJustDecodeBounds = false;
+
+						options.inSampleSize = scale;
+						bitmap = BitmapFactory.decodeFile(filepath, options);
+					}
+
 					if(bitmap!=null){
 //								d = new BitmapDrawable(context.getResources(),bitmap);
 						return bitmap;
 					}else{
+						Log.e("url_img",url_avatar);
 						is = (InputStream) new URL(url_avatar).getContent();
+
+						BitmapFactory.Options options = new BitmapFactory.Options();
+						options.inPreferredConfig = Bitmap.Config.RGB_565;
+						options.inJustDecodeBounds = false;
+						options.inSampleSize = 2;
 						bitmap = BitmapFactory.decodeStream(is,
-								null, null);
+								null, options);
 						fileUtil.saveBitmap(filename, bitmap);
 						is.close();
 					}
 					return bitmap;
 				} catch (Exception e) {
+					e.printStackTrace();
 					return null;
 				}
 			}

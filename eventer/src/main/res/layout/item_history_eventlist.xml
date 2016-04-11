@@ -15,6 +15,7 @@
         android:textSize="13sp"
         android:maxLines="2"
         android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="#353535"
         android:gravity="center_vertical"/>
     <TextView
@@ -24,6 +25,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tv_title"
+        android:layout_toLeftOf="@+id/tv_time"
+        android:layout_toStartOf="@+id/tv_time"
         android:textSize="12sp"
         android:singleLine="true"
         android:textColor="@color/caldroid_gray"/>
@@ -36,8 +39,6 @@
         android:textSize="12sp"
         android:singleLine="true"
         android:textColor="@color/caldroid_gray"
-        android:layout_toRightOf="@id/tv_info"
-        android:layout_toEndOf="@id/tv_info"
         android:gravity="end"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

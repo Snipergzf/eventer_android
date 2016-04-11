@@ -1,21 +1,5 @@
 package com.eventer.app.widget.calendar;
 
-import java.lang.reflect.Field;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import com.eventer.app.R;
-import com.eventer.app.db.DBManager;
-import com.eventer.app.view.MyGridView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -44,6 +28,24 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import com.eventer.app.R;
+import com.eventer.app.db.DBManager;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.view.MyGridView;
+
+import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import hirondelle.date4j.DateTime;
 @SuppressWarnings({"UnusedDeclaration"})
 @SuppressLint({ "DefaultLocale", "UseSparseArrays", "InlinedApi", "SimpleDateFormat" })
@@ -281,10 +283,12 @@ public class CaldroidFragment extends DialogFragment {
 	}
 	public void SetScheduleDates(){
 		scheduleDates = new HashMap<>();
+		new SchedualDao(getActivity());
 		DBManager dbHelper;
 		dbHelper = new DBManager(getActivity());
 		dbHelper.openDatabase();
-		Cursor c=dbHelper.findList(true, "dbSchedule", new String[]{"startTime","endTime","frequency"}, " status >?", new String[]{"-1"}, null, null, null, null);
+
+		Cursor c=dbHelper.findList(true, "dbSchedule", new String[]{"startTime","endTime","frequency"}, " status >? and flag > 0", new String[]{"-1"}, null, null, null, null);
 		while (c.moveToNext()) {
 			String _time = c.getString(c.getColumnIndex("startTime"));
 			String end_time = c.getString(c.getColumnIndex("endTime"));

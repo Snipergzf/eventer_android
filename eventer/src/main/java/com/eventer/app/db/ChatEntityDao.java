@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.eventer.app.entity.ChatEntity;
@@ -55,36 +56,39 @@ public class ChatEntityDao {
 			String cType=c.getString(c.getColumnIndex(COLUMN_NAME_TYPE));
 			String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
 			String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
-			int temp=c.getColumnIndex("NotRead");
-			int unread=0;
-			if(temp>-1){
-				unread=c.getInt(temp);
+			if(!TextUtils.isEmpty(talker)){
+				int temp=c.getColumnIndex("NotRead");
+				int unread=0;
+				if(temp>-1){
+					unread=c.getInt(temp);
+				}
+
+				ChatEntity cinfo=new ChatEntity();
+				cinfo.setContent(content);
+				cinfo.setFrom(talker);
+				cinfo.setMsgID(id);//id为空时返回0值
+				cinfo.setNotRead(unread);
+				cinfo.setShareId(share);
+				if(status!=null){
+					cinfo.setStatus(Integer.parseInt(status));
+				}else{
+					cinfo.setStatus(-1);
+				}
+				if(cType!=null){
+					cinfo.setType(Integer.parseInt(cType));
+				}else{
+					cinfo.setType(-1);
+				}
+				if(time!=null){
+					cinfo.setMsgTime(Long.parseLong(time));
+				}else{
+					cinfo.setMsgTime(-1);
+				}
+				cinfo.setImgPath(path);
+
+				list.add(cinfo);
 			}
 
-			ChatEntity cinfo=new ChatEntity();
-			cinfo.setContent(content);
-			cinfo.setFrom(talker);
-			cinfo.setMsgID(id);//id为空时返回0值
-			cinfo.setNotRead(unread);
-			cinfo.setShareId(share);
-			if(status!=null){
-				cinfo.setStatus(Integer.parseInt(status));
-			}else{
-				cinfo.setStatus(-1);
-			}
-			if(cType!=null){
-				cinfo.setType(Integer.parseInt(cType));
-			}else{
-				cinfo.setType(-1);
-			}
-			if(time!=null){
-				cinfo.setMsgTime(Long.parseLong(time));
-			}else{
-				cinfo.setMsgTime(-1);
-			}
-			cinfo.setImgPath(path);
-
-			list.add(cinfo);
 		}
 		dbHelper.closeDatabase();
 		return list;
@@ -188,7 +192,7 @@ public class ChatEntityDao {
 	 */
 	public boolean deleteMessage(String id){
 		dbHelper.openDatabase();
-		boolean result=dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID+" = ? ", new String[]{id});
+		boolean result=dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID + " = ? ", new String[]{id});
 		dbHelper.closeDatabase();
 		return result;
 	}
@@ -212,8 +216,8 @@ public class ChatEntityDao {
 		// TODO Auto-generated method stub
 		dbHelper.openDatabase();
 		ContentValues values = new ContentValues();
-		values.put("status", 0 );
-		boolean result=dbHelper.update(TABLE_NAME, values,COLUMN_NAME_FROM+" = ? and status=?", new String[]{username,"1"});
+		values.put("status", 0);
+		boolean result=dbHelper.update(TABLE_NAME, values, COLUMN_NAME_FROM + " = ? and status=?", new String[]{username, "1"});
 		//dbHelper.execSQL("update dbMessage set status=1 where status=0 and ");
 		dbHelper.closeDatabase();
 	}
@@ -360,6 +364,25 @@ public class ChatEntityDao {
 				list.add(map);
 			}
 
+			c.close();
+		}
+		db.close();
+		return list;
+	}
+
+	public List<String> getShareIdList(String groupId) {
+		// TODO Auto-generated method stub
+		List<String> list=new ArrayList<>();
+		SQLiteDatabase db=dbHelper.getWritableDatabase();
+		if(db.isOpen()){
+			Cursor c=db.query(true, TABLE_NAME, new String[]{COLUMN_NAME_CONTENT,COLUMN_NAME_SHARE},COLUMN_NAME_SHARE+">? and "+ COLUMN_NAME_FROM+"=?" , new String[]{"0",groupId}, COLUMN_NAME_SHARE, null, null, null);
+			while (c.moveToNext()) {
+
+				String share=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+				if(!list.contains(share)){
+					list.add(share);
+				}
+			}
 			c.close();
 		}
 		db.close();

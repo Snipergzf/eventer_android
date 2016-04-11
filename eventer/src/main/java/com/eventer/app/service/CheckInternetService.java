@@ -29,6 +29,7 @@ public class CheckInternetService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        new Thread(checkWifiRunnable).start();
         if(Constant.isWifiConnected){
             new Thread(checkWifiRunnable).start();
         }else{
@@ -118,9 +119,10 @@ public class CheckInternetService extends IntentService {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         int responseCode;
         con.setConnectTimeout(6000);
-        con.setReadTimeout( 6000 );
+        con.setReadTimeout(6000);
         responseCode = con.getResponseCode();
-        return responseCode == 200;
+        Log.e("1", responseCode+"");
+        return responseCode == 200 || responseCode == 302;
     }
     /**
      * 执行异步任务
@@ -135,7 +137,7 @@ public class CheckInternetService extends IntentService {
         params.put("phone", user);
         params.put("imei", PreferenceUtils.getInstance().getDeviceId());
         LoadDataFromHTTP task = new LoadDataFromHTTP(
-                getApplicationContext(), Constant.URL_LOGIN, params);
+                getApplicationContext(), Constant.URL_LOGIN_NEW, params);
         task.getData(new LoadDataFromHTTP.DataCallBack() {
 
             @Override

@@ -215,6 +215,10 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 					} else {
 						intent.putExtra("userId", username);
 					}
+				    MainActivity activity = MainActivity.instance;
+					if(activity!=null){
+						activity.cancelNotify(username);
+					}
 					startActivity(intent);
 //				}
 			}

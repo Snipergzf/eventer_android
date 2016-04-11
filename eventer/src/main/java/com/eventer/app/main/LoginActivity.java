@@ -27,6 +27,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.widget.CircleProgressBar;
 import com.umeng.analytics.MobclickAgent;
@@ -45,6 +46,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	TextView tv_login_help,tv_newuser;
 	AlertDialog dialog;
 	private Context context;
+	private String pwd;
 	public static boolean isActive=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +126,10 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 			edit_user.setText(user);
 			edit_pwd.setFocusable(true);
 			edit_pwd.requestFocus();
-			if(pwd!=null&& !pwd.equals("")){
-				edit_pwd.setText(pwd);
-			}
+//			if(pwd!=null&& !pwd.equals("")){
+//				edit_pwd.setText(pwd);
+//			}
+			edit_pwd.setText("");
 		}
 		btn_pwd_clear.setOnClickListener(this);
 		btn_user_clear.setOnClickListener(this);
@@ -187,19 +190,105 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				break;
 		}
 	}
+//
+//	/**
+//	 * 执行异步任务
+//	 * 登录系统
+//	 *  参数为“phone”,“pwd”  ,"imei"
+//	 */
+//	public void UserLogin() {
+//		Map<String, String> params = new HashMap<>();
+//		params.put("phone", edit_user.getText().toString());
+//		params.put("pwd", edit_pwd.getText().toString());
+//		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
+//		LoadDataFromHTTP task = new LoadDataFromHTTP(
+//				context, Constant.URL_LOGIN, params);
+//		task.getData(new DataCallBack() {
+//
+//			@Override
+//			public void onDataCallBack(JSONObject data) {
+//				// TODO Auto-generated method stub
+//				try {
+//					int code = data.getInteger("status");
+//					switch (code) {
+//						case 0:
+//							Log.e("1", "登录成功！");
+//							PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
+//							PreferenceUtils.getInstance().setLoginPwd(edit_pwd.getText().toString());
+//							Constant.isLogin = true;
+//							Constant.LoginTime = System.currentTimeMillis() / 1000;
+//							JSONObject jsonLogin = data.getJSONObject("user_action");
+//							Constant.UID = jsonLogin.getInteger("uid") + "";
+//							PreferenceUtils.getInstance().setUserId(Constant.UID);
+//							Log.e("1", Constant.UID + "---" + PreferenceUtils.getInstance().getUserId());
+//							Constant.TOKEN = jsonLogin.getString("token");
+//							initSelfInfo();
+//							MobclickAgent.onProfileSignIn(Constant.UID);
+//							break;
+//						case 1:
+//							if(dialog!=null)
+//								dialog.cancel();
+//							Toast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
+//									.show();
+//							break;
+//						case 2:
+//							if(dialog!=null)
+//								dialog.cancel();
+//							Toast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
+//									.show();
+//						case 23:
+//							if(dialog!=null)
+//								dialog.cancel();
+//							Toast toast = Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
+//							//toast.setGravity(Gravity.CENTER, 0, 0);
+//							toast.show();
+//							break;
+//						case -1:
+//							if(dialog!=null)
+//								dialog.cancel();
+//							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG)
+//									.show();
+//							break;
+//						default:
+//							if(dialog!=null)
+//								dialog.cancel();
+//							Toast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
+//									.show();
+//					}
+//
+//				} catch (JSONException e) {
+//
+//					Toast.makeText(context, "数据解析错误...",
+//							Toast.LENGTH_SHORT).show();
+//					e.printStackTrace();
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//				}
+//			}
+//		});
+//	}
+
 
 	/**
 	 * 执行异步任务
 	 * 登录系统
-	 *  参数为“phone”,“pwd”  ,"imei"  
+	 *  参数为“phone”,“pwd”  ,"imei"
 	 */
 	public void UserLogin() {
+		pwd=edit_pwd.getText().toString();
+
+		if(TextUtils.isEmpty(pwd)){
+			Toast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
+			return;
+		}else{
+			pwd = MD5Util.getMD5(pwd);
+		}
 		Map<String, String> params = new HashMap<>();
 		params.put("phone", edit_user.getText().toString());
-		params.put("pwd", edit_pwd.getText().toString());
+		params.put("pwd", pwd);
 		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_LOGIN, params);
+				context, Constant.URL_LOGIN_NEW, params);
 		task.getData(new DataCallBack() {
 
 			@Override
@@ -211,7 +300,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 						case 0:
 							Log.e("1", "登录成功！");
 							PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
-							PreferenceUtils.getInstance().setLoginPwd(edit_pwd.getText().toString());
+							PreferenceUtils.getInstance().setLoginPwd(pwd);
 							Constant.isLogin = true;
 							Constant.LoginTime = System.currentTimeMillis() / 1000;
 							JSONObject jsonLogin = data.getJSONObject("user_action");
@@ -243,7 +332,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 						case -1:
 							if(dialog!=null)
 								dialog.cancel();
-							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG)
+							Toast.makeText(context, "登录失败", Toast.LENGTH_LONG)
 									.show();
 							break;
 						default:
@@ -258,8 +347,15 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 					Toast.makeText(context, "数据解析错误...",
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
+					if(dialog!=null)
+						dialog.cancel();
 				} catch (Exception e) {
 					// TODO: handle exception
+					if(dialog!=null)
+						dialog.cancel();
+				}finally {
+					if(dialog!=null)
+						dialog.cancel();
 				}
 			}
 		});

@@ -10,7 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.main.MainActivity;
 import com.umeng.analytics.MobclickAgent;
 
 public class FeedbackActivity extends Activity {
@@ -44,8 +48,27 @@ public class FeedbackActivity extends Activity {
 				String contact=et_contact.getText().toString();
 				if(!TextUtils.isEmpty(content)){
 					//发布反馈
+					if (Constant.isConnectNet) {
+
+						JSONObject send_json = new JSONObject();
+						try {
+							send_json.put("action", "send");
+							send_json.put("data",tite+"\n"+ content+"\n"+contact);
+							send_json.put("type", 1);
+							String send_body = send_json.toString();
+							MainActivity.instance
+									.newMsg("1", "1", send_body, 1 | 16);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						et_contact.setText("");
+						Toast.makeText(context, "感谢您的建议！", Toast.LENGTH_SHORT).show();
+						finish();
+					}else if(!Constant.isConnectNet){
+						Toast.makeText(context,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
+					}
 				}else{
-					Toast.makeText(context, "请写上一些意见！", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "请写上一些建议！", Toast.LENGTH_SHORT).show();
 				}
 
 			}

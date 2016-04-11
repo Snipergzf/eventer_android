@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.db.DBManager;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
@@ -45,7 +44,6 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 	public static final String ARGUMENT_DATE = "date";
 	public static final String ARGUMENT_TYPE = "type";
 	public static final String ARGUMENT_LOC = "position";
-	public static final String RESPONSE = "response";
 	public static final int REQUEST_EDIT = 0x120;
 	private String id;
 	private String date;
@@ -63,7 +61,13 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		s=dao.getSchedual(id);
 		initView();
 		init();
+		initGroupShare();
 	}
+
+	private void initGroupShare() {
+
+	}
+
 	/***
 	 * 初始化控件
 	 */
@@ -76,8 +80,6 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		iv_edit=(ImageView)findViewById(R.id.iv_edit);
 		iv_share=(ImageView)findViewById(R.id.iv_share);
 		iv_finish=(ImageView)findViewById(R.id.iv_finish);
-
-
 
 		iv_delete.setOnClickListener(this);
 		iv_edit.setOnClickListener(this);
@@ -109,7 +111,7 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mData=new ArrayList<Map<String,Object>>();
+		mData=new ArrayList<>();
 
 		String start=s.getStarttime();
 		String end=s.getEndtime();
@@ -119,7 +121,7 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		int remind=s.getRemind();
 		int _f=s.getFrequency();
 // 	        String friend= c.getString(c.getColumnIndex("companion"));
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map ;
 		String s_type="事件";
 		if(s.getType()==2){
 			s_type="日程";
@@ -132,20 +134,20 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 			eventtitle.setText(s_type+"-"+"(无标题)");
 		}
 
-		map = new HashMap<String, Object>();
+		map = new HashMap<>();
 		map.put("info", time);
 		map.put("id", 1);
 		mData.add(map);
 
 
-		if(place.trim().length() != 0&&place!=null){
-			map = new HashMap<String, Object>();
+		if(place != null && place.trim().length() != 0){
+			map = new HashMap<>();
 			map.put("info", place);
 			map.put("id", 2);
 			mData.add(map);
 		}
-		if(detail.trim().length() != 0&&detail!=null){
-			map = new HashMap<String, Object>();
+		if(detail != null && detail.trim().length() != 0){
+			map = new HashMap<>();
 			map.put("info", detail);
 			map.put("id", 3);
 			mData.add(map);
@@ -155,7 +157,7 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 			TypedArray imgCountry = getResources().obtainTypedArray(R.array.eventrepeat);
 			//imgCountry.getResourceId(0,0) ;
 			String frequncy=imgCountry.getString(_f);
-			map = new HashMap<String, Object>();
+			map = new HashMap<>();
 			map.put("info", frequncy);
 			map.put("id", 4);
 			mData.add(map);
@@ -164,7 +166,7 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		TypedArray imgCountry = getResources().obtainTypedArray(R.array.eventalarm);
 		//imgCountry.getResourceId(0,0) ;
 		String alarm=imgCountry.getString(remind);
-		map = new HashMap<String, Object>();
+		map = new HashMap<>();
 		map.put("info", alarm+"提醒");
 		map.put("id", 5);
 		mData.add(map);
@@ -196,11 +198,8 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 				startActivityForResult(intent,REQUEST_EDIT);
 				break;
 			case R.id.iv_delete:
-				DBManager dbHelper;
-				dbHelper = new DBManager(this);
-				dbHelper.openDatabase();
-				dbHelper.delete("dbSchedule", "scheduleID=?", new String[]{id});
-				dbHelper.closeDatabase();
+				SchedualDao dao = new SchedualDao(context);
+				dao.deleteSchedual(id);
 				Intent intent2=new Intent();
 				intent2.putExtra("IsChange", true);
 				this.finish();
@@ -263,13 +262,13 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return null;
+			return mData.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
 			// TODO Auto-generated method stub
-			return 0;
+			return position;
 		}
 		//****************************************final方法
 //注意原本getView方法中的int position变量是非final的，现在改为final  

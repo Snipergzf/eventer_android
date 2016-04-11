@@ -6,11 +6,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.entity.Schedual;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressLint("DefaultLocale")
 @SuppressWarnings({"UnusedDeclaration"})
@@ -32,6 +36,8 @@ public class SchedualDao {
 	public static final String COLUMN_NAME_TYPE="type";
 	public static final String COLUMN_NAME_SHARE="shareId";
 
+	public static final String COLUMN_NAME_FLAG="flag";
+
 
 	//private DbOpenHelper dbHelper;
 	private DBManager dbHelper;
@@ -39,6 +45,15 @@ public class SchedualDao {
 
 	public SchedualDao(Context context) {
 		dbHelper = new DBManager(context);
+		dbHelper.openDatabase();
+
+		Log.e("......",dbHelper.isColumnExist(TABLE_NAME, "flag")+"");
+		if(!dbHelper.isColumnExist(TABLE_NAME, "flag")){
+
+			dbHelper.execSQL("alter TABLE dbSchedule add flag INT DEFAULT(1);");
+
+		}
+		dbHelper.closeDatabase();
 		this.context= context;
 		//dbHelper = DbOpenHelper.getInstance(context);
 	}
@@ -82,65 +97,12 @@ public class SchedualDao {
 	}
 
 
-//	@SuppressLint("DefaultLocale")
-//	public Map<String, User> getContactList() {
-//		SQLiteDatabase db = dbHelper.getReadableDatabase();
-//		Map<String, User> users = new HashMap<String, User>();
-//		if (db.isOpen()) {
-////			Cursor cursor = db.rawQuery("select * from " + TABLE_NAME /* + " desc" */, null);
-////			while (cursor.moveToNext()) {
-////				String username = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID));
-////				String nick = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NICK));
-////				String avatar = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AVATAR));
-////				String tel = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TEL));
-////				String sign = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SIGN));
-////				String sex = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SEX));
-////				String region = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_REGION));
-////				String beizhu = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_BEIZHU));
-////				String fxid = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_FXID));
-////				User user = new User();
-////				user.setUsername(username);
-////				user.setNick(nick);
-////				user.setBeizhu(beizhu);
-////				user.setFxid(fxid);
-////				user.setRegion(region);
-////				user.setSex(sex);
-////				user.setSign(sign);
-////				user.setTel(tel);
-////				user.setAvatar(avatar);
-////				String headerName = null;
-////				if (!TextUtils.isEmpty(user.getNick())) {
-////					headerName = user.getNick();
-////				} else {
-////					headerName = user.getUsername();
-////				}
-////				
-////				if (username.equals(Constant.NEW_FRIENDS_USERNAME) || username.equals(Constant.GROUP_USERNAME)) {
-////					user.setHeader("");
-////				} else if (Character.isDigit(headerName.charAt(0))) {
-////					user.setHeader("#");
-////				} else {
-////					user.setHeader(HanziToPinyin.getInstance().get(headerName.substring(0, 1))
-////							.get(0).target.substring(0, 1).toUpperCase());
-////					char header = user.getHeader().toLowerCase().charAt(0);
-////					if (header < 'a' || header > 'z') {
-////						user.setHeader("#");
-////					}
-////				}
-////				users.put(username, user);
-////			}
-////			cursor.close();
-////		}
-//		return users;
-//	}
-//	
-
 	public void deleteSchedual(String ID){
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		if(db.isOpen()){
-			db.delete(TABLE_NAME, COLUMN_NAME_ID + " = ?", new String[]{ID});
-		}
-		db.close();
+		dbHelper.openDatabase();
+		ContentValues cv=new ContentValues();
+		cv.put(COLUMN_NAME_FLAG, 0);
+		Log.e("1",""+ dbHelper.update("dbSchedule", cv, "scheduleID=?", new String[]{ID}));
+		dbHelper.closeDatabase();
 	}
 
 	public void delSchedualByEventId(String eventId){
@@ -150,11 +112,32 @@ public class SchedualDao {
 		}
 	}
 
-
-
-	public void saveSchedual(Schedual s){
+	public void saveSchedual(Schedual s, int flag){
 		dbHelper.openDatabase();
-		dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID+"=?", new String[]{s.getSchdeual_ID()+""});
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, "dbSchedule", null,
+				"scheduleID=?",
+				new String[]{s.getSchdeual_ID()+""}, null, null,null,null);
+		if(c.moveToNext()){
+			dbHelper.delete("dbSchedule",  "scheduleID=?",
+					new String[]{s.getSchdeual_ID()+""});
+		}
+		String share = s.getShareId();
+		if(!TextUtils.isEmpty(share)){
+			c=dbHelper.findList(true, "dbSchedule", null,
+					"shareId=?",
+					new String[]{share}, null, null,null,null);
+			if(c.moveToNext()){
+				dbHelper.delete("dbSchedule",  "shareId=?",
+						new String[]{share});
+			}
+		}
+
+
+		if(s.getSchdeual_ID() == 0){
+			s.setSchdeual_ID(System.currentTimeMillis()/1000);
+		}
+
 		ContentValues cv=new ContentValues();
 		cv.put(COLUMN_NAME_DETAIL,s.getDetail());
 		cv.put(COLUMN_NAME_END,s.getEndtime());
@@ -170,14 +153,52 @@ public class SchedualDao {
 		cv.put(COLUMN_NAME_EVENTID, s.getEventId());
 		cv.put(COLUMN_NAME_TYPE, s.getType());
 		cv.put(COLUMN_NAME_SHARE, s.getShareId());
+		cv.put(COLUMN_NAME_FLAG, flag);
 		dbHelper.insert(TABLE_NAME, cv);
 		dbHelper.closeDatabase();
+	}
+
+	public void saveSchedualNoShare(Schedual s, int flag){
+		dbHelper.openDatabase();
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, "dbSchedule", null,
+				"scheduleID=? and shareId is NULL",
+				new String[]{s.getSchdeual_ID()+""}, null, null,null,null);
+		if(c.moveToNext()){
+			dbHelper.delete("dbSchedule",  "scheduleID=? and shareId is NULL",
+					new String[]{s.getSchdeual_ID()+""});
+		}
+
+		ContentValues cv=new ContentValues();
+		cv.put(COLUMN_NAME_DETAIL,s.getDetail());
+		cv.put(COLUMN_NAME_END,s.getEndtime());
+		cv.put(COLUMN_NAME_FREQUENCY,s.getFrequency());
+		cv.put(COLUMN_NAME_ID,s.getSchdeual_ID());
+		cv.put(COLUMN_NAME_IS_COMPANION,s.getFriend());
+		cv.put(COLUMN_NAME_PLACE,s.getPlace());
+		cv.put(COLUMN_NAME_REMIND,s.getRemind());
+		cv.put(COLUMN_NAME_REMINDTIME,s.getRemindtime());
+		cv.put(COLUMN_NAME_START,s.getStarttime());
+		cv.put(COLUMN_NAME_STATUS,s.getStatus());
+		cv.put(COLUMN_NAME_TITLE, s.getTitle());
+		cv.put(COLUMN_NAME_EVENTID, s.getEventId());
+		cv.put(COLUMN_NAME_TYPE, s.getType());
+		cv.put(COLUMN_NAME_SHARE, s.getShareId());
+		cv.put(COLUMN_NAME_FLAG, flag);
+		dbHelper.insert(TABLE_NAME, cv);
+		dbHelper.closeDatabase();
+	}
+
+
+
+	public void saveSchedual(Schedual s){
+		saveSchedual(s, 1);
 	}
 	public Schedual getBriefSchedual(long id){
 		Schedual schedual=new Schedual();
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, "dbSchedule", null,
-				"scheduleID=?", new String[]{id+""}, null, null,null,null);
+				"scheduleID=? and flag>0", new String[]{id+""}, null, null,null,null);
 		if (c.moveToNext()) {
 			String start=c.getString(c.getColumnIndex("startTime"));
 			String end=c.getString(c.getColumnIndex("endTime"));
@@ -202,11 +223,25 @@ public class SchedualDao {
 		dbHelper.closeDatabase();
 	}
 
+//	public void updateByShare(Schedual schedual ,int flag){
+//		dbHelper.openDatabase();
+//		Cursor c=dbHelper.findList(true, "dbSchedule", null,
+//				"scheduleID=? and shareId=?",
+//				new String[]{schedual.getSchdeual_ID()+"",schedual.getShareId()}, null, null,null,null);
+//		if(c.moveToNext()){
+//			dbHelper.delete("dbSchedule",  "scheduleID=? and shareId=?",
+//					new String[]{schedual.getSchdeual_ID()+"",schedual.getShareId()});
+//		}
+//		saveSchedual(schedual, flag);
+//		dbHelper.closeDatabase();
+//	}
+
 	public void updateShareInfo(Schedual schedual){
 		dbHelper.openDatabase();
 		ContentValues cv=new ContentValues();
 		cv.put(COLUMN_NAME_IS_COMPANION, schedual.getFriend());
 		cv.put(COLUMN_NAME_SHARE, schedual.getShareId());
+//		cv.put(COLUMN_NAME_SHARETO, schedual.getShareTo());
 		Log.e("1",""+ dbHelper.update("dbSchedule", cv, "scheduleID=?", new String[]{schedual.getSchdeual_ID()+""}));
 		dbHelper.closeDatabase();
 	}
@@ -216,7 +251,7 @@ public class SchedualDao {
 		Schedual schedual=new Schedual();
 		dbHelper.openDatabase();
 		Cursor c=dbHelper.findList(true, "dbSchedule", null,
-				"scheduleID=?", new String[]{sid}, null, null,null,null);
+				"scheduleID=?  and flag>0", new String[]{sid}, null, null,null,null);
 		if (c.moveToNext()) {
 			String start=c.getString(c.getColumnIndex("startTime"));
 			String end=c.getString(c.getColumnIndex("endTime"));
@@ -243,10 +278,36 @@ public class SchedualDao {
 			schedual.setShareId(shareId);
 			schedual.setRemind(remind);
 			schedual.setRemindtime(remindtime);
+
 			return schedual;
 		}
 		return null;
 	}
+
+	public Map<String , String> getSchedualShareId(String sid) {
+		// TODO Auto-generated method stub
+		Map<String , String> map = new HashMap<>();
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, "dbSchedule", new String[]{COLUMN_NAME_SHARE, COLUMN_NAME_IS_COMPANION},
+				"scheduleID=?", new String[]{sid}, null, null,null,null);
+		while (c.moveToNext()) {
+
+			String shareId=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+			String friend=c.getString(c.getColumnIndex(COLUMN_NAME_IS_COMPANION));
+
+            try{
+				JSONObject json = JSONObject.parseObject(friend);
+				String share =json.getString("share");
+				if(!map.containsKey(share))
+				   map.put(share, shareId);
+
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		return map;
+	}
+
 
 	public Schedual getSchedualByShare(String shareId) {
 		// TODO Auto-generated method stub

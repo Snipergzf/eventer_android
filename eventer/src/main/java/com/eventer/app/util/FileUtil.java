@@ -41,8 +41,8 @@ public class FileUtil {
 
         try {
 
-
             File file = new File(local_image_path,filename);
+            Log.e("png_file","save");
             FileOutputStream outputstream = new FileOutputStream(file);
             if((filename.contains("png"))||(filename.contains("PNG")))
             {

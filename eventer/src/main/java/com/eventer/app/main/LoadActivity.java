@@ -24,6 +24,7 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -31,7 +32,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoadActivity extends BaseFragmentActivity {
+public class  LoadActivity extends BaseFragmentActivity {
 
 	private static final int sleepTime = 2000;
 	private Context context;
@@ -110,6 +111,8 @@ public class LoadActivity extends BaseFragmentActivity {
 				}
 			}
 		}).start();
+
+		Log.e("md5", MD5Util.getMD5("12345"));
 
 	}
 
@@ -267,6 +270,7 @@ public class LoadActivity extends BaseFragmentActivity {
 							startActivity(intent);
 							finish();
 						}
+
 
 					} else if(code==1){
 						Toast.makeText(context, "该用户不存在！",

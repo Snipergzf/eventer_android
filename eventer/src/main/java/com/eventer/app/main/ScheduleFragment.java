@@ -74,6 +74,7 @@ public  class ScheduleFragment extends Fragment{
 	private Context context;
 	private TextView tv_course;
 	private float mLastY = -1;
+	private int NowWeek = -1;
 
 
 	@Override
@@ -117,7 +118,8 @@ public  class ScheduleFragment extends Fragment{
 		headView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent().setClass(context, Activity_Course.class));
+				startActivity(new Intent().setClass(context, Activity_Course.class)
+				.putExtra("week",NowWeek));
 			}
 		});
 		FragmentTransaction t = getFragmentManager().beginTransaction();
@@ -139,7 +141,7 @@ public  class ScheduleFragment extends Fragment{
 		IsRefresh=false;
 		eventList=(SwipeMenuListView)rootView.findViewById(R.id.calendar_lv);
 		eventList.addFooterView(footView);
-		eventList.addHeaderView(headView);
+//		eventList.addHeaderView(headView);
 		footView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -338,6 +340,7 @@ public  class ScheduleFragment extends Fragment{
 	public void SetEventListData(){
 		sList.clear();
 		boolean hasEvent=false;
+		new SchedualDao(context);
 		DBManager dbHelper;
 		dbHelper = new DBManager(getActivity());
 		dbHelper.openDatabase();
@@ -349,10 +352,17 @@ public  class ScheduleFragment extends Fragment{
 		eventlist_time.setText(time);
 		DateTime today_dt=new DateTime(eventdate+" 00:00:00");
 		// Log.e("1",""+dbHelper.deleteDatabase(getActivity()));
-		Cursor c=dbHelper.findList(true, "dbSchedule", null,
-				" status >?", new String[]{"-1"},null, null, "startTime",null);
-		while (c.moveToNext()) {
 
+		List<Long> list = new ArrayList<>();
+		Cursor c=dbHelper.findList(true, "dbSchedule", null,
+				" status >? and flag > 0", new String[]{"-1"},null, null, "startTime",null);
+		while (c.moveToNext()) {
+			long id= c.getLong(c.getColumnIndex("scheduleID"));
+			if(list.contains(id)){
+				continue;
+			}else{
+				list.add(id);
+			}
 			int _f=c.getInt(c.getColumnIndex("frequency"));
 			boolean IsTodayEvent=false;
 			String StartTime=c.getString(c.getColumnIndex("startTime"));
@@ -411,7 +421,7 @@ public  class ScheduleFragment extends Fragment{
 
 			if(IsTodayEvent){
 				Schedual s=new Schedual();
-				long id= c.getLong(c.getColumnIndex("scheduleID"));
+
 				String eid=c.getString(c.getColumnIndex("eventID"));
 				String title=c.getString(c.getColumnIndex("title"));
 				String place=c.getString(c.getColumnIndex("place"));
@@ -468,7 +478,7 @@ public  class ScheduleFragment extends Fragment{
 		}
 		DateTime Today=new DateTime(eventdate);
 		int weekday=Today.getWeekDay()-1;
-		int NowWeek=-1;
+		NowWeek=-1;
 		if(c.moveToNext()){
 			String start=c.getString(c.getColumnIndex("StartDay"));
 			DateTime startDay=new DateTime(start);

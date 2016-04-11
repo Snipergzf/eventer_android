@@ -1,18 +1,10 @@
 package com.eventer.app.http;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import android.util.Log;
+
+import com.eventer.app.Constant;
+import com.eventer.app.entity.Course;
+import com.eventer.app.entity.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -27,11 +19,18 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Log;
-
-import com.eventer.app.Constant;
-import com.eventer.app.entity.Course;
-import com.eventer.app.entity.User;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HttpUnit {
 
@@ -41,12 +40,12 @@ public class HttpUnit {
 	}
 
 	public static int sendLoginRequest( Map<String, String> params) throws Exception{
-		String jsonString= sendPostRequest(Constant.URL_LOGIN, params);
+		String jsonString= sendPostRequest(Constant.URL_LOGIN_NEW, params);
 		JSONObject jsonObject= new  JSONObject(jsonString);
 		int status=jsonObject.getInt("status");
 		if(status==0){
 			String userinfo=jsonObject.getString("user_action");
-			JSONObject jsonLogin= new  JSONObject(userinfo);;
+			JSONObject jsonLogin= new  JSONObject(userinfo);
 			Constant.UID=jsonLogin.getInt("uid")+"";
 			Constant.TOKEN=jsonLogin.getString("token");
 			Log.e("1","Http-Login-" +jsonLogin.getString("uid")+"-----"+jsonLogin.getString("token"));
@@ -151,45 +150,60 @@ public class HttpUnit {
 		Log.e("1", jsonString);
 		JSONObject jsonObject= new  JSONObject(jsonString);
 
-		List<Course> list=new ArrayList<Course>();
+		List<Course> list=new ArrayList<>();
 		int status=jsonObject.getInt("status");
 		if(status==0){
 			JSONObject info=jsonObject.getJSONObject("course_action");
 			//JSONObject course=info.getJSONObject("course");
 			JSONArray arraylist=info.getJSONArray("course");
 			for(int i=0;i<arraylist.length();i++){
-				JSONObject course=arraylist.getJSONObject(i);
-				String teacher=course.getString("t_name");
-				String c_name=course.getString("c_name");
-				int c_id=course.getInt("_id");
-				String major=course.getString("s_specialty");
+				try{
+					JSONObject course=arraylist.getJSONObject(i);
+					String teacher=course.getString("t_name");
+					String c_name=course.getString("c_name");
+					String c_id=course.getString("_id");
+					String major=course.getString("s_specialty");
 //            	String grade=course.getString("s_grade");
-//            	
+                 String s_class="";
+					try{
+						JSONArray classjson=course.getJSONArray("s_class");
+						for (int k = 0; k< classjson.length(); k++){
+							s_class+=classjson.get(k)+"  ";
+						}
+					}catch (Exception e){
+						e.printStackTrace();
+					}
 //                String faculty=course.getString("s_faculty");
-				JSONObject classjson=course.getJSONObject("s_class");
-				String s_class="";
-				Iterator<String> it=classjson.keys();
-				int index=0;
-				while (it.hasNext()) {
-					s_class+=classjson.getString(index+"")+"  ";
-					index++;
-					it.next();
+//					JSONArray classjson=course.getJSONArray("s_class");
+//					String s_class="";
+//					for (int k = 0; k< classjson.length(); k++){
+//						s_class+=classjson.get(k)+"  ";
+//					}
+//				String s_class="";
+//				Iterator<String> it=classjson.keys();
+//				int index=0;
+//				while (it.hasNext()) {
+//					s_class+=classjson.getString(index+"")+"  ";
+//					index++;
+//					it.next();
+//				}
+
+					String detail=course.getString("c_detail");
+
+					Course c=new Course();
+					c.setInfo(detail);
+					c.setClassname(c_name);
+					c.setTeacher(teacher);
+					c.setClassid(c_id);
+					c.setS_class(s_class);
+					if(major==null){
+						major="";
+					}
+					c.setMajor(major);
+					list.add(c);
+				}catch (Exception e){
+					e.printStackTrace();
 				}
-
-				String detail=course.getString("c_detail");
-
-				Course c=new Course();
-				c.setInfo(detail);
-				c.setClassname(c_name);
-				c.setTeacher(teacher);
-				c.setClassid(c_id);
-				c.setS_class(s_class);
-				if(major==null){
-					major="";
-				}
-				c.setMajor(major);
-				list.add(c);
-
 			}
 
 		}
@@ -234,40 +248,46 @@ public class HttpUnit {
 			JSONObject info=jsonObject.getJSONObject("course_action");
 			JSONArray arraylist=info.getJSONArray("course");
 			for(int i=0;i<arraylist.length();i++){
-				JSONObject course=arraylist.getJSONObject(i);
-				String teacher=course.getString("t_name");
-				String c_name=course.getString("c_name");
-				int c_id=course.getInt("_id");
-				String major=course.getString("s_specialty");
-				String grade=course.getString("s_grade");
+				try {
+					JSONObject course=arraylist.getJSONObject(i);
+					String teacher=course.getString("t_name");
+					String c_name=course.getString("c_name");
+					String c_id=course.getString("_id");
+					String major=course.getString("s_specialty");
+					String grade=course.getString("s_grade");
 
-				String faculty=course.getString("s_faculty");
-				String detail=course.getString("c_detail");
-				JSONObject classjson=course.getJSONObject("s_class");
-				String s_class="";
-				Iterator<String> it=classjson.keys();
-				int index=0;
-				while (it.hasNext()) {
-					s_class+=classjson.getString(index+"")+"  ";
-					index++;
-					it.next();
+					String faculty=course.getString("s_faculty");
+					String detail=course.getString("c_detail");
+					String s_class="";
+					try{
+						JSONArray classjson=course.getJSONArray("s_class");
+						for (int k = 0; k< classjson.length(); k++){
+							s_class+=classjson.get(k)+"  ";
+						}
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+
+					Course c=new Course();
+					c.setInfo(detail);
+					c.setClassname(c_name);
+					c.setTeacher(teacher);
+					c.setClassid(c_id);
+					if(grade==null){
+						grade="";
+					}
+					c.setGrade(grade);
+					if(major==null){
+						major="";
+					}
+					c.setMajor(major);
+					c.setFaculty(faculty);
+					c.setS_class(s_class);
+					list.add(c);
+				} catch (Exception e){
+					e.printStackTrace();
 				}
-				Course c=new Course();
-				c.setInfo(detail);
-				c.setClassname(c_name);
-				c.setTeacher(teacher);
-				c.setClassid(c_id);
-				if(grade==null){
-					grade="";
-				}
-				c.setGrade(grade);
-				if(major==null){
-					major="";
-				}
-				c.setMajor(major);
-				c.setFaculty(faculty);
-				c.setS_class(s_class);
-				list.add(c);
+
 			}
 
 		} else{
@@ -336,15 +356,14 @@ public class HttpUnit {
 
 
 	/**
-	 * @param 只发送普通数据,调用此方法
-	 * @param urlString 对应的Php 页面
+
 	 * @param params 需要发送的相关数据 包括调用的方法
 	 * @param imageuri 图片或文件手机上的地址 如:sdcard/photo/123.jpg
 	 * @param img 图片名称
 	 * @return Json
 	 */
 	public static String sendPictureREquest(Map<String, Object> params,String  imageuri ,String img){
-		String result="";
+		String result;
 
 		String end = "\r\n";
 		String uploadUrl=Constant.WEB_SERVICE_URL+"v1/user/set_avatar";//new BingoApp().URLIN 是我定义的上传URL

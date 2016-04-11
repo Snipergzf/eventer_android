@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
@@ -37,16 +36,17 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.Event;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.entity.User;
+import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
+import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
@@ -250,91 +250,139 @@ public class ShareToSingleActivity extends SwipeBackActivity {
                     Toast.LENGTH_LONG).show();
             return;
         }
-        if(!Constant.isConnectNet){
+        if (!Constant.isConnectNet) {
             Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
         }
-        String shareTo=null;
-        for (String user : addList) {
-            String body="";
-            String content="";
-            int type=0;
-            String shareId="";
-            try {
-                JSONObject content_json = new JSONObject();
-                if(shareType==SHARE_EVENT){
+        String shareTo = null;
+        if (shareType == SHARE_EVENT) {
+            for (String user : addList) {
+                String body = "";
+                String content = "";
+                int type = 0;
+                String shareId = "";
+                try {
+                    JSONObject content_json = new JSONObject();
+
                     content_json.put("event_id", event.getEventID());
                     content_json.put("event_title", event.getTitle());
-                    type=2;
+                    type = 2;
                     ShareFeedBack();
-                }else if(shareType==SHARE_SCHEDUAL){
-                    content_json.put("schedule_place", schedual.getPlace());
-                    content_json.put("schedule_detail", schedual.getDetail());
-                    content_json.put("schedule_title", schedual.getTitle());
-                    content_json.put("schedule_start", schedual.getStarttime());
-                    content_json.put("schedule_f", schedual.getFrequency());
-                    content_json.put("schedule_end", schedual.getEndtime());
-                    content_json.put("schedule_type", schedual.getType());
-                    shareId= Constant.UID+"@"+System.currentTimeMillis();
-                    JSONObject share_json = new JSONObject();
-                    JSONArray array=new JSONArray();
-                    array.add(Constant.UID);
-                    share_json.put("friend",array);
-                    content_json.put("schedule_friend",array);
-                    array=new JSONArray();
-                    array.add(user);
-                    share_json.put("share",array);
-                    type=3;
+                    JSONObject send_json = new JSONObject();
+                    send_json.put("action", "send");
+                    send_json.put("data", content_json);
+                    send_json.put("shareId", shareId);
+                    send_json.put("type", type);
+                    content = content_json.toJSONString();
+                    body = send_json.toJSONString();
+                    Log.e("1", body);
+                    ChatEntity msg = new ChatEntity();
+                    long time = System.currentTimeMillis();
+                    msg.setType(shareType);
+                    msg.setFrom(user);
+                    msg.setContent(content);
+                    msg.setMsgTime(time / 1000);
+                    msg.setStatus(2);
+                    msg.setMsgID(time);
+                    msg.setShareId(shareId);
+                    ChatEntityDao dao = new ChatEntityDao(context);
+                    dao.saveMessage(msg);
+                    MainActivity.instance.newMsg("1", user, body, 17);
 
-                    Schedual s=new Schedual();
-                    s.setSchdeual_ID(Long.parseLong(sid));
-                    s.setFriend(share_json.toJSONString());
-                    s.setShareId(shareId);
-                    SchedualDao dao=new SchedualDao(context);
 
-                    dao.updateShareInfo(s);
+                shareTo = user;
 
-                }
-                JSONObject send_json = new JSONObject();
-                send_json.put("action", "send");
-                send_json.put("data", content_json);
-                send_json.put("shareId", shareId);
-                send_json.put("type", type);
-                content=content_json.toJSONString();
-                body = send_json.toJSONString();
-            } catch (JSONException e) {
+            }catch(JSONException e){
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Log.e("1",body);
+
+            }
+            startActivity(new Intent().setClass(context, Activity_Chat.class)
+                    .putExtra("userId", shareTo));
+            finish();
+        }else if (shareType == SHARE_SCHEDUAL) {
+            if(TextUtils.isEmpty(schedual.getShareId())){
+                creatGroupSchedual(schedual);
+            }else{
+                shareGroupSchedual(schedual.getShareId());
+            }
+        }
+
+    }
+
+    private void shareGroupSchedual(String a_id) {
+        String shareTo = null;
+        for (String room : addList) {
+            JSONObject content_json = new JSONObject();
+            content_json.put("member", Constant.UID);
+            content_json.put("event_id", a_id);
+            content_json.put("event_name", schedual.getTitle());
+            content_json.put("nick", LocalUserInfo.getInstance(context).getUserInfo("nick"));
+            JSONObject send_json = new JSONObject();
+            send_json.put("action", "send");
+            send_json.put("data", content_json);
+            send_json.put("type", 24);
+            String content=content_json.toJSONString();
+            String body = send_json.toJSONString();
             ChatEntity msg=new ChatEntity();
             long time=System.currentTimeMillis();
-            msg.setType(shareType);
-            msg.setFrom(user);
+            msg.setType(24);
+            msg.setFrom(room);
             msg.setContent(content);
             msg.setMsgTime(time/1000);
             msg.setStatus(2);
             msg.setMsgID(time);
-            msg.setShareId(shareId);
-            ChatEntityDao dao =new ChatEntityDao(context);
-            dao.saveMessage(msg);
-            MainActivity.instance.newMsg("1", user, body, 17);
-            shareTo=user;
+            msg.setShareId(a_id);
+            ChatEntityDao dao1 =new ChatEntityDao(context);
+            dao1.saveMessage(msg);
+            MainActivity.instance.newMsg("1", room, body, 17);
+            shareTo=room;
         }
-        startActivity(new Intent().setClass(context, Activity_Chat.class)
-                .putExtra("userId", shareTo));
-//        MyApplication.getInstance().setValueByKey("share", true);
-        finish();
-
+        if(!TextUtils.isEmpty(shareTo)){
+            startActivity(new Intent().setClass(context, Activity_Chat.class)
+                    .putExtra("userId", shareTo));
+            finish();
+        }
     }
 
+    private void creatGroupSchedual(final Schedual schedual){
+        Map<String,String> map= HttpParamUnit.activityCreate(schedual);
+        LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_CREATE, map);
+        task.getData(new DataCallBack() {
+            @Override
+            public void onDataCallBack(JSONObject data) {
+                // TODO Auto-generated method stub
+                try {
+                    int status = data.getInteger("status");
+                    if (status == 0) {
+                        Log.e("create activity", status + "");
+
+                        JSONObject action = data.getJSONObject("web_action");
+                        String a_id = action.getString("a_id");
+                        Schedual s=schedual;
+                        s.setFriend(Constant.UID);
+                        s.setShareId(a_id);
+                        s.setSharer(Constant.UID);
+                        SchedualDao dao=new SchedualDao(context);
+                        dao.saveSchedual(s);
+                        shareGroupSchedual(a_id);
+                    }else if(status == 34){
+                        Toast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    Toast.makeText(context, "error~", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
     private void ShareFeedBack(){
-        Map<String,String> map=new HashMap<>();
-        map.put("event_id", eid);
-        map.put("share_num", "1");
-        map.put("click_num", "");
-        map.put("participate_num", "");
-        map.put("token", Constant.TOKEN);
+        Map<String,String> map= HttpParamUnit.eventAddFeedback(eid, "1", "", "");
         LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
         task.getData(new DataCallBack() {
             @Override

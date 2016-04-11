@@ -41,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/view_temp"
-            android:text="聊天信息"
+            android:text="@string/group_info"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
@@ -51,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_title"
-            android:text="(0)"
             android:textColor="#ffffff"
             android:textSize="18sp" >
         </TextView>
@@ -86,7 +85,6 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:background="#ffffff"
-                android:visibility="gone"
                 android:padding="10dp" >
 
                 <TextView
@@ -94,24 +92,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="群名称"
+                    android:text="@string/group_name"
                     android:textColor="#353535"
                     android:textSize="16sp"
                     android:typeface="serif" />
 
                 <TextView
-                       android:id="@+id/tv_groupname"
+                    android:id="@+id/tv_name_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:maxWidth="200dp"
                     android:textColor="#AAAAAA"
                     android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_name_label"
+                    android:layout_toStartOf="@+id/tv_name_label"
+                    android:singleLine="true"
+                    android:ellipsize="middle"
+                    android:text="@string/no_name"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"/>
             </RelativeLayout>
 
             <View
@@ -160,7 +169,7 @@
                 android:onClick="exitGroup"
                 android:paddingBottom="7dp"
                 android:paddingTop="7dp"
-                android:text="删除并退出"
+                android:text="@string/leave_griup"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </LinearLayout>

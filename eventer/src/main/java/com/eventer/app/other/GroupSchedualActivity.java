@@ -17,13 +17,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.db.ChatEntityDao;
+import com.eventer.app.db.SchedualDao;
+import com.eventer.app.entity.Schedual;
 import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
+import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.util.LocalUserInfo;
@@ -35,17 +39,24 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import hirondelle.date4j.DateTime;
+
 @SuppressLint("SetTextI18n")
 public class GroupSchedualActivity extends SwipeBackActivity {
 
 	ListView listview;
-	private List<Map<String,String>> mData=new ArrayList<>();
+	private List<String> shareList=new ArrayList<>();
+	private List<Schedual> mData = new ArrayList<>();
 	MyAadpter adapter;
+	private String groupId;
 	private Context context;
 	private LoadUserAvatar avatarLoader;
 
@@ -63,26 +74,171 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 	private void initView() {
 		// TODO Auto-generated method stub
 		listview=(ListView)findViewById(R.id.listview);
-		final String groupId=getIntent().getStringExtra("groupId");
+		groupId=getIntent().getStringExtra("groupId");
 		ChatEntityDao dao=new ChatEntityDao(context);
-		mData=dao.getShareScheduals(groupId);
+		shareList=dao.getShareIdList(groupId);
 		adapter=new MyAadpter(context);
 		listview.setAdapter(adapter);
+		getSchedualList(shareList);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
 				// TODO Auto-generated method stub
-				Map<String,String> map=mData.get(position);
-				String share=map.get("shareId");
-				context.startActivity(new Intent().setClass(context,ShareSchedualActivity.class)
+
+				Schedual schedual = mData.get(position);
+				String share = schedual.getShareId();
+				context.startActivity(new Intent().setClass(context, ShareSchedualActivity.class)
 						.putExtra("groupId", groupId)
 						.putExtra("shareId", share));
 			}
 		});
 
 	}
+
+	private void getSchedualList(List<String> shareList) {
+		for(String shareId: shareList){
+			SchedualDao dao=new SchedualDao(context);
+			Schedual schedual = dao.getSchedualByShare(shareId);
+			if(schedual!=null){
+				mData.add(schedual);
+				Collections.sort(mData, new ScheduleComparator(){});
+				adapter.notifyDataSetChanged();
+			} else{
+				checkGroupSchedual(shareId);
+			}
+		}
+
+	}
+
+	/***
+	 * 通过拼音对用户进行排序
+	 * @author LiuNana
+	 *
+	 */
+	@SuppressLint("DefaultLocale")
+	public class ScheduleComparator implements Comparator<Schedual> {
+
+		@SuppressLint("DefaultLocale")
+		@Override
+		public int compare(Schedual o1, Schedual o2) {
+			// TODO Auto-generated method stub
+			String py1 = o1.getStarttime();
+			String py2 = o2.getStarttime();
+			if (isEmpty(py1) && isEmpty(py2))
+				return 0;
+			if (isEmpty(py1))
+				return 1;
+			if (isEmpty(py2))
+				return -1;
+			return py2.compareTo(py1);
+		}
+
+		private boolean isEmpty(String str) {
+			return "".equals(str.trim());
+		}
+	}
+
+	private void checkGroupSchedual(String shareId) {
+		Map<String, String> map= HttpParamUnit.activityParam(shareId);
+		LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_CHECK, map);
+		task.getData(new LoadDataFromHTTP.DataCallBack() {
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					Schedual schedual = new Schedual();
+					int status = data.getInteger("status");
+					if (status == 0) {
+						JSONObject action = data.getJSONObject("web_action");
+						JSONObject activity = action.getJSONObject("activity");
+						schedual.setTitle(activity.getString("a_name"));
+						schedual.setPlace(activity.getString("a_place"));
+						schedual.setShareId(activity.getString("a_id"));
+						schedual.setDetail(activity.getString("a_desc"));
+						schedual.setFrequency(Integer.parseInt(activity.getString("a_frequency")));
+						schedual.setType(Integer.parseInt(activity.getString("a_type")));
+						schedual.setSharer(activity.getString("uid"));
+						String time = activity.getString("a_time");
+						schedual.setStarttime(time);
+						schedual.setEndtime(time);
+						schedual.setRemind(1);
+						schedual.setRemindtime(getRemindTime(time, 1));
+						String participants = activity.getString("participants");
+						JSONObject share_json = new JSONObject();
+						JSONArray array = new JSONArray();
+						String[] members = participants.split(";");
+						boolean hasEnter = false;
+						for (String user : members) {
+							if (!array.contains(user) && !TextUtils.isEmpty(user)){
+								array.add(user);
+								if (user.equals(Constant.UID)){
+									hasEnter = true;
+								}
+							}
+
+						}
+						share_json.put("friend", array);
+						share_json.put("share", groupId);
+						schedual.setFriend(share_json.toJSONString());
+						SchedualDao dao = new SchedualDao(context);
+						if(hasEnter){
+							dao.saveSchedual(schedual,1);
+						}else{
+							dao.saveSchedual(schedual,0);
+						}
+
+						mData.add(schedual);
+						Collections.sort(mData, new ScheduleComparator() {
+						});
+						adapter.notifyDataSetChanged();
+					} else if (status == 35) {
+//						Toast.makeText(context, "该群日程已删除~", Toast.LENGTH_SHORT).show();
+						Log.e("error", "no such activity");
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					Log.e("error", e.toString());
+				}
+			}
+		});
+	}
+
+	private String getRemindTime(String start, int span) {
+		// TODO Auto-generated method stub
+		String rTime;
+		start=start.substring(0,16);
+		DateTime begin=new DateTime(start+":00");
+		DateTime r;
+		switch(span){
+			case 1:
+				r=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
+				break;
+			case 2:
+				r=begin.minus(0, 0, 0, 0, 10, 0, 0, null);
+				break;
+			case 3:
+				r=begin.minus(0, 0, 0, 0, 30, 0, 0, null);
+				break;
+			case 4:
+				r=begin.minus(0, 0, 0, 1, 0, 0, 0, null);
+				break;
+			case 5:
+				r=begin.minus(0, 0, 1, 0, 0, 0, 0, null);
+				break;
+			default:
+				r=begin.minus(0, 0, 0, 0, 0, 0, 0, null);
+				break;
+		}
+		rTime=r.toString().substring(0, 16);
+		return rTime;
+	}
+	public String getTime(long now) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return sdf.format(new Date(now));
+	}
+
 
 	public class MyAadpter extends BaseAdapter{
 		private LayoutInflater mInflater;
@@ -112,7 +268,7 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			ViewHolder holder;
-			Map<String,String> map=mData.get(position);
+			Schedual schedual = mData.get(position);
 			if (convertView == null) {
 				holder=new ViewHolder();
 				convertView = mInflater.inflate(R.layout.item_group_schedule, parent, false);
@@ -124,24 +280,24 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 			}else {
 				holder = (ViewHolder)convertView.getTag();
 			}
-			String content=map.get("content");
+
 			final String publisher;
 			int type=0;
 			String title="",time="",place="",info="";
-			int loc=content.indexOf("\n");
+			String shareId = schedual.getShareId();
+			int loc = shareId.indexOf("@");
 			if(loc!=-1){
-				content=content.substring(loc+1);
-				publisher=content.substring(0,loc);
+				publisher=shareId.substring(0,loc);
 			}else{
-				publisher=Constant.UID;
+				return null;
 			}
-			Log.e("1",content);
+
 			try{
-				JSONObject json=JSONObject.parseObject(content);
-				title=json.getString("schedule_title");
-				type=json.getInteger("schedule_type");
-				time=json.getString("schedule_end");
-				place=json.getString("schedule_place");
+
+				title = schedual.getTitle();
+				type = schedual.getType();
+				time = schedual.getEndtime();
+				place = schedual.getPlace();
 
 			}catch(Exception e){
                 e.printStackTrace();

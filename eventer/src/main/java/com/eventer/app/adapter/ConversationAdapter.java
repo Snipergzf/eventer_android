@@ -136,6 +136,7 @@ public class ConversationAdapter extends BaseAdapter {
 		String from=item.getFrom();
 		String name;
 		User u=MyApplication.getInstance().getContactList().get(item.getFrom());
+
 		if(!from.contains("@")){
 			if(u==null){
 				UserDao dao=new UserDao(context);
@@ -152,10 +153,10 @@ public class ConversationAdapter extends BaseAdapter {
 			ChatroomDao dao=new ChatroomDao(context);
 			room=dao.getRoom(from);
 			chatType=Activity_Chat.CHATTYPE_GROUP;
-			if(room!=null&&room.getRoomname()!=null&&!room.getRoomname().equals(""))
-				name=room.getRoomname();
+			if(room!=null)
+				name = room.getDefaultName();
 			else
-				name="群组";
+				name = "群组";
 		}
 
 		if(chatType==Activity_Chat.CHATTYPE_SINGLE){
@@ -378,11 +379,42 @@ public class ConversationAdapter extends BaseAdapter {
 					holder.msg.setText(nick+":[对日程进行了操作]");
 				}
 				break;
-			case 6:
+			case Constant.GROUP_CREATED_NOTIFICATION:
 				holder.msg.setText("建立了新的群组！");
 				break;
-			case 8:
+			case Constant.GROUP_INVITE_NOTIFICATION:
 				holder.msg.setText("有新人加入群组！");
+				break;
+			case Constant.GROUP_LEAVE_NOTIFICATION:
+				holder.msg.setText("有人退出群组！");
+				break;
+			case Constant.GROUP_ACTIVITY_CREATE:
+				if(TextUtils.isEmpty(nick)){
+					holder.msg.setText("[发布日程]");
+				}else{
+					holder.msg.setText(nick+":[发布日程]");
+				}
+				break;
+			case Constant.GROUP_ACTIVITY_JOIN:
+				if(TextUtils.isEmpty(nick)){
+					holder.msg.setText("[加入日程]");
+				}else{
+					holder.msg.setText(nick+":[加入日程]");
+				}
+				break;
+			case Constant.GROUP_ACTIVITY_EXIT:
+				if(TextUtils.isEmpty(nick)){
+					holder.msg.setText("[退出日程]");
+				}else{
+					holder.msg.setText(nick+":[退出日程]");
+				}
+				break;
+			case Constant.GROUP_ACTIVITY_DELETE:
+				if(TextUtils.isEmpty(nick)){
+					holder.msg.setText("[删除日程]");
+				}else{
+					holder.msg.setText(nick+":[删除日程]");
+				}
 				break;
 			default:
 				break;
