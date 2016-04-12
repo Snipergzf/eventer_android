@@ -1,9 +1,5 @@
 [
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\umeng_common_gradient_orange.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_common_gradient_orange.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\delete_bg.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\delete_bg.xml"
     },
@@ -164,10 +160,6 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\dark_gray_border.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\umeng_update_button_cancel_bg_selector.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_button_cancel_bg_selector.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\switch_button_left.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_button_left.xml"
     },
@@ -276,10 +268,6 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\chatting_setmode_keyboard_btn.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\umeng_update_dialog_bg.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_dialog_bg.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\recording_hint_bg.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\recording_hint_bg.xml"
     },
@@ -368,10 +356,6 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\switch_left.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\umeng_update_button_cancel_bg_focused.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_button_cancel_bg_focused.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_check.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_check.xml"
     },
@@ -404,12 +388,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_wifi_disable.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_selector.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_selector.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_light.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_list_selector_background_transition_holo_light.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_selector.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_profile.xml",
@@ -446,10 +430,6 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tb_munion_icon.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tb_munion_icon.xml"
-    },
-    {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\umeng_update_button_ok_bg_selector.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_button_ok_bg_selector.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_country_bg_selector.xml",

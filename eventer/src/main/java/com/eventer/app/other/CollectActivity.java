@@ -71,6 +71,7 @@ public class CollectActivity extends SwipeBackActivity {
 		for (Event event : listItems) {
 			event = getEventItem(event);
 			if(event != null){
+
 				mData.add(event);
 			}
 		}

@@ -5,9 +5,11 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
+
     <include
         android:id="@+id/title"
         layout="@layout/top_layout"/>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -43,6 +46,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="12sp" />
             </RelativeLayout>
+
 
 
             <View
@@ -75,6 +79,7 @@
                     android:layout_toRightOf="@+id/kcname"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
+
                     android:layout_marginRight="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="10dp"
@@ -120,7 +125,6 @@
                   android:paddingLeft="20dp"
                   android:paddingRight="20dp"
                         />
-
 
                     <View
                         android:layout_width="match_parent"

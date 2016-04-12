@@ -231,6 +231,7 @@ public class UploadPicToServer {
             options.outWidth = (int) (width / scale);
             options.inSampleSize = (int) (scale + 0.5);
             options.inJustDecodeBounds = false;
+
             options.inPreferredConfig = Bitmap.Config.RGB_565;
 //            options.inPurgeable = true;// 同时设置才会有效
 //            options.inInputShareable = true;//。当系统内存不够时候图片自动被回收

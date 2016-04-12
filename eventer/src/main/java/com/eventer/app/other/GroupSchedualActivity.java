@@ -286,11 +286,13 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 			String title="",time="",place="",info="";
 			String shareId = schedual.getShareId();
 			int loc = shareId.indexOf("@");
+
 			if(loc!=-1){
 				publisher=shareId.substring(0,loc);
 			}else{
 				return null;
 			}
+
 
 			try{
 
@@ -298,6 +300,7 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 				type = schedual.getType();
 				time = schedual.getEndtime();
 				place = schedual.getPlace();
+
 
 			}catch(Exception e){
                 e.printStackTrace();

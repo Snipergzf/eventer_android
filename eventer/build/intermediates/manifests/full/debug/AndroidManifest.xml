@@ -57,6 +57,7 @@
             android:name="com.eventer.app.main.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTop" />
+
         <!-- 开屏页 -->
         <activity
             android:name="com.eventer.app.main.LoadActivity"

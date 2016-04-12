@@ -10,7 +10,6 @@
     <!--android:debuggable="false"-->
     <application
         android:allowBackup="true"
-
         >
     </application>
 

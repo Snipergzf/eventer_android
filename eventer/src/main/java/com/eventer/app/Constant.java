@@ -22,7 +22,9 @@ public class Constant {
 	  public static boolean isLogin = false;
 	  public static boolean isExist = false;
 	  public static boolean isConnectNet = true;
+
 	  public static boolean isWifiConnected = false;
+
 //	  public static boolean isWifiConnectNet = false;
 	  public static String TAG_FAILURE;
 	  public static String TAG_CONNECTFAILURE;

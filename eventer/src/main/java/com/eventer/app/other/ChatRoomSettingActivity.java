@@ -396,12 +396,14 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 									user.setNick(LocalUserInfo.getInstance(context).getUserInfo(
 											"nick"));
 									user.setUsername(info);
+
 //								synchronized (members){
 									members.set(i, user);
 //								}
 //								synchronized (adapter){
 									adapter.notifyDataSetChanged();
 //								}
+
 									try {
 										display[i] = LocalUserInfo.getInstance(context).getUserInfo(
 												"nick");

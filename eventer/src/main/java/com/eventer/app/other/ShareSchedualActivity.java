@@ -63,7 +63,9 @@ public class ShareSchedualActivity extends SwipeBackActivity implements OnClickL
 	private ImageView iv_delete;
 	private TextView tv_nick,tv_title,tv_time,tv_place,
 			tv_detail,tv_time_info,tv_attend_num;
+
 	ImageView iv_finish,iv_collect,iv_share;
+
 	private TextView tv_collect;
 	private ExpandGridView gridview;
 	Schedual schedual_db=new Schedual();
@@ -413,6 +415,7 @@ public class ShareSchedualActivity extends SwipeBackActivity implements OnClickL
 				iv_collect.setSelected(true);
 				tv_collect.setText("取消");
 				isCollect=true;
+
 			}else if(MyApplication.getInstance().getContactList().containsKey(name)){
 				UserInfo user=new UserInfo();
 				User u=MyApplication.getInstance().getContactList().get(name);

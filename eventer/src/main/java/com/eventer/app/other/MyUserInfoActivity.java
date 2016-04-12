@@ -51,6 +51,7 @@ import java.util.Map;
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends SwipeBackActivity {
 
+
     LinearLayout re_avatar, re_name, re_sex;
     LinearLayout re_grade, re_school, re_major, re_class;
 
@@ -58,6 +59,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
     private TextView tv_school;
     private TextView tv_major;
     private TextView tv_class;
+
     AlertDialog upload_dlg;
     private ImageView iv_avatar;
     private TextView tv_name;

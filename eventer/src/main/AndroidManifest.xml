@@ -55,6 +55,8 @@
             android:name=".main.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTop" />
+
+
         <!-- 开屏页 -->
         <activity
             android:name=".main.LoadActivity"
@@ -97,6 +99,7 @@
             android:name=".other.Activity_Contact"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Translucent.NoTitleBar" />
+
         <activity
             android:name=".other.Activity_Friends_New"
             android:launchMode="singleTask"
@@ -108,6 +111,7 @@
             android:name=".other.Activity_UserInfo"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Translucent.NoTitleBar" />
+
         <activity
             android:name=".other.Activity_Friends_Search"
             android:screenOrientation="portrait" />
@@ -168,6 +172,7 @@
             android:name=".other.Activity_EventDetail"
             android:label="@string/title_activity_activity__event_detail"
             android:theme="@style/Theme.Translucent.NoTitleBar" />
+
         <activity
             android:name=".main.FillInUserInfoActivity"
             android:label="@string/title_activity_fill_in_user_info" />

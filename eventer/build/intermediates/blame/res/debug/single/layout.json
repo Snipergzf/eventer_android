@@ -68,12 +68,12 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_action_bar_view_list_nav_layout.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\addcourse_popmenu.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\addcourse_popmenu.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_reset_group_name.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_reset_group_name.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\addcourse_popmenu.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\addcourse_popmenu.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_layout.xml",
@@ -104,12 +104,12 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\select_dialog_multichoice_material.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\social_chatsetting_gridview_item.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\social_chatsetting_gridview_item.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\info_theme_item.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\info_theme_item.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\social_chatsetting_gridview_item.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\social_chatsetting_gridview_item.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_content_include.xml",
@@ -208,16 +208,16 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\schedual_participant_gridview_item.xml"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_class_name.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_class_name.xml"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\dialog_share.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\dialog_share.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\social_alertdialog.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\social_alertdialog.xml"
-    },
-    {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_class_name.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_class_name.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\tb_munion_aditem.xml",
@@ -300,12 +300,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\upload_dialog.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_view.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_view.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_big_image.xml",
@@ -316,12 +316,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header_item_1.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chat_room_setting.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_chat_room_setting.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\click_class_list.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\click_class_list.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chat_room_setting.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_chat_room_setting.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_contact_list.xml",
@@ -344,12 +344,12 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_action_bar_up_container.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\sheduallist_footer.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\sheduallist_footer.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_checkbox_1.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_checkbox_1.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\sheduallist_footer.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\sheduallist_footer.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_addcoursetable.xml",
