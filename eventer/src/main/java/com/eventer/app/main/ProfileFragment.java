@@ -136,6 +136,8 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 			case R.id.re_course:
 				startActivity(new Intent().setClass(context, Activity_Course.class));
 				break;
+			case R.id.re_course:
+				break;
 			case R.id.re_history://浏览历史
 				startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));
 				break;
