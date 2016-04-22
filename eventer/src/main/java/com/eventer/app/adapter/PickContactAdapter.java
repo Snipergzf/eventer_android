@@ -3,6 +3,7 @@ package com.eventer.app.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,9 +72,15 @@ public  class PickContactAdapter extends BaseAdapter {
         final User user = list.get(position);
 
         final String avatar = user.getAvatar();
-        String name = user.getNick();
+        String name;
+        String beizhu = user.getBeizhu();
         String header = user.getHeader();
         final String username = user.getUsername();
+        if(TextUtils.isEmpty(beizhu)){
+            name =  user.getNick();
+        }else {
+            name = beizhu;
+        }
         tv_name.setText(name);
         iv_avatar.setImageResource(R.drawable.default_avatar);
         iv_avatar.setTag(avatar);

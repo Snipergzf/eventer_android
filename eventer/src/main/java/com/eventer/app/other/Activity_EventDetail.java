@@ -129,6 +129,7 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			String content=event.getContent();
 			if(!TextUtils.isEmpty(content.trim()))
 				content=ToDBC(content);
+//			content = "<p>图文资讯</p><font color='red'>红色字</font>"+content;
 			Spanned sp = Html.fromHtml(content, new Html.ImageGetter() {
 				@Override
 				public Drawable getDrawable(String source) {

@@ -114,19 +114,6 @@ public class EventAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 
-//			if (convertView == null) {  
-//		      
-//				holder=new ViewHolder();
-//				convertView = mInflater.inflate(R.layout.list_item, null); 
-//				holder.readCount = (TextView) convertView.findViewById(R.id.tv_readCount);
-//				holder.content = (TextView) convertView.findViewById(R.id.tv_content);
-//				holder.time = (TextView) convertView.findViewById(R.id.tv_time);
-//				holder.Good=(Button) convertView.findViewById(R.id.bt_good);
-//				holder.Bad=(Button) convertView.findViewById(R.id.bt_bad);
-//			 }else {  
-//		            holder = (ViewHolder)convertView.getTag();  
-//		     } 
-
 
 		holder.iv_pic.setImageResource(R.color.transparent);
 
@@ -160,16 +147,12 @@ public class EventAdapter extends BaseAdapter {
 		EventOpDao dao=new EventOpDao(context);
 		boolean isCheck=dao.getIsVisit(card.getEventID());
 		if(isCheck){
-//		    	convertView.setAlpha(0.75f);
-//		    	holder.iv_pic.setAlpha(0.6f);
-//		    	holder.theme.setAlpha(0.6f);
+
 			holder.content.setAlpha(0.6f);
 			holder.place.setAlpha(0.6f);
 			holder.time.setAlpha(0.6f);
 		}else{
-//		    	convertView.setAlpha(1f);
-//		    	holder.iv_pic.setAlpha(1f);
-//		    	holder.theme.setAlpha(1f);
+
 			holder.content.setAlpha(1f);
 			holder.place.setAlpha(1f);
 			holder.time.setAlpha(1f);
@@ -216,7 +199,7 @@ public class EventAdapter extends BaseAdapter {
 						BitmapFactory.Options measureOptions = new BitmapFactory.Options();
 						measureOptions.inJustDecodeBounds = true;
 						BitmapFactory.decodeFile(filepath, measureOptions);
-						int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / 40;
+						int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / 120;
 						scale = Math.max(scale, 1);
 
 						BitmapFactory.Options options = new BitmapFactory.Options();
@@ -233,11 +216,10 @@ public class EventAdapter extends BaseAdapter {
 					}else{
 						Log.e("url_img",url_avatar);
 						is = (InputStream) new URL(url_avatar).getContent();
-
 						BitmapFactory.Options options = new BitmapFactory.Options();
 						options.inPreferredConfig = Bitmap.Config.RGB_565;
 						options.inJustDecodeBounds = false;
-						options.inSampleSize = 2;
+						options.inSampleSize = 1;
 						bitmap = BitmapFactory.decodeStream(is,
 								null, options);
 						fileUtil.saveBitmap(filename, bitmap);

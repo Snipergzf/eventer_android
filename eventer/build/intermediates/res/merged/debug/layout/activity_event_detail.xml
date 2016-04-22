@@ -161,6 +161,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/tv_place_notice"
             android:textColor="#7d7d7d"
+
             android:textSize="12sp" />
    </RelativeLayout>
 	     <TextView
@@ -170,6 +171,7 @@
 	        android:layout_height="match_parent" 
 	        android:textSize="16sp"
 	        android:lineSpacingExtra="5dp"
+
 	        android:paddingLeft="11dp"
 	        android:paddingTop="12dp"
 	        android:textColor="#333333"

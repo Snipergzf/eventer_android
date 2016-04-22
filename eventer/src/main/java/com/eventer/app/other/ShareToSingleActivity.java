@@ -84,7 +84,8 @@ public class ShareToSingleActivity extends SwipeBackActivity {
         instance=this;
         progressDialog = new ProgressDialog(this);
         shareType=getIntent().getIntExtra("sharetype", 0);
-        if(shareType==SHARE_EVENT){
+        Log.e("type",shareType+"");
+        if(shareType == SHARE_EVENT){
             eid=getIntent().getStringExtra("event_id");
             if(!TextUtils.isEmpty(eid)){
                 EventDao d=new EventDao(context);
@@ -93,14 +94,20 @@ public class ShareToSingleActivity extends SwipeBackActivity {
             if(event==null)
                 finish();
         }
-        else if(shareType==SHARE_SCHEDUAL){
+        else if(shareType == SHARE_SCHEDUAL){
+
             sid=getIntent().getStringExtra("schedual_id");
+            Log.e("id",sid);
             if(!TextUtils.isEmpty(sid)){
                 SchedualDao dao=new SchedualDao(context);
-                schedual=dao.getSchedual(sid);
+                schedual = dao.getSchedualById(sid);
             }
             if(schedual==null)
+            {
+                Toast.makeText(context, "日程不存在或者已过期~", Toast.LENGTH_SHORT).show();
                 finish();
+            }
+
         }else{
             finish();
         }
@@ -257,9 +264,9 @@ public class ShareToSingleActivity extends SwipeBackActivity {
         String shareTo = null;
         if (shareType == SHARE_EVENT) {
             for (String user : addList) {
-                String body = "";
-                String content = "";
-                int type = 0;
+                String body ;
+                String content ;
+                int type ;
                 String shareId = "";
                 try {
                     JSONObject content_json = new JSONObject();

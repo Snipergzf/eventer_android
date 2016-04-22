@@ -141,7 +141,7 @@ public  class ScheduleFragment extends Fragment{
 		IsRefresh=false;
 		eventList=(SwipeMenuListView)rootView.findViewById(R.id.calendar_lv);
 		eventList.addFooterView(footView);
-//		eventList.addHeaderView(headView);
+		eventList.addHeaderView(headView);
 		footView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

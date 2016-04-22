@@ -164,7 +164,7 @@
     <string name="submit">确认</string>
     <string name="theme">主题</string>
     <string name="pubtime">发布时间</string>
-    <string name="publiser">发布者:</string>
+    <string name="publiser">活动来源:</string>
     <string name="a_time">活动时间:</string>
     <string name="a_place">活动地点:</string>
     <string name="comment">评论</string>

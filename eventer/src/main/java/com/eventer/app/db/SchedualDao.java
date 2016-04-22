@@ -265,6 +265,7 @@ public class SchedualDao {
 			String shareId=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
 			String friend=c.getString(c.getColumnIndex(COLUMN_NAME_IS_COMPANION));
 			String remindtime=c.getString(c.getColumnIndex(COLUMN_NAME_REMINDTIME));
+			int status = c.getInt(c.getColumnIndex(COLUMN_NAME_STATUS));
 			schedual.setStarttime(start);
 			schedual.setFriend(friend);
 			schedual.setEndtime(end);
@@ -277,12 +278,54 @@ public class SchedualDao {
 			schedual.setType(type);
 			schedual.setShareId(shareId);
 			schedual.setRemind(remind);
+			schedual.setStatus(status);
 			schedual.setRemindtime(remindtime);
 
 			return schedual;
 		}
 		return null;
 	}
+
+	public Schedual getSchedualById(String sid) {
+		// TODO Auto-generated method stub
+		Schedual schedual=new Schedual();
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, "dbSchedule", null,
+				"scheduleID=?", new String[]{sid}, null, null,null,null);
+		if (c.moveToNext()) {
+			String start=c.getString(c.getColumnIndex("startTime"));
+			String end=c.getString(c.getColumnIndex("endTime"));
+			String title=c.getString(c.getColumnIndex("title"));
+			String detail =c.getString(c.getColumnIndex("detail"));
+			String place=c.getString(c.getColumnIndex(COLUMN_NAME_PLACE));
+			int f=c.getInt(c.getColumnIndex(COLUMN_NAME_FREQUENCY));
+			String eid =c.getString(c.getColumnIndex(COLUMN_NAME_EVENTID));
+			int type=c.getInt(c.getColumnIndex(COLUMN_NAME_TYPE));
+			int remind=c.getInt(c.getColumnIndex(COLUMN_NAME_REMIND));
+			String shareId=c.getString(c.getColumnIndex(COLUMN_NAME_SHARE));
+			String friend=c.getString(c.getColumnIndex(COLUMN_NAME_IS_COMPANION));
+			String remindtime=c.getString(c.getColumnIndex(COLUMN_NAME_REMINDTIME));
+			int status = c.getInt(c.getColumnIndex(COLUMN_NAME_STATUS));
+			schedual.setStarttime(start);
+			schedual.setFriend(friend);
+			schedual.setEndtime(end);
+			schedual.setTitle(title);
+			schedual.setDetail(detail);
+			schedual.setSchdeual_ID(Long.parseLong(sid));
+			schedual.setEventId(eid);
+			schedual.setFrequency(f);
+			schedual.setPlace(place);
+			schedual.setType(type);
+			schedual.setStatus(status);
+			schedual.setShareId(shareId);
+			schedual.setRemind(remind);
+			schedual.setRemindtime(remindtime);
+
+			return schedual;
+		}
+		return null;
+	}
+
 
 	public Map<String , String> getSchedualShareId(String sid) {
 		// TODO Auto-generated method stub

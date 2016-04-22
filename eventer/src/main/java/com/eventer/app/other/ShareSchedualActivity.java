@@ -842,9 +842,10 @@ public class ShareSchedualActivity extends SwipeBackActivity implements OnClickL
 			case R.id.share_by_chatroom:
 				Log.e("1", schedual.getSchdeual_ID()+"");
 				startActivity(new Intent().setClass(context, ShareToGroupActivity.class)
-						.putExtra("schedual_id", schedual.getSchdeual_ID()+"")
+						.putExtra("schedual_id", schedual.getSchdeual_ID() + "")
 						.putExtra("sharetype", ShareToSingleActivity.SHARE_SCHEDUAL));
 				mDialog.dismiss();
+				finish();
 				break;
 			case R.id.share_by_user:
 				Log.e("1", schedual.getSchdeual_ID()+"");
@@ -852,6 +853,7 @@ public class ShareSchedualActivity extends SwipeBackActivity implements OnClickL
 						.putExtra("schedual_id", schedual.getSchdeual_ID()+"")
 						.putExtra("sharetype", ShareToSingleActivity.SHARE_SCHEDUAL));
 				mDialog.dismiss();
+				finish();
 				break;
 			case R.id.share_cancel:
 			case R.id.share_layout:

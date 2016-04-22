@@ -19,6 +19,7 @@ public class Constant {
 	  public static String EventID="";
 	  public static String TOKEN = "";
 	  public static String Phone="";
+	  public static String Tourist_TOKEN="tourists";
 	  public static boolean isLogin = false;
 	  public static boolean isExist = false;
 	  public static boolean isConnectNet = true;
