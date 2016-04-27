@@ -19,7 +19,7 @@
             <include
                 android:id="@+id/title"
                 layout="@layout/top_layout"/>
-            <com.eventer.app.widget.refreshlist.XListView
+            <com.eventer.app.view.refreshlist.XListView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                  >
-                <com.eventer.app.widget.CircleProgressBar
+                <com.eventer.app.view.CircleProgressBar
                     android:id="@+id/progress"
                     app:mlpb_enable_circle_background="false"
 			        app:mlpb_show_arrow="false"

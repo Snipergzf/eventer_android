@@ -22,7 +22,7 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.MyUserInfoActivity;
 import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;

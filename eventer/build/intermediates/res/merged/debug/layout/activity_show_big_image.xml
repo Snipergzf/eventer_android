@@ -6,13 +6,13 @@
     android:background="#000000"
     android:orientation="vertical" >
 
-    <com.eventer.app.widget.photoview.PhotoView
+    <com.eventer.app.view.photoview.PhotoView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter" />
 
-    <com.eventer.app.widget.CircleProgressBar
+    <com.eventer.app.view.CircleProgressBar
         android:id="@+id/progress"
         app:mlpb_enable_circle_background="true"
         app:mlpb_show_arrow="false"

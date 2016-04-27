@@ -39,10 +39,10 @@ import com.eventer.app.entity.Event;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
-import com.eventer.app.widget.refreshlist.IXListViewLoadMore;
-import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
-import com.eventer.app.widget.refreshlist.XListView;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.refreshlist.IXListViewLoadMore;
+import com.eventer.app.view.refreshlist.IXListViewRefreshListener;
+import com.eventer.app.view.refreshlist.XListView;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;

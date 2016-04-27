@@ -45,7 +45,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.view.MyToast;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;

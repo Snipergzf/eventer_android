@@ -22,7 +22,7 @@ import com.eventer.app.adapter.ContactAdapter;
 import com.eventer.app.db.UserDao;
 import com.eventer.app.entity.User;
 import com.eventer.app.main.BaseActivity;
-import com.eventer.app.widget.Sidebar;
+import com.eventer.app.view.Sidebar;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

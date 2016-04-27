@@ -11,7 +11,7 @@ import android.util.Log;
 import com.eventer.app.http.HTTPService;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
-import com.eventer.app.widget.photoview.PhotoView;
+import com.eventer.app.view.photoview.PhotoView;
 
 import java.io.InputStream;
 import java.util.Map;

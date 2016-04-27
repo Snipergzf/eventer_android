@@ -60,12 +60,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\progressbar.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_bj.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_bj.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_blue_selector.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_blue_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_bj.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_bj.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\smssdk_btn_disenable.xml",
@@ -252,12 +252,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\finish_selector.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\ib_bg.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\ib_bg.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_pressed_shape.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_pressed_shape.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\ib_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\ib_bg.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\umeng_update_dialog_bg.xml",
@@ -316,12 +316,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\comment_selector.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tv_bg.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tv_bg.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_2.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_2.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tv_bg.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tv_bg.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_borderless_material.xml",
@@ -388,24 +388,24 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_wifi_disable.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_selector.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_selector.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_light.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_list_selector_background_transition_holo_light.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_selector.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_selector.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_profile.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tab_profile.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_3.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_3.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_light.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_3.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_gray_round_frame_n.xml",

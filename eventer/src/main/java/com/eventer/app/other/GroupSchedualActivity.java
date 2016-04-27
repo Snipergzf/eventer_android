@@ -31,8 +31,8 @@ import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.CircleImageView;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.CircleImageView;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParsePosition;

@@ -14,9 +14,9 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.task.LoadBigAvatar;
 import com.eventer.app.task.LoadBigAvatar.ImageDownloadedCallBack;
-import com.eventer.app.widget.CircleProgressBar;
-import com.eventer.app.widget.photoview.PhotoView;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.CircleProgressBar;
+import com.eventer.app.view.photoview.PhotoView;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 /**

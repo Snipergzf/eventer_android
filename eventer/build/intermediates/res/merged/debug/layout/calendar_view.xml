@@ -39,7 +39,7 @@
         android:layout_height="22dp"     
         android:numColumns="7"       
         android:stretchMode="columnWidth" />
-    <com.eventer.app.widget.calendar.InfiniteViewPager
+    <com.eventer.app.view.calendar.InfiniteViewPager
 	        android:id="@+id/months_infinite_pager"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"

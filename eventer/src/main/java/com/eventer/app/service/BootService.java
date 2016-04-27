@@ -8,7 +8,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.eventer.app.widget.calendar.AlarmReceiver;
+import com.eventer.app.view.calendar.AlarmReceiver;
 
 /**
  * Created by Administrator on 2015/12/16.

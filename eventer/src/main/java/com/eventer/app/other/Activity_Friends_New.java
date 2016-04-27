@@ -12,7 +12,7 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.NewFriendsAdapter;
 import com.eventer.app.db.InviteMessgeDao;
 import com.eventer.app.entity.InviteMessage;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;

@@ -39,9 +39,9 @@ import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.CircleImageView;
-import com.eventer.app.widget.ExpandGridView;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.CircleImageView;
+import com.eventer.app.view.ExpandGridView;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;

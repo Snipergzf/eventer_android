@@ -22,7 +22,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

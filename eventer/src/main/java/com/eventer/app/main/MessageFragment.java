@@ -35,10 +35,10 @@ import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Contact;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.view.MyToast;
-import com.eventer.app.widget.swipemenulistview.SwipeMenu;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuCreator;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuItem;
-import com.eventer.app.widget.swipemenulistview.SwipeMenuListView;
+import com.eventer.app.view.swipemenulistview.SwipeMenu;
+import com.eventer.app.view.swipemenulistview.SwipeMenuCreator;
+import com.eventer.app.view.swipemenulistview.SwipeMenuItem;
+import com.eventer.app.view.swipemenulistview.SwipeMenuListView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

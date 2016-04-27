@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0.0dp"
         android:background="#2fbeb7" />
-    <com.eventer.app.widget.wheel.WheelView 
+    <com.eventer.app.view.wheel.WheelView
         android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/wheel01"

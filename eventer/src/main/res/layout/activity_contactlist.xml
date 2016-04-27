@@ -44,7 +44,7 @@
                 android:divider="@color/caldroid_lighter_gray"
                 android:descendantFocusability="afterDescendants"           
                 android:fastScrollEnabled="false" />
- 			<com.eventer.app.widget.Sidebar
+ 			<com.eventer.app.view.Sidebar
                 android:id="@+id/sidebar"
                 android:layout_width="25dp"
                 android:layout_height="match_parent"

@@ -24,7 +24,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
 import com.eventer.app.view.MyToast;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;

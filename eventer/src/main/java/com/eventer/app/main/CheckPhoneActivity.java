@@ -29,7 +29,7 @@ import com.eventer.app.R;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.view.MyCountTimer;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.regex.Matcher;

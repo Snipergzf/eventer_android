@@ -125,7 +125,7 @@
 
             </LinearLayout>
 
-            <com.eventer.app.widget.ListViewForScrollView
+            <com.eventer.app.view.ListViewForScrollView
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

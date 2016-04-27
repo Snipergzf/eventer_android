@@ -29,7 +29,7 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.widget.CircleProgressBar;
+import com.eventer.app.view.CircleProgressBar;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;

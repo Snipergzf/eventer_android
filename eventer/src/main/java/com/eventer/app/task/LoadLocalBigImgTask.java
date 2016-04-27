@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import com.easemob.util.ImageUtils;
 import com.eventer.app.R;
 import com.eventer.app.util.ImageCache;
-import com.eventer.app.widget.photoview.PhotoView;
+import com.eventer.app.view.photoview.PhotoView;
 @SuppressWarnings({"UnusedDeclaration"})
 public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 

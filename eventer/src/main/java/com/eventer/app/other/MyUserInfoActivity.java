@@ -37,8 +37,8 @@ import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.widget.CircleProgressBar;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.CircleProgressBar;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 

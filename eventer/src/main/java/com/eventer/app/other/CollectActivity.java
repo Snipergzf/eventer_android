@@ -14,7 +14,7 @@ import com.eventer.app.adapter.EventAdapter;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;

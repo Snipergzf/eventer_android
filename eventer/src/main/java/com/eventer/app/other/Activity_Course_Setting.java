@@ -18,7 +18,7 @@ import com.eventer.app.util.WheelDialogShowUtil;
 import com.eventer.app.util.WheelDialogTwoShowUtil;
 import com.eventer.app.view.CourseView;
 import com.eventer.app.view.DialogView.onWheelBtnPosClick;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;

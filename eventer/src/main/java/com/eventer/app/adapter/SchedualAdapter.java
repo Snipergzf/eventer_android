@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.entity.Schedual;
-import com.eventer.app.widget.swipemenulistview.BaseSwipListAdapter;
+import com.eventer.app.view.swipemenulistview.BaseSwipListAdapter;
 
 import java.util.List;
 

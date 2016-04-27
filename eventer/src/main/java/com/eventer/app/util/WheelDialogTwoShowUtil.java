@@ -13,8 +13,8 @@ import com.eventer.app.R;
 import com.eventer.app.view.DialogView_Two;
 import com.eventer.app.view.DialogView_Two.onWheelBtnNegClick;
 import com.eventer.app.view.DialogView_Two.onWheelBtnPosClick;
-import com.eventer.app.widget.wheel.WheelListAdapter;
-import com.eventer.app.widget.wheel.WheelView;
+import com.eventer.app.view.wheel.WheelListAdapter;
+import com.eventer.app.view.wheel.WheelView;
 
 import java.util.Map;
 

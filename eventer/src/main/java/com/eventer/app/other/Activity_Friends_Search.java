@@ -33,7 +33,7 @@ import com.eventer.app.entity.Phone;
 import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
-import com.eventer.app.widget.CircleProgressBar;
+import com.eventer.app.view.CircleProgressBar;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;

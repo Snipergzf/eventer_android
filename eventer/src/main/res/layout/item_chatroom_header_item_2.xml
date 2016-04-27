@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
     
-  <com.eventer.app.widget.CircleImageView
+  <com.eventer.app.view.CircleImageView
         android:id="@+id/iv_avatar1"
         android:layout_width="18dp"
         android:layout_height="18dp"  
         android:src="@drawable/default_avatar" />
-  <com.eventer.app.widget.CircleImageView
+  <com.eventer.app.view.CircleImageView
         android:id="@+id/iv_avatar2"
         android:layout_width="18dp"
         android:layout_height="18dp"  

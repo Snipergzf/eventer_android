@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true" >
 
-            <com.eventer.app.widget.CircleImageView
+            <com.eventer.app.view.CircleImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

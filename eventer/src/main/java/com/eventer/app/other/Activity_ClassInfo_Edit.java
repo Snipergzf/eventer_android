@@ -18,9 +18,9 @@ import com.eventer.app.R;
 import com.eventer.app.db.MajorDao;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.AbstractSpinerAdapter;
-import com.eventer.app.widget.SpinerPopWindow;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.AbstractSpinerAdapter;
+import com.eventer.app.view.SpinerPopWindow;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package com.eventer.app.other;
 import android.os.Bundle;
 
 import com.eventer.app.R;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 public class OurTeamActivity extends SwipeBackActivity {

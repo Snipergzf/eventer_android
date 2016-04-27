@@ -33,10 +33,10 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.http.UploadPicToServer;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.AbstractSpinerAdapter.IOnItemSelectListener;
-import com.eventer.app.widget.CircleProgressBar;
-import com.eventer.app.widget.SpinerPopWindow;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.AbstractSpinerAdapter.IOnItemSelectListener;
+import com.eventer.app.view.CircleProgressBar;
+import com.eventer.app.view.SpinerPopWindow;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 

@@ -13,8 +13,8 @@ import com.eventer.app.R;
 import com.eventer.app.view.DialogView;
 import com.eventer.app.view.DialogView.onWheelBtnNegClick;
 import com.eventer.app.view.DialogView.onWheelBtnPosClick;
-import com.eventer.app.widget.wheel.WheelListAdapter;
-import com.eventer.app.widget.wheel.WheelView;
+import com.eventer.app.view.wheel.WheelListAdapter;
+import com.eventer.app.view.wheel.WheelView;
 
 /**
  * 封装了滚轮操作的类

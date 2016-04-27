@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp" >
 
-        <com.eventer.app.widget.CircleImageView
+        <com.eventer.app.view.CircleImageView
             android:id="@+id/iv_userhead"
             android:layout_width="42dp"
             android:layout_height="42dp"

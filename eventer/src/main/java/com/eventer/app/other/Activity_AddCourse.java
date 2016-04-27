@@ -20,7 +20,7 @@ import com.eventer.app.adapter.CourseAdapter;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.http.HttpUnit;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

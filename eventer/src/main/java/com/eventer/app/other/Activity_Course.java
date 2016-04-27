@@ -24,7 +24,7 @@ import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.ClassInfo;
 import com.eventer.app.view.CourseView;
 import com.eventer.app.view.PopMenu;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;

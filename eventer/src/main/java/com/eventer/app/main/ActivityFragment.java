@@ -36,9 +36,9 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.other.Activity_EventDetail;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.widget.refreshlist.IXListViewLoadMore;
-import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
-import com.eventer.app.widget.refreshlist.XListView;
+import com.eventer.app.view.refreshlist.IXListViewLoadMore;
+import com.eventer.app.view.refreshlist.IXListViewRefreshListener;
+import com.eventer.app.view.refreshlist.XListView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -121,11 +121,11 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		note.setOnClickListener(this);
 		listItems = new ArrayList<>();
 		if(!"0".equals(Constant.UID)){ //0表示游客模式
-//			listItems = getListItems();
+			listItems = getListItems();
 //			if(listItems.size() == 0){
 //				loadEventList(0, REFRESH_MORE);
 //			}
-			loadEventList(0, REFRESH_MORE);
+//			loadEventList(0, REFRESH_MORE);
 		}else {
 			loadEventList(0, REFRESH_MORE);
 		}
@@ -441,7 +441,7 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 						event.setStart(begin);
 					}
 					if(end>event.getEnd()){
-						event.setEnd(end);;
+						event.setEnd(end);
 					}
 				}
 			} catch (JSONException e) {
@@ -449,7 +449,7 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 				e.printStackTrace();
 			}//时间成对，可能有多个时间
 
-			if(now>event.getEnd()){
+			if(now > event.getEnd()){
 				event=null;
 			}
 		}

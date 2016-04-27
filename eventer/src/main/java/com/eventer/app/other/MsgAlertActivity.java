@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.eventer.app.R;
 import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.zcw.togglebutton.ToggleButton;
 import com.zcw.togglebutton.ToggleButton.OnToggleChanged;

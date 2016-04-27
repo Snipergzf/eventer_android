@@ -15,7 +15,7 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ChatRoomAdapter;
 import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.entity.ChatRoom;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;

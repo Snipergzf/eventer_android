@@ -28,12 +28,12 @@
         "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png"
     },
     {
-        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\smssdk_cl_divider.png",
-        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\smssdk_cl_divider.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\smssdk_cp_default_avatar.png",
         "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\smssdk_cp_default_avatar.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\smssdk_cl_divider.png",
+        "source": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\smssdk_cl_divider.png"
     },
     {
         "merged": "F:\\ProjectAS\\sMSSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\smssdk_back_arrow2.png",

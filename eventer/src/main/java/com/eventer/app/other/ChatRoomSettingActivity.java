@@ -40,7 +40,7 @@ import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.main.BaseFragmentActivity;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.widget.ExpandGridView;
+import com.eventer.app.view.ExpandGridView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

@@ -26,7 +26,7 @@
                android:gravity="center_horizontal"
                android:layout_height="match_parent"
                android:orientation="vertical">
-            <com.eventer.app.widget.CircleImageView
+            <com.eventer.app.view.CircleImageView
                 android:id="@+id/share_by_user"
                 android:layout_width="40dp"
                 android:layout_height="40dp" 
@@ -44,7 +44,7 @@
                android:layout_height="match_parent"
                android:gravity="center_horizontal"
                android:orientation="vertical">
-            <com.eventer.app.widget.CircleImageView
+            <com.eventer.app.view.CircleImageView
                 android:id="@+id/share_by_chatroom"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

@@ -13,8 +13,8 @@ import com.eventer.app.R;
 import com.eventer.app.view.DialogView_ClassHour;
 import com.eventer.app.view.DialogView_ClassHour.onWheelBtnNegClick;
 import com.eventer.app.view.DialogView_ClassHour.onWheelBtnPosClick;
-import com.eventer.app.widget.wheel.WheelListAdapter;
-import com.eventer.app.widget.wheel.WheelView;
+import com.eventer.app.view.wheel.WheelListAdapter;
+import com.eventer.app.view.wheel.WheelView;
 
 import java.util.Map;
 

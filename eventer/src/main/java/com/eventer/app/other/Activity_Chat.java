@@ -59,8 +59,8 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.main.MessageFragment;
 import com.eventer.app.util.SmileUtils;
-import com.eventer.app.widget.ExpandGridView;
-import com.eventer.app.widget.swipeback.SwipeBackActivity;
+import com.eventer.app.view.ExpandGridView;
+import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.Field;

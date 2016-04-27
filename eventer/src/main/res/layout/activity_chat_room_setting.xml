@@ -67,7 +67,7 @@
             android:background="#EBEBEB"
             android:orientation="vertical" >
 
-            <com.eventer.app.widget.ExpandGridView
+            <com.eventer.app.view.ExpandGridView
                 android:layout_marginTop="20dp"
                 android:id="@+id/gridview"
                 android:layout_width="match_parent"

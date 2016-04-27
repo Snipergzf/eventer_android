@@ -39,7 +39,7 @@
             android:layout_marginBottom="18dp"
             android:layout_marginTop="10dp" >
 
-         <com.eventer.app.widget.CircleImageView
+         <com.eventer.app.view.CircleImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
@@ -263,7 +263,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:background="#fff">
-        <com.eventer.app.widget.CircleProgressBar
+        <com.eventer.app.view.CircleProgressBar
             android:id="@+id/progress"
             app:mlpb_enable_circle_background="false"
             app:mlpb_show_arrow="false"

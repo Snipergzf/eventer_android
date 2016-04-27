@@ -17,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.widget.wheel.OnWheelScrollListener;
-import com.eventer.app.widget.wheel.WheelView;
+import com.eventer.app.view.wheel.OnWheelScrollListener;
+import com.eventer.app.view.wheel.WheelView;
 
 import java.util.Map;
 

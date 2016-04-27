@@ -3,7 +3,7 @@
     android:layout_width="36dp"
     android:layout_height="36dp"
    >
-                <com.eventer.app.widget.CircleImageView
+                <com.eventer.app.view.CircleImageView
                     android:id="@+id/iv_avatar1"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -11,7 +11,7 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/default_avatar" />
 
-                <com.eventer.app.widget.CircleImageView
+                <com.eventer.app.view.CircleImageView
                     android:id="@+id/iv_avatar2"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -19,7 +19,7 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/default_avatar" />
 
-                <com.eventer.app.widget.CircleImageView
+                <com.eventer.app.view.CircleImageView
                     android:id="@+id/iv_avatar3"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -27,7 +27,7 @@
                     android:layout_alignParentBottom="true" 
                     android:src="@drawable/default_avatar" />
 
-                <com.eventer.app.widget.CircleImageView
+                <com.eventer.app.view.CircleImageView
                     android:id="@+id/iv_avatar4"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
