@@ -300,12 +300,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\upload_dialog.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_view.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_view.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\calendar_view.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_view.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_big_image.xml",
@@ -750,5 +750,9 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\activity_reset_pwd.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\activity_reset_pwd.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\layout_toast.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\layout_toast.xml"
     }
 ]

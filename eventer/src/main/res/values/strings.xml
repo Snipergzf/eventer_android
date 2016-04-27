@@ -291,6 +291,8 @@
     <string name="chatroom">群组</string>
     <string name="group_share_list">群组分享情况</string>
     <string name="share_event">日程分享</string>
+    <string name="tourist"><![CDATA[游客模式>>]]></string>
+    <string name="not_login">未登录</string>
 
 </resources>
 

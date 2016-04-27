@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.adapter.SchedualAdapter;
 import com.eventer.app.db.ClassInfoDao;
@@ -36,6 +37,7 @@ import com.eventer.app.other.Activity_EventDetail;
 import com.eventer.app.other.Calendar_AddSchedual;
 import com.eventer.app.other.Calendar_ViewSchedual;
 import com.eventer.app.other.ShareSchedualActivity;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.widget.calendar.AlarmReceiver;
 import com.eventer.app.widget.calendar.CaldroidFragment;
 import com.eventer.app.widget.calendar.CaldroidFragment.TurntoTodayListener;
@@ -118,8 +120,12 @@ public  class ScheduleFragment extends Fragment{
 		headView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent().setClass(context, Activity_Course.class)
-				.putExtra("week",NowWeek));
+				if(!"0".equals(Constant.UID)){
+					startActivity(new Intent().setClass(context, Activity_Course.class)
+							.putExtra("week",NowWeek));
+				} else{
+					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		FragmentTransaction t = getFragmentManager().beginTransaction();
@@ -146,7 +152,11 @@ public  class ScheduleFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				addSchedual();
+				if(!"0".equals(Constant.UID)){
+					addSchedual();
+				} else{
+					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		//日程列表的适配器
@@ -521,8 +531,12 @@ public  class ScheduleFragment extends Fragment{
 
 		@Override
 		public void onLongClickDate(Date date, View view) {
-			setSelectDate(date);
-			addSchedual();
+			if(!"0".equals(Constant.UID)){
+				setSelectDate(date);
+				addSchedual();
+			} else{
+				MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+			}
 		}
 
 		@Override

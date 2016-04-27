@@ -32,6 +32,7 @@ import com.eventer.app.task.LoadUserAvatar;
 import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -85,12 +86,20 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		re_feedback=(RelativeLayout)rootView.findViewById(R.id.re_feedback);
 		re_msg_alert=(RelativeLayout)rootView.findViewById(R.id.re_msg_alert);
 		re_version=(RelativeLayout)rootView.findViewById(R.id.re_version_info);
-		String name = LocalUserInfo.getInstance(context)
-				.getUserInfo("nick");
-		if(name!=null){
-			tv_name.setText(name);
-		}
+		if(!"0".equals(Constant.UID)){
+			String name = LocalUserInfo.getInstance(context)
+					.getUserInfo("nick");
+			if(name!=null){
+				tv_name.setText(name);
+			}
+			String avatar = LocalUserInfo.getInstance(context)
+					.getUserInfo("avatar");
+			showUserAvatar(iv_avatar, avatar);
 
+		} else{
+			tv_name.setText(R.string.not_login);
+		}
+		MyApplication.getInstance().setValueByKey("set_avatar", false);
 		boolean isExistNewVersion=PreferenceUtils.getInstance().getVersionAlert();
 		if(isExistNewVersion){
 			iv_version_alert.setVisibility(View.VISIBLE);
@@ -105,10 +114,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		re_feedback.setOnClickListener(this);
 		re_msg_alert.setOnClickListener(this);
 		re_version.setOnClickListener(this);
-		String avatar = LocalUserInfo.getInstance(context)
-				.getUserInfo("avatar");
-		showUserAvatar(iv_avatar, avatar);
-		MyApplication.getInstance().setValueByKey("set_avatar", false);
+
 	}
 
 	@Override
@@ -125,16 +131,32 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 			case R.id.re_myinfo://我的信息
-				Intent intent=new Intent();
-				intent.setClass(context, MyUserInfoActivity.class);
-				getActivity().startActivityForResult(intent, IS_EXIT);
+				if(!"0".equals(Constant.UID)){
+					Intent intent=new Intent();
+					intent.setClass(context, MyUserInfoActivity.class);
+					getActivity().startActivityForResult(intent, IS_EXIT);
+				}else{
+					Intent intent=new Intent();
+					intent.setClass(context, LoginActivity.class);
+					PreferenceUtils.getInstance().setLoginPwd("");
+					Constant.isLogin=false;
+					Constant.isExist=true;
+					getActivity().startActivity(intent);
+					getActivity().finish();
+				}
+
 				break;
 			case R.id.re_collect://我的收藏
 				startActivity(new Intent()
 						.setClass(context, CollectActivity.class));
 				break;
 			case R.id.re_course:
-				startActivity(new Intent().setClass(context, Activity_Course.class));
+				if(!"0".equals(Constant.UID)){
+					startActivity(new Intent().setClass(context, Activity_Course.class));
+				} else{
+					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+				}
+
 				break;
 			case R.id.re_history://浏览历史
 				startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));

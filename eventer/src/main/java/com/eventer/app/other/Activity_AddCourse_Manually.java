@@ -13,7 +13,7 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.CourseTimeAdapter;
 import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.widget.ListViewForScrollView;
 
 import java.util.ArrayList;

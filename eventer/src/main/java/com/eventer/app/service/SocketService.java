@@ -1,4 +1,4 @@
-package com.eventer.app.socket;
+package com.eventer.app.service;
 
 import android.app.Service;
 import android.content.Intent;

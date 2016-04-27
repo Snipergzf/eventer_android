@@ -39,15 +39,6 @@ public class EventAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private String image="";
 	private FileUtil fileUtil;
-	private int IMG_SCALE = 100;
-
-//	public final class ListItemView{                //自定义控件集合
-//		public ImageView image;
-//		public TextView title;
-//		public TextView info;
-//		public Button detail;
-//	}
-
 
 	public EventAdapter(Context context,  List<Event>  listItems) {
 		this.context = context;
@@ -66,10 +57,6 @@ public class EventAdapter extends BaseAdapter {
 	public void addItem(Event e) {
 		listItems.add(0,e);
 	}
-
-//	public void clearItem() {
-//		listItems=new ArrayList<>();
-//	}
 
 
 	@Override
@@ -240,12 +227,6 @@ public class EventAdapter extends BaseAdapter {
 			}
 		}.execute();
 	}
-
-
-//	public String getFullTime(long now) {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//		return sdf.format(new Date(now));
-//	}
 
 	public String getDate(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

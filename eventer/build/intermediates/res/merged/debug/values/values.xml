@@ -882,6 +882,7 @@
     <string name="no_new_friend">_(:з」∠)_您还没有关于添加新伙伴的消息…</string>
     <string name="no_search_class">_(:з」∠)_没有符合条件的课程…</string>
     <string name="not_friend_hint">你们还不是好友，是否添加该好友?</string>
+    <string name="not_login">未登录</string>
     <string name="notify">通知:请查看群日程！</string>
     <string name="ok">确定</string>
     <string name="open">开启</string>
@@ -1106,6 +1107,7 @@
     <string name="todo_detail">待办事件详情</string>
     <string name="todo_time">截止</string>
     <string name="toggleButton">开关</string>
+    <string name="tourist">游客模式>></string>
     <string name="umeng_common_action_cancel">Cancel</string>
     <string name="umeng_common_action_continue">Continue</string>
     <string name="umeng_common_action_info_exist">The app is already in downloading list.</string>

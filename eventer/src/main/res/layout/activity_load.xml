@@ -5,14 +5,27 @@
     android:layout_height="fill_parent"
     android:background="@drawable/login_app" >
 
+    <TextView
+        android:id="@+id/tv_tourist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:textColor="@color/caldroid_holo_blue_light"
+        android:text="@string/tourist"/>
+
    <LinearLayout
        android:id="@+id/login_ll"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
-       android:background="@android:color/transparent"
+       android:layout_above="@+id/tv_tourist"
        android:visibility="gone"
-       android:paddingBottom="15dp">
+       android:background="@android:color/transparent"
+       >
 
        <Button
            android:id="@+id/btn_login"

@@ -361,10 +361,10 @@ receiver#com.eventer.app.widget.calendar.AlarmReceiver
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:165:9-67
 	android:name
 		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:165:19-64
-service#com.eventer.app.socket.SocketService
-ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:167:9-57
+service#com.eventer.app.service.SocketService
+ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:167:9-58
 	android:name
-		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:167:18-54
+		ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:167:18-55
 activity#com.eventer.app.other.Activity_EventDetail
 ADDED from F:\ProjectAS\eventer\src\main\AndroidManifest.xml:169:9-172:67
 	android:label

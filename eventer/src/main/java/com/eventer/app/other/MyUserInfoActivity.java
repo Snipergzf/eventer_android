@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,8 +52,8 @@ import java.util.Map;
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends SwipeBackActivity {
 
-
-    LinearLayout re_avatar, re_name, re_sex;
+    RelativeLayout re_avatar;
+    LinearLayout re_name, re_sex;
     LinearLayout re_grade, re_school, re_major, re_class;
 
     private TextView tv_grade;
@@ -94,7 +95,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
 
     private void initView() {
 
-        re_avatar = (LinearLayout) this.findViewById(R.id.re_avatar);
+        re_avatar = (RelativeLayout) this.findViewById(R.id.re_avatar);
         re_name = (LinearLayout) this.findViewById(R.id.re_name);
         re_sex = (LinearLayout) this.findViewById(R.id.re_sex);
         TextView tv_exit = (TextView) findViewById(R.id.tv_exit);

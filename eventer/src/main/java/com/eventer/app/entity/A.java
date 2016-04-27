@@ -6,14 +6,8 @@ public class A {
 	public String body;
 	public long time;
 	public int type;
-//	public A(String MID, String RID, String body){
-//		this.RID = RID;
-//		this.MID = MID;
-//		this.time =System.currentTimeMillis()/1000;
-//		this.body = body;
-//	}
 	
-	public A(String MID, String RID, String body,int type){
+	public A(String MID, String RID, String body, int type){
 		this.RID = RID;
 		this.MID = MID;
 		this.time =System.currentTimeMillis()/1000;

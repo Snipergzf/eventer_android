@@ -64,8 +64,8 @@ public final class R {
 		public static final int smssdk_dialog_back = 0x7f02018a;
 		public static final int smssdk_dialog_bg = 0x7f02018b;
 		public static final int smssdk_dialog_btn_back = 0x7f02018c;
-		public static final int smssdk_dialog_btn_nor = 0x7f0201d1;
-		public static final int smssdk_dialog_btn_pre = 0x7f0201d2;
+		public static final int smssdk_dialog_btn_nor = 0x7f0201d2;
+		public static final int smssdk_dialog_btn_pre = 0x7f0201d3;
 		public static final int smssdk_edittext_bg_selector = 0x7f02018d;
 		public static final int smssdk_input_bg_focus = 0x7f02018e;
 		public static final int smssdk_input_bg_normal = 0x7f02018f;
@@ -188,7 +188,7 @@ public final class R {
 		public static final int smssdk_search_contact = 0x7f060084;
 		public static final int smssdk_send_invitation = 0x7f060085;
 		public static final int smssdk_send_mobile_detail = 0x7f060086;
-		public static final int smssdk_send_sounds = 0x7f060190;
+		public static final int smssdk_send_sounds = 0x7f060191;
 		public static final int smssdk_send_sounds_identify_code = 0x7f060087;
 		public static final int smssdk_send_sounds_success = 0x7f060088;
 		public static final int smssdk_smart_verify_already = 0x7f060089;

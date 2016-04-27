@@ -1,4 +1,4 @@
-package com.eventer.app.ui.base;
+package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

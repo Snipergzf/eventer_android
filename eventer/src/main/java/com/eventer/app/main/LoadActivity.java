@@ -3,6 +3,7 @@ package com.eventer.app.main;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
@@ -22,9 +24,7 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.service.CheckInternetService;
-import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -34,12 +34,11 @@ import java.util.Map;
 
 public class  LoadActivity extends BaseFragmentActivity {
 
-	private static final int sleepTime = 2000;
+	private static final int sleepTime = 1600;
 	private Context context;
 	private LinearLayout ll_login;
-	//	private RelativeLayout load_root;
 	private String user,pwd;
-	//	CircleProgressBar progress;
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		//隐藏标题栏
@@ -61,11 +60,23 @@ public class  LoadActivity extends BaseFragmentActivity {
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
 		animation.setDuration(1500);
 		view.startAnimation(animation);
-		ll_login=(LinearLayout)view.findViewById(R.id.login_ll);
-//		load_root=(RelativeLayout)view.findViewById(R.id.load_root);
-//		progress=(CircleProgressBar)view.findViewById(R.id.progress);
-//		progress.setColorSchemeResources(android.R.color.holo_orange_light);
+		ll_login = (LinearLayout) findViewById(R.id.login_ll);
+		final TextView tv_tourist = (TextView) findViewById(R.id.tv_tourist);
+		tv_tourist.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		tv_tourist.getPaint().setAntiAlias(true);
 		context.startService(new Intent(context, CheckInternetService.class));//make sure the net is truly available
+		tv_tourist.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(LoadActivity.this, MainActivity.class);
+				Constant.UID = "0";
+				Constant.TOKEN = "tourists";
+				startActivity(intent);
+				finish();
+			}
+		});
+
 
 		/***
 		 * 判断登录状态
@@ -75,44 +86,61 @@ public class  LoadActivity extends BaseFragmentActivity {
 				//读取PreferenceUtils中的登录状态
 				user=PreferenceUtils.getInstance().getLoginUser();
 				pwd=PreferenceUtils.getInstance().getLoginPwd();
-				if (user!=null&& !user.equals("") &&pwd!=null&& !pwd.equals("")) {
-					// 保存了账号和密码，不跳转至登录界面，直接登录
-					long start = System.currentTimeMillis();
-					//加载数据
-					Map<String, String> params = new HashMap<>();
-					params.put("pwd", pwd);
-					params.put("phone", user);
-					//获取手机的唯一标识码
-					params.put("imei", PreferenceUtils.getInstance().getDeviceId());
-					UserLogin(params);
-					long costTime = System.currentTimeMillis() - start;
-					//等待sleeptime时长
-					if (sleepTime - costTime > 0) {
-						try {
-							Thread.sleep(sleepTime - costTime);
+				if(!"0".equals(user)){
+					if (user!=null&& !user.equals("") &&pwd!=null&& !pwd.equals("")) {
+						// 保存了账号和密码，不跳转至登录界面，直接登录
+						long start = System.currentTimeMillis();
+						//加载数据
+						Map<String, String> params = new HashMap<>();
+						params.put("pwd", pwd);
+						params.put("phone", user);
+						//获取手机的唯一标识码
+						params.put("imei", PreferenceUtils.getInstance().getDeviceId());
+						UserLogin(params);
+						long costTime = System.currentTimeMillis() - start;
+						//等待sleeptime时长
+						if (sleepTime - costTime > 0) {
+							try {
+								Thread.sleep(sleepTime - costTime);
 
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+
+					}else if(user != null){
+						//只保存了账号（切换账号），跳转至登录界面
+						try {
+							Thread.sleep(sleepTime);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
+						startActivity(new Intent(LoadActivity.this, LoginActivity.class));
+						finish();
+					}else{
+						//初次打开系统，显示登录或注册选项
+						tv_tourist.setVisibility(View.VISIBLE);
+						ll_login.setVisibility(View.VISIBLE);
 
-				}else if(user!=null){
-					//只保存了账号（切换账号），跳转至登录界面
+					}
+				}else{
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					} finally {
+						Intent intent = new Intent();
+						intent.setClass(LoadActivity.this, MainActivity.class);
+						Constant.UID = "0";
+						Constant.TOKEN = "tourists";
+						startActivity(intent);
+						finish();
 					}
-					startActivity(new Intent(LoadActivity.this, LoginActivity.class));
-					finish();
-				}else{
-					//初次打开系统，显示登录或注册选项
-					ll_login.setVisibility(View.VISIBLE);
 				}
+
+
 			}
 		}).start();
-
-		Log.e("md5", MD5Util.getMD5("12345"));
 
 	}
 
@@ -130,6 +158,10 @@ public class  LoadActivity extends BaseFragmentActivity {
 			dir.mkdirs();
 		}
 	}
+
+
+
+
 	/***
 	 * 登录按钮的响应事件
 	 * 跳转至登陆界面

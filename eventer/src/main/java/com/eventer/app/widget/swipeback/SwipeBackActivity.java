@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.eventer.app.R;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.main.BaseActivity;
 
 /**
  * 想要实现向右滑动删除Activity效果只需要继承SwipeBackActivity即可，如果当前页面含有ViewPager

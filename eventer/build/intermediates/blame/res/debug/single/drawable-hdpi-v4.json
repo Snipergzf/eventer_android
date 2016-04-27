@@ -196,16 +196,16 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\voice_rcd_btn_pressed.9.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_pic.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_pic.png"
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\update.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\update.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\btn_share_forwarding_down.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\btn_share_forwarding_down.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\update.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\update.png"
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\icon_chat_pic.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\icon_chat_pic.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\discussion_avatar.png",

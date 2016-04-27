@@ -42,4 +42,13 @@ public class HttpParamUnit {
         map.put("uid",Constant.UID);
         return map;
     }
+
+    public static Map<String,String> eventListParam(String imei, int pos, int count, int size){
+        Map<String,String> map=new HashMap<>();
+        map.put("imei", imei);
+        map.put("pos", pos + "");
+        map.put("count", count + "");
+        map.put("size", size + "");
+        return map;
+    }
 }

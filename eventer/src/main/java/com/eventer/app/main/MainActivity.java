@@ -52,7 +52,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Friends_New;
-import com.eventer.app.socket.SocketService;
+import com.eventer.app.service.SocketService;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.util.SmileUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -91,6 +91,7 @@ public class MainActivity extends FragmentActivity {
 	private NotificationManager manager;
 	private Map<String,Integer> notifyIdMap=new HashMap<>();
 	private int notifyNum=0;
+	public ServiceConnection internetServiceConnection;
 	private  Handler mHandler = new Handler(new Handler.Callback() {
 			@Override
 			public boolean handleMessage(Message msg) {
@@ -152,7 +153,7 @@ public class MainActivity extends FragmentActivity {
 //			MobclickAgent.onKillProcess(context);
 //			System.exit(0);
 //		}
-		initData();
+
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null) {
 			// 读取上一次界面Save的时候tab选中的状态
@@ -171,16 +172,40 @@ public class MainActivity extends FragmentActivity {
 		broadcastIntent.setAction("android.intent.alarm.START");
 		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
 		sendBroadcast(broadcastIntent);
+
+		initView();
+        if(!"0".equals(Constant.UID)){
+			initData();
+		}else {
+			PreferenceUtils.getInstance().setLoginUser("0");
+		}
+
+
 	}
-
-
-
 
 	private void initData() {
 		EventDao dao = new EventDao(context);
 		List<String> list = dao.getEventIDList();
 		MyApplication.getInstance().setCacheByKey("EventList", list);
 		loadFriendList();
+
+		internetServiceConnection = new ServiceConnection() {
+			public void onServiceConnected(ComponentName arg0, IBinder service) {
+				Log.e("1", "here internetServiceConnection");
+				binder = (SocketService.SocketSendBinder) service;
+				A a;
+				while (!queued.isEmpty()) {
+					if ((a = queued.poll()) != null) {
+						sendToService(a);
+					}
+				}
+			}
+
+			public void onServiceDisconnected(ComponentName arg0) {
+				Log.e("1", "service disconnected");
+				binder = null;
+			}
+		};
 		bindService(new Intent(this, SocketService.class),
 				internetServiceConnection, Context.BIND_AUTO_CREATE);
 		msgReceiver = new MsgReceiver();
@@ -194,7 +219,12 @@ public class MainActivity extends FragmentActivity {
 		IntentFilter intentFilter1 = new IntentFilter();
 		intentFilter1.addAction("com.eventer.app.activity");
 		registerReceiver(eventReceiver, intentFilter1);
-		initView();
+
+		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
+		// 刷新未读信息的提醒信息
+		updateUnreadLabel();
+
+
 	}
 
 	private void initView() {
@@ -228,25 +258,6 @@ public class MainActivity extends FragmentActivity {
 		textviews[2] = (TextView) findViewById(R.id.tv_message);
 		textviews[3] = (TextView) findViewById(R.id.tv_profile);
 		textviews[0].setSelected(true);
-
-		// 初始化日程提醒机制
-//		if (am == null) {
-//			am = (AlarmManager) getSystemService(ALARM_SERVICE);
-//		}
-//		try {
-//			Intent intent = new Intent(getApplicationContext(),
-//					AlarmReceiver.class);
-//			PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent,
-//					PendingIntent.FLAG_UPDATE_CURRENT);
-//			Long now_time = System.currentTimeMillis();
-//			am.setRepeating(AlarmManager.RTC_WAKEUP, now_time + 3, 60 * 1000,
-//					sender);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
-		// 刷新未读信息的提醒信息
-		updateUnreadLabel();
 
 	}
 
@@ -289,23 +300,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	// 实现消息网关的Service
-	public ServiceConnection internetServiceConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName arg0, IBinder service) {
-			Log.e("1", "here internetServiceConnection");
-			binder = (SocketService.SocketSendBinder) service;
-			A a;
-			while (!queued.isEmpty()) {
-				if ((a = queued.poll()) != null) {
-					sendToService(a);
-				}
-			}
-		}
 
-		public void onServiceDisconnected(ComponentName arg0) {
-			Log.e("1", "service disconnected");
-			binder = null;
-		}
-	};
 
 	// 通过消息网关发送消息
 	public boolean newMsg(String MID, String RID, String body, int type) {
@@ -355,6 +350,10 @@ public class MainActivity extends FragmentActivity {
 			unreadLabel.setVisibility(View.INVISIBLE);
 		}
 	}
+
+
+
+
 
 	/**
 	 * 从服务器端拉取好友列表
@@ -1024,9 +1023,16 @@ public class MainActivity extends FragmentActivity {
 		super.onDestroy();
 		instance = null;
 		// 注销服务和广播接收者
-		unbindService(internetServiceConnection);
-		unregisterReceiver(msgReceiver);
-		unregisterReceiver(eventReceiver);
+		if( internetServiceConnection != null){
+			unbindService(internetServiceConnection);
+		}
+		if( msgReceiver != null ){
+			unregisterReceiver(msgReceiver);
+		}
+		if( eventReceiver != null ){
+			unregisterReceiver(eventReceiver);
+		}
+
 	}
 
 //	public boolean newMsg(String MID, String RID, String SID, String body,

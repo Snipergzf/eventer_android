@@ -18,7 +18,7 @@ import com.eventer.app.R;
 import com.eventer.app.db.ChatroomDao;
 import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.main.BaseActivity;
 
 import java.util.HashMap;
 import java.util.Map;

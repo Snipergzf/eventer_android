@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -22,16 +21,22 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.adapter.EventAdapter;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.entity.Event;
+import com.eventer.app.http.HttpParamUnit;
+import com.eventer.app.http.JSONtoEntity;
+import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.other.Activity_EventDetail;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.widget.refreshlist.IXListViewLoadMore;
 import com.eventer.app.widget.refreshlist.IXListViewRefreshListener;
 import com.eventer.app.widget.refreshlist.XListView;
 import com.umeng.analytics.MobclickAgent;
@@ -46,6 +51,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public  class ActivityFragment extends Fragment implements OnClickListener,OnScrollListener {
@@ -54,15 +60,18 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 	private EventAdapter listViewAdapter;
 	private List<Event> listItems;
 	private final int REFRESH_MORE = 0;
+	private final int LODING_MORE = 1;
 	private final int NET_GOOD = 11;
 	private final int NET_BAD = 22;
 	private TextView[] themelist;
-	private int themeindex=0;
+	private int themeindex = 0;
+	private int event_sum = 0;
 	private String theme="";
 
 	private int visibleLastIndex = 0;   //最后的可视项索引    
 	private	ArrayList<Event> all_event= new ArrayList<>();
-//	int datasize = 5;
+	private List<String> id_list=new ArrayList<>();
+
 	int visibleItemCount;       // 当前窗口可见项总数
 	private Context context;
 	private LinearLayout note;
@@ -82,7 +91,6 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		context=getActivity();
 		instance=ActivityFragment.this;
 		initView(rootView);
-		initData();
 		netReceiver = new NetReceiver();
 		IntentFilter intentFilter1 = new IntentFilter();
 		intentFilter1.addAction("android.net.conn.ISGOODORBAD");
@@ -111,8 +119,26 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 			note.setVisibility(View.VISIBLE);
 		}
 		note.setOnClickListener(this);
-		listItems = getListItems();
+		listItems = new ArrayList<>();
+		if(!"0".equals(Constant.UID)){ //0表示游客模式
+//			listItems = getListItems();
+//			if(listItems.size() == 0){
+//				loadEventList(0, REFRESH_MORE);
+//			}
+			loadEventList(0, REFRESH_MORE);
+		}else {
+			loadEventList(0, REFRESH_MORE);
+		}
+
 		listView.setEmptyView(rootView.findViewById(R.id.iv_empty));
+		rootView.findViewById(R.id.iv_empty).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if("0".equals(Constant.UID)){
+					loadEventList(0, REFRESH_MORE);
+				}
+			  }
+		});
 		//活动列表的适配器
 		listViewAdapter = new EventAdapter(this.getActivity(), listItems); //创建适配器
 		listView.setAdapter(listViewAdapter);
@@ -144,55 +170,16 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 				mHandler.sendEmptyMessageDelayed(REFRESH_MORE, 800);
 			}
 		});
+		listView.setPullLoadEnable(new IXListViewLoadMore() {
+
+			@Override
+			public void onLoadMore() {
+				// TODO Auto-generated method stub
+				mHandler.sendEmptyMessageDelayed(LODING_MORE, 800);
+			}
+		});
 	}
 
-	private void animateViewIn() {
-
-        Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_in);
-        anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-        anim.setDuration(700);
-		anim.setFillAfter(true);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationEnd(Animation animation) {
-
-
-			}
-
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-		});
-        note.startAnimation(anim);
-
-    }
-	private void animateViewOut() {
-
-        Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_out);
-        anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-			anim.setDuration(700);
-		anim.setFillAfter(true);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationEnd(Animation animation) {
-//                onViewHidden(event);
-			}
-
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-		});
-        note.startAnimation(anim);
-
-    }
 
 	@Override
 	public void onClick(View v) {
@@ -233,15 +220,20 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 			themelist[index].setSelected(true);
 			themeindex=index;
 			listItems.clear();
-			if(!theme.equals("")){
+			if(!"".equals(theme)){
 				for (Event event : all_event) {
 					if(theme.equals(event.getTheme())){
-						listItems.add(event);
+						if(!id_list.contains(event.getEventID())){
+							listItems.add(event);
+						}
+
 					}
 				}
 			}else{
 				for (Event event : all_event) {
-					listItems.add(event);
+					if(!id_list.contains(event.getEventID())){
+						listItems.add(event);
+					}
 				}
 //				listItems=all_event;//两者指向同一内容
 			}
@@ -252,6 +244,67 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		}
 
 	}
+
+	private void loadEventList(int pos, final int type) {
+		String imei = PreferenceUtils.getInstance().getDeviceId();
+		Map<String, String> map = HttpParamUnit.eventListParam(imei, pos, 10, event_sum);
+		LoadDataFromHTTP task = new LoadDataFromHTTP(context,
+				Constant.URL_GET_EVENTLIST, map);
+		task.getData(new LoadDataFromHTTP.DataCallBack() {
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				// TODO Auto-generated method stub
+				try {
+					int code = data.getInteger("status");
+					if (code == 0) {
+						JSONObject action = data.getJSONObject("event_action");
+						Log.e("e",action.toJSONString());
+						try {
+							event_sum = action.getInteger("dbsize");
+						} catch (Exception e) {
+							event_sum = 0;
+						}
+						com.alibaba.fastjson.JSONArray json = action.getJSONArray("event");
+						List<Event> list = JSONtoEntity.EventListJson(json);
+						if(list.size()>0){
+							if(type == REFRESH_MORE){
+								listItems.clear();
+								all_event.clear();
+								id_list.clear();
+							}
+							for (Event e: list) {
+//								EventDao dao = new EventDao(context);
+//								dao.saveEvent(e);
+								all_event.add(e);
+								if("".equals(theme)){
+									listItems.add(e);
+								}else{
+									if(theme.equals(e.getTheme())){
+										listItems.add(e);
+									}
+								}
+
+							}
+							listViewAdapter.notifyDataSetChanged();
+						}
+					} else if (code == 40) {
+						Toast.makeText(context, "操作过于频繁，请稍后再试！",
+								Toast.LENGTH_SHORT).show();
+					} else if (code == 41) {
+						Toast.makeText(context, "没有更新活动了！",
+								Toast.LENGTH_SHORT).show();
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					listView.stopLoadMore();
+					listView.stopRefresh();
+				}
+			}
+		});
+	}
+
 
 	private void refreshData(){
 		List<Event> eventlist = (List<Event>) MyApplication.getInstance()
@@ -279,8 +332,21 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		public boolean handleMessage(Message msg) {
 			switch (msg.what) {
 				case REFRESH_MORE:
-					refreshData();
-					listView.stopRefresh();
+					if(!"0".equals(Constant.UID)){
+						refreshData();
+						listView.stopRefresh();
+					} else{
+						loadEventList(0, REFRESH_MORE);
+					}
+
+					break;
+				case LODING_MORE:
+					if("0".equals(Constant.UID)){
+						loadEventList(all_event.size(), LODING_MORE);
+					} else{
+						listView.stopLoadMore();
+					}
+
 					break;
 				case NET_BAD:
 
@@ -301,9 +367,7 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		}
 	});
 
-	private void initData() {
-		// TODO Auto-generated method stub
-	}
+
 
 	private List<Event> getListItems() {
 		List<Event> listItems;
@@ -397,14 +461,6 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		return  sdf.format(new Date(now));
 	}
 
-//	public void addEvent(Event event){
-//		event=getEventItem(event);
-//		if(event!=null){
-//			listItems.add(0,event);
-//			//listViewAdapter.addItem(event);
-//			listViewAdapter.notifyDataSetChanged();
-//		}
-//	}
 
 	/**
 	 * receive network situation
@@ -468,6 +524,55 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 		super.onPause();
 		MobclickAgent.onPageEnd("MainScreen");
 	}
+
 }
+
+//	private void animateViewIn() {
+//
+//		Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_in);
+//		anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+//		anim.setDuration(700);
+//		anim.setFillAfter(true);
+//		anim.setAnimationListener(new Animation.AnimationListener() {
+//			@Override
+//			public void onAnimationEnd(Animation animation) {
+//
+//
+//			}
+//
+//			@Override
+//			public void onAnimationStart(Animation animation) {
+//			}
+//
+//			@Override
+//			public void onAnimationRepeat(Animation animation) {
+//			}
+//		});
+//		note.startAnimation(anim);
+//
+//	}
+//	private void animateViewOut() {
+//
+//		Animation anim = AnimationUtils.loadAnimation(note.getContext(), R.anim.top_out);
+//		anim.setInterpolator(com.eventer.app.util.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+//		anim.setDuration(700);
+//		anim.setFillAfter(true);
+//		anim.setAnimationListener(new Animation.AnimationListener() {
+//			@Override
+//			public void onAnimationEnd(Animation animation) {
+////                onViewHidden(event);
+//			}
+//
+//			@Override
+//			public void onAnimationStart(Animation animation) {
+//			}
+//
+//			@Override
+//			public void onAnimationRepeat(Animation animation) {
+//			}
+//		});
+//		note.startAnimation(anim);
+//
+//	}
   		
      

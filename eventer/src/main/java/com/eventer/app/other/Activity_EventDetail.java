@@ -44,6 +44,7 @@ import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.util.FileUtil;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -136,10 +137,13 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 
 					DisplayMetrics dm = new DisplayMetrics();
 					getWindowManager().getDefaultDisplay().getMetrics(dm);
-					Drawable d = ContextCompat.getDrawable(context, R.color.caldroid_holo_blue_light_1);
-					if(d!=null)
-						d.setBounds(0, 0, dm.widthPixels,
-								320);
+					Drawable d = ContextCompat.getDrawable(context, R.drawable.default_avatar);
+
+					int width = dm.widthPixels - 20;
+					int heigt = (width * d.getIntrinsicHeight()) / d.getIntrinsicWidth();
+
+					d.setBounds(0, 0, dm.widthPixels - 20,
+							heigt);
 					return d;
 				}
 
@@ -439,6 +443,10 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		if("0".equals(Constant.UID)){
+			MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		switch (v.getId()) {
 			case R.id.iv_comment:
 				Intent intent=new Intent();
@@ -704,8 +712,8 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 						if(!Constant.isConnectNet){
 							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(context,
-									"更新数据失败，活动可能已经过期！", Toast.LENGTH_SHORT ).show();
+//							Toast.makeText(context,
+//									"更新数据失败，活动可能已经过期！", Toast.LENGTH_SHORT ).show();
 						}
 
 					}

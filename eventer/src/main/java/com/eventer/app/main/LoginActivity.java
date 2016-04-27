@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,7 +26,6 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.ui.base.BaseFragmentActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
@@ -47,6 +47,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	AlertDialog dialog;
 	private Context context;
 	private String pwd;
+
 	public static boolean isActive=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,16 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		context=this;
 		Constant.isExist=false;
 		SMSSDK.initSDK(LoginActivity.this, Constant.APPKEY, Constant.APPSECRET);
-		btn_login=(Button)findViewById(R.id.btn_login);
-		btn_pwd_clear=(ImageButton)findViewById(R.id.btn_pwd_clear);
-		btn_user_clear=(ImageButton)findViewById(R.id.btn_user_clear);
-		edit_user=(EditText)findViewById(R.id.edit_user);
-		edit_pwd=(EditText)findViewById(R.id.edit_pwd);
-		tv_login_help=(TextView)findViewById(R.id.tv_login_help);
-		tv_newuser=(TextView)findViewById(R.id.tv_login_newuser);
+		btn_login = (Button)findViewById(R.id.btn_login);
+		btn_pwd_clear = (ImageButton)findViewById(R.id.btn_pwd_clear);
+		btn_user_clear =(ImageButton)findViewById(R.id.btn_user_clear);
+		edit_user = (EditText)findViewById(R.id.edit_user);
+		edit_pwd = (EditText)findViewById(R.id.edit_pwd);
+		tv_login_help =(TextView)findViewById(R.id.tv_login_help);
+		tv_newuser =(TextView)findViewById(R.id.tv_login_newuser);
+		TextView tv_tourist = (TextView) findViewById(R.id.tv_tourist);
+		tv_tourist.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		tv_tourist.getPaint().setAntiAlias(true);
 
 		/***
 		 * 监听账号输入框的输入
@@ -122,7 +126,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		});
 		String user=PreferenceUtils.getInstance().getLoginUser();
 		String pwd=PreferenceUtils.getInstance().getLoginPwd();
-		if(user!=null&& !user.equals("")){
+		if(user!=null && !user.equals("") && !user.equals("0")){
 			edit_user.setText(user);
 			edit_pwd.setFocusable(true);
 			edit_pwd.requestFocus();
@@ -136,6 +140,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		btn_login.setOnClickListener(this);
 		tv_login_help.setOnClickListener(this);
 		tv_newuser.setOnClickListener(this);
+		tv_tourist.setOnClickListener(this);
 	}
 
 	private void showDialog(){
@@ -185,6 +190,14 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				Intent intent1=new Intent();
 				intent1.setClass(context, RegisterActivity.class);
 				startActivity(intent1);
+				break;
+			case R.id.tv_tourist:
+				Intent intent = new Intent();
+				intent.setClass(context, MainActivity.class);
+				Constant.UID = "0";
+				Constant.TOKEN = "tourists";
+				startActivity(intent);
+				finish();
 				break;
 			default:
 				break;

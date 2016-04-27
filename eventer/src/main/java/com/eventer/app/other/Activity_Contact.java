@@ -21,7 +21,7 @@ import com.eventer.app.R;
 import com.eventer.app.adapter.ContactAdapter;
 import com.eventer.app.db.UserDao;
 import com.eventer.app.entity.User;
-import com.eventer.app.ui.base.BaseActivity;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.widget.Sidebar;
 import com.umeng.analytics.MobclickAgent;
 

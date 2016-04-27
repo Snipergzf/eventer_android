@@ -17,10 +17,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.widget.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -205,23 +208,28 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 				this.finish();
 				break;
 			case R.id.iv_share:
-				if (mDialog == null) {
-					mDialog = new Dialog(context, R.style.login_dialog);
-					mDialog.setCanceledOnTouchOutside(true);
-					Window win = mDialog.getWindow();
-					LayoutParams params = new LayoutParams();
-					params.width = LayoutParams.MATCH_PARENT;
-					params.height = LayoutParams.WRAP_CONTENT;
-					params.x = 0;
-					params.y = 0;
-					win.setAttributes(params);
-					mDialog.setContentView(R.layout.dialog_share);
-					mDialog.findViewById(R.id.share_by_chatroom).setOnClickListener(this);
-					mDialog.findViewById(R.id.share_by_user).setOnClickListener(this);
-					mDialog.findViewById(R.id.share_cancel).setOnClickListener(this);
-					mDialog.findViewById(R.id.share_layout).setOnClickListener(this);
+				if(!"0".equals(Constant.UID)){
+					if (mDialog == null) {
+						mDialog = new Dialog(context, R.style.login_dialog);
+						mDialog.setCanceledOnTouchOutside(true);
+						Window win = mDialog.getWindow();
+						LayoutParams params = new LayoutParams();
+						params.width = LayoutParams.MATCH_PARENT;
+						params.height = LayoutParams.WRAP_CONTENT;
+						params.x = 0;
+						params.y = 0;
+						win.setAttributes(params);
+						mDialog.setContentView(R.layout.dialog_share);
+						mDialog.findViewById(R.id.share_by_chatroom).setOnClickListener(this);
+						mDialog.findViewById(R.id.share_by_user).setOnClickListener(this);
+						mDialog.findViewById(R.id.share_cancel).setOnClickListener(this);
+						mDialog.findViewById(R.id.share_layout).setOnClickListener(this);
+					}
+					mDialog.show();
+				}else{
+					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
 				}
-				mDialog.show();
+
 				break;
 			case R.id.share_by_chatroom:
 				startActivity(new Intent().setClass(context, ShareToGroupActivity.class)

@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eventer.app.Constant;
 import com.eventer.app.R;
@@ -33,6 +34,7 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Contact;
 import com.eventer.app.service.CheckInternetService;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.widget.swipemenulistview.SwipeMenu;
 import com.eventer.app.widget.swipemenulistview.SwipeMenuCreator;
 import com.eventer.app.widget.swipemenulistview.SwipeMenuItem;
@@ -191,7 +193,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 										   int position, long id) {
 //				if (position != 0) {
 					ChatEntity msg = mData.get(position - 1);
-					showMyDialog("提示", msg, position - 1);
+					showMyDialog("提示", msg);
 //				}
 				return true;
 			}
@@ -229,10 +231,14 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent=new Intent();
-				intent.setClass(getActivity(), Activity_Contact.class);
-				startActivity(intent);
+				if(!"0".equals(Constant.UID)){
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), Activity_Contact.class);
+					startActivity(intent);
+				} else{
+					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+				}
+
 			}
 		});
 		refresh();
@@ -250,7 +256,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 				getResources().getDisplayMetrics());
 	}
 	//删除对话的消息框 
-	private void showMyDialog(String title, final ChatEntity message, final int position) {
+	private void showMyDialog(String title, final ChatEntity message) {
 
 		final AlertDialog dlg = new AlertDialog.Builder(context).create();
 		dlg.show();

@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.eventer.app.Constant;
-import com.eventer.app.R;
 import com.eventer.app.service.CheckInternetService;
 
 /**
@@ -32,16 +30,12 @@ public class NetworkReceiver extends BroadcastReceiver {
 
         if (activeNetInfo != null && activeNetInfo.isAvailable()
                 && activeNetInfo.isConnected()) { //net is available
-            if(activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI){
-                Constant.isWifiConnected=true;
-            }else{
-                Constant.isWifiConnected=false;
-            }
+            Constant.isWifiConnected = activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI;
             context.startService(new Intent(context, CheckInternetService.class));//make sure the net is truly available
 
         }else if(Constant.isConnectNet){
             Constant.isConnectNet=false;
-            Toast.makeText(mContext, mContext.getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, mContext.getText(R.string.no_network), Toast.LENGTH_SHORT).show();
             Intent broadcastIntent = new Intent();
             broadcastIntent.putExtra("net",false);
             broadcastIntent.setAction("android.net.conn.ISGOODORBAD");

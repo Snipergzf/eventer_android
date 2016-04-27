@@ -29,5 +29,5 @@ public class Phone {
 	public void setRelName(String relName) {
 		this.relName = relName;
 	}
-      
+
 }

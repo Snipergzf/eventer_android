@@ -105,7 +105,6 @@ public class CourseTimeAdapter  extends BaseAdapter {
 			convertView.setTag(holder);
 		}else {
 			holder=(ViewHolder)convertView.getTag();
-//			holder.loction.setTag(position);
 		}
 		holder.loction.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -171,36 +170,6 @@ public class CourseTimeAdapter  extends BaseAdapter {
 			holder.week.setText("");
 			holder.week.setHint("请选择上课节数");
 		}
-//		holder.loction.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				if(v.hasFocus()){
-//					focus_index=loc;
-//					Log.e("1",loc+"focus-------------------");
-//				}
-//			}
-//		});
-//		holder.loction.addTextChangedListener(new TextWatcher() {
-//			String text="";
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//				text=s.toString();
-//			}
-//
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before, int count) {
-//			}
-//
-//			@Override
-//			public void afterTextChanged(Editable s) {
-//				Log.e("1",loc+"focus-------------------"+focus_index+s.toString());
-//				if(focus_index==loc){
-//					final TextView tv=(TextView) view.findViewById(R.id.tv_location);
-//					listItems.get(loc).setLoction(tv.getText().toString());
-//				}
-//			}
-//		});
-
 		holder.time.setOnClickListener(new OnClickListener() {
 			int index1=0,index2=0,index3=0;
 			@Override
@@ -332,7 +301,5 @@ public class CourseTimeAdapter  extends BaseAdapter {
 		});
 		return view;
 	}
-
-
 
 }

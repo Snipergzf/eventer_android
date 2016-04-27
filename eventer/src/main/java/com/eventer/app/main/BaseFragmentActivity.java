@@ -1,4 +1,4 @@
-package com.eventer.app.ui.base;
+package com.eventer.app.main;
 
 import android.app.NotificationManager;
 import android.content.Context;

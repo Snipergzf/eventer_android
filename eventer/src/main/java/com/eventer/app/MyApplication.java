@@ -29,7 +29,7 @@ public class MyApplication extends Application{
 		context=this;
 		instance=this;
 		PreferenceUtils.init(context);
-		Constant.UID=PreferenceUtils.getInstance().getUserId();
+		Constant.UID = PreferenceUtils.getInstance().getUserId();
 		Log.e("1", "app-start");
 		
 	}

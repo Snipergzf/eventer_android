@@ -34,14 +34,10 @@ import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.SmileUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import hirondelle.date4j.DateTime;
 
 @SuppressLint("SetTextI18n")
 public class ConversationAdapter extends BaseAdapter {
@@ -94,37 +90,7 @@ public class ConversationAdapter extends BaseAdapter {
 
 	}
 
-	public String getTime(long now) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-		String time;
-		String date_str = sdf.format(new Date(now*1000));
-		String date_str1 = sdf.format(new Date());
 
-		DateTime date=new DateTime(date_str);
-		DateTime today=new DateTime(date_str1);
-		int year1=today.getYear();
-		int year2=date.getYear();
-		int days1=today.getDayOfYear();
-		int days2=date.getDayOfYear();
-		if(year1!=year2){
-			time=date_str.substring(0,11);
-		}else if(days1-days2==1){
-			time="昨天";
-		}else if(days1-days2==0){
-			time=date_str.substring(11);
-		}else if(today.getWeekDay()>date.getWeekDay()){
-			if(days1-days2<7){
-				int weekday=date.getWeekDay();
-				time=context.getResources().getStringArray(R.array.weeks)[weekday];
-			}else{
-				time=date_str.substring(5,11);
-			}
-		}else{
-			time=date_str.substring(5,11);
-		}
-
-		return time;
-	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
