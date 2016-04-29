@@ -512,12 +512,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\calendar_alarm_dialog.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\date_grid_fragment.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\date_grid_fragment.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_chatroom_header_item_4.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\item_chatroom_header_item_4.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\date_grid_fragment.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\layout\\date_grid_fragment.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\layout\\item_contactlist_listview_checkbox.xml",

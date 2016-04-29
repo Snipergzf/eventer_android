@@ -35,8 +35,8 @@ import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.main.BaseFragmentActivity;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
@@ -328,7 +328,7 @@ public class ChatRoomSettingActivity extends BaseFragmentActivity implements
 	private void showAvatar(final ImageView iv_avatar, final String useravatar) {
 		// TODO Auto-generated method stub
 		if (useravatar != null && !useravatar.equals("")) {
-			LoadUserAvatar avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+			LoadImage avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 			Bitmap bitmap = avatarLoader.loadImage(iv_avatar,
 					useravatar, new ImageDownloadedCallBack() {
 						@Override

@@ -36,8 +36,8 @@ import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.CircleImageView;
 import com.eventer.app.view.ExpandGridView;
@@ -73,7 +73,7 @@ public class ShareSchedualActivity extends SwipeBackActivity implements OnClickL
 	GridAdapter adapter;
 	private String publisher;
 	private String shareTo;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 	private AlertDialog dlg;
 	private boolean isCollect=false;
 	private Dialog mDialog;
@@ -86,7 +86,7 @@ public class ShareSchedualActivity extends SwipeBackActivity implements OnClickL
 		setBaseTitle(R.string.share_activity);
 		shareId=getIntent().getStringExtra("shareId");
 		shareTo = getIntent().getStringExtra("groupId");
-		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 		if(!TextUtils.isEmpty(shareId)){
 			initView();
 		}else{

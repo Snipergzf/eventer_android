@@ -9,7 +9,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.eventer.app.http.HTTPService;
+import com.eventer.app.http.HttpUnit;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 
@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
  * @author Leslie.Fang
  *
  */
-public class LoadUserAvatar {
+public class LoadImage {
     // 最大线程数
     private static final int MAX_THREAD_NUM = 5;
     // 一级内存缓存基于 LruCache
@@ -36,7 +36,7 @@ public class LoadUserAvatar {
     // 线程池
     private ExecutorService threadPools = null;
 
-    public LoadUserAvatar(Context context, String local_image_path) {
+    public LoadImage(Context context, String local_image_path) {
         bitmapCache = new BitmapCache();
         fileUtil = new FileUtil(context, local_image_path);
         threadPools = Executors.newFixedThreadPool(MAX_THREAD_NUM);
@@ -101,8 +101,8 @@ public class LoadUserAvatar {
                 public void run() {
                     Log.e("1", Thread.currentThread().getName()
                             + " is running--下载头像");
-                    Map<String,Object> result=HTTPService.getInstance()
-                            .getStream(imageUrl);
+                    Map<String,Object> result= HttpUnit.
+                                                     getStream(imageUrl);
                     if(result==null){
                         Log.e("1", "下载失败！");
                         return;

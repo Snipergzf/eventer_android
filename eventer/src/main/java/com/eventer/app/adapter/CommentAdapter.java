@@ -25,8 +25,8 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.Activity_UserInfo;
 import com.eventer.app.other.MyUserInfoActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
 import java.util.Date;
@@ -39,13 +39,13 @@ public class CommentAdapter extends BaseAdapter {
 	private Context context;
 	private List<Comment> commentlist;
 	private LayoutInflater inflater;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 
 	public CommentAdapter(Context context, List<Comment> commentlist) {
 		this.context = context;
 		this.commentlist = commentlist;
 		inflater = LayoutInflater.from(context);
-		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 	}
 
 	@Override

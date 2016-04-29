@@ -36,7 +36,6 @@ import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.AbstractSpinerAdapter.IOnItemSelectListener;
 import com.eventer.app.view.CircleProgressBar;
 import com.eventer.app.view.SpinerPopWindow;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 
@@ -49,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FillInUserInfoActivity extends SwipeBackActivity {
+public class FillInUserInfoActivity extends BaseActivity {
 	private EditText et_usernick,et_emial;
 	private TextView tv_sex;
 	TextView  tv_year,tv_school,tv_major,tv_class;
@@ -65,10 +64,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 	private String[] classinfo=new String[4];
 	private SpinerPopWindow mSpinerPopWindow;
 	AlertDialog upload_dlg;
-	private String year ;
-	private String major ;
 
-	private String school;
 	private MajorDao dao;
 	private Activity activity;
 	@Override
@@ -81,6 +77,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		dao = new MajorDao(context);
 		initView();
 	}
+	//初始化页面
 	private void initView() {
 		// TODO Auto-generated method stub
 		et_emial=(EditText)findViewById(R.id.et_email);
@@ -145,7 +142,9 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 
 
 	}
-
+	/**
+	 *处理控件的点击事件
+	 */
 	class MyListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -168,6 +167,9 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		}
 	}
 
+	/**
+	 *处理控件的点击事件
+	 */
 	class ClassListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -178,7 +180,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 					mSpinerPopWindow.refreshData(valueList, 0);
 					break;
 				case R.id.tv_school:
-					year = tv_year.getText().toString().trim();
+					String year = tv_year.getText().toString().trim();
 					if (!TextUtils.isEmpty(year)){
 						valueList = dao.getSchool(year);
 						mSpinerPopWindow.refreshData(valueList, 0);
@@ -192,7 +194,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 				case R.id.tv_major:
 
 					year = tv_year.getText().toString().trim();
-					school = tv_school.getText().toString().trim();
+					String school = tv_school.getText().toString().trim();
 					if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(school)){
 						valueList = dao.getMajor(year, school);
 						mSpinerPopWindow.refreshData(valueList, 0);
@@ -206,7 +208,7 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 
 					year = tv_year.getText().toString().trim();
 					school = tv_school.getText().toString().trim();
-					major = tv_major.getText().toString().trim();
+					String major = tv_major.getText().toString().trim();
 					if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(school) && !TextUtils.isEmpty(major)){
 						valueList = dao.getClass(year, school, major);
 						mSpinerPopWindow.refreshData(valueList, 0);
@@ -253,14 +255,13 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		Crop.of(source, destination).asSquare().start(this);
 	}
 
+	/**
+	 *处理图片结果，对图片进行压缩处理
+	 */
 	private void handleCrop(int resultCode, Intent result) {
 		if (resultCode == RESULT_OK&&!TextUtils.isEmpty(imageName)) {
 			String filePath = Constant.IMAGE_PATH + imageName;
 			BitmapFactory.Options measureOptions = new BitmapFactory.Options();
-			/**
-			 * most important:  options.inJustDecodeBounds = true;
-			 * decodeFile()，return bitmap=null，but options.outHeight = img's height
-			 */
 			measureOptions.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(filePath, measureOptions);
 			int scale = Math.min(measureOptions.outWidth, measureOptions.outHeight) / 240;
@@ -288,34 +289,12 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		upload_dlg = new AlertDialog.Builder(this).create();
 		upload_dlg.show();
 		Window window = upload_dlg.getWindow();
-		// *** 主要就是在这里实现这种效果的.
-		// 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
 		window.setContentView(R.layout.upload_dialog);
 		CircleProgressBar progress=(CircleProgressBar)window.findViewById(R.id.progress);
 		progress.setColorSchemeResources(android.R.color.holo_orange_light);
 	}
 
 
-
-	@SuppressLint("SdCardPath")
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
-			beginCrop(data.getData());
-		} else if (requestCode == Crop.REQUEST_CROP) {
-			handleCrop(resultCode, data);
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-
-	}
-
-
-//	@SuppressLint("SimpleDateFormat")
-//	private String getNowTime() {
-//		Date date = new Date(System.currentTimeMillis());
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSS");
-//		return dateFormat.format(date);
-//	}
 	/***
 	 * 弹出消息框
 	 * 选择些别
@@ -368,7 +347,6 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		maps.put("major", classinfo[2]);
 		maps.put("class", classinfo[3]);
 		maps.put("user_rank", "0");
-
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
 				FillInUserInfoActivity.this, Constant.URL_UPDATE_SELFINFO, maps);
 		task.getData(new DataCallBack() {
@@ -432,7 +410,6 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		Map<String, String> map = new HashMap<>();
 		if ((new File(Constant.IMAGE_PATH + image)).exists()) {
 			map.put("upload", Constant.IMAGE_PATH + image);
-			// map.put("image", image);
 		} else {
 			return;
 		}
@@ -485,6 +462,20 @@ public class FillInUserInfoActivity extends SwipeBackActivity {
 		});
 
 	}
+
+
+	@SuppressLint("SdCardPath")
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+			beginCrop(data.getData());
+		} else if (requestCode == Crop.REQUEST_CROP) {
+			handleCrop(resultCode, data);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();

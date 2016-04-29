@@ -28,8 +28,8 @@ import com.eventer.app.other.CollectActivity;
 import com.eventer.app.other.FeedbackActivity;
 import com.eventer.app.other.MsgAlertActivity;
 import com.eventer.app.other.MyUserInfoActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.view.MyToast;
@@ -52,7 +52,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 	TextView tv_name;
 	private ImageView iv_avatar;
 	private View iv_version_alert;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 	public static int IS_EXIT=0xfff;
 
 	@Override
@@ -67,7 +67,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 		context=getActivity();
-		avatarLoader = new LoadUserAvatar(getActivity(), Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(getActivity(), Constant.IMAGE_PATH);
 		initView(rootView);
 		return rootView;
 	}

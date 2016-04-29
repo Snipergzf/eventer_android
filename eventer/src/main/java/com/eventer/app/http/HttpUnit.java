@@ -13,7 +13,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -25,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,12 +58,12 @@ public class HttpUnit {
 	public static Map<String,Object> sendFriendRequest( Map<String, String> params) throws Exception{
 		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/friend/add", params);
 		JSONObject jsonObject= new  JSONObject(jsonString);
-		Map<String,Object> map=new HashMap<String, Object>();
+		Map<String,Object> map=new HashMap<>();
 		int status=jsonObject.getInt("status");
-		String info="";
+		String info;
 		if(status==0){
 			String finfo=jsonObject.getString("friend_action");
-			JSONObject jsonLogin= new  JSONObject(finfo);;
+			JSONObject jsonLogin= new  JSONObject(finfo);
 			info=jsonLogin.getString("certificate");
 			Log.e("1","add-friend" +info);
 		}else if(status==4){
@@ -81,7 +83,7 @@ public class HttpUnit {
 	public static Map<String,Object> sendFriendComfirm( Map<String, String> params) throws Exception{
 		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/friend/confirm", params);
 		JSONObject jsonObject= new  JSONObject(jsonString);
-		Map<String,Object> map=new HashMap<String, Object>();
+		Map<String,Object> map=new HashMap<>();
 		int status=jsonObject.getInt("status");
 		String info="";
 		if(status==0){
@@ -131,7 +133,7 @@ public class HttpUnit {
 		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/user/get_avatar", params);
 		Log.e("1",jsonString);
 		JSONObject jsonObject= new  JSONObject(jsonString);
-		Map<String,Object> map=new HashMap<String, Object>();
+		Map<String,Object> map=new HashMap<>();
 		int status=jsonObject.getInt("status");
 		String info="";
 		if(status==0){
@@ -154,7 +156,6 @@ public class HttpUnit {
 		int status=jsonObject.getInt("status");
 		if(status==0){
 			JSONObject info=jsonObject.getJSONObject("course_action");
-			//JSONObject course=info.getJSONObject("course");
 			JSONArray arraylist=info.getJSONArray("course");
 			for(int i=0;i<arraylist.length();i++){
 				try{
@@ -173,20 +174,7 @@ public class HttpUnit {
 					}catch (Exception e){
 						e.printStackTrace();
 					}
-//                String faculty=course.getString("s_faculty");
-//					JSONArray classjson=course.getJSONArray("s_class");
-//					String s_class="";
-//					for (int k = 0; k< classjson.length(); k++){
-//						s_class+=classjson.get(k)+"  ";
-//					}
-//				String s_class="";
-//				Iterator<String> it=classjson.keys();
-//				int index=0;
-//				while (it.hasNext()) {
-//					s_class+=classjson.getString(index+"")+"  ";
-//					index++;
-//					it.next();
-//				}
+
 
 					String detail=course.getString("c_detail");
 
@@ -211,38 +199,14 @@ public class HttpUnit {
 	}
 
 
-	public static String sendGetRequest(String path, Map<String, String> params) throws Exception{
-		HttpClient httpClient = new DefaultHttpClient();
-		StringBuilder sb = new StringBuilder(path);
-		sb.append('?');
-		// ?method=save&title=435435435&timelength=89
-		for(Map.Entry<String, String> entry : params.entrySet()){
-			sb.append(entry.getKey()).append('=')
-					.append(entry.getValue()).append('&');
-		}
-		sb.deleteCharAt(sb.length()-1);
 
-		URI url = new URI(sb.toString());
-		Log.e("1",url.toString());
-		HttpGet httpGet = new HttpGet(url);
-		HttpResponse httpResponse = httpClient.execute(httpGet);
-
-		String result=null;
-		//第二步，使用execute方法发送HTTP GET请求，并返回HttpResponse对象
-		if (httpResponse.getStatusLine().getStatusCode() == 200)
-		{
-			result = EntityUtils.toString(httpResponse.getEntity());
-			return result;
-		}
-		return null;
-	}
 
 	public static List<Course> sendCourseTableRequest( Map<String, String> params) throws Exception {
 		// TODO Auto-generated method stub
 		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/course/searchAll", params);
 		Log.e("1", jsonString);
 		JSONObject jsonObject= new  JSONObject(jsonString);
-		List<Course> list=new ArrayList<Course>();
+		List<Course> list=new ArrayList<>();
 		int status=jsonObject.getInt("status");
 		if(status==0){
 			JSONObject info=jsonObject.getJSONObject("course_action");
@@ -314,7 +278,7 @@ public class HttpUnit {
 		// 请求超时
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
 		// 读取超时
-		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 5000    );
+		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 5000);
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 		Log.e("1",path+httpResponse.getStatusLine().getStatusCode());
 		//第二步，使用execute方法发送HTTP GET请求，并返回HttpResponse对象
@@ -329,30 +293,33 @@ public class HttpUnit {
 	}
 
 
-	public static boolean isCaptivePortal() throws Exception{
-		//mUrl实际访问的地址是：http://clients3.google.com/generate_204
-		String mUrl = "http://g.cn/generate_204";
-	    /*
-	    Captive Portal的测试非常简单，就是向mUrl发送一个HTTP GET请求。如果无线网络提供商没有设置Portal
-	    Check，则HTTP GET请求将返回204。204表示请求处理成功，但没有数据返回。如果无线网络提供商设置了
-	    Portal Check，则它一定会重定向到某个特定网页。这样，HTTP GET的返回值就不是204
-	   */
-		HttpClient httpClient = new DefaultHttpClient();
-		URI url = new URI(mUrl);
-		Log.e("1",url.toString());
-		HttpGet httpGet = new HttpGet(url);
-		HttpResponse httpResponse = httpClient.execute(httpGet);
-		Log.e("1","----------------");
-		//第二步，使用execute方法发送HTTP GET请求，并返回HttpResponse对象
-		httpResponse = new DefaultHttpClient().execute(httpGet);
-		Log.e("1",httpResponse.getStatusLine().getStatusCode()+"");
-		if (httpResponse.getStatusLine().getStatusCode() == 204)
-		{
-			return true;
-		}
-		return false;
-	}
 
+	public static Map<String, Object> getStream(String url) {
+		HttpParams httpparams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpparams,
+				30000);
+		HttpClient client = new DefaultHttpClient(httpparams);
+		HttpGet get = new HttpGet(url);
+
+		try {
+			HttpResponse response = client.execute(get);
+			int status = response.getStatusLine().getStatusCode();
+			Log.e("1", status+"");
+			Map<String, Object>  map=new HashMap<>();
+			if (200 == status) {
+				map.put("status", 200);
+				map.put("inputstream", response.getEntity().getContent());
+				return map;
+			}else if(status==404){
+				map.put("status", 404);
+				return map;
+			}
+		} catch (Exception e) {
+			Log.e("1", e.getMessage()+"dd"+e.toString());
+		}
+
+		return null;
+	}
 
 
 	/**
@@ -429,9 +396,9 @@ public class HttpUnit {
 
 	public static List<User> searchFriendListRequest(List<String> list) {
 		// TODO Auto-generated method stub
-		List<User> users=new ArrayList<User>();
+		List<User> users=new ArrayList<>();
 		for (String string : list) {
-			Map<String,String> map=new HashMap<String, String>();
+			Map<String,String> map=new HashMap<>();
 			map.put("uid", string);
 			try {
 				String jsonString= sendPostRequest(Constant.URL_GET_SELFINFO, map);

@@ -38,8 +38,8 @@ import com.eventer.app.other.Activity_EventDetail;
 import com.eventer.app.other.Activity_UserInfo;
 import com.eventer.app.other.MyUserInfoActivity;
 import com.eventer.app.other.ShareSchedualActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.SmileUtils;
 
@@ -56,7 +56,7 @@ public class MessageAdapter extends BaseAdapter {
 	private static final int MESSAGE_TYPE_EVENT = 2;
 	private static final int MESSAGE_TYPE_SCHEDUAL = 3;
 	private LayoutInflater inflater;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 	private List<ChatEntity> msglist = new ArrayList<>();
 	private Context context;
 	private int chatType;
@@ -67,7 +67,7 @@ public class MessageAdapter extends BaseAdapter {
 		inflater = LayoutInflater.from(context);
 		this.msglist = msglist;
 		this.chatType = chatType;
-		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 	}
 
 	/**

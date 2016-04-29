@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -27,17 +28,14 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
-import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.view.MyCountTimer;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +44,7 @@ import cn.smssdk.SMSSDK;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class RegisterActivity extends SwipeBackActivity implements OnClickListener, Callback {
+public class RegisterActivity extends BaseActivity implements OnClickListener, Callback {
 
 	private EditText edit_tel,edit_code,edit_pwd;
 	private TextView btn_send_code;
@@ -79,11 +77,10 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 
 		init();
 		initSMSSDK();
-//		UserRegister();
 
 	}
 	/***
-	 * 给控件添加事件响应
+	 * 初始化控件，给控件添加事件响应
 	 */
 	public void init(){
 		/***
@@ -108,12 +105,12 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 					IsUserCheck=false;
 				}
 				if(IsUserCheck&&IsCodeCheck&&IsPwdCheck){
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_blue));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_white));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_white));
 					btn_next.setClickable(true);
 				}else{
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_gray));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_darker_gray));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_gray));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_darker_gray));
 					btn_next.setClickable(false);
 				}
 			}
@@ -151,12 +148,12 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 					IsCodeCheck=false;
 				}
 				if(IsUserCheck&&IsCodeCheck&&IsPwdCheck){
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_blue));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_white));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_white));
 					btn_next.setClickable(true);
 				}else{
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_gray));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_darker_gray));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_gray));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_darker_gray));
 					btn_next.setClickable(false);
 				}
 			}
@@ -209,12 +206,12 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 					IsPwdCheck=false;
 				}
 				if(IsUserCheck&&IsCodeCheck&&IsPwdCheck){
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_blue));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_white));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_white));
 					btn_next.setClickable(true);
 				}else{
-					btn_next.setBackground(getResources().getDrawable(R.drawable.button_gray));
-					btn_next.setTextColor(getResources().getColor(R.color.caldroid_darker_gray));
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_gray));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_darker_gray));
 					btn_next.setClickable(false);
 				}
 			}
@@ -226,6 +223,10 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 		btn_pwd_clear.setOnClickListener(this);
 		btn_send_code.setOnClickListener(this);
 	}
+
+	/**
+	 *处理各个控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -233,9 +234,9 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 			//"注册"按钮
 			case R.id.btn_next:
 			    TelString=edit_tel.getText().toString();
-			    UserRegister();
+//			    UserRegister();
 				//发送验证码确认
-//				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
+				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
 				break;
 			case R.id.btn_tel_clear:
 				edit_tel.setText("");
@@ -256,6 +257,7 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 						initSMSReceiver();
 					}
 					TelString=edit_tel.getText().toString();
+					pwd = edit_pwd.getText().toString();
 					//发送验证码请求
 					SMSSDK.getVerificationCode("86",TelString);
 
@@ -278,19 +280,13 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 	 *pwd
 	 */
 	public void UserRegister() {
-		Map<String, String> params = new HashMap<>();
-//		TelString=edit_tel.getText().toString();
-		pwd = edit_pwd.getText().toString();
-		params.put("phone", TelString);
+
 		if(TextUtils.isEmpty(pwd)){
 			Toast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
 			return;
-		}else{
-			pwd = MD5Util.getMD5(pwd);
 		}
-		params.put("pwd", pwd);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_REGISTER, params);
+				context, Constant.URL_REGISTER, HttpParamUnit.register(TelString, pwd));
 		task.getData(new DataCallBack() {
 
 			@Override
@@ -346,12 +342,8 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 	 *  参数为“phone”,“pwd”  ,"imei"  
 	 */
 	public void UserLogin() {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("phone", TelString);
-		params.put("pwd", pwd);
-		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_LOGIN_NEW, params);
+				context, Constant.URL_LOGIN_NEW, HttpParamUnit.login(TelString, pwd));
 		task.getData(new DataCallBack() {
 
 			@Override
@@ -367,7 +359,7 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 							Constant.isLogin=true;
 							Constant.LoginTime=System.currentTimeMillis()/1000;
 							String userinfo=data.getString("user_action");
-							JSONObject jsonLogin= JSONObject.parseObject(userinfo);;
+							JSONObject jsonLogin= JSONObject.parseObject(userinfo);
 							Constant.UID=jsonLogin.getInteger("uid")+"";
 							Constant.TOKEN=jsonLogin.getString("token");
 							Intent intent = new Intent();
@@ -428,6 +420,9 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 		SMSSDK.registerEventHandler(eventHandler);
 	}
 
+	/***
+	 * 处理短信验证码的结果
+	 */
 	@Override
 	public boolean handleMessage(Message msg) {
 
@@ -466,6 +461,17 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 		return false;
 	}
 
+	/***
+	 * 获取短信中的验证码
+	 */
+	public  String getStringNum(String str) {
+		String regEx="[^0-9]";
+		Pattern p = Pattern.compile(regEx);
+		Matcher m = p.matcher(str);
+		return m.replaceAll("").trim();
+	}
+
+
 	@Override
 	protected void onDestroy()
 	{
@@ -487,17 +493,6 @@ public class RegisterActivity extends SwipeBackActivity implements OnClickListen
 	protected void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-	}
-	/***
-	 * 获取短信中的验证码
-	 * @param str
-	 * @return
-	 */
-	public  String getStringNum(String str) {
-		String regEx="[^0-9]";
-		Pattern p = Pattern.compile(regEx);
-		Matcher m = p.matcher(str);
-		return m.replaceAll("").trim();
 	}
 
 }

@@ -24,8 +24,8 @@ import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.Activity_Chat;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
 import java.util.HashMap;
@@ -38,13 +38,13 @@ public class ChatRoomAdapter extends BaseAdapter {
     Context context;
     List<ChatRoom> grouplist;
     private LayoutInflater inflater;
-    private LoadUserAvatar avatarLoader;
+    private LoadImage avatarLoader;
 
     public ChatRoomAdapter(Context context, List<ChatRoom> grouplist) {
         this.context = context;
         this.grouplist = grouplist;
         inflater = LayoutInflater.from(context);
-        avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+        avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
     }
 
     @Override

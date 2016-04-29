@@ -18,8 +18,8 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.entity.User;
 import com.eventer.app.other.ShareToSingleActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public  class PickContactAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private boolean[] isCheckedArray;
     private Bitmap[] bitmaps;
-    private LoadUserAvatar avatarLoader;
+    private LoadImage avatarLoader;
     private List<User> list = new ArrayList<>();
     private List<String> exitingMembers = new ArrayList<>();
     private List<String> addList = new ArrayList<>();
@@ -44,7 +44,7 @@ public  class PickContactAdapter extends BaseAdapter {
                               List<User> users) {
 
         layoutInflater = LayoutInflater.from(context);
-        avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+        avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
         this.res = resource;
         this.list = users;
         bitmaps = new Bitmap[list.size()];

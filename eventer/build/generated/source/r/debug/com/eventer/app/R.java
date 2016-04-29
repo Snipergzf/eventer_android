@@ -2931,7 +2931,6 @@ containing a value of this type.
         public static final int topPanel=0x7f0d0038;
         public static final int top_bar=0x7f0d0085;
         public static final int top_title=0x7f0d005a;
-        public static final int tv=0x7f0d00d8;
         public static final int tv_ack=0x7f0d020d;
         public static final int tv_activity=0x7f0d00fd;
         public static final int tv_activityshare=0x7f0d01c7;
@@ -3069,6 +3068,7 @@ containing a value of this type.
         public static final int view_temp=0x7f0d0079;
         public static final int viewevent_title=0x7f0d015f;
         public static final int visible=0x7f0d0017;
+        public static final int web=0x7f0d00d8;
         public static final int weekday_gridview=0x7f0d015c;
         public static final int weekinfo_ll=0x7f0d00b9;
         public static final int weekinfo_rl=0x7f0d0195;

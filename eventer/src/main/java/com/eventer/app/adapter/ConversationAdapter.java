@@ -29,8 +29,8 @@ import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.Activity_Chat;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.SmileUtils;
 
@@ -44,14 +44,14 @@ public class ConversationAdapter extends BaseAdapter {
 	private Context context;                        //运行上下文
 	private List<ChatEntity> listItems;
 	private LayoutInflater mInflater;            //视图容器
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 
 
 	public ConversationAdapter(Context context,List<ChatEntity>  listItems) {
 		this.context = context;
 		this.mInflater = LayoutInflater.from(context);   //创建视图容器并设置上下文
 		this.listItems = listItems;
-		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 
 	}
 	public void setData(List<ChatEntity>  listItems){

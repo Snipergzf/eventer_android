@@ -24,8 +24,8 @@ import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.other.ShareToGroupActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private boolean[] isCheckedArray;
     private Map<String,Bitmap[]> bitmaps;
-    private LoadUserAvatar avatarLoader;
+    private LoadImage avatarLoader;
     private List<ChatRoom> list = new ArrayList<>();
     private List<String> exitingMembers = new ArrayList<>();
     private List<String> addList = new ArrayList<>();
@@ -54,7 +54,7 @@ public  class PickChatroomAdapter extends BaseAdapter {
                                List<ChatRoom> rooms) {
 
         layoutInflater = LayoutInflater.from(context);
-        avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+        avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
         this.res = resource;
         this.list = rooms;
         this.context=context;

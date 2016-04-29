@@ -1452,7 +1452,6 @@ int id toggle_voice 0x7f0d010e
 int id topPanel 0x7f0d0038
 int id top_bar 0x7f0d0085
 int id top_title 0x7f0d005a
-int id tv 0x7f0d00d8
 int id tv_ack 0x7f0d020d
 int id tv_activity 0x7f0d00fd
 int id tv_activityshare 0x7f0d01c7
@@ -1590,6 +1589,7 @@ int id view_kcteacher_tv 0x7f0d016b
 int id view_temp 0x7f0d0079
 int id viewevent_title 0x7f0d015f
 int id visible 0x7f0d0017
+int id web 0x7f0d00d8
 int id weekday_gridview 0x7f0d015c
 int id weekinfo_ll 0x7f0d00b9
 int id weekinfo_rl 0x7f0d0195

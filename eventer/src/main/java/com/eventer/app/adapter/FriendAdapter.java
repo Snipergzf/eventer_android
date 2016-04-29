@@ -18,8 +18,8 @@ import com.easemob.chat.EMConversation;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.entity.User;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class FriendAdapter extends ArrayAdapter<User>  {
     private SparseIntArray sectionOfPosition;
     private int res;
     public MyFilter myFilter;
-    private LoadUserAvatar avatarLoader;
+    private LoadImage avatarLoader;
 
 
     @SuppressLint("SdCardPath")
@@ -50,7 +50,7 @@ public class FriendAdapter extends ArrayAdapter<User>  {
         copyUserList = new ArrayList<>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
-        avatarLoader=new LoadUserAvatar(context, Constant.IMAGE_PATH);
+        avatarLoader=new LoadImage(context, Constant.IMAGE_PATH);
 
     }
 

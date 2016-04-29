@@ -34,8 +34,8 @@ import com.eventer.app.entity.Phone;
 import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.view.CircleProgressBar;
 import com.eventer.app.view.refreshlist.IXListViewRefreshListener;
 import com.eventer.app.view.refreshlist.XListView;
@@ -62,7 +62,7 @@ public class LocalContactActivity extends SwipeBackActivity {
 	private LinearLayout loading;
 
 	public Context context;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,7 +70,7 @@ public class LocalContactActivity extends SwipeBackActivity {
 		setContentView(R.layout.activity_phone_contact);
 		context=this;
 		setBaseTitle(R.string.phone_contact);
-		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 		listView = (XListView) findViewById(R.id.list);
 
 		loading=(LinearLayout)findViewById(R.id.ll_loading);

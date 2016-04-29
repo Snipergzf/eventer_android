@@ -108,12 +108,5 @@ public class MyApplication extends Application{
 		MyApplication.UserList=userlist;
 	}
 
-	@Override
-	public void onTerminate() {
-		// TODO Auto-generated method stub
-		super.onTerminate();
-//		DBManager.getInstance().closeDatabase();
-	}
-    
 
 }

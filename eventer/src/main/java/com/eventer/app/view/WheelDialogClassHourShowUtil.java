@@ -1,4 +1,4 @@
-package com.eventer.app.util;
+package com.eventer.app.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,9 +10,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.eventer.app.R;
-import com.eventer.app.view.DialogView_Two;
-import com.eventer.app.view.DialogView_Two.onWheelBtnNegClick;
-import com.eventer.app.view.DialogView_Two.onWheelBtnPosClick;
+import com.eventer.app.view.DialogView_ClassHour;
+import com.eventer.app.view.DialogView_ClassHour.onWheelBtnNegClick;
+import com.eventer.app.view.DialogView_ClassHour.onWheelBtnPosClick;
 import com.eventer.app.view.wheel.WheelListAdapter;
 import com.eventer.app.view.wheel.WheelView;
 
@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * */
 @SuppressWarnings({"UnusedDeclaration"})
-public class WheelDialogTwoShowUtil {
+public class WheelDialogClassHourShowUtil {
 
 
 	private Context mContext;
@@ -31,9 +31,9 @@ public class WheelDialogTwoShowUtil {
 	private String title;
 	private Map<Integer,String[]> data;
 
-	private WheelView wheelView1,wheelView2;
+	private WheelView wheelView1,wheelView2,wheelView3;
 	private Dialog dialog;
-	public DialogView_Two dialogView;
+	public DialogView_ClassHour dialogView;
 
 	private int visibleItems=5;
 
@@ -53,6 +53,8 @@ public class WheelDialogTwoShowUtil {
 				return wheelView1;
 			case 2:
 				return wheelView2;
+			case 3:
+				return wheelView3;
 			default:
 				return null;
 		}
@@ -62,13 +64,13 @@ public class WheelDialogTwoShowUtil {
 		this.title = title;
 	}
 
-	public WheelDialogTwoShowUtil(Context mContext,Display mDisplay,Map<Integer,String[]> data,String title) {
+	public WheelDialogClassHourShowUtil(Context mContext,Display mDisplay,Map<Integer,String[]> data,String title) {
 
 		this.mContext = mContext;
 		this.data=data;
 		this.title=title;
 
-		dialogView=new DialogView_Two(mContext);
+		dialogView=new DialogView_ClassHour(mContext);
 		dialogView.setWidth(mDisplay.getWidth());
 		dialogView.setHeight(mDisplay.getHeight()/100*40);
 
@@ -86,7 +88,7 @@ public class WheelDialogTwoShowUtil {
 		dialogView.setBtnPosClick(new onWheelBtnPosClick() {
 
 			@Override
-			public void onClick(String text, int[] position) {
+			public void onClick(String[] text, int[] position) {
 				// TODO Auto-generated method stub
 				dissmissWheel();
 			}
@@ -97,9 +99,9 @@ public class WheelDialogTwoShowUtil {
 	}
 
 
-	private Dialog initDialog(DialogView_Two dialogView2)	{
+	private Dialog initDialog(DialogView_ClassHour dialogView2)	{
 		dialog =dialogView2.initDialog(title, "内容");
-		initWheel(dialogView2.getWheelView(1),dialogView2.getWheelView(2),data);
+		initWheel(dialogView2.getWheelView(1),dialogView2.getWheelView(2),dialogView2.getWheelView(3),data);
 		return dialog;
 	}
 
@@ -124,10 +126,11 @@ public class WheelDialogTwoShowUtil {
 	}
 
 
-	public void setWheelHint(int index1,int index2)	{
+	public void setWheelHint(int index1,int index2,int index3)	{
 		wheelView1.setCurrentItem(index1);
 		wheelView2.setCurrentItem(index2);
-		dialogView.SetHint(index1, index2);
+		wheelView3.setCurrentItem(index3);
+		dialogView.SetHint(index1, index2,index3);
 	}
 
 	public void setWindowAlpha(Activity mActivity)	{
@@ -140,13 +143,14 @@ public class WheelDialogTwoShowUtil {
 	WheelListAdapter mAdapter;
 	// Scrolling flag
 	@SuppressLint("NewApi")
-	private void initWheel(WheelView wheel1,WheelView wheel2,final Map<Integer,String[]> data )	{
+	private void initWheel(WheelView wheel1,WheelView wheel2,WheelView wheel3,final Map<Integer,String[]> data )	{
 
 		//为dialog的确定和取消按钮设置数据
-		dialogView.setWheel(wheel1,wheel2, data);
+		dialogView.setWheel(wheel1,wheel2, wheel3,data);
 		wheelView1=wheel1;
 
 		wheelView2=wheel2;
+		wheelView3=wheel3;
 
 		wheel1.setVisibleItems(visibleItems);
 		mAdapter =new WheelListAdapter(mContext,data.get(1), R.layout.wheel_layout, wheel1);
@@ -156,11 +160,14 @@ public class WheelDialogTwoShowUtil {
 		mAdapter =new WheelListAdapter(mContext,data.get(2), R.layout.wheel_layout, wheel2);
 		wheel2.setViewAdapter(mAdapter);
 
+		wheel3.setVisibleItems(visibleItems);
+		mAdapter =new WheelListAdapter(mContext,data.get(3), R.layout.wheel_layout, wheel3);
+		wheel3.setViewAdapter(mAdapter);
+
 	}
 
 	/**
 	 * 在选择完以后要执行的事件
-
 	 */
 	public  void setTextToView(View view,String text)	{
 
@@ -173,12 +180,6 @@ public class WheelDialogTwoShowUtil {
 //			EditText mEditText=(EditText)view;
 //			mEditText.setText(text);
 //		}
-	}
-
-
-	public void setConnectable(boolean b) {
-		// TODO Auto-generated method stub
-		dialogView.setConnectable(b);
 	}
 
 }

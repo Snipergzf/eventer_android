@@ -38,8 +38,8 @@ import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.ChatRoom;
 import com.eventer.app.entity.User;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
@@ -501,7 +501,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 		private LayoutInflater layoutInflater;
 		private boolean[] isCheckedArray;
 		private Bitmap[] bitmaps;
-		private LoadUserAvatar avatarLoader;
+		private LoadImage avatarLoader;
 		private List<User> list = new ArrayList<>();
 		private int res;
 
@@ -509,7 +509,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 								  List<User> users) {
 
 			layoutInflater = LayoutInflater.from(context);
-			avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+			avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 
 			this.res = resource;
 			this.list = users;

@@ -2,6 +2,8 @@ package com.eventer.app.http;
 
 import com.eventer.app.Constant;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.util.MD5Util;
+import com.eventer.app.util.PreferenceUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +12,23 @@ import java.util.Map;
  * Created by LiuNana on 2016/1/28.
  */
 public class HttpParamUnit {
+
+    public static Map<String,String> register(String phone, String pwd){
+        Map<String,String> map=new HashMap<>();
+        map.put("phone", phone);
+        map.put("pwd", MD5Util.getMD5(pwd));
+        return map;
+    }
+
+    public static Map<String,String> login(String phone, String pwd){
+        Map<String,String> map=new HashMap<>();
+        map.put("phone", phone);
+        map.put("pwd", pwd);
+        map.put("imei", PreferenceUtils.getInstance().getDeviceId());
+        return map;
+    }
+
+
     public static Map<String,String> eventAddFeedback(String eid,
                                       String share, String click, String participate){
         Map<String,String> map=new HashMap<>();

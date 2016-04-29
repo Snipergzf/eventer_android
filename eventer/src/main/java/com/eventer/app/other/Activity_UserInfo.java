@@ -39,8 +39,8 @@ import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.CircleProgressBar;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
@@ -55,7 +55,7 @@ public class Activity_UserInfo extends SwipeBackActivity {
 	private TextView tv_name,tv_email,tv_school,tv_grade,tv_major,tv_nick;
 	private Context context;
 	private ImageView iv_avatar;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 	private boolean try_again=false;
 	private UserDetail user;
 	private Button  btn_sendmsg;
@@ -73,7 +73,7 @@ public class Activity_UserInfo extends SwipeBackActivity {
 		setContentView(R.layout.activity_userinfo);
 		context =Activity_UserInfo.this;
 		setBaseTitle(R.string.user_res);
-		avatarLoader = new LoadUserAvatar(this, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(this, Constant.IMAGE_PATH);
 		id = this.getIntent().getStringExtra("user");
 		initView();
 		user=new UserDetail();

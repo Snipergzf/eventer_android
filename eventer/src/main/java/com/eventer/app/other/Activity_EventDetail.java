@@ -4,21 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ImageSpan;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,17 +31,13 @@ import com.eventer.app.entity.Schedual;
 import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
-import com.eventer.app.util.FileUtil;
 import com.eventer.app.view.MyToast;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.xml.sax.XMLReader;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -68,15 +52,13 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	ImageView iv_collect,iv_share,iv_comment;
 	private TextView tv_theme,tv_title,tv_time,tv_source,tv_pubtime,tv_place;
 	private TextView tv_collect_num,tv_share_num,tv_comment_num;
-	private TextView tv;
+	private WebView web;
 	ImageView[] ivlist;
 	private Event event;
 	private String id;
 	private Context context;
 	private EventOpDao dao;
 	private Dialog mDialog;
-//	private int index=0;
-	private FileUtil fileUtil;
 	private boolean isCollect=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,30 +66,28 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		setContentView(R.layout.activity_event_detail);
 		context=this;
 		dao=new EventOpDao(context);
-		fileUtil = new FileUtil(context, Constant.IMAGE_PATH);
 		initView();
 	}
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		iv_collect=(ImageView)findViewById(R.id.iv_collect);
-		iv_share=(ImageView)findViewById(R.id.iv_share);
-		iv_comment=(ImageView)findViewById(R.id.iv_comment);
-		tv_pubtime=(TextView)findViewById(R.id.tv_pubtime);
-		tv_source=(TextView)findViewById(R.id.tv_source);
-		tv_theme=(TextView)findViewById(R.id.tv_tag);
-		tv_time=(TextView)findViewById(R.id.tv_time);
-		tv_place=(TextView)findViewById(R.id.tv_place);
-		tv_collect_num=(TextView)findViewById(R.id.tv_collection_num);
-		tv_share_num=(TextView)findViewById(R.id.tv_share_num);
-		tv_comment_num=(TextView)findViewById(R.id.tv_comment_num);
-		tv=(TextView)findViewById(R.id.tv);
+		iv_collect = (ImageView)findViewById(R.id.iv_collect);
+		iv_share = (ImageView)findViewById(R.id.iv_share);
+		iv_comment = (ImageView)findViewById(R.id.iv_comment);
+		tv_pubtime = (TextView)findViewById(R.id.tv_pubtime);
+		tv_source = (TextView)findViewById(R.id.tv_source);
+		tv_theme = (TextView)findViewById(R.id.tv_tag);
+		tv_time = (TextView)findViewById(R.id.tv_time);
+		tv_place = (TextView)findViewById(R.id.tv_place);
+		tv_collect_num = (TextView)findViewById(R.id.tv_collection_num);
+		tv_share_num = (TextView)findViewById(R.id.tv_share_num);
+		tv_comment_num = (TextView)findViewById(R.id.tv_comment_num);
+		web = (WebView) findViewById(R.id.web);
 		tv_title=(TextView)findViewById(R.id.tv_title);
 		iv_collect.setOnClickListener(this);
 		iv_comment.setOnClickListener(this);
 		iv_share.setOnClickListener(this);
 		ivlist=new ImageView[]{iv_collect,iv_share,iv_comment};
-//		event=(Event) MyApplication.getInstance().getValueByKey("event_detail");
 		id=getIntent().getStringExtra("event_id");
 		if(TextUtils.isEmpty(id)){
 			Toast.makeText(context, "活动不存在！", Toast.LENGTH_SHORT).show();
@@ -130,29 +110,15 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			String content=event.getContent();
 			if(!TextUtils.isEmpty(content.trim()))
 				content=ToDBC(content);
-//			content = "<p>图文资讯</p><font color='red'>红色字</font>"+content;
-			Spanned sp = Html.fromHtml(content, new Html.ImageGetter() {
-				@Override
-				public Drawable getDrawable(String source) {
-
-					DisplayMetrics dm = new DisplayMetrics();
-					getWindowManager().getDefaultDisplay().getMetrics(dm);
-					Drawable d = ContextCompat.getDrawable(context, R.drawable.default_avatar);
-
-					int width = dm.widthPixels - 20;
-					int heigt = (width * d.getIntrinsicHeight()) / d.getIntrinsicWidth();
-
-					d.setBounds(0, 0, dm.widthPixels - 20,
-							heigt);
-					return d;
-				}
-
-			}, new MyImgTagHandler());
+			String customHtml = "<html><head>\n" +
+					"<style type=\"text/css\">img {width:100%;height:auto;}</style></head>" +
+					"<body>"+content+"</body></html>";
+			web.getSettings().setDefaultTextEncodingName("UTF-8");
+			web.loadData(customHtml, "text/html; ; charset=UTF-8", null);
 			long pubtime=event.getIssueTime();
 			String place=event.getPlace();
 
 
-//		    int len=(new Long(pubtime)).toString().length();
 			if(pubtime>0)
 				tv_pubtime.setText(DateUtils.getTimestampString(new Date(pubtime*1000)));
 			else {
@@ -186,11 +152,6 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 			if(!TextUtils.isEmpty(place)){
 				tv_place.setText(place);
 			}
-			tv.setText(sp);
-//		    tv.setAutoLinkMask(Linkify.ALL);
-			tv.setClickable(true);
-			tv.setMovementMethod(LinkMovementMethod.getInstance());
-			DownPage(content);
 			EventOp e=new EventOp();
 			e.setEventID(id);
 			e.setOperation(4);
@@ -209,39 +170,6 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 	}
 
 
-
-	public class MyImgTagHandler implements Html.TagHandler {
-
-		public void handleTag(boolean opening, String tag, Editable output,
-							  XMLReader xmlReader) {
-			if(tag.toLowerCase().equals("img")) {
-				int len = output.length();
-				ImageSpan[] images = output.getSpans(len - 1, len, ImageSpan.class);
-				String imgURL = images[0].getSource();
-				Log.e("1",len+imgURL);
-				output.setSpan(new ImageClick(context, imgURL), len-1, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			}
-		}
-	}
-	private class ImageClick extends ClickableSpan {
-
-		private String url;
-		private Context context;
-
-		public ImageClick(Context context, String url) {
-
-			this.context = context;
-			this.url = url;
-
-		}
-		@Override
-		public void onClick(View widget) {
-			Intent intent = new Intent(context, ShowBigImage.class);
-			intent.putExtra("avatar", url);
-			Log.e("1", url);
-			context.startActivity(intent);
-		}
-	}
 
 	private void ClickFeedBack() {
 		// TODO Auto-generated method stub
@@ -330,78 +258,6 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 		}
 		return new String(c);
 	}
-	/**
-	 * 执行异步任务
-	 *
-	 *
-	 */
-	public void DownPage(String... params) {
-		new AsyncTask<String, Object,Spanned>() {
-
-			@Override
-			protected Spanned doInBackground(String... params) {
-				return Html.fromHtml(params[0], new Html.ImageGetter() {
-					@Override
-					public Drawable getDrawable(String source) {
-						InputStream is;
-						String filename = source
-								.substring(source.lastIndexOf("/") + 1) + "_e";
-						String filepath = fileUtil.getAbsolutePath() + filename;
-						try {
-							Drawable d;
-							Log.e("1", "url:" + source);
-//							BitmapCache bitmapCache = new BitmapCache();
-//							Bitmap bitmap = bitmapCache.getBitmap(source);
-							Bitmap bitmap = BitmapFactory.decodeFile(filepath);
-							if (bitmap != null) {
-								d = new BitmapDrawable(context.getResources(), bitmap);
-							} else {
-								is = (InputStream) new URL(source).getContent();
-								BitmapFactory.Options options = new BitmapFactory.Options();
-								options.inJustDecodeBounds = false;
-								options.inSampleSize = 1; // width，hight设为原来的十分一
-
-								bitmap = BitmapFactory.decodeStream(is,
-										null, options);
-
-//								d = Drawable.createFromStream(is, "src");
-//								BitmapDrawable bd = (BitmapDrawable) d;
-//								bitmap=bd.getBitmap();
-//								bitmapCache.putBitmap(source, bitmap);
-								fileUtil.saveBitmap(filename, bitmap);
-//								if(bitmapCache.getBitmap(source)!=null){
-//									Log.e("1","rrrr "+source);
-//								}
-								is.close();
-								d = new BitmapDrawable(context.getResources(), bitmap);
-							}
-
-							DisplayMetrics dm = new DisplayMetrics();
-							getWindowManager().getDefaultDisplay().getMetrics(dm);
-							int width = dm.widthPixels - 20;
-							int heigt = (width * d.getIntrinsicHeight()) / d.getIntrinsicWidth();
-							d.setBounds(10, 0, dm.widthPixels - 10,
-									heigt);
-
-							return d;
-
-						} catch (Exception e) {
-							Log.e("1", e.toString());
-							DisplayMetrics dm = new DisplayMetrics();
-							getWindowManager().getDefaultDisplay().getMetrics(dm);
-							Drawable d = ContextCompat.getDrawable(context, R.color.caldroid_holo_blue_light_1);
-							if (d != null)
-								d.setBounds(0, 0, dm.widthPixels,
-										320);
-							return d;
-						}
-					}
-				}, new MyImgTagHandler());
-			}
-			protected void onPostExecute(Spanned sp) {
-				tv.setText(sp);
-			}
-		}.execute(params);}
 
 	public String getTime(long now) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -711,9 +567,6 @@ public class Activity_EventDetail  extends SwipeBackActivity  implements OnClick
 					}else{
 						if(!Constant.isConnectNet){
 							Toast.makeText(context, getText(R.string.no_network)+"无法更新数据~", Toast.LENGTH_SHORT).show();
-						}else{
-//							Toast.makeText(context,
-//									"更新数据失败，活动可能已经过期！", Toast.LENGTH_SHORT ).show();
 						}
 
 					}

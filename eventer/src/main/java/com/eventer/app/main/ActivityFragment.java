@@ -273,8 +273,8 @@ public  class ActivityFragment extends Fragment implements OnClickListener,OnScr
 								id_list.clear();
 							}
 							for (Event e: list) {
-//								EventDao dao = new EventDao(context);
-//								dao.saveEvent(e);
+								EventDao dao = new EventDao(context);
+								dao.saveEvent(e);
 								all_event.add(e);
 								if("".equals(theme)){
 									listItems.add(e);

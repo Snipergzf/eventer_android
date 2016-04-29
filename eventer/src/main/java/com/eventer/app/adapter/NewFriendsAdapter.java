@@ -25,8 +25,8 @@ import com.eventer.app.entity.InviteMessage.InviteMesageStatus;
 import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class NewFriendsAdapter extends BaseAdapter {
     Context context;
     List<InviteMessage> msgs;
     private InviteMessgeDao messgeDao;
-    private LoadUserAvatar avatarLoader;
+    private LoadImage avatarLoader;
     int total = 0;
 
     @SuppressLint("SdCardPath")
@@ -46,7 +46,7 @@ public class NewFriendsAdapter extends BaseAdapter {
         this.context = context;
         this.msgs = msgs;
         messgeDao = new InviteMessgeDao(context);
-        avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+        avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
         total = msgs.size();
     }
 

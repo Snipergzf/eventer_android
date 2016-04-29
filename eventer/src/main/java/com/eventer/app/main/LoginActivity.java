@@ -35,8 +35,6 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.smssdk.SMSSDK;
-
 
 public class LoginActivity extends BaseFragmentActivity implements OnClickListener {
 
@@ -56,7 +54,11 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		isActive=true;
 		context=this;
 		Constant.isExist=false;
-		SMSSDK.initSDK(LoginActivity.this, Constant.APPKEY, Constant.APPSECRET);
+//		SMSSDK.initSDK(LoginActivity.this, Constant.APPKEY, Constant.APPSECRET);
+		initView();
+	}
+
+	private void initView() {
 		btn_login = (Button)findViewById(R.id.btn_login);
 		btn_pwd_clear = (ImageButton)findViewById(R.id.btn_pwd_clear);
 		btn_user_clear =(ImageButton)findViewById(R.id.btn_user_clear);
@@ -116,7 +118,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 										  int after) {
-				// TODO Auto-generated method stub				
+				// TODO Auto-generated method stub
 			}
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -125,14 +127,10 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 			}
 		});
 		String user=PreferenceUtils.getInstance().getLoginUser();
-		String pwd=PreferenceUtils.getInstance().getLoginPwd();
 		if(user!=null && !user.equals("") && !user.equals("0")){
 			edit_user.setText(user);
 			edit_pwd.setFocusable(true);
 			edit_pwd.requestFocus();
-//			if(pwd!=null&& !pwd.equals("")){
-//				edit_pwd.setText(pwd);
-//			}
 			edit_pwd.setText("");
 		}
 		btn_pwd_clear.setOnClickListener(this);
@@ -142,6 +140,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		tv_newuser.setOnClickListener(this);
 		tv_tourist.setOnClickListener(this);
 	}
+
 
 	private void showDialog(){
 		dialog = new AlertDialog.Builder(this).create();
@@ -203,84 +202,6 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				break;
 		}
 	}
-//
-//	/**
-//	 * 执行异步任务
-//	 * 登录系统
-//	 *  参数为“phone”,“pwd”  ,"imei"
-//	 */
-//	public void UserLogin() {
-//		Map<String, String> params = new HashMap<>();
-//		params.put("phone", edit_user.getText().toString());
-//		params.put("pwd", edit_pwd.getText().toString());
-//		params.put("imei", PreferenceUtils.getInstance().getDeviceId());
-//		LoadDataFromHTTP task = new LoadDataFromHTTP(
-//				context, Constant.URL_LOGIN, params);
-//		task.getData(new DataCallBack() {
-//
-//			@Override
-//			public void onDataCallBack(JSONObject data) {
-//				// TODO Auto-generated method stub
-//				try {
-//					int code = data.getInteger("status");
-//					switch (code) {
-//						case 0:
-//							Log.e("1", "登录成功！");
-//							PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
-//							PreferenceUtils.getInstance().setLoginPwd(edit_pwd.getText().toString());
-//							Constant.isLogin = true;
-//							Constant.LoginTime = System.currentTimeMillis() / 1000;
-//							JSONObject jsonLogin = data.getJSONObject("user_action");
-//							Constant.UID = jsonLogin.getInteger("uid") + "";
-//							PreferenceUtils.getInstance().setUserId(Constant.UID);
-//							Log.e("1", Constant.UID + "---" + PreferenceUtils.getInstance().getUserId());
-//							Constant.TOKEN = jsonLogin.getString("token");
-//							initSelfInfo();
-//							MobclickAgent.onProfileSignIn(Constant.UID);
-//							break;
-//						case 1:
-//							if(dialog!=null)
-//								dialog.cancel();
-//							Toast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
-//									.show();
-//							break;
-//						case 2:
-//							if(dialog!=null)
-//								dialog.cancel();
-//							Toast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
-//									.show();
-//						case 23:
-//							if(dialog!=null)
-//								dialog.cancel();
-//							Toast toast = Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
-//							//toast.setGravity(Gravity.CENTER, 0, 0);
-//							toast.show();
-//							break;
-//						case -1:
-//							if(dialog!=null)
-//								dialog.cancel();
-//							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_LONG)
-//									.show();
-//							break;
-//						default:
-//							if(dialog!=null)
-//								dialog.cancel();
-//							Toast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
-//									.show();
-//					}
-//
-//				} catch (JSONException e) {
-//
-//					Toast.makeText(context, "数据解析错误...",
-//							Toast.LENGTH_SHORT).show();
-//					e.printStackTrace();
-//				} catch (Exception e) {
-//					// TODO: handle exception
-//				}
-//			}
-//		});
-//	}
-
 
 	/**
 	 * 执行异步任务
@@ -394,9 +315,6 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 						JSONObject json=data.getJSONObject("user_action");
 						JSONObject info=json.getJSONObject("info");
 						String name=info.getString("name");
-//	                    	EventDao dao=new EventDao(context);
-//				        	List<String> list=dao.getEventIDList();
-//				        	MyApplication.getInstance().setCacheByKey("EventList", list);
 						if(name!=null&& !name.equals("")){
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("sex", info.getString("sex"));

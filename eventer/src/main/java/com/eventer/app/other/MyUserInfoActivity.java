@@ -31,8 +31,8 @@ import com.eventer.app.http.UploadPicToServer;
 import com.eventer.app.http.UploadPicToServer.DataCallBack;
 import com.eventer.app.main.CheckPhoneActivity;
 import com.eventer.app.main.ProfileFragment;
-import com.eventer.app.task.LoadUserAvatar;
-import com.eventer.app.task.LoadUserAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.BitmapCache;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
@@ -68,7 +68,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
     public static int EDIT_CLASS=0x29;
     private String imageName;
     private static final int UPDATE_NICK = 5;// 结果
-    private LoadUserAvatar avatarLoader;
+    private LoadImage avatarLoader;
     private boolean isUpload=false;
 
     String sex;
@@ -83,7 +83,7 @@ public class MyUserInfoActivity extends SwipeBackActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myinfo);
-        avatarLoader = new LoadUserAvatar(this, Constant.IMAGE_PATH);
+        avatarLoader = new LoadImage(this, Constant.IMAGE_PATH);
         context=this;
         activity=this;
         setBaseTitle(R.string.my_info);

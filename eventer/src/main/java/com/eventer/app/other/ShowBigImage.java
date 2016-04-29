@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.eventer.app.Constant;
 import com.eventer.app.R;
-import com.eventer.app.task.LoadBigAvatar;
-import com.eventer.app.task.LoadBigAvatar.ImageDownloadedCallBack;
+import com.eventer.app.task.LoadImage;
+import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.view.CircleProgressBar;
 import com.eventer.app.view.photoview.PhotoView;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
@@ -26,7 +27,7 @@ import com.umeng.analytics.MobclickAgent;
 public class ShowBigImage extends SwipeBackActivity {
 	private Context context;
 	PhotoView image;
-	LoadBigAvatar loadAvatar;
+	LoadImage loadAvatar;
 	private CircleProgressBar progressBar;
 	String avatar;
 
@@ -41,14 +42,13 @@ public class ShowBigImage extends SwipeBackActivity {
 		progressBar.setColorSchemeResources(android.R.color.holo_orange_light);
 
 		avatar = getIntent().getExtras().getString("avatar");
-		loadAvatar=new LoadBigAvatar(ShowBigImage.this, Constant.IMAGE_PATH);
+		loadAvatar=new LoadImage(ShowBigImage.this, Constant.IMAGE_PATH);
 		//本地存在，直接显示本地的图片
 		if (avatar != null && !avatar.equals("")&&!avatar.equals("default")) {
 			Bitmap bitmap = loadAvatar.loadImage(image, avatar,
 					new ImageDownloadedCallBack() {
 						@Override
-						public void onImageDownloaded(PhotoView imageView,
-													  Bitmap bitmap,int status) {
+						public void onImageDownloaded(ImageView imageView, Bitmap bitmap, int status) {
 							Log.e("1", status + "");
 							if(status==-1&&bitmap!=null){
 								imageView.setImageBitmap(bitmap);
@@ -57,7 +57,6 @@ public class ShowBigImage extends SwipeBackActivity {
 								Toast.makeText(context,"图片获取失败！",Toast.LENGTH_LONG).show();
 								finish();
 							}
-
 						}
 
 					});

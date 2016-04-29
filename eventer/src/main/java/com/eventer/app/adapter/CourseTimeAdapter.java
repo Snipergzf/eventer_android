@@ -19,8 +19,8 @@ import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
 import com.eventer.app.entity.Course;
 import com.eventer.app.main.MainActivity;
-import com.eventer.app.util.WheelDialogClassHourShowUtil;
-import com.eventer.app.util.WheelDialogTwoShowUtil;
+import com.eventer.app.view.WheelDialogClassHourShowUtil;
+import com.eventer.app.view.WheelDialogTwoShowUtil;
 import com.eventer.app.view.DialogView_ClassHour.onWheelBtnPosClick;
 
 import java.util.HashMap;

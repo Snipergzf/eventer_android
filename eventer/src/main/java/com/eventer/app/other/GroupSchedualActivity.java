@@ -29,7 +29,7 @@ import com.eventer.app.entity.User;
 import com.eventer.app.entity.UserInfo;
 import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
-import com.eventer.app.task.LoadUserAvatar;
+import com.eventer.app.task.LoadImage;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.CircleImageView;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
@@ -58,7 +58,7 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 	MyAadpter adapter;
 	private String groupId;
 	private Context context;
-	private LoadUserAvatar avatarLoader;
+	private LoadImage avatarLoader;
 
 
 	@Override
@@ -66,7 +66,7 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_group_share);
 		context=this;
-		avatarLoader = new LoadUserAvatar(context, Constant.IMAGE_PATH);
+		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 		setBaseTitle(R.string.groupshare);
 		initView();
 	}
@@ -440,7 +440,7 @@ public class GroupSchedualActivity extends SwipeBackActivity {
 		iamgeView.setTag(url_avatar);
 
 		Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-				new LoadUserAvatar.ImageDownloadedCallBack() {
+				new LoadImage.ImageDownloadedCallBack() {
 
 					@Override
 					public void onImageDownloaded(ImageView imageView,

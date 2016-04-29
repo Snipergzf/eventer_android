@@ -257,6 +257,8 @@ public class  LoadActivity extends BaseFragmentActivity {
 			}
 
 		}.execute(params);}
+
+
 	/***
 	 * 从服务器获取个人信息，
 	 * 将信息写入LocalUserInfo
