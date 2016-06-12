@@ -360,6 +360,10 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_check.xml"
     },
     {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\scroll_track_vertical.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\scroll_track_vertical.xml"
+    },
+    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_dialog_material_background_dark.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_dialog_material_background_dark.xml"
     },
@@ -388,24 +392,24 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\umeng_update_wifi_disable.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_light.xml",
-        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_list_selector_background_transition_holo_light.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_cancel_selector.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\btn_cancel_selector.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_light.xml",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_list_selector_background_transition_holo_light.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\tab_profile.xml",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\tab_profile.xml"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_3.xml",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_3.xml"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_light.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\yuanjiao_3.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\yuanjiao_3.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_gray_round_frame_n.xml",
@@ -438,6 +442,10 @@
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_switch_thumb_material.xml",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\drawable\\abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\scroll_thumb_vertical.xml",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable\\scroll_thumb_vertical.xml"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_blue_pressed_shape.xml",

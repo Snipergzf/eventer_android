@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +33,7 @@ import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.task.Contact;
 import com.eventer.app.view.CircleProgressBar;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -45,7 +45,6 @@ import java.util.Map;
 
 @SuppressLint("SetTextI18n")
 public class Activity_Friends_Search extends Activity {
-	String search_info;
 	private Context context;
 	private ListView listview;
 	private EditText et_search;
@@ -62,17 +61,20 @@ public class Activity_Friends_Search extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_addfriends_two);
 		context=this;
-
 		initView();
 		initData();
 	}
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
-		// TODO Auto-generated method stub
-		listview=(ListView)findViewById(R.id.listview);
+
+		listview = (ListView) findViewById(R.id.listview);
 		re_search = (RelativeLayout) findViewById(R.id.re_search);
 		tv_search = (TextView) findViewById(R.id.tv_search);
 		et_search = (EditText) findViewById(R.id.et_search);
-		ll_list=(LinearLayout)findViewById(R.id.ll_list);
+		ll_list = (LinearLayout) findViewById(R.id.ll_list);
 
 		et_search.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -122,6 +124,7 @@ public class Activity_Friends_Search extends Activity {
 
 			}
 		});
+
 		re_search.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -129,7 +132,6 @@ public class Activity_Friends_Search extends Activity {
 
 				String friend = et_search.getText().toString().trim();
 				if (!friend.equals("")) {
-					search_info = friend;
 					searchUser(friend);
 				}
 
@@ -141,7 +143,6 @@ public class Activity_Friends_Search extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				// TODO Auto-generated method stub
 				Phone p = mData.get(position);
 				String tel = p.getTel();
 				if (tel != null && tel.length() > 0) {
@@ -152,20 +153,25 @@ public class Activity_Friends_Search extends Activity {
 		});
 	}
 
+	/***
+	 * 加载数据
+	 * 获取本地通讯录的手机列表
+	 * 为用户搜索时提供提示
+	 */
 	private void initData() {
-		// TODO Auto-generated method stub
-		PhoneDao dao=new PhoneDao(context);
-		totaldata=dao.getPhoneList();
-		phonelist=dao.getTelList();
-		if(phonelist==null){
-			phonelist=new ArrayList<>();
-			UpdateContact thread1=new UpdateContact();//创建新的Runnable，	
-			Thread thread=new Thread(thread1);//利用Runnable对象生成Thread
+		PhoneDao dao = new PhoneDao(context);
+		totaldata = dao.getPhoneList();
+		phonelist = dao.getTelList();
+		if(phonelist == null){
+			phonelist = new ArrayList<>();
+			UpdateContact thread1 = new UpdateContact();//创建新的Runnable，
+			Thread thread = new Thread(thread1);//利用Runnable对象生成Thread
 			thread.start();
 		}
 	}
+
 	/**
-	 *
+	 * 根据搜索关键词，搜索用户
 	 * @param friend_info tel
 	 */
 	private void searchUser(String friend_info) {
@@ -177,10 +183,6 @@ public class Activity_Friends_Search extends Activity {
 		FriendSearch(map);
 	}
 
-	public void back(View view) {
-		finish();
-	}
-
 	/**
 	 * 执行异步任务
 	 * 通过手机号搜索好友
@@ -189,7 +191,6 @@ public class Activity_Friends_Search extends Activity {
 	 */
 	public void FriendSearch(final Object... params) {
 		new AsyncTask<Object, Object,Map<String,Object>>() {
-
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Map<String,Object> doInBackground(Object... params) {
@@ -197,10 +198,8 @@ public class Activity_Friends_Search extends Activity {
 				try {
 					map=HttpUnit.sendSerachFriendRequest((Map<String, String>)params[0]);
 					return map;
-
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					Log.e("1", e.toString());
+					e.printStackTrace();
 					return null;
 				}
 			}
@@ -229,15 +228,14 @@ public class Activity_Friends_Search extends Activity {
 							intent.setClass(Activity_Friends_Search.this,Activity_UserInfo.class);
 							startActivity(intent);
 						}else{
-							Toast.makeText(context, info, Toast.LENGTH_LONG).show();
+							MyToast.makeText(context, info, Toast.LENGTH_LONG).show();
 						}
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						if(!Constant.isConnectNet){
-							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+							MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(context, "无法连接服务器~请检查网络！", Toast.LENGTH_LONG).show();
+							MyToast.makeText(context, "无法连接服务器~请检查网络！", Toast.LENGTH_LONG).show();
 						}
 					}finally{
 						if(dialog!=null)
@@ -245,7 +243,9 @@ public class Activity_Friends_Search extends Activity {
 					}
 
 			}
-		}.execute(params);}
+		}.execute(params);
+	}
+
 	private void showDialog(){
 		dialog = new AlertDialog.Builder(this).create();
 		dialog.show();
@@ -259,6 +259,12 @@ public class Activity_Friends_Search extends Activity {
 		info.setText("我们正在努力搜索~");
 	}
 
+	/**
+	 * 提示列表的Adapter
+	 * 当用户输入了关键词时，和本地通讯录中的手机号进行匹配，
+	 * 并提供提示
+	 *
+	 */
 	public class MyAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
@@ -269,22 +275,19 @@ public class Activity_Friends_Search extends Activity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return mData.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return mData.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
-		@SuppressLint("ViewHolder")
+
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
@@ -308,28 +311,37 @@ public class Activity_Friends_Search extends Activity {
 		TextView phone;
 	}
 
+
+	/**
+	 * 更新本地通讯录
+	 * 重新获取本地通讯录的信息并存入数据库
+	 *
+	 */
 	class UpdateContact implements Runnable{
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			Contact contact=new Contact(context);
-			List<Map<String, String>> list=contact.getPhoneContactsList();
+			Contact contact = new Contact(context);
+			List<Map<String, String>> list = contact.getPhoneContactsList();
 			try{
 				PhoneDao dao=new PhoneDao(context);
 				for (Map<String, String> map1 : list) {
-					String string=map1.get("phone");
-					String realname=map1.get("name");
-					if(!phonelist.contains(string)){
-						Phone p=new Phone();
-						p.setRelName(realname);
-						p.setTel(string);
-						dao.savePhone(p);
+					String string = map1.get( "phone" );
+					String realname = map1.get( "name" );
+					if( !phonelist.contains(string) ) {
+						Phone p = new Phone();
+						p.setRelName( realname );
+						p.setTel( string );
+						dao.savePhone( p );
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void back(View view) {
+		finish();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.eventer.app.other;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,70 +9,69 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eventer.app.R;
 import com.eventer.app.db.DBManager;
-import com.eventer.app.entity.ClassInfo;
+import com.eventer.app.main.BaseActivity;
+import com.eventer.app.view.DialogView.onWheelBtnPosClick;
 import com.eventer.app.view.WheelDialogShowUtil;
 import com.eventer.app.view.WheelDialogTwoShowUtil;
-import com.eventer.app.view.CourseView;
-import com.eventer.app.view.DialogView.onWheelBtnPosClick;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import hirondelle.date4j.DateTime;
 
-public class Activity_Course_Setting extends SwipeBackActivity implements OnClickListener{
+@SuppressLint("SetTextI18n")
+public class Activity_Course_Setting extends BaseActivity implements OnClickListener{
 
-	private CourseView courseView;
-	private ArrayList<ClassInfo> classList;
-	private TextView termInfo_tv,totalWeek_tv,NowWeek_tv,StartWeekday_tv,classTotal_tv,showType_tv;
+	private TextView termInfo_tv,totalWeek_tv,NowWeek_tv,StartWeekday_tv,classTotal_tv;
 	private DateTime startDay;
 	private int NowWeek=1;
-	private int startWeekday,showType,classTotal,totalWeek;
+	private int startWeekday,classTotal,totalWeek;
 	private String termInfo;
 	private WheelDialogShowUtil wheelUtil ;
-	private ImageView back_img;
-	private boolean IsChange=false;
 	private Context context;
-	SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.coursetable_setting);
 		setBaseTitle(R.string.course_setting);
-		initData();
-		termInfo_tv=(TextView)findViewById(R.id.coursetable_term);
-		totalWeek_tv=(TextView)findViewById(R.id.coursetable_totalweek);
-		NowWeek_tv=(TextView)findViewById(R.id.coursetable_week);
-		StartWeekday_tv=(TextView)findViewById(R.id.coursetable_weekstart);
-		classTotal_tv=(TextView)findViewById(R.id.coursetable_maxhour);
-		showType_tv=(TextView)findViewById(R.id.coursetable_show);
-		back_img=(ImageView)findViewById(R.id.iv_back);
-		back_img.setOnClickListener(this);
-		termInfo_tv.setText(termInfo);
-		termInfo_tv.setOnClickListener(this);
-		totalWeek_tv.setText(totalWeek+"周");
-		totalWeek_tv.setOnClickListener(this);
-		NowWeek_tv.setText("第"+NowWeek+"周");
-		NowWeek_tv.setOnClickListener(this);
-		StartWeekday_tv.setText(getResources().getStringArray(R.array.weeks)[startWeekday]);
-		StartWeekday_tv.setOnClickListener(this);
-		classTotal_tv.setText(classTotal+"节课");
-		classTotal_tv.setOnClickListener(this);
-		showType_tv.setText(getResources().getStringArray(R.array.course_showtype)[showType]);
-		showType_tv.setOnClickListener(this);
 		context=Activity_Course_Setting.this;
+		initView();
+		initData();
 	}
 
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
+	private void initView() {
+
+		termInfo_tv = (TextView)findViewById(R.id.coursetable_term);
+		totalWeek_tv = (TextView)findViewById(R.id.coursetable_totalweek);
+		NowWeek_tv = (TextView)findViewById(R.id.coursetable_week);
+		StartWeekday_tv = (TextView)findViewById(R.id.coursetable_weekstart);
+		classTotal_tv = (TextView)findViewById(R.id.coursetable_maxhour);
+
+
+		termInfo_tv.setOnClickListener(this);
+		totalWeek_tv.setOnClickListener(this);
+		NowWeek_tv.setOnClickListener(this);
+		StartWeekday_tv.setOnClickListener(this);
+		classTotal_tv.setOnClickListener(this);
+
+	}
+
+	/***
+	 * 加载数据
+	 * 从数据库中获取数据库设置，并初始化控件的数据
+	 */
 	private void initData(){
 		DBManager dbHelper;
 		dbHelper = new DBManager(this);
@@ -84,34 +84,32 @@ public class Activity_Course_Setting extends SwipeBackActivity implements OnClic
 		boolean isNew=true;
 		while (c.moveToNext()){
 			isNew=false;
-			String start=c.getString(c.getColumnIndex("StartDay"));
+			String start = c.getString(c.getColumnIndex("StartDay"));
 
-			startDay=new DateTime(start);
-			termInfo=c.getString(c.getColumnIndex("TermInfo"));
-			showType=c.getInt(c.getColumnIndex("ShowType"));
-			totalWeek=c.getInt(c.getColumnIndex("TotalWeek"));
-			classTotal=c.getInt(c.getColumnIndex("MaxHour"));
-			startWeekday=c.getInt(c.getColumnIndex("StartWeekday"));
-			int diff=startDay.numDaysFrom(Today);
-			if(diff>=0){
-				NowWeek=diff/7+1;
+			startDay = new DateTime(start);
+			termInfo = c.getString(c.getColumnIndex("TermInfo"));
+			totalWeek = c.getInt(c.getColumnIndex("TotalWeek"));
+			classTotal = c.getInt(c.getColumnIndex("MaxHour"));
+			startWeekday = c.getInt(c.getColumnIndex("StartWeekday"));
+			int diff = startDay.numDaysFrom(Today);
+			if(diff >= 0){
+				NowWeek = diff / 7 + 1;
 			}
 		}
 		if(isNew){
-			startDay=Today.minusDays(weekday - 2);
-			showType=0;
-			startWeekday=1;
-			classTotal=12;
-			totalWeek=24;
-			int month=startDay.getMonth();
-			int year=startDay.getYear();
+			startDay = Today.minusDays(weekday - 2);
+			startWeekday = 1;
+			classTotal = 12;
+			totalWeek = 24;
+			int month = startDay.getMonth();
+			int year = startDay.getYear();
 			String terminfo;
-			if(month<9){
-				terminfo=(year-1)+"-"+year+" 春季学期";
+			if(month < 9){
+				terminfo = ( year - 1 ) + "-" + year + " 春季学期";
 			}else{
-				terminfo=year+"-"+(year+1)+" 秋季学期";
+				terminfo = year + "-" + ( year + 1 ) + " 秋季学期";
 			}
-			ContentValues cv=new ContentValues();
+			ContentValues cv = new ContentValues();
 			cv.put("TermInfo", terminfo);
 			cv.put("StartDay", startDay.toString());
 			cv.put("TotalWeek", 24);
@@ -119,24 +117,30 @@ public class Activity_Course_Setting extends SwipeBackActivity implements OnClic
 			cv.put("ShowType", 0);
 			cv.put("StartWeekday", 0);
 			cv.put("Course_bg", "");
-			@SuppressWarnings("unused")
-			long tt= dbHelper.insert("dbCourseSetting", cv);
+			dbHelper.insert("dbCourseSetting", cv);
 		}
 		dbHelper.closeDatabase();
+
+		//根据课程设置，初始化数据
+		termInfo_tv.setText(termInfo);
+		totalWeek_tv.setText(totalWeek + "周");
+		NowWeek_tv.setText("第" + NowWeek + "周");
+		StartWeekday_tv.setText(getResources().getStringArray(R.array.weeks)[startWeekday]);
+		classTotal_tv.setText(classTotal + "节课");
 	}
 
+	/**
+	 * 页面控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 
 		switch(v.getId()){
 			case R.id.iv_back:
 				Intent intent=new Intent();
-				intent.putExtra("IsChange", IsChange);
+				intent.putExtra("IsChange", false);
 				setResult(Activity_Course.COURSE_SETTING, intent);
 				this.finish();
-				break;
-			case R.id.coursetable_bg:
 				break;
 			case R.id.coursetable_maxhour:
 				String[] totalclass=new String[20];
@@ -166,34 +170,11 @@ public class Activity_Course_Setting extends SwipeBackActivity implements OnClic
 				});
 				wheelUtil.showWheel();
 				break;
-			case R.id.coursetable_show:
-				wheelUtil= new WheelDialogShowUtil(context,getWindowManager().getDefaultDisplay(),getResources().getStringArray(R.array.course_showtype), "设置课程显示方式");
-				wheelUtil.setWheelHint(showType);
-				wheelUtil.dialogView.setBtnPosClick(new onWheelBtnPosClick() {
-					@Override
-					public void onClick(String text, int position) {
-						// TODO Auto-generated method stub
-						wheelUtil.dissmissWheel();
-						wheelUtil.setTextToView(showType_tv, text);
-						if(showType != position){
-							showType=position;
-							ContentValues cv=new ContentValues();
-							cv.put("ShowType", showType);
-							DBManager dbHelper;
-							dbHelper = new DBManager(context);
-							dbHelper.openDatabase();
-							dbHelper.update("dbCourseSetting", cv, null, null);
-							dbHelper.closeDatabase();
-						}
-					}
-				});
-				wheelUtil.showWheel();
-				break;
 			case R.id.coursetable_term:
 				String   time =sDateFormat.format(new   Date());
 				DateTime Today=new DateTime(time);
 				int year=Today.getYear();
-				Map<Integer,String[]> data=new HashMap<Integer,String[]>();
+				Map<Integer,String[]> data=new HashMap<>();
 				String[] termyear=new String[10];
 				for(int i=0;i<10;i++){
 					termyear[i]=(year-5+i)+"~"+(year-4+i);

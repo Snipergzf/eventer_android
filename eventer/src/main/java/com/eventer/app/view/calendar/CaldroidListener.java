@@ -25,7 +25,6 @@ public abstract class CaldroidListener {
 	 * Inform client user has long clicked on a date
 	 * */
 	public void onLongClickDate(Date date, View view) {
-		// Do nothing
 	}
 
 	
@@ -33,7 +32,6 @@ public abstract class CaldroidListener {
 	 * Inform client that calendar has changed month
 	 */
 	public void onChangeMonth(int month, int year) {
-		// Do nothing
 	}
 
 	
@@ -42,6 +40,5 @@ public abstract class CaldroidListener {
 	 * no longer null. Useful for customization of button and text views
 	 */
 	public void onCaldroidViewCreated() {
-		// Do nothing
 	}
 }

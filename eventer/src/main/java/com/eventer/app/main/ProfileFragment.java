@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,12 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.MyApplication;
 import com.eventer.app.R;
 import com.eventer.app.http.HttpUnit;
+import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.other.AboutActivity;
-import com.eventer.app.other.Activity_Course;
 import com.eventer.app.other.AssistFunctionActivity;
 import com.eventer.app.other.BrowserHistoryActivity;
 import com.eventer.app.other.CollectActivity;
@@ -32,6 +32,7 @@ import com.eventer.app.task.LoadImage;
 import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.util.RandomUtil;
 import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -45,9 +46,9 @@ import java.util.Map;
 
 public  class ProfileFragment extends Fragment implements OnClickListener {
 
-	RelativeLayout re_myinfo;
+	RelativeLayout re_info;
 	RelativeLayout re_collect,re_history,re_msg_alert;
-	RelativeLayout re_assist,re_version,re_about,re_feedback,re_course;
+	RelativeLayout re_assist,re_version,re_about,re_feedback;
 	private Context context;
 	TextView tv_name;
 	private ImageView iv_avatar;
@@ -57,14 +58,12 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 		context=getActivity();
 		avatarLoader = new LoadImage(getActivity(), Constant.IMAGE_PATH);
@@ -72,25 +71,28 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		return rootView;
 	}
 
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView(View rootView) {
-		// TODO Auto-generated method stub
 		tv_name=(TextView)rootView.findViewById(R.id.tv_name);
 		iv_avatar=(ImageView)rootView.findViewById(R.id.iv_avatar);
 		iv_version_alert=rootView.findViewById(R.id.iv_version_alert);
-		re_myinfo=(RelativeLayout)rootView.findViewById(R.id.re_myinfo);
+		re_info=(RelativeLayout)rootView.findViewById(R.id.re_myinfo);
 		re_collect=(RelativeLayout)rootView.findViewById(R.id.re_collect);
-		re_course=(RelativeLayout) rootView.findViewById(R.id.re_course);
 		re_history=(RelativeLayout)rootView.findViewById(R.id.re_history);
 		re_about=(RelativeLayout)rootView.findViewById(R.id.re_about);
 		re_assist=(RelativeLayout)rootView.findViewById(R.id.re_assist);
 		re_feedback=(RelativeLayout)rootView.findViewById(R.id.re_feedback);
 		re_msg_alert=(RelativeLayout)rootView.findViewById(R.id.re_msg_alert);
 		re_version=(RelativeLayout)rootView.findViewById(R.id.re_version_info);
-		if(!"0".equals(Constant.UID)){
+		if( !"0".equals(Constant.UID) ){
 			String name = LocalUserInfo.getInstance(context)
 					.getUserInfo("nick");
-			if(name!=null){
+			if(name != null){
 				tv_name.setText(name);
+			} else{
+				initNick();
 			}
 			String avatar = LocalUserInfo.getInstance(context)
 					.getUserInfo("avatar");
@@ -101,13 +103,12 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		}
 		MyApplication.getInstance().setValueByKey("set_avatar", false);
 		boolean isExistNewVersion=PreferenceUtils.getInstance().getVersionAlert();
-		if(isExistNewVersion){
+		if( isExistNewVersion ){
 			iv_version_alert.setVisibility(View.VISIBLE);
 		}
 		//设置监听器
 		re_collect.setOnClickListener(this);
-		re_course.setOnClickListener(this);
-		re_myinfo.setOnClickListener(this);
+		re_info.setOnClickListener(this);
 		re_history.setOnClickListener(this);
 		re_about.setOnClickListener(this);
 		re_assist.setOnClickListener(this);
@@ -119,7 +120,6 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
@@ -128,7 +128,6 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 			case R.id.re_myinfo://我的信息
 				if(!"0".equals(Constant.UID)){
@@ -149,14 +148,6 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 			case R.id.re_collect://我的收藏
 				startActivity(new Intent()
 						.setClass(context, CollectActivity.class));
-				break;
-			case R.id.re_course:
-				if(!"0".equals(Constant.UID)){
-					startActivity(new Intent().setClass(context, Activity_Course.class));
-				} else{
-					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
-				}
-
 				break;
 			case R.id.re_history://浏览历史
 				startActivity(new Intent().setClass(context, BrowserHistoryActivity.class));
@@ -183,13 +174,13 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 									break;
 								// 没有更新
 								default:
-									Toast.makeText(context, "当前 版本是最新版本！", Toast.LENGTH_SHORT).show();
+									MyToast.makeText(context, "当前版本是最新版本！", Toast.LENGTH_SHORT).show();
 									break;
 							}
 						}
 					});
 				}else{
-					Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+					MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
 				}
 
 				break;
@@ -204,22 +195,51 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		}
 	}
 
-//	 private void checkVersion() {
-//		// TODO Auto-generated method stub
-//		 PackageManager pm = context.getPackageManager();//context为当前Activity上下文 
-//		 PackageInfo pi;
-//		 String version="";
-//		 int versionCode=0;
-//		try {
-//			pi = pm.getPackageInfo(context.getPackageName(), 0);
-//		    version = pi.versionName;
-//		    versionCode=pi.versionCode;
-//		} catch (NameNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//	}
+	/**
+	 * 初始化昵称
+	 * 当用户昵称未设置时，为用户设置随机的昵称
+	 */
+	public void initNick() {
+		final String newNick = RandomUtil.getRandomNick();
+		Map<String, String> map = new HashMap<>();
+		map.put("sex", "");
+		map.put("uid", Constant.UID+"");
+		map.put("token", Constant.TOKEN);
+		map.put("name", newNick);
+		map.put("email", "");
+		map.put("grade","");
+		map.put("school", "");
+		map.put("major", "");
+		map.put("class", "");
+		map.put("user_rank", "0");
+		LoadDataFromHTTP task = new LoadDataFromHTTP(
+				context, Constant.URL_UPDATE_SELFINFO, map);
+
+		task.getData(new com.eventer.app.http.LoadDataFromHTTP.DataCallBack() {
+
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				try {
+					int code = data.getInteger("status");
+					if (code == 0) {
+						LocalUserInfo.getInstance(context)
+								.setUserInfo("nick", newNick);
+						tv_name.setText(newNick);
+					} else {
+						if(!Constant.isConnectNet){
+							MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+						}
+					}
+				}  catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		});
+	}
+
+
 	/***
 	 * 显示头像
 	 * @param iamgeView  头像显示的控件
@@ -259,7 +279,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 		}
 	}
 	/***
-	 * 获取头像
+	 * 获取头像url
 	 */
 	public void GetAvatar(final Object... params) {
 		new AsyncTask<Object, Object,Map<String, Object>>() {
@@ -271,7 +291,7 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 					status=HttpUnit.sendGetAvatarRequest((Map<String, String>) params[0]);
 					return status;
 				} catch (Throwable e) {
-					Log.e("1", e.toString());
+					e.printStackTrace();
 					return null;
 				}
 			}
@@ -280,12 +300,11 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 					int status=(int)result.get("status");
 					String info=(String)result.get("info");
 					if(status==0){
-						Log.e("1", "获取头像地址成功！");
 						LocalUserInfo.getInstance(context)
 								.setUserInfo("avatar", info);
 						showUserAvatar(iv_avatar, info);
 					}else {
-						Toast.makeText(context, "头像获取失败！", Toast.LENGTH_LONG)
+						MyToast.makeText(context, "头像获取失败！", Toast.LENGTH_LONG)
 								.show();
 					}
 				}
@@ -303,12 +322,6 @@ public  class ProfileFragment extends Fragment implements OnClickListener {
 			showUserAvatar(iv_avatar, avatar);
 			MyApplication.getInstance().setValueByKey("set_avatar", false);
 		}
-		MobclickAgent.onPageStart("MainScreen"); //统计页面
-		Map<String, String> map_value = new HashMap<>();
-		map_value.put("type", "popular");
-		map_value.put("artist", "JJLin");
-
-		MobclickAgent.onEventValue(context, "collect", map_value, 12000);
 	}
 
 

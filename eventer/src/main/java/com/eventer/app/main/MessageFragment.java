@@ -2,15 +2,11 @@ package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,11 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +26,6 @@ import com.eventer.app.db.ChatEntityDao;
 import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.other.Activity_Chat;
 import com.eventer.app.other.Activity_Contact;
-import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.view.MyToast;
 import com.eventer.app.view.swipemenulistview.SwipeMenu;
 import com.eventer.app.view.swipemenulistview.SwipeMenuCreator;
@@ -47,62 +39,95 @@ import java.util.List;
 
 
 @SuppressLint("InflateParams")
-public  class MessageFragment extends Fragment implements OnScrollListener {
+public  class MessageFragment extends Fragment{
 
 	private SwipeMenuListView listView;
 	LayoutInflater infalter;
 	private List<ChatEntity> mData=new ArrayList<>();
 	private Context context;
-	private ConversationAdapter adapter;
 	ImageView contact;
 	public static MessageFragment instance;
-	private NetReceiver netReceiver;
-	private final int NET_GOOD = 11;
-	private final int NET_BAD = 22;
-	private LinearLayout note;
+
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-
-		final View rootView = inflater.inflate(R.layout.fragment_message, container, false);
-		context=getActivity();
-		instance=MessageFragment.this;
+		View rootView = inflater.inflate(R.layout.fragment_message, container, false);
+		context = getActivity();
+		instance = MessageFragment.this;
+		infalter = LayoutInflater.from(context);
 		initView(rootView);
-		netReceiver = new NetReceiver();
-		IntentFilter intentFilter1 = new IntentFilter();
-		intentFilter1.addAction("android.net.conn.ISGOODORBAD");
-		context.registerReceiver(netReceiver, intentFilter1);
+		refreshView();
 		return rootView;
 
 	}
 
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView(View rootView) {
 		listView = (SwipeMenuListView) rootView.findViewById(R.id.lv_conversation);
 		contact = (ImageView) rootView.findViewById(R.id.iv_contact);
 
-		note=(LinearLayout)rootView.findViewById(R.id.note);
-		note.setOnClickListener(new View.OnClickListener() {
+		contact.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				context.startService(new Intent(context, CheckInternetService.class));
-//				Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
-//				startActivity(intent);
+				if (!"0".equals(Constant.UID)) {
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), Activity_Contact.class);
+					startActivity(intent);
+				} else {
+					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
+				}
+
 			}
 		});
-		infalter=LayoutInflater.from(context);
-//		View headView = infalter.inflate(R.layout.item_conversation_header,
-//				null);
-//		listView.addHeaderView(headView);
-//		re_contact=(RelativeLayout)headView.findViewById(R.id.re_contact);
-		adapter = new ConversationAdapter(context,mData);
+
+		//为ListView设置各种事件
+		ConversationAdapter adapter = new ConversationAdapter(context, mData);
 		listView.setAdapter(adapter);
 		listView.setEmptyView(rootView.findViewById(R.id.iv_empty));
-		if(!Constant.isConnectNet){
-			note.setVisibility(View.VISIBLE);
-		}
+
+
+		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+										   int position, long id) {
+				ChatEntity msg = mData.get(position - 1);
+				showMyDialog("提示", msg);
+				return true;
+			}
+		});
+
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+									int position, long id) {
+				ChatEntity msg = mData.get(position);
+				String username = msg.getFrom();
+
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), Activity_Chat.class);
+				if (username.contains("@")) {
+					intent.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
+					intent.putExtra("groupId", username);
+				} else {
+					intent.putExtra("userId", username);
+				}
+				MainActivity activity = MainActivity.instance;
+				if (activity != null) {
+					activity.cancelNotify(username);
+				}
+				startActivity(intent);
+			}
+
+
+		});
+
 		//给对话的item的添加左滑菜单
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -154,95 +179,45 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 					case 1:
 						// delete
 						delete(item);
-//	                   mData.remove(position);
 						refreshView();
 						break;
 				}
 				return false;
 			}
 		});
-
-		// set SwipeListener
-		listView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
-
-			@Override
-			public void onSwipeStart(int position) {
-				// swipe start
-			}
-
-			@Override
-			public void onSwipeEnd(int position) {
-				// swipe end
-			}
-		});
-
-		// set MenuStateChangeListener
-		listView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-			@Override
-			public void onMenuOpen(int position) {
-			}
-
-			@Override
-			public void onMenuClose(int position) {
-			}
-		});
-		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-										   int position, long id) {
-//				if (position != 0) {
-					ChatEntity msg = mData.get(position - 1);
-					showMyDialog("提示", msg);
-//				}
-				return true;
-			}
-		});
-
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-									int position, long id) {
-//				if (position != listView.getCount()) {
-					Log.e("1", "listview-count:" + listView.getCount());
-					ChatEntity msg = mData.get(position);
-					String username = msg.getFrom();
-
-					Intent intent = new Intent();
-					intent.setClass(getActivity(), Activity_Chat.class);
-					if (username.contains("@")) {
-						intent.putExtra("chatType", Activity_Chat.CHATTYPE_GROUP);
-						intent.putExtra("groupId", username);
-					} else {
-						intent.putExtra("userId", username);
-					}
-				    MainActivity activity = MainActivity.instance;
-					if(activity!=null){
-						activity.cancelNotify(username);
-					}
-					startActivity(intent);
-//				}
-			}
-
-
-		});
-		contact.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(!"0".equals(Constant.UID)){
-					Intent intent = new Intent();
-					intent.setClass(getActivity(), Activity_Contact.class);
-					startActivity(intent);
-				} else{
-					MyToast.makeText(context, "请登录！", Toast.LENGTH_SHORT).show();
-				}
-
-			}
-		});
-		refresh();
 	}
+
+	/***
+	 * 刷新页面的数据
+	 */
+	public void refreshView(){
+		mData.clear();
+		ChatEntityDao dao = new ChatEntityDao(context);
+		//获取对话列表
+		List<ChatEntity> msgList = dao.getChatEntityList(new String[]{"*","Max(addTime)"},null, null,ChatEntityDao.COLUMN_NAME_FROM,ChatEntityDao.COLUMN_NAME_TIME+" desc");
+		for (ChatEntity chat: msgList){
+			mData.add(chat);
+		}
+		//获取未读信息
+		List<ChatEntity> unreadMsg = dao.getChatEntityList(new String[]{"*" ,"Max(addTime)",
+				"Count(*) as NotRead"}, "status=1", null, "talker", null);
+		for (ChatEntity chatEntity : unreadMsg) {
+			String user = chatEntity.getFrom();
+			int unread = chatEntity.getNotRead();
+			for (ChatEntity chat : mData) {
+				if(chat.getFrom().equals(user)){
+					chat.setNotRead(unread);
+				}
+			}
+		}
+
+	}
+
+	public void refreshData(){
+		MainActivity.instance.updateUnreadLabel();
+		refreshView();
+	}
+
 
 	//删除对话
 	private void delete(ChatEntity item) {
@@ -255,7 +230,7 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				getResources().getDisplayMetrics());
 	}
-	//删除对话的消息框 
+	//删除对话的消息框
 	private void showMyDialog(String title, final ChatEntity message) {
 
 		final AlertDialog dlg = new AlertDialog.Builder(context).create();
@@ -268,15 +243,12 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
 		tv_title.setText(title);
 		TextView tv_content1 = (TextView) window.findViewById(R.id.tv_content1);
-		// 是否已经置顶
-//            tv_content1.setText("置顶聊天");
 		tv_content1.setVisibility(View.GONE);
 		TextView tv_content2 = (TextView) window.findViewById(R.id.tv_content2);
 		tv_content2.setText("删除该对话");
 		tv_content2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				delete(message);
-//                mData.remove(position);
 				refreshView();
 				dlg.cancel();
 
@@ -285,114 +257,9 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 
 	}
 
-	public void refreshData(){
-		MainActivity.instance.updateUnreadLabel();
-		RefreshThread thread=new RefreshThread();
-		new Thread(thread).start();
-	}
-
-	class RefreshThread  implements Runnable{
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			refresh();
-		}
-	}
-	//刷新页面
-	private void refresh(){
-		mData=new ArrayList<>();
-		ChatEntityDao dao=new ChatEntityDao(context);
-		//获取对话列表
-		mData=dao.getChatEntityList(new String[]{"*","Max(addTime)"},null, null,ChatEntityDao.COLUMN_NAME_FROM,ChatEntityDao.COLUMN_NAME_TIME+" desc");
-		//获取未读信息
-		List<ChatEntity> unreadMsg=dao.getChatEntityList(new String[]{"*" ,"Max(addTime)","Count(*) as NotRead"}, "status=1", null, "talker", null);
-		for (ChatEntity chatEntity : unreadMsg) {
-			String user=chatEntity.getFrom();
-			int unread=chatEntity.getNotRead();
-			for (ChatEntity chat : mData) {
-				if(chat.getFrom().equals(user)){
-					chat.setNotRead(unread);
-				}
-			}
-		}
-
-	}
-
-	public void refreshView(){
-		refresh();
-		adapter = new ConversationAdapter(context,mData);
-		listView.setAdapter(adapter);
-	}
-
-
-	/**
-	 * receive network situation
-	 *
-	 * @author LiuNana
-	 *
-	 */
-	@SuppressLint("NewApi")
-	public class NetReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			boolean net=intent.getBooleanExtra("net",false);
-			Log.e("1","rece"+net+"");
-			if(net){
-				mHandler.sendEmptyMessage(NET_GOOD);
-			}else{
-				mHandler.sendEmptyMessage(NET_BAD);
-			}
-		}
-	}
-
-	Handler mHandler = new Handler(new Handler.Callback() {
-		@Override
-		public boolean handleMessage(Message msg) {
-			switch (msg.what) {
-				case NET_BAD:
-					note.setVisibility(View.VISIBLE);
-					break;
-				case NET_GOOD:
-					note.setVisibility(View.GONE);
-					break;
-				default:
-					break;
-			}
-			return false;
-		}
-	});
-
-
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		getActivity().unregisterReceiver(netReceiver);
-	}
-
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-						 int visibleItemCount, int totalItemCount) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
 
 
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		refreshView();
 		MobclickAgent.onPageStart("MainScreen"); //统计页面
@@ -403,9 +270,6 @@ public  class MessageFragment extends Fragment implements OnScrollListener {
 		super.onPause();
 		MobclickAgent.onPageEnd("MainScreen");
 	}
-
-
-
 
 }
   		

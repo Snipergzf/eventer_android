@@ -8,13 +8,16 @@ public class Event extends EventOp {
 	String title;
 	String theme;
 	String place;
+	String cover;
+	String tag;
+
+
+
 	long start;
 	long end;
 	int type;
 	int myOPt;
 	long issueTime;
-	int UpCount;
-	int DownCount;
 	int readCount;
 
 
@@ -97,6 +100,14 @@ public class Event extends EventOp {
 		this.content = content;
 	}
 
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
 	public String getPublisher() {
 		return publisher;
 	}
@@ -105,20 +116,12 @@ public class Event extends EventOp {
 		this.publisher = publisher;
 	}
 
-	public int getUpCount() {
-		return UpCount;
+	public String getCover() {
+		return cover;
 	}
 
-	public void setUpCount(int upCount) {
-		UpCount = upCount;
-	}
-
-	public int getDownCount() {
-		return DownCount;
-	}
-
-	public void setDownCount(int downCount) {
-		DownCount = downCount;
+	public void setCover(String cover) {
+		this.cover = cover;
 	}
 
 	public int getReadCount() {
@@ -137,13 +140,6 @@ public class Event extends EventOp {
 		this.issueTime = issueTime;
 	}
 
-	@Override
-	public String toString() {
-		return "Event [活动ID=" + EventID + "\r\n 内容=" + content
-				+ "\r\n 发布者=" + publisher + "\r\n 时间=" + time + "\r\n 标题="
-				+ title + "\r\n 主题=" + theme + "\r\n 地点=" + place +"\r\n 发布时间=" + issueTime
-				+ "]";
-	}
 
 	
 }

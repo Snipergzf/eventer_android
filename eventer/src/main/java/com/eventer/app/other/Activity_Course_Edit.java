@@ -33,47 +33,53 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 	private EditText addkc_name,addkc_teacher;
 	private CourseTimeAdapter adapter;
 	private String id;
-	private List<Course> mData;
+	private List<Course> mData = new ArrayList<>();
 	private Context context;
 	public static Activity_Course_Edit instance;
 	private String teacher;
 	private String c_name;
 	private Course course;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_info_edit);
-		context=Activity_Course_Edit.this;
-		instance=this;
-		id=getIntent().getStringExtra("CourseID");
-		course=getIntent().getParcelableExtra("c_detail");
+		context = Activity_Course_Edit.this;
+		instance = this;
+		id = getIntent().getStringExtra("CourseID");
+		course = getIntent().getParcelableExtra("c_detail");
 		initView();
 
 	}
-	//初始化界面
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
-		// TODO Auto-generated method stub
 		ImageView back_img = (ImageView) findViewById(R.id.course_edit_back_iv);
 		TextView add_commit = (TextView) findViewById(R.id.addkc_ok);
-		addkc_name=(EditText)findViewById(R.id.addkc_name_edit);
-		addkc_teacher=(EditText)findViewById(R.id.addkc_teacher_edit);
-		ListViewForScrollView listview = (ListViewForScrollView) findViewById(R.id.listview);
-		mData=new ArrayList<>();
-		TextView title = (TextView) findViewById(R.id.course_edit_title);
+		addkc_name = (EditText)findViewById(R.id.addkc_name_edit);
+		addkc_teacher = (EditText)findViewById(R.id.addkc_teacher_edit);
 		LinearLayout ll_add_time = (LinearLayout) findViewById(R.id.ll_add_time);
+		TextView title = (TextView) findViewById(R.id.course_edit_title);
+		ListViewForScrollView listview = (ListViewForScrollView) findViewById(R.id.listview);
+
+
 		ll_add_time.setOnClickListener(this);
 		add_commit.setOnClickListener(this);
 		back_img.setOnClickListener(this);
 
+		//id不为空，从数据库获取数据
 		if(!TextUtils.isEmpty(id)){
-			initData();
-			if(mData.size()!=0){
-				Course c=mData.get(0);
-//				String name=c.getClassname();
-//				String teacher=c.getTeacher();
-				teacher=c.getTeacher();
-				c_name=c.getClassname();
-				if(!TextUtils.isEmpty(c_name)){
+
+			CourseDao dao=new CourseDao(context);
+			mData = dao.getCourseList(id);
+
+			if(mData.size() != 0){
+				Course c = mData.get(0);
+				teacher = c.getTeacher();
+				c_name = c.getClassname();
+				if(!TextUtils.isEmpty(c_name)) {
 					title.setText(c_name);
 					addkc_name.setText(c_name);
 				}
@@ -82,14 +88,15 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 			}
 
 		}
-		if(course!=null){
-			mData=getTimeList(course);
+
+		//course不为空，说明是从网络端获取的课程信息，直接加载
+		if(course != null){
+			mData = getTimeList(course);
 			title.setText(course.getClassname());
-			String name=course.getClassname();
-			if(!TextUtils.isEmpty(name)){
+			String name = course.getClassname();
+			if(!TextUtils.isEmpty(name)) {
 				addkc_name.setText(course.getClassname());
 			}
-
 			addkc_teacher.setText(course.getTeacher());
 		}
 		//设置课程时段的listview的adapter
@@ -100,7 +107,6 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 	//获取课程的详情
 	//将课程根据时段分成多个Course对象
 	private List<Course> getTimeList(Course course) {
-		// TODO Auto-generated method stub
 		List<Course> list=new ArrayList<>();
 		teacher=course.getTeacher();
 		c_name=course.getClassname();
@@ -121,25 +127,17 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 			}
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	private void initData() {
-		// TODO Auto-generated method stub	
-		if(!TextUtils.isEmpty(id)){
-			CourseDao dao=new CourseDao(context);
-			mData=dao.getCourseList(id);
-		}
 
-	}
-
-
+	/**
+	 * 页面控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch(v.getId()){
 			case R.id.course_edit_back_iv:
 				Activity_Course_Edit.this.finish();
@@ -171,8 +169,6 @@ public class Activity_Course_Edit extends Activity  implements OnClickListener{
 				}
 				CourseDao dao=new CourseDao(context);
 				dao.updateCourseList(c_list, id + "");
-				if(Fragment_Addkc_Search.instance!=null)
-				   Fragment_Addkc_Search.instance.refresh();
 				setResult(Activity_Course_View.REQUEST, new Intent().putExtra("ID",id));
 				finish();
 				break;

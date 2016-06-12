@@ -62,12 +62,23 @@ public class HttpParamUnit {
         return map;
     }
 
-    public static Map<String,String> eventListParam(String imei, int pos, int count, int size){
+    public static Map<String,String> eventListParam(String imei, int pos, int count, String mClass){
         Map<String,String> map=new HashMap<>();
         map.put("imei", imei);
         map.put("pos", pos + "");
         map.put("count", count + "");
-        map.put("size", size + "");
+        map.put("class", mClass);
+        map.put("token", Constant.TOKEN);
+        return map;
+    }
+
+    public static Map<String,String> userEventListParam( int pos, int count, String mClass){
+        Map<String,String> map=new HashMap<>();
+        map.put("uid", Constant.UID);
+        map.put("pos", pos + "");
+        map.put("count", count + "");
+        map.put("class", mClass);
+        map.put("token", Constant.TOKEN);
         return map;
     }
 }

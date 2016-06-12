@@ -28,11 +28,9 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 		OnClickListener{
 	private Context context;
 	private List<Course> mData=new ArrayList<>();
-	private TextView tv_add;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coursetable_view);
 		setBaseTitle(R.string.course_table_detail);
@@ -40,11 +38,14 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 		initView();
 	}
 
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
-		// TODO Auto-generated method stub
-		tv_add = (TextView) findViewById(R.id.tv_add_finish);
+		TextView tv_add = (TextView) findViewById(R.id.tv_add_finish);
 		TextView tv_title = (TextView) findViewById(R.id.tv_title);
 		ListView listview = (ListView) findViewById(R.id.listview);
+
 		mData=getIntent().getParcelableArrayListExtra("courseList");
 		CourseAdapter adapter = new CourseAdapter(context, R.layout.item_course_list, mData);
 		listview.setAdapter(adapter);
@@ -52,7 +53,6 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.putExtra("c_detail", mData.get(position));
 				intent.setClass(Activity_CourseTable_View.this, Activity_Course_Edit.class);
@@ -60,15 +60,18 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 
 			}
 		});
-		String info=getIntent().getStringExtra("class");
-		info="以下是 <b><em>"+info+"</em></b> 的课表的课程列表";
+
+		String info = getIntent().getStringExtra("class");
+		info = "以下是 <b><em>"+info+"</em></b> 的课表的课程列表";
 		tv_title.setText(Html.fromHtml(info));
 		tv_add.setOnClickListener(this);
 	}
 
+	/**
+	 * 页面控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 			case R.id.tv_add_finish:
 				showMyDialog("添加课程");
@@ -78,6 +81,11 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 		}
 	}
 
+	/**
+	 * 选择添加课表的方式
+	 * 1.直接添加
+	 * 2.删除以前的课表再添加
+	 */
 	private void showMyDialog(String title) {
 
 		final AlertDialog dlg = new AlertDialog.Builder(context).create();
@@ -92,7 +100,6 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 		TextView tv_content1 = (TextView) window.findViewById(R.id.tv_content1);
 		tv_content1.setText("直接添加整个课表");
 
-
 		tv_content1.setOnClickListener(new View.OnClickListener() {
 			@SuppressLint("SdCardPath")
 			public void onClick(View v) {
@@ -100,8 +107,7 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 				CourseDao dao=new CourseDao(context);
 				dao.saveCourseListByInfo(mData);
 				dlg.cancel();
-				Activity_AddCourseTable.instance.back();
-				Activity_AddCourse.instance.back();
+				startActivity(new Intent().setClass(context, Activity_Course.class));
 				finish();
 			}
 		});
@@ -113,8 +119,7 @@ public class Activity_CourseTable_View extends SwipeBackActivity implements
 				dao.deleteAllCourse();
 				dao.saveCourseListByInfo(mData);
 				dlg.cancel();
-				Activity_AddCourseTable.instance.back();
-				Activity_AddCourse.instance.back();
+                startActivity(new Intent().setClass(context, Activity_Course.class));
 				finish();
 
 			}

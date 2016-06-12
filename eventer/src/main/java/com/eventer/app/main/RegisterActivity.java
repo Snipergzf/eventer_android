@@ -32,17 +32,22 @@ import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
+import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.util.RandomUtil;
 import com.eventer.app.view.MyCountTimer;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
-@SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class RegisterActivity extends BaseActivity implements OnClickListener, Callback {
 
@@ -58,7 +63,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	private String TelString;
 	private SMSBroadcastReceiver mSMSBroadcastReceiver;
 	private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
-	private String user="",pwd="";
+	private String user = "",pwd = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -233,7 +238,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 		switch (v.getId()) {
 			//"注册"按钮
 			case R.id.btn_next:
-			    TelString=edit_tel.getText().toString();
+			    TelString = edit_tel.getText().toString();
+				pwd = edit_pwd.getText().toString();
 //			    UserRegister();
 				//发送验证码确认
 				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
@@ -256,7 +262,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 						//注册短信接收的BroadcastReceiver
 						initSMSReceiver();
 					}
-					TelString=edit_tel.getText().toString();
+					TelString = edit_tel.getText().toString();
 					pwd = edit_pwd.getText().toString();
 					//发送验证码请求
 					SMSSDK.getVerificationCode("86",TelString);
@@ -282,7 +288,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	public void UserRegister() {
 
 		if(TextUtils.isEmpty(pwd)){
-			Toast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
+			MyToast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
@@ -298,23 +304,23 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 						case 0:
 							Log.e("1", "注册成功！");
 							PreferenceUtils.getInstance().setLoginUser(TelString);
-							Toast.makeText(context, "注册成功！", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "注册成功！", Toast.LENGTH_LONG)
 									.show();
 							UserLogin();
 							break;
 						case 3:
-							Toast.makeText(context, "该用户已注册过！", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "该用户已注册过！", Toast.LENGTH_LONG)
 									.show();
 							break;
 						case 25:
-							Toast.makeText(context, "系统维护中，请稍候再来注册~", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "系统维护中，请稍候再来注册~", Toast.LENGTH_LONG)
 									.show();
 							break;
 						default:
 							if(!Constant.isConnectNet){
-								Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+								MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
 							}else{
-								Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
+								MyToast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
 										.show();
 							}
 
@@ -322,13 +328,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 					}
 
 				} catch (JSONException e) {
-
-					Toast.makeText(context, "数据解析错误...",
-							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}catch (Exception e) {
 					// TODO: handle exception
-					Toast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
+					MyToast.makeText(context, "注册失败，请稍后重试！！", Toast.LENGTH_LONG)
 							.show();
 				}
 			}
@@ -342,8 +345,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 	 *  参数为“phone”,“pwd”  ,"imei"  
 	 */
 	public void UserLogin() {
+		final String pwdMd5 = MD5Util.getMD5(pwd);
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
-				context, Constant.URL_LOGIN_NEW, HttpParamUnit.login(TelString, pwd));
+				context, Constant.URL_LOGIN_NEW, HttpParamUnit.login(TelString, pwdMd5));
 		task.getData(new DataCallBack() {
 
 			@Override
@@ -353,36 +357,88 @@ public class RegisterActivity extends BaseActivity implements OnClickListener, C
 					int code = data.getInteger("status");
 					switch (code) {
 						case 0:
-							Log.e("1", "登录成功！");
 							PreferenceUtils.getInstance().setLoginUser(user);
-							PreferenceUtils.getInstance().setLoginPwd(pwd);
-							Constant.isLogin=true;
-							Constant.LoginTime=System.currentTimeMillis()/1000;
-							String userinfo=data.getString("user_action");
-							JSONObject jsonLogin= JSONObject.parseObject(userinfo);
-							Constant.UID=jsonLogin.getInteger("uid")+"";
-							Constant.TOKEN=jsonLogin.getString("token");
-							Intent intent = new Intent();
-							intent.setClass(context, FillInUserInfoActivity.class);
-							startActivity(intent);
+							PreferenceUtils.getInstance().setLoginPwd(pwdMd5);
+							Constant.isLogin = true;
+							Constant.LoginTime = System.currentTimeMillis()/1000;
+							String userinfo = data.getString("user_action");
+							JSONObject jsonLogin = JSONObject.parseObject(userinfo);
+							Constant.UID = jsonLogin.getInteger("uid") + "";
+							Constant.TOKEN = jsonLogin.getString("token");
+							initNick();
 							break;
 						default:
-							Toast.makeText(context, "发生异常！", Toast.LENGTH_LONG)
-									.show();
+							Intent intent = new Intent();
+							intent.setClass(context, LoginActivity.class);
+							startActivity(intent);
 							finish();
 					}
 
+				} catch (Exception e) {
+					e.printStackTrace();
+					Intent intent = new Intent();
+					intent.setClass(context, LoginActivity.class);
+					startActivity(intent);
+				}
+			}
+		});
+	}
+
+
+	/**
+	 * 为用户设置随机的昵称
+	 */
+	public void initNick() {
+		final String newNick = RandomUtil.getRandomNick();
+		Map<String, String> map = new HashMap<>();
+		map.put("sex", "");
+		map.put("uid", Constant.UID+"");
+		map.put("token", Constant.TOKEN);
+		map.put("name", newNick);
+		map.put("email", "");
+		map.put("grade","");
+		map.put("school", "");
+		map.put("major", "");
+		map.put("class", "");
+		map.put("user_rank", "0");
+		LoadDataFromHTTP task = new LoadDataFromHTTP(
+				context, Constant.URL_UPDATE_SELFINFO, map);
+
+		task.getData(new com.eventer.app.http.LoadDataFromHTTP.DataCallBack() {
+
+			@SuppressLint("ShowToast")
+			@Override
+			public void onDataCallBack(JSONObject data) {
+				try {
+					int code = data.getInteger("status");
+					if (code == 0) {
+						LocalUserInfo.getInstance(context)
+								.setUserInfo("nick", newNick);
+					} else {
+						if(!Constant.isConnectNet){
+							Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+
+						}
+					}
 				} catch (JSONException e) {
 
 					Toast.makeText(context, "数据解析错误...",
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
-				}catch (Exception e) {
-					// TODO: handle exception
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					Intent intent = new Intent();
+					intent.setClass(context, MainActivity.class);
+					startActivity(intent);
 				}
+
 			}
+
 		});
 	}
+
+
 
 	/**
 	 * 初始化短信短信接收的BroadcastReceiver

@@ -996,12 +996,12 @@
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\voice_rcd_btn_nor.9.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chat_voice_call_pressed.png",
-        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chat_voice_call_pressed.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\option_selected.png",
         "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\option_selected.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\chat_voice_call_pressed.png",
+        "source": "F:\\ProjectAS\\eventer\\src\\main\\res\\drawable-hdpi\\chat_voice_call_pressed.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\menu_bg.9.png",

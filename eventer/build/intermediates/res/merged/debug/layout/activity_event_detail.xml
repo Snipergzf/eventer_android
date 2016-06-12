@@ -9,12 +9,14 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/article_bottom_layout"
         android:fadeScrollbars="true"
-        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarSize="5dp"
+        android:scrollbarThumbVertical="@drawable/scroll_thumb_vertical"
         >
    <RelativeLayout
         android:id="@+id/detail_article_content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         >
 
         <TextView
@@ -67,70 +69,73 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/line_01" />
+       <RelativeLayout
+           android:id="@+id/re_temp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:background="@color/white"
+           android:layout_below="@+id/tv_line">
+           <TextView
+               android:id = "@+id/tv_begin_notice"
+               android:layout_width = "wrap_content"
+               android:layout_height = "wrap_content"
+               android:layout_marginBottom = "6dp"
+               android:text = "@string/begin_time"
+               android:textColor = "#7d7d7d"
+               android:textSize = "12sp" />
+           <TextView
+               android:id = "@+id/tv_begin_time"
+               android:layout_width = "wrap_content"
+               android:layout_height = "wrap_content"
+               android:layout_alignTop = "@+id/tv_begin_notice"
+               android:layout_marginLeft = "5dp"
+               android:layout_marginStart = "5dp"
+               android:layout_toRightOf = "@+id/tv_begin_notice"
+               android:layout_toEndOf = "@+id/tv_begin_notice"
+               android:textColor = "#7d7d7d"
+               android:textSize = "12sp" />
 
-    <RelativeLayout 
-        android:id="@+id/re_temp"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:padding="10dp"
-         android:background="@color/white"
-         android:layout_below="@+id/tv_line">
-       <TextView
-            android:id="@+id/tv_source_notice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/publiser"
-            android:textColor="#7d7d7d"
-            android:textSize="12sp" />
-        <TextView
-            android:id="@+id/tv_source"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tv_source_notice"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/tv_source_notice"
-            android:textColor="#7d7d7d"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_time_notice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/tv_source_notice"
-            android:text="@string/a_time"
-            android:layout_marginBottom="10dp"
-            android:textColor="#7d7d7d"
-            android:textSize="12sp" />
-       <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tv_time_notice"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/tv_time_notice"
-            android:textColor="#7d7d7d"
-            android:textSize="12sp" />
-       <TextView
-            android:id="@+id/tv_place_notice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/tv_time_notice"
-            android:text="@string/a_place"
-            android:textColor="#7d7d7d"
-            android:textSize="12sp" />
-       <TextView
-            android:id="@+id/tv_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tv_place_notice"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/tv_place_notice"
-            android:textColor="#7d7d7d"
-            android:textSize="12sp" />
-   </RelativeLayout>
+           <TextView
+               android:id = "@+id/tv_end_notice"
+               android:layout_width = "wrap_content"
+               android:layout_height = "wrap_content"
+               android:layout_below="@id/tv_begin_notice"
+               android:text="@string/end_time"
+               android:layout_marginBottom="6dp"
+               android:textColor="#7d7d7d"
+               android:textSize="12sp" />
+           <TextView
+               android:id = "@+id/tv_end_time"
+               android:layout_width = "wrap_content"
+               android:layout_height = "wrap_content"
+               android:layout_alignTop = "@+id/tv_end_notice"
+               android:layout_marginLeft = "5dp"
+               android:layout_marginStart = "5dp"
+               android:layout_toRightOf = "@+id/tv_end_notice"
+               android:layout_toEndOf = "@+id/tv_end_notice"
+               android:textColor = "#7d7d7d"
+               android:textSize = "12sp" />
+           <TextView
+               android:id = "@+id/tv_place_notice"
+               android:layout_width = "wrap_content"
+               android:layout_height = "wrap_content"
+               android:layout_below = "@id/tv_end_notice"
+               android:text = "@string/a_place"
+               android:textColor = "#7d7d7d"
+               android:textSize = "12sp" />
+           <TextView
+               android:id = "@+id/tv_place"
+               android:layout_width = "wrap_content"
+               android:layout_height = "wrap_content"
+               android:layout_alignTop = "@+id/tv_place_notice"
+               android:layout_marginLeft = "5dp"
+               android:layout_marginStart = "5dp"
+               android:layout_toRightOf = "@+id/tv_place_notice"
+               android:layout_toEndOf = "@+id/tv_place_notice"
+               android:textColor = "#7d7d7d"
+               android:textSize = "12sp" />
+       </RelativeLayout>
        <WebView
            android:id="@+id/web"
            android:layout_below="@+id/re_temp"
@@ -140,6 +145,14 @@
            android:paddingLeft="11dp"
            android:paddingTop="12dp"
            android:paddingRight="11dp"/>
+       <TextView
+           android:id="@+id/tv_source"
+           android:layout_below="@+id/web"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:padding="6dp"
+           android:layout_centerHorizontal="true"
+           android:textColor="#999999"/>
      </RelativeLayout>
     </ScrollView>
     

@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +25,10 @@ import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_Friends_Add extends SwipeBackActivity {
+public class Activity_Friends_Add extends BaseActivity {
 	TextView tv_send;
 	private EditText et_reason;
 	private Context context;
@@ -48,14 +48,22 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 
 		context=this;
 		setBaseTitle(R.string.send_request);
-		final String id =this.getIntent().getStringExtra("id");
-		nick=getIntent().getStringExtra("nick");
-		avatar=getIntent().getStringExtra("avatar");
-		Log.e("1", nick+")))"+avatar);
+		initView();
+
+
+	}
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
+	private void initView() {
+		final String id = this.getIntent().getStringExtra("id");
+		nick = getIntent().getStringExtra("nick");
+		avatar = getIntent().getStringExtra("avatar");
+
 		tv_send= (TextView) this.findViewById(R.id.tv_send);
 		et_reason= (EditText) this.findViewById(R.id.et_reason);
-
-		tv_send.setOnClickListener(new OnClickListener(){
+		tv_send.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				addContact(id);
@@ -64,7 +72,10 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 		});
 	}
 
-
+	/***
+	 * 判断是否是好友
+	 * 不是好友则发送添加好友请求，同时通过消息网关通知好友
+	 */
 	@SuppressLint("ShowToast")
 	public void addContact(final String glufine_id) {
 		if (glufine_id == null || glufine_id.equals("")) {
@@ -72,13 +83,13 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 		}
 
 		if (glufine_id.equals(Constant.UID+"")) {
-			Toast.makeText(getApplicationContext(),
+			MyToast.makeText(getApplicationContext(),
 					"不能添加自己", Toast.LENGTH_LONG).show();
 			return;
 		}
 
 		if (MyApplication.getInstance().getContactIDList().contains(glufine_id)) {
-			Toast.makeText(getApplicationContext(),
+			MyToast.makeText(getApplicationContext(),
 					"此用户已是你的好友", Toast.LENGTH_LONG).show();
 			return;
 		}
@@ -88,22 +99,20 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 		progressDialog.setCanceledOnTouchOutside(false);
 		progressDialog.show();
 
-
 		new Thread(new Runnable() {
 			public void run() {
 
 				try {
 					// 在reason封装请求者的昵称/头像/时间等信息，在通知中显示
-
 					Map<String,String> params=new HashMap<>();
 					params.put("uid", Constant.UID+"");
 					params.put("token", Constant.TOKEN);
 					params.put("friend_id", glufine_id);
-					Map<String,Object> result=HttpUnit.sendFriendRequest(params);
-					int status=(int)result.get("status");
-					final String info=(String)result.get("info");
-					if(status==0){
-						String reason= et_reason.getText().toString().trim();
+					Map<String,Object> result = HttpUnit.sendFriendRequest(params);
+					int status = (int)result.get("status");
+					final String info = (String)result.get("info");
+					if(status == 0){
+						String reason = et_reason.getText().toString().trim();
 						JSONObject send_json = new JSONObject();
 						send_json.put("action", "friend_request");
 						send_json.put("type", 1);
@@ -121,10 +130,10 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 						invite.setId(Integer.parseInt(glufine_id));
 						invite.setReason(reason);
 						invite.setCertification(info);
-						invite.setTime(System.currentTimeMillis()/1000);
+						invite.setTime(System.currentTimeMillis() / 1000);
 						invite.setFrom(nick);
 						invite.setAvatar(avatar);
-						Log.e("1", nick+")))"+avatar);
+
 						invite.setStatus(InviteMesageStatus.INVITE);
 						InviteMessgeDao dao=new InviteMessgeDao(context);
 						dao.saveMessage(invite);
@@ -132,7 +141,7 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 						runOnUiThread(new Runnable() {
 							public void run() {
 								progressDialog.dismiss();
-								Toast.makeText(getApplicationContext(),
+								MyToast.makeText(getApplicationContext(),
 										"发送请求成功,等待对方验证", Toast.LENGTH_SHORT).show();
 								Intent intent=new Intent();
 								intent.setClass(context, Activity_Friends_New.class);
@@ -140,16 +149,16 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 								finish();
 							}
 						});
-					}else if(status==5){
+					} else if( status == 5 ) {
 						isFriend(glufine_id);
-					}else{
+					} else {
 						runOnUiThread(new Runnable() {
 							public void run() {
 								progressDialog.dismiss();
 								if(!Constant.isConnectNet){
-									Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+									MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
 								}else{
-									Toast.makeText(getApplicationContext(),
+									MyToast.makeText(getApplicationContext(),
 											info, Toast.LENGTH_SHORT).show();
 								}
 								finish();
@@ -163,7 +172,7 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							progressDialog.dismiss();
-							Toast.makeText(getApplicationContext(),
+							MyToast.makeText(getApplicationContext(),
 									"请求添加好友失败!", Toast.LENGTH_SHORT ).show();
 						}
 					});
@@ -174,9 +183,12 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 
 	/**
 	 * 从服务器端拉取好友列表
+	 * @param fid 判断与fid是否是好友
+	 * 是好友，则获取fid的信息，存入数据库
+	 *
 	 */
 	protected void isFriend(final String fid) {
-		// TODO Auto-generated method stub
+
 		Map<String, String> map = new HashMap<>();
 		map.put("uid", Constant.UID + "");
 		map.put("token", Constant.TOKEN);
@@ -185,11 +197,10 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 		task.getData(new DataCallBack() {
 			@Override
 			public void onDataCallBack(JSONObject data) {
-				// TODO Auto-generated method stub
+
 				try {
 					int code = data.getInteger("status");
 					if (code == 0) {
-						Log.e("1", "friendlist");
 						JSONObject obj = data.getJSONObject("friend_action");
 						JSONArray friends = obj.getJSONArray("friends");
 						List<String> friend = new ArrayList<>();
@@ -200,13 +211,11 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 						if (friend.contains(fid)) {
 							addFriend.add(fid);
 							AddFriendList(addFriend);
-						}else{
-							Toast.makeText(getApplicationContext(),
+							MyToast.makeText(getApplicationContext(),
 									"你们已经是好友了！", Toast.LENGTH_SHORT ).show();
 						}
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -231,7 +240,6 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							// TODO Auto-generated method stub
 							UserDao dao = new UserDao(context);
 							dao.saveContactList(users);
 							try {
@@ -242,7 +250,6 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 								intent.setClass(Activity_Friends_Add.this, Activity_Chat.class);
 								startActivity(intent);
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 
 							}
@@ -250,7 +257,7 @@ public class Activity_Friends_Add extends SwipeBackActivity {
 					});
 					return status;
 				} catch (Throwable e) {
-					Log.e("1", e.toString());
+					e.printStackTrace();
 					return -1;
 				}
 			}

@@ -7,14 +7,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.task.LoadImage;
-import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
 import com.eventer.app.view.CircleProgressBar;
 import com.eventer.app.view.photoview.PhotoView;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
@@ -37,6 +35,11 @@ public class ShowBigImage extends SwipeBackActivity {
 		setContentView(R.layout.activity_show_big_image);
 		super.onCreate(savedInstanceState);
 		context=this;
+		initView();
+
+	}
+
+	private void initView() {
 		image = (PhotoView) findViewById(R.id.image);
 		progressBar=(CircleProgressBar)findViewById(R.id.progress);
 		progressBar.setColorSchemeResources(android.R.color.holo_orange_light);
@@ -46,7 +49,7 @@ public class ShowBigImage extends SwipeBackActivity {
 		//本地存在，直接显示本地的图片
 		if (avatar != null && !avatar.equals("")&&!avatar.equals("default")) {
 			Bitmap bitmap = loadAvatar.loadImage(image, avatar,
-					new ImageDownloadedCallBack() {
+					new LoadImage.ImageDownloadedCallBack() {
 						@Override
 						public void onImageDownloaded(ImageView imageView, Bitmap bitmap, int status) {
 							Log.e("1", status + "");
@@ -54,7 +57,7 @@ public class ShowBigImage extends SwipeBackActivity {
 								imageView.setImageBitmap(bitmap);
 								progressBar.setVisibility(View.GONE);
 							}else{
-								Toast.makeText(context,"图片获取失败！",Toast.LENGTH_LONG).show();
+								Toast.makeText(context, "图片获取失败！", Toast.LENGTH_LONG).show();
 								finish();
 							}
 						}
@@ -70,7 +73,7 @@ public class ShowBigImage extends SwipeBackActivity {
 			progressBar.setVisibility(View.GONE);
 		}
 
-		image.setOnClickListener(new OnClickListener() {
+		image.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();

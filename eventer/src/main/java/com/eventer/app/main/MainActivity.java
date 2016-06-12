@@ -41,7 +41,6 @@ import com.eventer.app.db.UserDao;
 import com.eventer.app.entity.A;
 import com.eventer.app.entity.ChatEntity;
 import com.eventer.app.entity.ChatRoom;
-import com.eventer.app.entity.Event;
 import com.eventer.app.entity.InviteMessage;
 import com.eventer.app.entity.InviteMessage.InviteMesageStatus;
 import com.eventer.app.entity.Msg.Container;
@@ -528,44 +527,43 @@ public class MainActivity extends FragmentActivity {
 				if (list == null || list.size() == 0) {
 					list = new ArrayList<>();
 				}
-				if (!list.contains(id + "")) {
-
-					String provider = recvJs.getString("cEvent_provider");
-					String content = recvJs.getString("cEvent_content");
-					String theme = recvJs.getString("cEvent_theme");
-					String place = recvJs.getString("cEvent_place");
-					String name = recvJs.getString("cEvent_name");
-					String time = recvJs.getString("cEvent_time");// 时间成对，可能有多个时间
-					String pubtime = recvJs.getString("cEvent_publish");
-					long issuetime = Long.parseLong(pubtime);
-					time = time.replace("null,", "");
-					Event event = new Event();
-					event.setEventID(id);
-					event.setContent(content);
-					event.setPublisher(provider);
-					event.setIssueTime(issuetime);
-					event.setTime(time);
-					event.setTitle(name);
-					event.setTheme(theme);
-					event.setPublisher(provider);
-					event.setPlace(place);
-					EventDao dao = new EventDao(context);
-					dao.saveEvent(event);
-//					ActivityFragment.instance.addEvent(event);
-					list.add(id + "");
-					MyApplication.getInstance()
-							.setCacheByKey("EventList", list);
-					List<Event> eventlist = (List<Event>) MyApplication.getInstance()
-							.getCacheByKey("CacheEventList");
-					if(eventlist!=null){
-						eventlist.add(event);
-					}else{
-						eventlist=new ArrayList<>();
-						eventlist.add(event);
-					}
-					MyApplication.getInstance()
-							.setCacheByKey("CacheEventList", eventlist);
-				}
+//				if (!list.contains(id + "")) {
+//
+//					String provider = recvJs.getString("cEvent_provider");
+//					String content = recvJs.getString("cEvent_content");
+//					String theme = recvJs.getString("cEvent_theme");
+//					String place = recvJs.getString("cEvent_place");
+//					String name = recvJs.getString("cEvent_name");
+//					String time = recvJs.getString("cEvent_time");// 时间成对，可能有多个时间
+//					String pubtime = recvJs.getString("cEvent_publish");
+//					long issuetime = Long.parseLong(pubtime);
+//					time = time.replace("null,", "");
+//					Event event = new Event();
+//					event.setEventID(id);
+//					event.setContent(content);
+//					event.setPublisher(provider);
+//					event.setIssueTime(issuetime);
+//					event.setTime(time);
+//					event.setTitle(name);
+//					event.setTheme(theme);
+//					event.setPublisher(provider);
+//					event.setPlace(place);
+//					EventDao dao = new EventDao(context);
+//					dao.saveEvent(event);
+//					list.add(id + "");
+//					MyApplication.getInstance()
+//							.setCacheByKey("EventList", list);
+//					List<Event> eventlist = (List<Event>) MyApplication.getInstance()
+//							.getCacheByKey("CacheEventList");
+//					if(eventlist!=null){
+//						eventlist.add(event);
+//					}else{
+//						eventlist=new ArrayList<>();
+//						eventlist.add(event);
+//					}
+//					MyApplication.getInstance()
+//							.setCacheByKey("CacheEventList", eventlist);
+//				}
 
 			} catch(Exception e){
 				 e.printStackTrace();
@@ -794,43 +792,6 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 
-//		private void UpdateRoom(String bodyString,String name,String owner) {
-//			// TODO Auto-generated method stub
-//			ChatRoom room = new ChatRoom();
-//			room.setRoomId(name);
-//			room.setTime(System.currentTimeMillis() / 1000);
-//			try {
-//				owner=name.split("@")[0];
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			try {
-//				room.setOwner(owner);
-//				JSONObject groupObject = JSONObject.parseObject(bodyString);
-//				//从groupObject中获取displayList的JsonArray，并转换成String[]
-//				JSONArray displayJsonArray = groupObject.getJSONArray("displaylist");
-//				int size_2 = displayJsonArray.size();
-//				String[] displays = new String[size_2];
-//				for(int i =0;i<size_2;i++){
-//					displays[i] = displayJsonArray.get(i).toString();
-//				}
-//				//从groupObject中获取member的JsonArray，并转换成String[]
-//				JSONArray memberJsonArray = groupObject.getJSONArray("memberlist");
-//				int size_1 = memberJsonArray.size();
-//				String[] members = new String[size_1];
-//				for (int i = 0;i<size_1;i++){
-//					members[i] = memberJsonArray.get(i).toString();
-//				}
-//				room.setMember(members);
-//				room.setDisplayname(displays);
-//				ChatroomDao dao = new ChatroomDao(context);
-//				dao.saveChatROOM(room);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 
 	}
 
@@ -1035,44 +996,4 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-//	public boolean newMsg(String MID, String RID, String SID, String body,
-//						  int type) {
-//		Container msg = Container.newBuilder().setMID(String.valueOf(MID))
-//				.setSID(String.valueOf(SID)).setRID(String.valueOf(RID))
-//				.setTYPE(type).setSTIME(System.currentTimeMillis() / 1000)
-//				.setBODY(body).build();
-//		Log.e("1", msg.toString());
-//		binder.sendOne(msg);
-//		return false;
-//	}
-
-//	public static String getDeviceInfo(Context context) {
-//		try{
-//			org.json.JSONObject json = new org.json.JSONObject();
-//			android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
-//					.getSystemService(Context.TELEPHONY_SERVICE);
-//
-//			String device_id = tm.getDeviceId();
-//
-//			android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-//
-//			String mac = wifi.getConnectionInfo().getMacAddress();
-//			json.put("mac", mac);
-//
-//			if( TextUtils.isEmpty(device_id) ){
-//				device_id = mac;
-//			}
-//
-//			if( TextUtils.isEmpty(device_id) ){
-//				device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);
-//			}
-//
-//		json.put("device_id", device_id);
-//
-//			return json.toString();
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
 }

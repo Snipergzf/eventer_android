@@ -82,7 +82,6 @@ public class LoadDataFromHTTP {
 
 
                 } catch (HttpHostConnectException e) {
-                    // TODO: handle exception
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("status", -1);
                     Message msg = new Message();
@@ -90,7 +89,6 @@ public class LoadDataFromHTTP {
                     msg.obj = jsonObject;
                     handler.sendMessage(msg);
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("status", -1);

@@ -22,14 +22,14 @@ import com.eventer.app.R;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
+import com.eventer.app.main.BaseActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BrowserHistoryActivity extends SwipeBackActivity {
+public class BrowserHistoryActivity extends BaseActivity {
 
 	ListView listview;
 	private MyEventAadpter adapter;
@@ -46,6 +46,10 @@ public class BrowserHistoryActivity extends SwipeBackActivity {
 		dao=new EventOpDao(context);
 		initView();
 	}
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
 		// TODO Auto-generated method stub
 		listview=(ListView)findViewById(R.id.listview);
@@ -62,10 +66,10 @@ public class BrowserHistoryActivity extends SwipeBackActivity {
 				Intent intent=new Intent();
 				intent.setClass(context, Activity_EventDetail.class);
 				intent.putExtra("event_id", e.getEventID());
-//				MyApplication.getInstance().setValueByKey("event_detail", e);
 				startActivity(intent);
 			}
 		});
+		//清空浏览记录
 		btn_clear.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -85,58 +89,51 @@ public class BrowserHistoryActivity extends SwipeBackActivity {
 		}
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return mData.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return mData.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
 			ViewHolder holder;
-			Event event=mData.get(position);
+			Event event = mData.get(position);
 			if (convertView == null) {
-				holder=new ViewHolder();
-				//可以理解为从vlist获取view  之后把view返回给ListView
+				holder = new ViewHolder();
 				convertView = mInflater.inflate(R.layout.item_history_eventlist, parent , false);
 				holder.title = (TextView)convertView.findViewById(R.id.tv_title);
 				holder.info=(TextView)convertView.findViewById(R.id.tv_info);
 				holder.time=(TextView)convertView.findViewById(R.id.tv_time);
-
 				convertView.setTag(holder);
 			}else {
 				holder = (ViewHolder)convertView.getTag();
 			}
-			String tilte=event.getTitle();
-			String theme=event.getTheme();
-			String publisher=event.getPublisher();
-			long time=event.getOpTime();
-			String temp_title="";
-			String temp_info="";
+			String tilte = event.getTitle();
+			String theme = event.getTheme();
+			String publisher = event.getPublisher();
+			long time = event.getOpTime();
+			String temp_title = "";
+			String temp_info = "";
 			if(!TextUtils.isEmpty(theme)){
-				temp_title+="【"+theme+"】 ";
+				temp_title += "【"+theme+"】 ";
 			}
 			temp_title+=tilte;
 			holder.title.setText(temp_title);
 			if(!TextUtils.isEmpty(publisher)){
-				temp_info+="发布者: "+publisher;
+				temp_info += "活动来源: "+publisher;
 			}
 			holder.info.setText(temp_info);
-			if(time>0){
+			if(time > 0){
 				holder.time.setText(DateUtils.getTimestampString(new Date(time*1000)));
 			}
-
 			return convertView;
 		}
 
@@ -148,7 +145,7 @@ public class BrowserHistoryActivity extends SwipeBackActivity {
 		adapter.notifyDataSetChanged();
 		Log.e("1", mData.size()+"");
 	}
-	//提取出来方便点  
+
 	public final class ViewHolder {
 		TextView title;
 		TextView time;

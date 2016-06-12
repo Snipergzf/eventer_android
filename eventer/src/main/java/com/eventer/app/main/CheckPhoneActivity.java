@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,7 +28,7 @@ import com.eventer.app.R;
 import com.eventer.app.receiver.SMSBroadcastReceiver;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.view.MyCountTimer;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.regex.Matcher;
@@ -40,7 +39,7 @@ import cn.smssdk.SMSSDK;
 
 @SuppressLint("ShowToast")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class CheckPhoneActivity extends SwipeBackActivity implements OnClickListener, Callback {
+public class CheckPhoneActivity extends BaseActivity implements OnClickListener, Callback {
 
 	private EditText edit_tel,edit_code;
 	private TextView btn_send_code;
@@ -58,26 +57,25 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_check_phone);
+		context=CheckPhoneActivity.this;
+		setBaseTitle(R.string.check_phone);
+		instance=this;
+		initView();
+		initSMSSDK();
 
+	}
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
+	public void initView(){
 		edit_tel=(EditText)findViewById(R.id.edit_tel);
 		edit_code=(EditText)findViewById(R.id.edit_security_code);
 
 		btn_next=(Button)findViewById(R.id.btn_next);
 		btn_tel_clear=(ImageButton)findViewById(R.id.btn_tel_clear);
 		btn_code_clear=(ImageButton)findViewById(R.id.btn_security_code_clear);
-
 		btn_send_code=(TextView)findViewById(R.id.btn_send_code);
-		context=CheckPhoneActivity.this;
-		setBaseTitle(R.string.check_phone);
-		instance=this;
-		init();
-		initSMSSDK();
 
-	}
-	/***
-	 * 给控件添加事件响应
-	 */
-	public void init(){
 		/***
 		 * 监听账号输入框的输入
 		 */
@@ -86,26 +84,24 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 			@SuppressLint("NewApi")
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// TODO Auto-generated method stub
-				int len=s.length();
-				if(len>0) {
+				int len = s.length();
+				if (len > 0) {
 					btn_tel_clear.setVisibility(View.VISIBLE);
-				}
-				else{
+				} else {
 					btn_tel_clear.setVisibility(View.GONE);
 				}
-				if(len>10){
-					IsUserCheck=true;
-				}else if(len<11){
-					IsUserCheck=false;
+				if (len > 10) {
+					IsUserCheck = true;
+				} else if (len < 11) {
+					IsUserCheck = false;
 				}
-				if(IsUserCheck&&IsCodeCheck){
-					btn_next.setBackground(ContextCompat.getDrawable(context,R.drawable.button_blue));
-					btn_next.setTextColor(ContextCompat.getColor(context,R.color.caldroid_white));
+				if (IsUserCheck && IsCodeCheck) {
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_white));
 					btn_next.setClickable(true);
-				}else{
-					btn_next.setBackground(ContextCompat.getDrawable(context,R.drawable.button_gray));
-					btn_next.setTextColor(ContextCompat.getColor(context,R.color.caldroid_darker_gray));
+				} else {
+					btn_next.setBackground(ContextCompat.getDrawable(context, R.drawable.button_gray));
+					btn_next.setTextColor(ContextCompat.getColor(context, R.color.caldroid_darker_gray));
 					btn_next.setClickable(false);
 				}
 			}
@@ -113,12 +109,10 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 										  int after) {
-				// TODO Auto-generated method stub			
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -129,7 +123,6 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// TODO Auto-generated method stub
 				int len=s.length();
 				if(len>0) {
 					btn_code_clear.setVisibility(View.VISIBLE);
@@ -156,13 +149,11 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 										  int after) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -183,8 +174,6 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 			case R.id.btn_next:
 				//发送验证码确认
 				SMSSDK.submitVerificationCode("86", TelString, edit_code.getText().toString());
-
-
 				break;
 			case R.id.btn_tel_clear:
 				edit_tel.setText("");
@@ -197,18 +186,19 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 				if(IsUserCheck){
 					MyCountTimer timeCount = new MyCountTimer(btn_send_code, 0xff33b5e5, 0xff969696);//传入了文字颜色值
 					timeCount.start();
-					if(mSMSBroadcastReceiver==null){
+					if(mSMSBroadcastReceiver == null){
 						//注册短信接收的BroadcastReceiver
 						initSMSReceiver();
 					}
 					TelString=edit_tel.getText().toString();
 					//发送验证码请求
-					SMSSDK.getVerificationCode("86",TelString);
+					SMSSDK.getVerificationCode("86", TelString);
 
 				}else{
-					Toast toast=Toast.makeText(CheckPhoneActivity.this, "请输入完整的手机号码！", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.TOP, 0, 250);
-					toast.show();
+					MyToast.makeText(CheckPhoneActivity.this,
+							"请输入完整的手机号码！", Toast.LENGTH_LONG)
+							.show();
+
 				}
 				break;
 			default:
@@ -296,6 +286,19 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 		return false;
 	}
 
+
+	/***
+	 * 获取短信中的验证码
+	 * @param str msg
+	 * @return code
+	 */
+	public  String getStringNum(String str) {
+		String regEx="[^0-9]";
+		Pattern p = Pattern.compile(regEx);
+		Matcher m = p.matcher(str);
+		return m.replaceAll("").trim();
+	}
+
 	@Override
 	protected void onDestroy()
 	{
@@ -321,16 +324,6 @@ public class CheckPhoneActivity extends SwipeBackActivity implements OnClickList
 		if(instance!=null)
 			this.finish();
 	}
-	/***
-	 * 获取短信中的验证码
-	 * @param str msg
-	 * @return code
-	 */
-	public  String getStringNum(String str) {
-		String regEx="[^0-9]";
-		Pattern p = Pattern.compile(regEx);
-		Matcher m = p.matcher(str);
-		return m.replaceAll("").trim();
-	}
+
 
 }

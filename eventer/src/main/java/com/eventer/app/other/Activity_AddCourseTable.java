@@ -19,10 +19,11 @@ import com.eventer.app.R;
 import com.eventer.app.db.MajorDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.http.HttpUnit;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.AbstractSpinerAdapter;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.view.SpinerPopWindow;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_AddCourseTable extends SwipeBackActivity implements
+public class Activity_AddCourseTable extends BaseActivity implements
 		OnClickListener, AbstractSpinerAdapter.IOnItemSelectListener {
 	private TextView  tv_year,tv_school,tv_major,tv_class;
 	private TextView[] tv_list;
@@ -44,68 +45,79 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 	private String school;
 	private String major;
 	private String mclass;
-	private MajorDao dao;
+	private SpinerPopWindow mSpinerPopWindow;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_addcoursetable);
 		setBaseTitle("添加课表");
 		context=Activity_AddCourseTable.this;
 		instance=this;
-		dao = new MajorDao(context);
-		initData();
+
 		initView();
+		initData();
 	}
 
-	private void initData() {
-		LocalUserInfo userInfo = LocalUserInfo.getInstance(context);
-		year = userInfo.getUserInfo("grade");
-		if(TextUtils.isEmpty(year)){
-			year="";
-		}
-		major = userInfo.getUserInfo("major");
-		if(TextUtils.isEmpty(major)){
-			major="";
-		}
-		school = userInfo.getUserInfo("school");
-		if(TextUtils.isEmpty(school)){
-			school="";
-		}
-		mclass = userInfo.getUserInfo("class");
-		if(TextUtils.isEmpty(mclass)){
-			mclass="";
-		}
-	}
-
-
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
-		// TODO Auto-generated method stub
 		tv_class=(TextView)findViewById(R.id.tv_class);
 		tv_major=(TextView)findViewById(R.id.tv_major);
 		tv_school=(TextView)findViewById(R.id.tv_school);
 		tv_year=(TextView)findViewById(R.id.tv_year);
 		tv_list=new TextView[]{tv_year,tv_school,tv_major,tv_class};
 		Button btn_search = (Button) findViewById(R.id.btn_search_ctable);
+
 		tv_class.setOnClickListener(this);
 		tv_major.setOnClickListener(this);
 		tv_school.setOnClickListener(this);
 		tv_year.setOnClickListener(this);
 		btn_search.setOnClickListener(this);
-		tv_class.setText(mclass);
-		tv_major.setText(major);
-		tv_school.setText(school);
-		tv_year.setText(year);
+
 		String[] grade = getResources().getStringArray(R.array.grade);
 		Collections.addAll(yearList, grade);
 		mSpinerPopWindow = new SpinerPopWindow(this);
 		mSpinerPopWindow.refreshData(valueList, 0);
 		mSpinerPopWindow.setItemListener(this);
 	}
+	
+	/***
+	 * 初始化页面的数据
+	 */
+	private void initData() {
+		LocalUserInfo userInfo = LocalUserInfo.getInstance(context);
+		year = userInfo.getUserInfo("grade");
+		if(TextUtils.isEmpty(year)){
+			year = "";
+		}
+		major = userInfo.getUserInfo("major");
+		if(TextUtils.isEmpty(major)){
+			major = "";
+		}
+		school = userInfo.getUserInfo("school");
+		if(TextUtils.isEmpty(school)){
+			school = "";
+		}
+		mclass = userInfo.getUserInfo("class");
+		if(TextUtils.isEmpty(mclass)){
+			mclass = "";
+		}
 
+		tv_class.setText(mclass);
+		tv_major.setText(major);
+		tv_school.setText(school);
+		tv_year.setText(year);
+	}
+
+
+
+	/**
+	 * 页面控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		MajorDao dao = new MajorDao(context);
 		switch (v.getId()) {
 			case R.id.tv_year:
 				index = 0;
@@ -119,7 +131,7 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 					mSpinerPopWindow.refreshData(valueList, 0);
 					index = 1;
 				} else {
-					Toast.makeText(context, "请先选择年级~", Toast.LENGTH_SHORT).show();
+					MyToast.makeText(context, "请先选择年级~", Toast.LENGTH_SHORT).show();
 					index = -1;
 				}
 
@@ -133,7 +145,7 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 					mSpinerPopWindow.refreshData(valueList, 0);
 					index=2;
 				}  else {
-					Toast.makeText(context, "请先选择年级和学院~", Toast.LENGTH_SHORT).show();
+					MyToast.makeText(context, "请先选择年级和学院~", Toast.LENGTH_SHORT).show();
 					index=-1;
 				}
 				break;
@@ -147,7 +159,7 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 					mSpinerPopWindow.refreshData(valueList, 0);
 					index=3;
 				}  else {
-					Toast.makeText(context, "请先选择年级、学院和专业~", Toast.LENGTH_SHORT).show();
+					MyToast.makeText(context, "请先选择年级、学院和专业~", Toast.LENGTH_SHORT).show();
 					index=-1;
 				}
 				break;
@@ -167,7 +179,7 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 					params.put("s_class", mclass);
 					GetCourseTableByHTTP(params);
 				}else{
-					Toast.makeText(context, "请完善课表信息！", Toast.LENGTH_LONG).show();
+					MyToast.makeText(context, "请完善课表信息！", Toast.LENGTH_LONG).show();
 					index=-1;
 				}
 
@@ -181,16 +193,14 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 		}
 	}
 
-	private SpinerPopWindow mSpinerPopWindow;
+
 	private void showSpinWindow(){
 		Log.e("", "showSpinWindow");
 		mSpinerPopWindow.setWidth(tv_list[index].getWidth());
 		mSpinerPopWindow.showAsDropDown(tv_list[index]);
 		mSpinerPopWindow.setOnDismissListener(new OnDismissListener() {
-
 			@Override
 			public void onDismiss() {
-				// TODO Auto-generated method stub
 				tv_list[index].setSelected(false);
 			}
 		});
@@ -198,7 +208,7 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 
 	@Override
 	public void onItemClick(int pos) {
-		// TODO Auto-generated method stub
+
 		if (pos >= 0 && pos <= valueList.size()){
 			String value = valueList.get(pos);
 			tv_list[index].setText(value);
@@ -224,8 +234,7 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 					list=HttpUnit.sendCourseTableRequest((Map<String, String>) params[0]);
 					return list;
 				} catch (Throwable e) {
-					// TODO Auto-generated catch block
-					Log.e("1", e.toString());
+					e.printStackTrace();
 					return null;
 				}
 			}
@@ -239,10 +248,10 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 					intent.putExtra("class", info);
 					startActivity(intent);
 				}else{
-					if(!Constant.isConnectNet){
-						Toast.makeText(context,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
-					}else{
-						Toast.makeText(context,"找不到课表~\n当前课表可能还在输入中~",Toast.LENGTH_SHORT).show();
+					if(!Constant.isConnectNet) { 
+						MyToast.makeText(context,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
+					} else {
+						MyToast.makeText(context,"找不到课表~\n当前课表可能还在输入中~",Toast.LENGTH_SHORT).show();
 					}
 				}
 
@@ -259,9 +268,5 @@ public class Activity_AddCourseTable extends SwipeBackActivity implements
 	protected void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-	}
-
-	public void back() {
-		finish();
 	}
 }

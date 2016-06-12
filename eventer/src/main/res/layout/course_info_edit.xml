@@ -37,7 +37,8 @@
             android:background="@color/caldroid_holo_blue_dark" />
             <TextView
                 android:id="@+id/course_edit_title"
-                style="@style/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/view_temp"
                 android:layout_toRightOf="@+id/view_temp"
                 android:layout_toLeftOf="@+id/addkc_ok"
@@ -48,8 +49,9 @@
                 android:paddingEnd="40dp"
                 android:ellipsize="middle"
                 android:singleLine="true"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:textColor="#ffffff"
+                android:layout_centerVertical="true"
                 android:text="@string/add_course" />
 
             <TextView

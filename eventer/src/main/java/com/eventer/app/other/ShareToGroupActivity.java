@@ -12,9 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,6 +40,7 @@ import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.util.LocalUserInfo;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -50,13 +49,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 @SuppressLint("SetTextI18n")
 public class ShareToGroupActivity extends SwipeBackActivity {
     private ImageView iv_search;
     private TextView tv_checked;
     private ListView listView;
     /** 是否为单选 */
-//    boolean isSignleChecked;
     private PickChatroomAdapter contactAdapter;
     /** group中一开始就有的成员 */
     List<String> exitingMembers = new ArrayList<>();
@@ -65,6 +64,7 @@ public class ShareToGroupActivity extends SwipeBackActivity {
     // 选中用户总数,右上角显示
     int total = 0;
     ProgressDialog progressDialog;
+    List<ChatRoom> allroomList = new ArrayList<>();
 
     // 添加的列表
     private List<String> addList = new ArrayList<>();
@@ -82,48 +82,23 @@ public class ShareToGroupActivity extends SwipeBackActivity {
         context=this;
         instance=this;
         setBaseTitle(R.string.share_activity);
+        initView();
+        initData();
+
+    }
+
+
+    /***
+     * 初始化控件，给控件添加事件响应
+     */
+    private void initView() {
         progressDialog = new ProgressDialog(this);
-        shareType=getIntent().getIntExtra("sharetype", 0);
-        if(shareType==ShareToSingleActivity.SHARE_EVENT){
-            eid=getIntent().getStringExtra("event_id");
-            if(!TextUtils.isEmpty(eid)){
-                EventDao d=new EventDao(context);
-                event=d.getEvent(eid);
-            }
-            if(event==null)
-                finish();
-        }
-        else if(shareType==ShareToSingleActivity.SHARE_SCHEDUAL){
-            sid=getIntent().getStringExtra("schedual_id");
-            if(!TextUtils.isEmpty(sid)){
-                SchedualDao dao=new SchedualDao(context);
-                schedual=dao.getSchedual(sid);
-            }
-            if(schedual==null)
-                finish();
-        }else{
-            finish();
-        }
         tv_checked = (TextView) this.findViewById(R.id.tv_checked);
-
-        // 获取好友列表
-        final List<ChatRoom> allroomList = new ArrayList<>();
-        ChatroomDao dao=new ChatroomDao(context);
-        List<ChatRoom> rooms=dao.getRoomList();
-        for (ChatRoom room : rooms) {
-            allroomList.add(room);
-        }
-
-        // 对list进行排序
-        Collections.sort(allroomList, new PinyinComparator() {
-        });
-
         listView = (ListView) findViewById(R.id.list);
-
+        final EditText et_search = (EditText) this.findViewById(R.id.et_search);
         menuLinerLayout = (LinearLayout) this
                 .findViewById(R.id.linearLayoutMenu);
-
-        final EditText et_search = (EditText) this.findViewById(R.id.et_search);
+        iv_search = (ImageView) this.findViewById(R.id.iv_search);
 
         et_search.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before,
@@ -163,11 +138,12 @@ public class ShareToGroupActivity extends SwipeBackActivity {
 
             }
         });
+
         contactAdapter = new PickChatroomAdapter(this,
                 R.layout.item_contactlist_listview_checkbox, allroomList);
         listView.setAdapter(contactAdapter);
 
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -178,7 +154,7 @@ public class ShareToGroupActivity extends SwipeBackActivity {
 
             }
         });
-        tv_checked.setOnClickListener(new OnClickListener() {
+        tv_checked.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -187,11 +163,48 @@ public class ShareToGroupActivity extends SwipeBackActivity {
 
         });
 
-        iv_search = (ImageView) this.findViewById(R.id.iv_search);
+
+    }
+
+    /***
+     * 初始化页面的数据
+     */
+    private void initData() {
+        shareType = getIntent().getIntExtra("sharetype", 0);
+        if(shareType==ShareToSingleActivity.SHARE_EVENT){
+            eid=getIntent().getStringExtra("event_id");
+            if(!TextUtils.isEmpty(eid)){
+                EventDao d=new EventDao(context);
+                event=d.getEvent(eid);
+            }
+            if(event==null)
+                finish();
+        } else if(shareType==ShareToSingleActivity.SHARE_SCHEDUAL){
+            sid=getIntent().getStringExtra("schedual_id");
+            if(!TextUtils.isEmpty(sid)){
+                SchedualDao dao=new SchedualDao(context);
+                schedual=dao.getSchedual(sid);
+            }
+            if(schedual==null)
+                finish();
+        } else{
+            finish();
+        }
+
+        // 获取好友列表
+        allroomList.clear();
+        ChatroomDao dao=new ChatroomDao(context);
+        List<ChatRoom> rooms=dao.getRoomList();
+        for (ChatRoom room : rooms) {
+            allroomList.add(room);
+        }
+
+        // 对list进行排序
+        Collections.sort(allroomList, new PinyinComparator() {
+        });
     }
 
     // 即时显示被选中用户的头像和昵称。
-
     public void showCheckImage(Bitmap[] bitmap, ChatRoom glufineid) {
         if (exitingMembers.contains(glufineid.getRoomId())) {
             return;
@@ -207,7 +220,7 @@ public class ShareToGroupActivity extends SwipeBackActivity {
         // 参数设置
         android.widget.LinearLayout.LayoutParams menuLinerLayoutParames = new LinearLayout.LayoutParams(
                 108, 108, 1);
-        View view =creatConvertView(memberNum);
+        View view = creatConvertView(memberNum);
         view.setTag(glufineid);
         menuLinerLayoutParames.setMargins(6, 6, 6, 6);
         int[] avatar_id=new int[]{R.id.iv_avatar1,R.id.iv_avatar2,R.id.iv_avatar3,R.id.iv_avatar4};
@@ -260,7 +273,7 @@ public class ShareToGroupActivity extends SwipeBackActivity {
     }
 
 
-
+    //被取消选中时的处理
     public void deleteImage(ChatRoom glufineid) {
         View view = menuLinerLayout.findViewWithTag(glufineid);
         menuLinerLayout.removeView(view);
@@ -275,19 +288,18 @@ public class ShareToGroupActivity extends SwipeBackActivity {
     }
 
 
-
     /**
      * 确认选择的members
-     *
+     * 并向选中的群组分享数据
      */
     public void save() {
         if (addList.size() == 0) {
-            Toast.makeText(context, "请选择用户",
+            MyToast.makeText(context, "请选择用户",
                     Toast.LENGTH_LONG).show();
             return;
         }
         if(!Constant.isConnectNet){
-            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+            MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
         }
         String group=null;
@@ -324,7 +336,6 @@ public class ShareToGroupActivity extends SwipeBackActivity {
                     dao.saveMessage(msg);
                     MainActivity.instance.newMsg(room, room, body, 49);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 Log.e("1", body);
@@ -349,7 +360,9 @@ public class ShareToGroupActivity extends SwipeBackActivity {
 
 
     }
-
+    /**
+     * 分享群日程
+     */
     private void shareGroupSchedual(String a_id) {
         String group = null;
         for (String room : addList) {
@@ -386,14 +399,15 @@ public class ShareToGroupActivity extends SwipeBackActivity {
         }
     }
 
-
+    /***
+     * 向服务器发送统计数据，用户分享了该活动
+     */
     private void ShareFeedBack(){
         Map<String,String> map= HttpParamUnit.eventAddFeedback(eid, "1", "", "");
         LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
         task.getData(new DataCallBack() {
             @Override
             public void onDataCallBack(JSONObject data) {
-                // TODO Auto-generated method stub
                 try {
                     int status = data.getInteger("status");
                     if (status == 0) {
@@ -406,14 +420,15 @@ public class ShareToGroupActivity extends SwipeBackActivity {
             }
         });
     }
-
+    /**
+     * 创建可分享的日程
+     */
     private void creatGroupSchedual(final Schedual schedual){
         Map<String,String> map= HttpParamUnit.activityCreate(schedual);
         LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_CREATE, map);
         task.getData(new DataCallBack() {
             @Override
             public void onDataCallBack(JSONObject data) {
-                // TODO Auto-generated method stub
                 try {
                     int status = data.getInteger("status");
                     if (status == 0) {
@@ -421,33 +436,30 @@ public class ShareToGroupActivity extends SwipeBackActivity {
 
                         JSONObject action = data.getJSONObject("web_action");
                         String a_id = action.getString("a_id");
-                        Schedual s=schedual;
-                        s.setFriend(Constant.UID);
-                        s.setShareId(a_id);
-                        s.setSharer(Constant.UID);
+                        schedual.setFriend(Constant.UID);
+                        schedual.setShareId(a_id);
+                        schedual.setSharer(Constant.UID);
                         SchedualDao dao=new SchedualDao(context);
-                        dao.saveSchedual(s);
+                        dao.saveSchedual(schedual);
                         shareGroupSchedual(a_id);
                     }else if(status == 34){
-                        Toast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
+                        MyToast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
+                        MyToast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    // TODO: handle exception
-                    Toast.makeText(context, "error~", Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(context, "error~", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-
-    @SuppressLint("DefaultLocale")
+    /***
+     * 根据群名的拼音进行排序
+     */
     public class PinyinComparator implements Comparator<ChatRoom> {
-        @SuppressLint("DefaultLocale")
         @Override
         public int compare(ChatRoom o1, ChatRoom o2) {
-            // TODO Auto-generated method stub
             String py1 = o1.getDefaultName();
             String py2 = o2.getDefaultName();
             // 判断是否为空""
@@ -472,7 +484,7 @@ public class ShareToGroupActivity extends SwipeBackActivity {
             return "".equals(str.trim());
         }
     }
-    @SuppressLint("DefaultLocale")
+
     private String getHead(String roomname){
         if (Character.isDigit(roomname.charAt(0))) {
             return "#";

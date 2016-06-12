@@ -91,8 +91,8 @@ public class MyApplication extends Application{
 	public Map<String,UserInfo> getUserList(){
 		if(UserList.isEmpty()){
 			Map<String,UserInfo> map;
-			UserDao dao=new UserDao(context);
-			map=dao.getUserInfoList();
+			UserDao dao = new UserDao(context);
+			map = dao.getUserInfoList();
 			return map;
 		}
 		return UserList;

@@ -1,12 +1,12 @@
 
 package com.eventer.app.view.wheel;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Abstract Wheel adapter.
@@ -23,7 +23,7 @@ public abstract class AbstractWheelAdapter implements WheelViewAdapter {
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
         if (datasetObservers == null) {
-            datasetObservers = new LinkedList<DataSetObserver>();
+            datasetObservers = new LinkedList<>();
         }
         datasetObservers.add(observer);
     }

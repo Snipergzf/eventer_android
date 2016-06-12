@@ -15,6 +15,8 @@ import com.eventer.app.db.CourseDao;
 import com.eventer.app.entity.Course;
 import com.eventer.app.main.BaseActivity;
 import com.eventer.app.view.ListViewForScrollView;
+import com.eventer.app.view.MyToast;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,53 +36,28 @@ public class Activity_AddCourse_Manually extends BaseActivity implements View.On
         initView();
     }
 
+    /***
+     * 初始化控件，给控件添加事件响应
+     */
     private void initView() {
-        addkc_name=(EditText) findViewById(R.id.addkc_name_edit);
-        addkc_teacher=(EditText) findViewById(R.id.addkc_teacher_edit);
+        addkc_name = (EditText) findViewById(R.id.addkc_name_edit);
+        addkc_teacher = (EditText) findViewById(R.id.addkc_teacher_edit);
         TextView tv_finish = (TextView) findViewById(R.id.tv_add_finish);
         ListViewForScrollView listview = (ListViewForScrollView) findViewById(R.id.listview);
         LinearLayout ll_add_time = (LinearLayout) findViewById(R.id.ll_add_time);
+
         ll_add_time.setOnClickListener(this);
         tv_finish.setOnClickListener(this);
 
-        Course course=new Course();
+        Course course = new Course();
         mData.add(course);
-        adapter=new CourseTimeAdapter(context, R.layout.item_course_detail, mData);
+        adapter = new CourseTimeAdapter(context, R.layout.item_course_detail, mData);
         listview.setAdapter(adapter);
     }
 
-    public void saveCourse(){
-        List<Course> list=adapter.getData();
-        // TODO Auto-generated method stub
-        List<Course> c_list=new ArrayList<>();
-        int classid=(int)(System.currentTimeMillis()/1000);
-        String name=addkc_name.getText().toString();
-        String teacher=addkc_teacher.getText().toString();
-        if(TextUtils.isEmpty(name)){
-            Toast.makeText(context, "请填写课程名！", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if(TextUtils.isEmpty(teacher)){
-            teacher="";
-        }
-        for (Course course : list) {
-            if(!TextUtils.isEmpty(course.getTime())&&!TextUtils.isEmpty(course.getWeek()))
-            {
-                course.setClassid(classid);
-                course.setClassname(name);
-                course.setTeacher(teacher);
-                c_list.add(course);
-            }
-        }
-        if(c_list.size()==0){
-            Toast.makeText(context, "请完善课程信息！", Toast.LENGTH_LONG).show();
-            return;
-        }
-        CourseDao dao=new CourseDao(context);
-        dao.saveCourseList(c_list);
-        finish();
-    }
-
+    /**
+     * 页面控件的点击事件
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -96,4 +73,51 @@ public class Activity_AddCourse_Manually extends BaseActivity implements View.On
                 break;
         }
     }
+
+    /**
+     * 保存所编辑课程信息，并退出页面
+     */
+    public void saveCourse(){
+        List<Course> list = adapter.getData();
+        List<Course> c_list = new ArrayList<>();
+        int classid = (int) (System.currentTimeMillis()/1000);
+        String name = addkc_name.getText().toString();
+        String teacher = addkc_teacher.getText().toString();
+        if(TextUtils.isEmpty(name)){
+            MyToast.makeText(context, "请填写课程名！", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(TextUtils.isEmpty(teacher)){
+            teacher = "";
+        }
+        for (Course course : list) {
+            if(!TextUtils.isEmpty(course.getTime())
+                    && !TextUtils.isEmpty(course.getWeek()) ) {
+                course.setClassid(classid);
+                course.setClassname(name);
+                course.setTeacher(teacher);
+                c_list.add(course);
+            }
+        }
+        if(c_list.size() == 0){
+            MyToast.makeText(context, "请完善课程信息！", Toast.LENGTH_LONG).show();
+            return;
+        }
+        CourseDao dao=new CourseDao(context);
+        dao.saveCourseList(c_list);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 }

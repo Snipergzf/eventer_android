@@ -12,12 +12,12 @@
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_dialog_back.9.png"
     },
     {
-        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png",
-        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png"
-    },
-    {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\crop__ic_cancel.png",
         "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\lib\\unspecified\\res\\drawable-xhdpi-v4\\crop__ic_cancel.png"
+    },
+    {
+        "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png",
+        "source": "F:\\ProjectAS\\eventer\\build\\intermediates\\exploded-aar\\ProjectAS\\sMSSDK\\unspecified\\res\\drawable-xhdpi-v4\\smssdk_dialog_bg.9.png"
     },
     {
         "merged": "F:\\ProjectAS\\eventer\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\abc_scrubber_control_off_mtrl_alpha.png",

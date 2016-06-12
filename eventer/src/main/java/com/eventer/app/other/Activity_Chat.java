@@ -121,14 +121,7 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 	// 设置按钮
 	ImageView iv_setting_group;
 	private MsgReceiver msgReceiver;
-//	@SuppressLint("HandlerLeak")
-//	Handler micImageHandler = new Handler() {
-//		@Override
-//		public void handleMessage(android.os.Message msg) {
-//			// 切换msg切换图片
-//			micImage.setImageDrawable(micImages[msg.what]);
-//		}
-//	};
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -137,13 +130,10 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 		context = Activity_Chat.this;
 		instance = this;
 		setBaseTitle(R.string.chat);
-//		layout.setViewPager();
 		initView();
 		setUpView();
 		iamge_path = this.getIntent().getStringExtra("iamge_path");
-//		if (iamge_path != null && !iamge_path.equals("")) {
-//			// sendPicture(iamge_path, true);
-//		}
+
 		mHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -204,7 +194,6 @@ public class Activity_Chat extends SwipeBackActivity implements OnClickListener 
 
 		ChatEntityDao dao = new ChatEntityDao(context);
 		dao.ClearUnReadMsg(talker);
-//		MainActivity.instance.cancelNotify(talker);
 		MessageFragment.instance.refreshData();
 	}
 

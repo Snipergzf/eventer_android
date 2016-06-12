@@ -1098,14 +1098,13 @@ public class CaldroidFragment extends DialogFragment {
 							moveToDate(date);
 							//refreshView();;
 						} catch (ParseException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
 				}, localCalendar.get(1), localCalendar.get(2),localCalendar.get(5)).show();
 			}
 		});
-		btn_turnto_today=(Button) view.findViewById(R.id.btn_turnto_today);
+		btn_turnto_today = (Button) view.findViewById(R.id.btn_turnto_today);
 		btn_turnto_today.setOnClickListener(new OnClickListener() {
 
 			@Override

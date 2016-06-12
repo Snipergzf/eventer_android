@@ -14,7 +14,7 @@ import com.eventer.app.adapter.EventAdapter;
 import com.eventer.app.db.EventDao;
 import com.eventer.app.db.EventOpDao;
 import com.eventer.app.entity.Event;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
+import com.eventer.app.main.BaseActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CollectActivity extends SwipeBackActivity {
+public class CollectActivity extends BaseActivity {
 	ListView listview;
 	private EventAdapter adapter;
 	private Context context;
@@ -41,6 +41,9 @@ public class CollectActivity extends SwipeBackActivity {
 		dao=new EventOpDao(context);
 		initView();
 	}
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
 		// TODO Auto-generated method stub
 		listview=(ListView)findViewById(R.id.listview);
@@ -56,7 +59,6 @@ public class CollectActivity extends SwipeBackActivity {
 				Intent intent = new Intent();
 				intent.setClass(context, Activity_EventDetail.class);
 				intent.putExtra("event_id", e.getEventID());
-//				MyApplication.getInstance().setValueByKey("event_detail", e);
 				startActivity(intent);
 			}
 		});
@@ -66,12 +68,12 @@ public class CollectActivity extends SwipeBackActivity {
 	private void getListItems() {
 		mData.clear();
 		List<Event> listItems;
-		EventDao dao=new EventDao(context);
-		listItems=dao.getEventListByInfo(new String[]{Constant.UID + "", "1"});
+		EventDao dao = new EventDao(context);
+		listItems = dao.getEventListByInfo(
+				new String[]{Constant.UID + "", "1"});
 		for (Event event : listItems) {
 			event = getEventItem(event);
 			if(event != null){
-
 				mData.add(event);
 			}
 		}
@@ -80,11 +82,12 @@ public class CollectActivity extends SwipeBackActivity {
 		adapter.notifyDataSetChanged();
 	}
 
+	/***
+	 * 对活动进行排序
+	 */
 	public class EventComparator implements Comparator<Event> {
-
 		@Override
 		public int compare(Event e1, Event e2) {
-			// TODO Auto-generated method stub
 			String start1=e1.getStart()+"";
 			String start2=e2.getStart()+"";
 			return start2.compareTo(start1);
@@ -93,16 +96,15 @@ public class CollectActivity extends SwipeBackActivity {
 	}
 
 	private Event getEventItem(Event event) {
-		// TODO Auto-generated method stub
-			String time=event.getTime();
+			String time = event.getTime();
 			JSONArray time1;
 			try {
 				time1 = new JSONArray(time);
 
-				for(int i=0;i<time1.length()/2;i++){
-					long begin=time1.getLong(2*i);
-					long end=time1.getLong(2*i+1);
-					if(i==0){
+				for(int i = 0;i < time1.length()/2;i++){
+					long begin = time1.getLong(2*i);
+					long end = time1.getLong(2*i+1);
+					if(i == 0){
 						event.setStart(begin);
 						event.setEnd(end);
 					}
@@ -114,7 +116,6 @@ public class CollectActivity extends SwipeBackActivity {
 					}
 				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}//时间成对，可能有多个时间
 		return event;
@@ -125,9 +126,7 @@ public class CollectActivity extends SwipeBackActivity {
 		super.onResume();
 		MobclickAgent.onResume(this);
 	}
-	public void back(View v){
-		finish();
-	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();

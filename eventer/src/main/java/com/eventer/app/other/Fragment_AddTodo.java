@@ -38,9 +38,8 @@ import hirondelle.date4j.DateTime;
 public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 
 
-	private TextView eventdate,eventtime;
-	private EditText eventtitle,eventplace,eventdetail;
-	public int Repeat=2,Remind=2;
+	private TextView eventdate, eventtime;
+	private EditText eventtitle, eventplace, eventdetail;
 	private Long id;
 	private Context context;
 	private boolean IsNew=true;
@@ -48,35 +47,32 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 	public static  Fragment_AddTodo instance;
 	private Schedual schedual;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		View rootView=inflater.inflate(R.layout.fragment_add_todo, container, false);
 		context=getActivity();
 		instance=this;
 		initView(rootView);
-		id=getActivity().getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
-		int type=getActivity().getIntent().getIntExtra(Calendar_ViewSchedual.ARGUMENT_TYPE, -1);
-		if(id==-1){
+		id = getActivity().getIntent()
+				.getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
+		int type = getActivity().getIntent()
+				.getIntExtra(Calendar_ViewSchedual.ARGUMENT_TYPE, -1);
+		if(id == -1){ //新建待办
 			IsNew=true;
-		}else if(type==3){
+		}else if(type == 3){ //编辑待办
 			setData();
-			IsNew=false;
+			IsNew = false;
 		}
 		return rootView;
 	}
 
 
-
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView(View rootView) {
-		// TODO Auto-generated method stub
 		eventdate=(TextView)rootView.findViewById(R.id.addevent_datestart);
 		eventtime=(TextView)rootView.findViewById(R.id.addevent_timestart);
 		eventtitle=(EditText)rootView.findViewById(R.id.addevent_title);
@@ -97,7 +93,10 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 	}
 
 
-
+	/***
+	 * 编辑日程时
+	 * 初始化页面数据
+	 */
 	public void setData(){
 		SchedualDao dao = new SchedualDao(context);
 		schedual = dao.getSchedual(id+"");
@@ -108,10 +107,11 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 			String place = schedual.getPlace();
 			String detail = schedual.getDetail();
 
-			String event_date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
-			if(start!=null&&start.trim().length() != 0){
+			String event_date = getActivity().getIntent()
+					.getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
+			if(start != null && start.trim().length() != 0){
 				eventdate.setText(event_date);
-				String[] time=start.split(" ");
+				String[] time = start.split(" ");
 				if(time.length>0){
 					eventdate.setText(time[0]);
 					eventtime.setText(time[1]);
@@ -132,15 +132,12 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		}
 	}
 
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
+	/***
+	 * 为页面控件添加点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+
 		switch (v.getId()) {
 			case R.id.addevent_datestart:
 				String date_str=eventdate.getText().toString();
@@ -150,7 +147,7 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear,
 										  int dayOfMonth) {
-						// TODO Auto-generated method stub
+
 						int month=monthOfYear+1;
 						String day;
 						if(dayOfMonth>9){
@@ -173,7 +170,7 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 
 					@Override
 					public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-						// TODO Auto-generated method stub
+
 						if(hourOfDay>9){
 							if(minute<10){
 								eventtime.setText(hourOfDay+":0"+minute);
@@ -197,6 +194,9 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		}
 	}
 
+	/***
+	 * 保存待办，并退出
+	 */
 	public void finish(){
 		DBManager dbHelper;
 		dbHelper = new DBManager(context);
@@ -257,6 +257,9 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 
 	}
 
+	/***
+	 * 日期选择器
+	 */
 	class MyDatePickerDialog extends DatePickerDialog {
 
 		public MyDatePickerDialog(Context context, int theme,  OnDateSetListener callBack,
@@ -276,6 +279,9 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		}
 	}
 
+	/***
+	 * 事件选择器
+	 */
 	class MyTimePickerDialog extends TimePickerDialog {
 
 		public MyTimePickerDialog(Context context, int theme,  OnTimeSetListener callBack,
@@ -295,6 +301,10 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		}
 	}
 
+
+	/***
+	 * 获取日程状态
+	 */
 	private int getStatus(String nowtime, String end, String remindtime) {
 		// TODO Auto-generated method stub
 		int status=0;
@@ -317,11 +327,13 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		return date;
 	}
 
+	/***
+	 * 获取提醒时间
+	 */
 	private String getRemindTime(String start, int span) {
-		// TODO Auto-generated method stub
-		String rTime=null;
+		String rTime;
 		DateTime begin=new DateTime(start+":00");
-		DateTime r=null;
+		DateTime r;
 		switch(span){
 			case 1:
 				r=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
@@ -346,35 +358,6 @@ public  class Fragment_AddTodo extends Fragment implements OnClickListener{
 		return rTime;
 	}
 
-	@SuppressLint("SimpleDateFormat")
-	private String getEndTime(String starttime, int span) {
-		// TODO Auto-generated method stub
-		String endTime=null;
-		DateTime begin=new DateTime(starttime+":00");
-		DateTime end=null;
-		switch(span){
-			case 0:
-				end=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
-				break;
-			case 1:
-				end=begin.plus(0, 0, 0, 0, 30, 0, 0, null);
-				break;
-			case 2:
-				end=begin.plus(0, 0, 0, 1, 0, 0, 0, null);
-				break;
-			case 3:
-				end=begin.plus(0, 0, 0, 2, 0, 0, 0, null);
-				break;
-			case 4:
-				end=begin.plus(0, 0, 1, 0, 0, 0, 0, null);
-				break;
-			default:
-				end=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
-				break;
-		}
-		endTime=end.toString().substring(0, 16);
-		return endTime;
-	}
 
 }
   		

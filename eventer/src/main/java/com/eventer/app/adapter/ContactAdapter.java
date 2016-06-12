@@ -51,7 +51,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         copyUserList = new ArrayList<>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
-        avatarLoader=new LoadImage(context, Constant.IMAGE_PATH);
+        avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
 
     }
 
@@ -71,9 +71,9 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         User user = getItem(position);
         String header = user.getHeader();
         String usernick = user.getNick();
-        String beizhu=user.getBeizhu();
+        String beizhu = user.getBeizhu();
         String useravatar = user.getAvatar();
-        Log.e("1", position + "------"+header+usernick);
+
         if (position == 0 || header != null
                 && !header.equals(getItem(position - 1).getHeader())) {
             if ("".equals(header)) {
@@ -184,8 +184,6 @@ public class ContactAdapter extends ArrayAdapter<User> implements
                         newValues.add(user);
                     } else {
                         final String[] words = username.split(" ");
-                        // Start at index 0, in case valueText starts with
-                        // space(s)
                         for (String word : words) {
                             if (word.startsWith(prefixString)) {
                                 newValues.add(user);

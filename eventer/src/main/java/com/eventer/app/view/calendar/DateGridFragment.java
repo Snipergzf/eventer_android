@@ -20,8 +20,7 @@ import com.eventer.app.view.MyGridView;
  * 
  * Client must supply gridAdapter and onItemClickListener before the fragment is
  * attached to avoid complex crash due to fragment life cycles.
- * 
- * @author thomasdao
+ *
  * 
  */
 @SuppressWarnings({"UnusedDeclaration"})

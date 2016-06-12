@@ -56,23 +56,22 @@ public class HttpUnit {
 	}
 
 	public static Map<String,Object> sendFriendRequest( Map<String, String> params) throws Exception{
-		String jsonString= sendPostRequest(Constant.WEB_SERVICE_URL+"v1/friend/add", params);
+		String jsonString = sendPostRequest(Constant.WEB_SERVICE_URL+"v1/friend/add", params);
 		JSONObject jsonObject= new  JSONObject(jsonString);
-		Map<String,Object> map=new HashMap<>();
-		int status=jsonObject.getInt("status");
+		Map<String,Object> map = new HashMap<>();
+		int status = jsonObject.getInt("status");
 		String info;
-		if(status==0){
+		if(status == 0){
 			String finfo=jsonObject.getString("friend_action");
 			JSONObject jsonLogin= new  JSONObject(finfo);
 			info=jsonLogin.getString("certificate");
-			Log.e("1","add-friend" +info);
-		}else if(status==4){
+		} else if(status == 4) {
 			info="亲，您已经向该好友发送过请求了！";
-		}else if(status==5){
-			info="你们已经是好友了！";
-		}else if(status==30001){
+		} else if(status == 5) {
+			info = "你们已经是好友了！";
+		} else if(status == 30001) {
 			info="系统正在玩命维护中。。。";
-		}else{
+		} else{
 			info="添加好友失败。。。";
 		}
 		map.put("status",status);
@@ -395,7 +394,6 @@ public class HttpUnit {
 	}
 
 	public static List<User> searchFriendListRequest(List<String> list) {
-		// TODO Auto-generated method stub
 		List<User> users=new ArrayList<>();
 		for (String string : list) {
 			Map<String,String> map=new HashMap<>();
@@ -413,8 +411,7 @@ public class HttpUnit {
 				u.setSex(info.getString("sex"));
 				users.add(u);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
+				e.printStackTrace();
 				Log.e("1", "refresh_friend_failed");
 			}
 		}

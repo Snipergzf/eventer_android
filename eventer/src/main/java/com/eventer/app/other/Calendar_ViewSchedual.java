@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,8 +22,8 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.view.MyToast;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;
@@ -36,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressLint({ "Recycle", "InflateParams" })
-public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickListener {
+public class Calendar_ViewSchedual extends BaseActivity implements OnClickListener {
 
 	public TextView eventtitle;
 	ImageView iv_delete,iv_edit,iv_share,iv_finish;
@@ -57,32 +56,27 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_viewschedual);
-		context=this;
+		context = this;
 		setBaseTitle(R.string.eventdetail);
-		id=getIntent().getStringExtra(ARGUMENT_ID);
-		SchedualDao dao=new SchedualDao(context);
+		id = getIntent().getStringExtra(ARGUMENT_ID);
+		SchedualDao dao = new SchedualDao(context);
 		s=dao.getSchedual(id);
 		initView();
-		init();
-		initGroupShare();
+		initData();
 	}
 
-	private void initGroupShare() {
-
-	}
 
 	/***
-	 * 初始化控件
+	 * 初始化控件，给控件添加事件响应
 	 */
 	private void initView() {
-		// TODO Auto-generated method stub
 
-		eventtitle=(TextView)findViewById(R.id.viewevent_title);
-		listview=(ListView)findViewById(R.id.eventdetail_lv);
-		iv_delete=(ImageView)findViewById(R.id.iv_delete);
-		iv_edit=(ImageView)findViewById(R.id.iv_edit);
-		iv_share=(ImageView)findViewById(R.id.iv_share);
-		iv_finish=(ImageView)findViewById(R.id.iv_finish);
+		eventtitle = (TextView) findViewById(R.id.viewevent_title);
+		listview = (ListView) findViewById(R.id.eventdetail_lv);
+		iv_delete = (ImageView) findViewById(R.id.iv_delete);
+		iv_edit = (ImageView) findViewById(R.id.iv_edit);
+		iv_share = (ImageView) findViewById(R.id.iv_share);
+		iv_finish = (ImageView) findViewById(R.id.iv_finish);
 
 		iv_delete.setOnClickListener(this);
 		iv_edit.setOnClickListener(this);
@@ -90,10 +84,10 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		iv_share.setOnClickListener(this);
 
 		listview.setOverScrollMode(View.OVER_SCROLL_NEVER);
-		if(s.getType()==2){
+		if(s.getType() == 2) {
 			setBaseTitle(R.string.schedual_detail);
 
-		}else if(s.getType()==3){
+		} else if (s.getType() == 3) {
 			setBaseTitle(R.string.todo_detail);
 		}
 	}
@@ -101,47 +95,40 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 	 * 加载数据
 	 */
 	@SuppressLint("SimpleDateFormat")
-	public void init(){
+	public void initData(){
 		SimpleDateFormat  sDateFormat  = new   SimpleDateFormat("yyyy年MM月dd日");
 		SimpleDateFormat  DateFormat  = new   SimpleDateFormat("yyyy-MM-dd");
-		date=getIntent().getStringExtra(ARGUMENT_DATE);
-		Log.e("1", date);
+		date = getIntent().getStringExtra(ARGUMENT_DATE);
 		String time =date;
 		try {
 			Date old = DateFormat.parse(date);
-			time =sDateFormat.format(old);
+			time = sDateFormat.format(old);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mData=new ArrayList<>();
-
-		String start=s.getStarttime();
-		String end=s.getEndtime();
-		String title=s.getTitle();
-		String place=s.getPlace();
-		String detail =s.getDetail();
-		int remind=s.getRemind();
-		int _f=s.getFrequency();
-// 	        String friend= c.getString(c.getColumnIndex("companion"));
+		mData = new ArrayList<>();
+		String title = s.getTitle();
+		String place = s.getPlace();
+		String detail = s.getDetail();
+		int remind = s.getRemind();
+		int _f = s.getFrequency();
 		Map<String, Object> map ;
-		String s_type="事件";
-		if(s.getType()==2){
-			s_type="日程";
-		}else if(s.getType()==3){
-			s_type="待办";
+		String s_type = "事件";
+		if(s.getType() == 2){
+			s_type = "日程";
+		}else if(s.getType() == 3){
+			s_type = "待办";
 		}
-		if(title.trim().length() != 0&&title!=null){
-			eventtitle.setText(s_type+"-"+title);
+		if(title != null && title.trim().length() != 0 ){
+			eventtitle.setText(s_type + "-" + title);
 		}else{
-			eventtitle.setText(s_type+"-"+"(无标题)");
+			eventtitle.setText(s_type + "-" + "(无标题)");
 		}
 
 		map = new HashMap<>();
 		map.put("info", time);
 		map.put("id", 1);
 		mData.add(map);
-
 
 		if(place != null && place.trim().length() != 0){
 			map = new HashMap<>();
@@ -158,8 +145,7 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 
 		if(_f!=0){
 			TypedArray imgCountry = getResources().obtainTypedArray(R.array.eventrepeat);
-			//imgCountry.getResourceId(0,0) ;
-			String frequncy=imgCountry.getString(_f);
+			String frequncy = imgCountry.getString(_f);
 			map = new HashMap<>();
 			map.put("info", frequncy);
 			map.put("id", 4);
@@ -167,23 +153,22 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 		}
 
 		TypedArray imgCountry = getResources().obtainTypedArray(R.array.eventalarm);
-		//imgCountry.getResourceId(0,0) ;
 		String alarm=imgCountry.getString(remind);
 		map = new HashMap<>();
 		map.put("info", alarm+"提醒");
 		map.put("id", 5);
 		mData.add(map);
 
-//        }  
-//        dbHelper.closeDatabase();
 		MyAdapter adapter=new MyAdapter(this);
 		listview.setAdapter(adapter);
 
 	}
 
+	/**
+	 * 页面控件的点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 
 		switch (v.getId()) {
 			case R.id.iv_finish:
@@ -263,44 +248,38 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return mData.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return mData.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
-		//****************************************final方法
-//注意原本getView方法中的int position变量是非final的，现在改为final  
-		public View getView(final int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
-			if (convertView == null) {
 
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			if (convertView == null) {
 				holder=new ViewHolder();
-				//可以理解为从vlist获取view  之后把view返回给ListView
 				convertView = mInflater.inflate(R.layout.item_event_detail, null);
 				holder.info = (TextView)convertView.findViewById(R.id.tv_detail);
-				holder.title=(TextView)convertView.findViewById(R.id.tv_title);
+				holder.title =(TextView)convertView.findViewById(R.id.tv_title);
 				convertView.setTag(holder);
 			}else {
 				holder = (ViewHolder)convertView.getTag();
 			}
 
 			holder.info.setText((String)mData.get(position).get("info"));
-			int id=(int)mData.get(position).get("id");
+			int id = (int) mData.get(position).get("id");
 			switch (id) {
 				case 1:
-					if(s.getType()==2){
+					if(s.getType() == 2) {
 						holder.title.setText(R.string.eventtimestart);
-					}else if(s.getType()==3){
+					} else if (s.getType() == 3) {
 						holder.title.setText(R.string.todo_time);
 					}
 					break;
@@ -322,18 +301,21 @@ public class Calendar_ViewSchedual extends SwipeBackActivity implements OnClickL
 			return convertView;
 		}
 	}
-	//提取出来方便点
+
 	public static class ViewHolder {
 		public TextView info;
 		public TextView title;
 	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode==REQUEST_EDIT&&data!=null){
-			boolean status=data.getBooleanExtra(Calendar_AddSchedual.RESPONSE, false);
+		if(requestCode == REQUEST_EDIT && data != null){
+			boolean status = data.getBooleanExtra(
+					Calendar_AddSchedual.RESPONSE, false);
+
 			if(status){
-				Intent intent2=new Intent();
+				Intent intent2 = new Intent();
 				intent2.putExtra("IsChange", true);
 			}
 			this.finish();

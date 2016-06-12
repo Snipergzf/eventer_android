@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.main.MainActivity;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 public class FeedbackActivity extends Activity {
@@ -27,12 +28,15 @@ public class FeedbackActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feedback);
 		context=this;
-
 		initView();
 	}
 
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
-		// TODO Auto-generated method stub
+
 		et_contact=(EditText)findViewById(R.id.et_contact);
 		et_content=(EditText)findViewById(R.id.et_content);
 		et_title=(EditText)findViewById(R.id.et_title);
@@ -41,15 +45,14 @@ public class FeedbackActivity extends Activity {
 		tv_send.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				String tite=et_title.getText().toString();
-				String content=et_content.getText().toString();
-				String contact=et_contact.getText().toString();
-				if(!TextUtils.isEmpty(content)){
+			public void onClick(View v) { //发送反馈意见
+
+				String tite = et_title.getText().toString();
+				String content = et_content.getText().toString();
+				String contact = et_contact.getText().toString();
+				if( !TextUtils.isEmpty(content) ){
 					//发布反馈
 					if (Constant.isConnectNet) {
-
 						JSONObject send_json = new JSONObject();
 						try {
 							send_json.put("action", "send");
@@ -62,13 +65,13 @@ public class FeedbackActivity extends Activity {
 							e.printStackTrace();
 						}
 						et_contact.setText("");
-						Toast.makeText(context, "感谢您的建议！", Toast.LENGTH_SHORT).show();
+						MyToast.makeText(context, "感谢您的建议！", Toast.LENGTH_SHORT).show();
 						finish();
 					}else if(!Constant.isConnectNet){
-						Toast.makeText(context,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
+						MyToast.makeText(context,getText(R.string.no_network),Toast.LENGTH_SHORT).show();
 					}
 				}else{
-					Toast.makeText(context, "请写上一些建议！", Toast.LENGTH_SHORT).show();
+					MyToast.makeText(context, "请写上一些建议！", Toast.LENGTH_SHORT).show();
 				}
 
 			}

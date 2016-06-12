@@ -15,11 +15,12 @@ import android.widget.TextView;
 import com.eventer.app.R;
 import com.eventer.app.db.SchedualDao;
 import com.eventer.app.entity.Schedual;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
+import com.eventer.app.main.BaseActivity;
 import com.umeng.analytics.MobclickAgent;
 
-@SuppressLint("SimpleDateFormat")
-public class Calendar_AddSchedual extends SwipeBackActivity implements OnClickListener {
+@SuppressLint({"SimpleDateFormat", "InlinedApi" })
+
+public class Calendar_AddSchedual extends BaseActivity implements OnClickListener {
 
 	TextView event_finish;
 	private Button btn_schedual,btn_todo;
@@ -29,29 +30,34 @@ public class Calendar_AddSchedual extends SwipeBackActivity implements OnClickLi
 	Fragment_AddTodo fragment_add_todo;
 	private int currentIndex=0;
 	private Long id;
-	boolean IsNew=true;
-//	public static final String ARGUMENT = "argument";
+	boolean IsNew = true;
 	public static final String RESPONSE = "response";
 	private Context context;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_addschedual);
-		context=this;
-		id=getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
+		context = this;
+		id = getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
 		initView();
-		Log.e("1",id+"");
 	}
 
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
-		// TODO Auto-generated method stub
-		btn_schedual=(Button)findViewById(R.id.btn_schedual);
-		btn_todo=(Button)findViewById(R.id.btn_todo);
+		btn_schedual = (Button)findViewById(R.id.btn_schedual);
+		btn_todo = (Button)findViewById(R.id.btn_todo);
+		iv_back = (ImageView) findViewById(R.id.event_back);
+		event_finish = (TextView) findViewById(R.id.event_finish);
+
 		btn_schedual.setOnClickListener(this);
 		btn_todo.setOnClickListener(this);
 		btn_schedual.setSelected(true);
+		iv_back.setOnClickListener(this);
+		event_finish.setOnClickListener(this);
 
 		fragment_add_schedual = new Fragment_AddSchedual();
-		fragment_add_todo=new Fragment_AddTodo();
+		fragment_add_todo = new Fragment_AddTodo();
 		fragments = new Fragment[] { fragment_add_schedual,fragment_add_todo};
 
 		// 添加显示第一个fragment
@@ -60,44 +66,35 @@ public class Calendar_AddSchedual extends SwipeBackActivity implements OnClickLi
 				.add(R.id.fragment_container, fragments[1])
 				.hide(fragments[1]).show(fragments[0]).commit();
 
-
-
-		iv_back=(ImageView)findViewById(R.id.event_back);
-		event_finish=(TextView)findViewById(R.id.event_finish);
-		iv_back.setOnClickListener(this);
-		event_finish.setOnClickListener(this);
-		if(id!=-1){
-			SchedualDao dao=new SchedualDao(context);
-			Schedual s=dao.getSchedual(id+"");
-			if(s!=null){
-				int type=s.getType();
-				if(type==3){
+		if(id != -1){ //是新建日程，还是编辑日程
+			SchedualDao dao = new SchedualDao(context);
+			Schedual s = dao.getSchedual(id+"");
+			if(s != null){
+				int type = s.getType();
+				if(type == 3){
 					if(currentIndex!=1){
 						FragmentTransaction trx = getSupportFragmentManager()
 								.beginTransaction();
 						trx.hide(fragments[currentIndex]);
 						trx.show(fragments[1]).commit();
-						currentIndex=1;
+						currentIndex = 1;
 						btn_schedual.setSelected(false);
 						btn_todo.setSelected(true);
 					}
 				}
 			}
-			IsNew=true;
+			IsNew = true;
 		}
 
 	}
 
 
-
-
-
-	@SuppressLint({ "SimpleDateFormat", "InlinedApi" })
+	/***
+	 * 为页面控件添加点击事件
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
-
 			case R.id.btn_schedual:
 				if(currentIndex!=0){
 					changeView(0);
@@ -130,17 +127,16 @@ public class Calendar_AddSchedual extends SwipeBackActivity implements OnClickLi
 	}
 	/***
 	 * 切换Fragment
-	 * @param index2
 	 */
-	private void changeView(int index2){
+	private void changeView(int index){
 		FragmentTransaction trx = getSupportFragmentManager()
 				.beginTransaction();
 		trx.hide(fragments[currentIndex]);
-		if (!fragments[index2].isAdded()) {
-			trx.add(R.id.fragment_container, fragments[index2]);
+		if ( !fragments[index].isAdded()) {
+			trx.add(R.id.fragment_container, fragments[index]);
 		}
-		trx.show(fragments[index2]).commit();
-		currentIndex=index2;
+		trx.show(fragments[index]).commit();
+		currentIndex = index;
 
 	}
 

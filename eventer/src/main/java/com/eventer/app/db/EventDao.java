@@ -28,9 +28,7 @@ public class EventDao {
 	public static final String COLUMN_NAME_OPERATE_TIME = "operate_time";
 	public static final String COLUMN_NAME_COVER = "cover";
 	public static final String COLUMN_NAME_URL = "url";
-	public static final String COLUMN_NAME_READCOUNT = "readCount";
-	public static final String COLUMN_NAME_UPCOUNT = "upCount";
-	public static final String COLUMN_NAME_DOWNCOUNT = "downCount";
+	public static final String COLUMN_NAME_READCOUNT = "readNum";
 	public static final String COLUMN_NAME_TIME = "time";
 	public static final String COLUMN_NAME_MYOPERATION = "myOperation";
 	public static final String COLUMN_NAME_THEME = "theme";
@@ -52,8 +50,6 @@ public class EventDao {
 	public List<Event> getEventList() {
 		List<Event> list = new ArrayList<>();
 		dbHelper.openDatabase();
-
-		//dbHelper.deleteDatabase(context);
 		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
 				null, null, null, null,COLUMN_NAME_PUBTIME+" desc",null);
 		while (c.moveToNext()) {
@@ -65,10 +61,7 @@ public class EventDao {
 			String time= c.getString(c.getColumnIndex(COLUMN_NAME_TIME ));
 			String place=c.getString(c.getColumnIndex(COLUMN_NAME_PLACE));
 			long pubtime = c.getLong(c.getColumnIndex(COLUMN_NAME_PUBTIME));
-			//				int readCount=-1,upCount=-1,downCount=-1;
-			//				readCount=c.getInt(c.getColumnIndex(COLUMN_NAME_READCOUNT));
-			//				upCount=c.getInt(c.getColumnIndex(COLUMN_NAME_UPCOUNT));
-			//				downCount=c.getInt(c.getColumnIndex(COLUMN_NAME_DOWNCOUNT));
+			int click = c.getInt( c.getColumnIndex(COLUMN_NAME_READCOUNT));
 
 
 			Event info=new Event();
@@ -80,9 +73,35 @@ public class EventDao {
 			info.setTheme(theme);
 			info.setTime(time);
 			info.setPlace(place);
-			//				info.setReadCount(readCount);
-			//				info.setUpCount(upCount);
-			//				info.setDownCount(downCount);
+			info.setReadCount(click);
+
+			list.add(info);
+		}
+		dbHelper.closeDatabase();
+		return list;
+	}
+
+	@SuppressLint("DefaultLocale")
+	public List<Event> getBriefEventList() {
+		List<Event> list = new ArrayList<>();
+		dbHelper.openDatabase();
+		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
+				null, null, null, null,null,null);
+		while (c.moveToNext()) {
+			String id = c.getString(c.getColumnIndex(COLUMN_NAME_ID));
+			String title = c.getString(c.getColumnIndex(COLUMN_NAME_TITLE));
+			String theme= c.getString(c.getColumnIndex(COLUMN_NAME_THEME));
+			int click = c.getInt(c.getColumnIndex(COLUMN_NAME_READCOUNT));
+			String cover = c.getString( c.getColumnIndex(COLUMN_NAME_COVER));
+
+
+			Event info=new Event();
+			info.setEventID(id);
+			info.setTitle(title);
+			info.setTheme(theme);
+			info.setReadCount(click);
+			info.setCover(cover);
+
 			list.add(info);
 		}
 		dbHelper.closeDatabase();
@@ -93,8 +112,6 @@ public class EventDao {
 	public Event getEvent(String eid) {
 		Event info=null;
 		dbHelper.openDatabase();
-
-		//dbHelper.deleteDatabase(context);
 		Cursor c=dbHelper.findList(true, TABLE_NAME, null,
 				COLUMN_NAME_ID+"=?", new String[]{eid}, null, null,null,null);
 		while (c.moveToNext()) {
@@ -138,15 +155,15 @@ public class EventDao {
 
 	public void delEventIDList(List<String> list) {
 		dbHelper.openDatabase();
-		for (String id:list) {
-			dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID+"=?", new String[]{id});
+		for (String id : list) {
+			dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID + "=?", new String[]{id});
 		}
 		dbHelper.closeDatabase();
 	}
 
 	public void saveEvent(Event event) {
-		// TODO Auto-generated method stub
 		dbHelper.openDatabase();
+		dbHelper.delete(TABLE_NAME, COLUMN_NAME_ID + "=?", new String[]{event.getEventID()});
 		ContentValues cv = new ContentValues();
 		cv.put(COLUMN_NAME_CONTENT, event.getContent());
 		cv.put(COLUMN_NAME_ID,  event.getEventID());
@@ -156,6 +173,8 @@ public class EventDao {
 		cv.put(COLUMN_NAME_TITLE, event.getTitle());
 		cv.put(COLUMN_NAME_PUBTIME, event.getIssueTime());
 		cv.put(COLUMN_NAME_TIME, event.getTime());
+		cv.put(COLUMN_NAME_COVER, event.getCover());
+		cv.put(COLUMN_NAME_READCOUNT, event.getReadCount());
 		dbHelper.insert(TABLE_NAME, cv);
 		dbHelper.closeDatabase();
 	}
@@ -174,40 +193,6 @@ public class EventDao {
 		return list;
 	}
 
-	//	public List<Event> getEventListByInfo(String[] args){
-	//		List<Event> list=new ArrayList<Event>();
-	//		 dbHelper.openDatabase();
-	//		 //a.[operator]=? and a.[operation]=?;
-	//		 Cursor c=dbHelper.rawQuery("select b.*,a.operator,a.operation,a.operate_time from dbEvent a,dbEventDetail b where a.Id=b.Id and a.operator=? and a.operation=?",
-	//				 args);
-	//	      while (c.moveToNext()) {
-	//	    	    String id = c.getString(c.getColumnIndex(COLUMN_NAME_ID));
-	//			 	String title = c.getString(c.getColumnIndex(COLUMN_NAME_TITLE));
-	//				String publisher = c.getString(c.getColumnIndex(COLUMN_NAME_SOURCE ));
-	//				String content = c.getString(c.getColumnIndex(COLUMN_NAME_CONTENT ));
-	//				String theme= c.getString(c.getColumnIndex(COLUMN_NAME_THEME ));
-	//				String time= c.getString(c.getColumnIndex(COLUMN_NAME_TIME ));				
-	//				long pubtime = c.getLong(c.getColumnIndex(COLUMN_NAME_PUBTIME));
-	//				String operator=c.getString(c.getColumnIndex(EventOpDao.COLUMN_NAME_OPERATOR));
-	//				int operation=c.getInt(c.getColumnIndex(EventOpDao.COLUMN_NAME_OPERATION));
-	//				int operatetime=c.getInt(c.getColumnIndex(EventOpDao.COLUMN_NAME_OPERATE_TIME));
-	//				
-	//				Event info=new Event();
-	//				info.setEventID(id);
-	//				info.setTitle(title);
-	//				info.setPublisher(publisher);
-	//				info.setIssueTime(pubtime);
-	//				info.setContent(content);
-	//				info.setTheme(theme);
-	//				info.setTime(time);
-	//				info.setOperation(operation);
-	//				info.setOperator(operator);		
-	//				info.setOpTime(operatetime);
-	//				list.add(info);
-	//	     }
-	//	    dbHelper.closeDatabase();	
-	//		return list;
-	//	}
 
 	public List<Event> getEventListByInfo(String[] args){
 		List<Event> list=new ArrayList<>();
@@ -250,4 +235,9 @@ public class EventDao {
 	}
 
 
+	public void delBriefEvent() {
+		dbHelper.openDatabase();
+		dbHelper.delete(TABLE_NAME, COLUMN_NAME_CONTENT + " IS NULL ", new String[]{});
+		dbHelper.closeDatabase();
+	}
 }

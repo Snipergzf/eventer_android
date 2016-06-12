@@ -54,23 +54,17 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	public static final String RESPONSE = "response";
 	public static  Fragment_AddSchedual instance;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		View rootView=inflater.inflate(R.layout.fragment_add_schedual, container, false);
 		context=getActivity();
 		instance=this;
 		initView(rootView);
 		id=getActivity().getIntent().getLongExtra(Calendar_ViewSchedual.ARGUMENT_ID, -1);
 		int type=getActivity().getIntent().getIntExtra(Calendar_ViewSchedual.ARGUMENT_TYPE, -1);
-		if(id!=-1&&type==2){
+		if(id != -1 && type == 2){
 			setData();
 			IsNew=false;
 		}else{
@@ -81,20 +75,22 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	}
 
 
-
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView(View rootView) {
-		// TODO Auto-generated method stub
-		eventdate=(TextView)rootView.findViewById(R.id.addevent_datestart);
-		eventtime=(TextView)rootView.findViewById(R.id.addevent_timestart);
-		eventtitle=(EditText)rootView.findViewById(R.id.addevent_title);
-		eventplace=(EditText)rootView.findViewById(R.id.addevent_location);
-		eventdetail=(EditText)rootView.findViewById(R.id.addevent_detail);
-		eventrepeat=(Spinner)rootView.findViewById(R.id.addevent_repeat);
-		eventalarm=(Spinner)rootView.findViewById(R.id.addevent_alarm);
-		ll_add_info=(LinearLayout)rootView.findViewById(R.id.ll_add_info);
-		extra_info=(LinearLayout)rootView.findViewById(R.id.extra_info);
-		iv_add_more=(ImageView)rootView.findViewById(R.id.iv_add_more);
-		tv_add_more=(TextView)rootView.findViewById(R.id.tv_add_more);
+
+		eventdate = (TextView) rootView.findViewById(R.id.addevent_datestart);
+		eventtime = (TextView) rootView.findViewById(R.id.addevent_timestart);
+		eventtitle = (EditText) rootView.findViewById(R.id.addevent_title);
+		eventplace = (EditText) rootView.findViewById(R.id.addevent_location);
+		eventdetail = (EditText) rootView.findViewById(R.id.addevent_detail);
+		eventrepeat = (Spinner) rootView.findViewById(R.id.addevent_repeat);
+		eventalarm = (Spinner) rootView.findViewById(R.id.addevent_alarm);
+		ll_add_info = (LinearLayout) rootView.findViewById(R.id.ll_add_info);
+		extra_info = (LinearLayout) rootView.findViewById(R.id.extra_info);
+		iv_add_more = (ImageView) rootView.findViewById(R.id.iv_add_more);
+		tv_add_more = (TextView) rootView.findViewById(R.id.tv_add_more);
 
 
 		eventdate.setOnClickListener(this);
@@ -107,11 +103,12 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		String date=getActivity().getIntent().getStringExtra(Calendar_ViewSchedual.ARGUMENT_DATE);
 		eventdate.setText(date);
 		eventtime.setText(nowtime[1]);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.eventspan,R.layout.simple_spinner_item);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+				R.array.eventspan,R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
-		adapter = ArrayAdapter.createFromResource(getActivity(), R.array.eventrepeat,R.layout.simple_spinner_item);
+		adapter = ArrayAdapter.createFromResource(getActivity(),
+				R.array.eventrepeat,R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		eventrepeat.setAdapter(adapter);
 		eventrepeat.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
@@ -135,13 +132,16 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		eventalarm.setSelection(2);
 	}
 
+	/***
+	 * 编辑日程时
+	 * 初始化页面数据
+	 */
 	public void setData(){
 		SchedualDao dao = new SchedualDao(context);
 		schedual = dao.getSchedual(id+"");
 
 		if(schedual != null){
 			String start = schedual.getStarttime();
-//			String end=c.getString(c.getColumnIndex("endTime"));
 			String title = schedual.getTitle();
 			String place = schedual.getPlace();
 			String detail = schedual.getDetail();
@@ -175,12 +175,9 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		}
 	}
 
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
+	/***
+	 * 为页面控件添加点击事件
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onClick(View v) {
@@ -252,6 +249,9 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		}
 	}
 
+	/***
+	 * 保存日程，并退出
+	 */
 	public void finish(){
 		DBManager dbHelper;
 		dbHelper = new DBManager(context);
@@ -398,7 +398,6 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	}
 
 	private int getStatus(String nowtime, String end, String remindtime) {
-		// TODO Auto-generated method stub
 		int status=0;
 		DateTime now=new DateTime(nowtime+":00");
 		DateTime finish=new DateTime(end+":00");
@@ -419,7 +418,6 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 	}
 
 	private String getRemindTime(String start, int span) {
-		// TODO Auto-generated method stub
 		String rTime;
 		DateTime begin=new DateTime(start+":00");
 		DateTime r;
@@ -446,41 +444,6 @@ public  class Fragment_AddSchedual extends Fragment implements OnClickListener{
 		rTime=r.toString().substring(0, 16);
 		return rTime;
 	}
-
-	@SuppressLint("SimpleDateFormat")
-	@SuppressWarnings({"UnusedDeclaration"})
-	private String getEndTime(String starttime, int span) {
-		// TODO Auto-generated method stub
-		String endTime;
-		DateTime begin=new DateTime(starttime+":00");
-		DateTime end;
-		switch(span){
-			case 0:
-				end=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
-				break;
-			case 1:
-				end=begin.plus(0, 0, 0, 0, 30, 0, 0, null);
-				break;
-			case 2:
-				end=begin.plus(0, 0, 0, 1, 0, 0, 0, null);
-				break;
-			case 3:
-				end=begin.plus(0, 0, 0, 2, 0, 0, 0, null);
-				break;
-			case 4:
-				end=begin.plus(0, 0, 1, 0, 0, 0, 0, null);
-				break;
-			default:
-				end=begin.plus(0, 0, 0, 0, 0, 0, 0, null);
-				break;
-		}
-		endTime=end.toString().substring(0, 16);
-		return endTime;
-	}
-
-
-
-
 
 }
   		

@@ -1,9 +1,9 @@
 package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,31 +12,30 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.eventer.app.Constant;
 import com.eventer.app.R;
+import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.HttpUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.service.CheckInternetService;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.PreferenceUtils;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class  LoadActivity extends BaseFragmentActivity {
+public class  LoadActivity extends Activity {
 
-	private static final int sleepTime = 1600;
+	private static final int sleepTime = 3300;
 	private Context context;
-	private LinearLayout ll_login;
 	private String user,pwd;
 
 	@Override
@@ -60,23 +59,7 @@ public class  LoadActivity extends BaseFragmentActivity {
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
 		animation.setDuration(1500);
 		view.startAnimation(animation);
-		ll_login = (LinearLayout) findViewById(R.id.login_ll);
-		final TextView tv_tourist = (TextView) findViewById(R.id.tv_tourist);
-		tv_tourist.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-		tv_tourist.getPaint().setAntiAlias(true);
 		context.startService(new Intent(context, CheckInternetService.class));//make sure the net is truly available
-		tv_tourist.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(LoadActivity.this, MainActivity.class);
-				Constant.UID = "0";
-				Constant.TOKEN = "tourists";
-				startActivity(intent);
-				finish();
-			}
-		});
-
 
 		/***
 		 * 判断登录状态
@@ -87,29 +70,24 @@ public class  LoadActivity extends BaseFragmentActivity {
 				user=PreferenceUtils.getInstance().getLoginUser();
 				pwd=PreferenceUtils.getInstance().getLoginPwd();
 				if(!"0".equals(user)){
-					if (user!=null&& !user.equals("") &&pwd!=null&& !pwd.equals("")) {
+					if (user!= null && !user.equals("") && pwd != null&& !pwd.equals("")) {
 						// 保存了账号和密码，不跳转至登录界面，直接登录
 						long start = System.currentTimeMillis();
 						//加载数据
-						Map<String, String> params = new HashMap<>();
-						params.put("pwd", pwd);
-						params.put("phone", user);
-						//获取手机的唯一标识码
-						params.put("imei", PreferenceUtils.getInstance().getDeviceId());
+						Map<String, String> params = HttpParamUnit.login(user, pwd);
 						UserLogin(params);
 						long costTime = System.currentTimeMillis() - start;
 						//等待sleeptime时长
 						if (sleepTime - costTime > 0) {
 							try {
 								Thread.sleep(sleepTime - costTime);
-
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
 
-					}else if(user != null){
-						//只保存了账号（切换账号），跳转至登录界面
+					}else {
+						//未保存了登陆状态，跳转至登录界面
 						try {
 							Thread.sleep(sleepTime);
 						} catch (InterruptedException e) {
@@ -117,11 +95,6 @@ public class  LoadActivity extends BaseFragmentActivity {
 						}
 						startActivity(new Intent(LoadActivity.this, LoginActivity.class));
 						finish();
-					}else{
-						//初次打开系统，显示登录或注册选项
-						tv_tourist.setVisibility(View.VISIBLE);
-						ll_login.setVisibility(View.VISIBLE);
-
 					}
 				}else{
 					try {
@@ -129,6 +102,7 @@ public class  LoadActivity extends BaseFragmentActivity {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} finally {
+						//游客模式进入系统
 						Intent intent = new Intent();
 						intent.setClass(LoadActivity.this, MainActivity.class);
 						Constant.UID = "0";
@@ -143,6 +117,9 @@ public class  LoadActivity extends BaseFragmentActivity {
 		}).start();
 
 	}
+
+
+
 
 	@Override
 	protected void onStart() {
@@ -159,28 +136,6 @@ public class  LoadActivity extends BaseFragmentActivity {
 		}
 	}
 
-
-
-
-	/***
-	 * 登录按钮的响应事件
-	 * 跳转至登陆界面
-	 */
-	public void login(View v) {
-		Intent intent = new Intent();
-		intent.setClass(LoadActivity.this, LoginActivity.class);
-		startActivity(intent);
-		finish();
-	}
-	/***
-	 * 注册按钮的响应事件
-	 * 跳转至注册界面
-	 */
-	public void register(View v) {
-		Intent intent = new Intent();
-		intent.setClass(LoadActivity.this, RegisterActivity.class);
-		startActivity(intent);
-	}
 
 
 	/**
@@ -200,10 +155,10 @@ public class  LoadActivity extends BaseFragmentActivity {
 					Constant.isLogin=false;
 					return status;
 				} catch (Exception e) {
-					Log.e("1", e.toString());
+					e.printStackTrace();
 					return -1;
 				} catch (Throwable e) {
-					// TODO: handle exception
+					e.printStackTrace();
 					return -1;
 				}
 			}
@@ -219,18 +174,6 @@ public class  LoadActivity extends BaseFragmentActivity {
 					//初始化个人信息
 					initSelfInfo();
 
-				}else if(status==1){
-					Toast.makeText(context, "该用户不存在！", Toast.LENGTH_LONG)
-							.show();
-					Constant.isLogin=false;
-					startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
-					finish();
-				}else  if(status==23){
-					Toast toast=Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
-					toast.show();
-					Constant.isLogin=false;
-					startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
-					finish();
 				}else  if(status==-1){
 					String uid=PreferenceUtils.getInstance().getUserId();
 					if(!TextUtils.isEmpty(uid)){
@@ -245,18 +188,15 @@ public class  LoadActivity extends BaseFragmentActivity {
 					toast.show();
 					Constant.isLogin=false;
 				} else{
-					Toast.makeText(context, "登录错误！", Toast.LENGTH_LONG)
-							.show();
 					Constant.isLogin=false;
-					Intent intent = new Intent();
-					intent.setClass(LoadActivity.this, LoginActivity.class);
-					startActivity(intent);
+					startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
 					finish();
 				}
 
 			}
 
-		}.execute(params);}
+		}.execute(params);
+	}
 
 
 	/***
@@ -264,8 +204,6 @@ public class  LoadActivity extends BaseFragmentActivity {
 	 * 将信息写入LocalUserInfo
 	 */
 	private void initSelfInfo(){
-//			load_root.getBackground().setAlpha(100);
-//			progress.setVisibility(View.VISIBLE);
 		Map<String, String> maps = new HashMap<>();
 		maps.put("uid", Constant.UID+"");
 		LoadDataFromHTTP task = new LoadDataFromHTTP(
@@ -282,7 +220,7 @@ public class  LoadActivity extends BaseFragmentActivity {
 						JSONObject json=data.getJSONObject("user_action");
 						JSONObject info=json.getJSONObject("info");
 						String name=info.getString("name");
-						if(name!=null&& !name.equals("")){
+						if(name != null && !name.equals("")){
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("sex", info.getString("sex"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("email", info.getString("email"));
@@ -295,39 +233,16 @@ public class  LoadActivity extends BaseFragmentActivity {
 							intent.setClass(context, MainActivity.class);
 							startActivity(intent);
 							finish();
-						}else{
-							//该用户还未填写昵称，跳转至个人信息完善界面
-							Toast.makeText(context, "您尚未完善个人信息，请完善个人信息！",
-									Toast.LENGTH_SHORT).show();
-							Intent intent = new Intent();
-							intent.setClass(context, FillInUserInfoActivity.class);
-							startActivity(intent);
-							finish();
 						}
 
+					} else if(code == 1){
 
-					} else if(code==1){
-						Toast.makeText(context, "该用户不存在！",
-								Toast.LENGTH_SHORT).show();
 						startActivity(new Intent().setClass(LoadActivity.this, LoginActivity.class));
 						finish();
-					}else if (code == 2) {
+					}else if (code == 2 || code == 3) {
 
-						Toast.makeText(context, "信息获取失败失败...",
-								Toast.LENGTH_SHORT).show();
-						Intent intent = new Intent();
-						intent.setClass(context, MainActivity.class);
-						startActivity(intent);
+						startActivity(new Intent().setClass(LoadActivity.this, MainActivity.class));
 						finish();
-					} else if (code == 3) {
-
-						Toast.makeText(context, "图片上传失败...",
-								Toast.LENGTH_SHORT).show();
-						Intent intent = new Intent();
-						intent.setClass(context, MainActivity.class);
-						startActivity(intent);
-						finish();
-
 					} else {
 						if(!Constant.isConnectNet){
 							Toast.makeText(context, getText(R.string.no_network),
@@ -345,12 +260,12 @@ public class  LoadActivity extends BaseFragmentActivity {
 					}
 
 				} catch (JSONException e) {
-					Toast.makeText(context, "数据解析错误...",
+					MyToast.makeText(context, "数据解析错误...",
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 					startActivity(new Intent().setClass(LoadActivity.this, MainActivity.class));
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 
 			}

@@ -7,13 +7,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.eventer.app.R;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.util.PreferenceUtils;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.zcw.togglebutton.ToggleButton;
 import com.zcw.togglebutton.ToggleButton.OnToggleChanged;
 
-public class MsgAlertActivity extends SwipeBackActivity {
+public class MsgAlertActivity extends BaseActivity {
 	ToggleButton toggle_alert,toggle_detail,toggle_voice,toggle_shake;
 	Context context;
 	private LinearLayout li_alert;
@@ -26,6 +26,10 @@ public class MsgAlertActivity extends SwipeBackActivity {
 		setBaseTitle(R.string.msg_alert);
 		initView();
 	}
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
 		// TODO Auto-generated method stub
 		toggle_alert=(ToggleButton)findViewById(R.id.toggle_alert);
@@ -40,62 +44,57 @@ public class MsgAlertActivity extends SwipeBackActivity {
 		toggle_alert.setOnToggleChanged(new OnToggleChanged(){
 			@Override
 			public void onToggle(boolean on) {
-				if(!on){
-					li_alert.setVisibility(View.GONE);
-					re_alert_detail.setVisibility(View.GONE);
-				}else{
-					li_alert.setVisibility(View.VISIBLE);
-					re_alert_detail.setVisibility(View.VISIBLE);
-				}
-				PreferenceUtils.getInstance().setMsgAlert(on);
+			if(!on){
+				li_alert.setVisibility(View.GONE);
+				re_alert_detail.setVisibility(View.GONE);
+			}else{
+				li_alert.setVisibility(View.VISIBLE);
+				re_alert_detail.setVisibility(View.VISIBLE);
+			}
+			PreferenceUtils.getInstance().setMsgAlert(on);
 			}
 		});
 		toggle_detail.setOnToggleChanged(new OnToggleChanged() {
 
 			@Override
 			public void onToggle(boolean on) {
-				// TODO Auto-generated method stub
-				PreferenceUtils.getInstance().setMsgAlertDetail(on);
+			PreferenceUtils.getInstance().setMsgAlertDetail(on);
 			}
 		});
 		toggle_shake.setOnToggleChanged(new OnToggleChanged() {
 
 			@Override
 			public void onToggle(boolean on) {
-				// TODO Auto-generated method stub
-				PreferenceUtils.getInstance().setMsgAlertShake(on);
+			PreferenceUtils.getInstance().setMsgAlertShake(on);
 			}
 		});
 		toggle_voice.setOnToggleChanged(new OnToggleChanged() {
 
 			@Override
 			public void onToggle(boolean on) {
-				// TODO Auto-generated method stub
-				PreferenceUtils.getInstance().setMsgAlertVoice(on);
+			PreferenceUtils.getInstance().setMsgAlertVoice(on);
 			}
 		});
 
-		boolean alert=PreferenceUtils.getInstance().getMsgAlert();
-		boolean alert_detail=PreferenceUtils.getInstance().getMsgAlertDetail();
-		boolean alert_shake=PreferenceUtils.getInstance().getMsgAlertShake();
-		boolean alert_voice=PreferenceUtils.getInstance().getMsgAlertVoice();
-		if(!alert){
+		//初始化各个ToggleButton的状态
+		boolean alert = PreferenceUtils.getInstance().getMsgAlert();
+		boolean alert_detail = PreferenceUtils.getInstance().getMsgAlertDetail();
+		boolean alert_shake = PreferenceUtils.getInstance().getMsgAlertShake();
+		boolean alert_voice = PreferenceUtils.getInstance().getMsgAlertVoice();
+		if( !alert ) {
 			toggle_alert.toggle();
 		}
-		if(alert_detail){
+		if( alert_detail ) {
 			toggle_detail.toggle();
 		}
-		if(alert_shake){
+		if( alert_shake ) {
 			toggle_shake.toggle();
 		}
-		if (alert_voice) {
+		if ( alert_voice ) {
 			toggle_voice.toggle();
 		}
 	}
 
-	public void back(View v){
-		finish();
-	}
 	@Override
 	protected void onResume() {
 		super.onResume();

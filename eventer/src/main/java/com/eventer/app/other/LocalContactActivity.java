@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -71,6 +69,15 @@ public class LocalContactActivity extends SwipeBackActivity {
 		context=this;
 		setBaseTitle(R.string.phone_contact);
 		avatarLoader = new LoadImage(context, Constant.IMAGE_PATH);
+		initView();
+
+
+	}
+
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
+	private void initView() {
 		listView = (XListView) findViewById(R.id.list);
 
 		loading=(LinearLayout)findViewById(R.id.ll_loading);
@@ -81,7 +88,7 @@ public class LocalContactActivity extends SwipeBackActivity {
 		adapter = new MyAdapter(context);
 		listView.setAdapter(adapter);
 		listView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
@@ -95,168 +102,29 @@ public class LocalContactActivity extends SwipeBackActivity {
 
 			}
 		});
+		//listView的刷新
 		listView.setPullRefreshEnable(new IXListViewRefreshListener() {
 
 			@Override
 			public void onRefresh() {
-				// TODO Auto-generated method stub
 				handleTel(SourceData);
 			}
 		});
-
 	}
 
-	Handler mHandler = new Handler(new Handler.Callback() {
-		@Override
-		public boolean handleMessage(Message msg) {
-			switch (msg.what) {
-				case INIT_LIST:
-					PhoneDao dao=new PhoneDao(context);
-					mData=dao.getPhoneList();
-					dao.getTelList();
-					UserDao d=new UserDao(context);
-					if(mData==null||mData.size()==0){
-						loading.setVisibility(View.VISIBLE);
-						refresh();
-						getContactList();
-					}else{
-						loading.setVisibility(View.GONE);
-						for (Phone p: mData) {
-							String user=p.getUserId();
-							if(!TextUtils.isEmpty(user)){
-								UserInfo info=d.getInfo(user);
-								isExist.put(p.getTel()+"", info);
-							}
-							Map<String, String> map=new HashMap<>();
-							map.put("phone", p.getTel());
-							map.put("name", p.getRelName());
-							SourceData.add(map);
-						}
-						refresh();
-						handleTel(SourceData);
-					}
-					break;
-				default:
-					break;
-			}
-			return false;
-		}
-	});
-
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		MobclickAgent.onResume(this);
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				mHandler.sendEmptyMessageDelayed(INIT_LIST, 200);
-			}
-		}).start();
-	}
-
-
-	/***
-	 * 手机通讯录的适配器
-	 * @author LiuNana
-	 *
+	/**
+	 * 获取联系人列表序
 	 */
-	public class MyAdapter extends BaseAdapter {
-
-		private LayoutInflater mInflater;
-
-		public MyAdapter(Context context) {
-			this.mInflater = LayoutInflater.from(context);
-		}
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return mData.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return mData.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return position;
-		}
-
-		@SuppressLint("ViewHolder")
-		public View getView(final int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				holder=new ViewHolder();
-				//可以理解为从vlist获取view  之后把view返回给ListView
-				convertView = mInflater.inflate(R.layout.item_phone_contact_list, parent ,false);
-				holder.name = (TextView)convertView.findViewById(R.id.tv_name);
-				holder.phone = (TextView)convertView.findViewById(R.id.tv_eventer_id);
-				holder.avatar=(ImageView)convertView.findViewById(R.id.iv_avatar);
-				holder.add=(Button)convertView.findViewById(R.id.tv_add);
-				holder.text=(TextView)convertView.findViewById(R.id.tv_text);
-
-				convertView.setTag(holder);
-			}else {
-				holder = (ViewHolder)convertView.getTag();
-			}
-			holder.name.setText("");
-			holder.add.setText("");
-			holder.phone.setText("");
-			holder.avatar.setImageResource(R.drawable.default_avatar);
-			holder.text.setText("");
-			String phone=mData.get(position).getTel();
-			String name=mData.get(position).getRelName();
-			holder.name.setText(name);
-			holder.phone.setText(phone+"");
-			boolean isEventer=false;
-			UserInfo u;
-			u=isExist.get(phone);
-			int type=u.getType();
-			if(type==1){
-				holder.add.setVisibility(View.GONE);
-				holder.text.setVisibility(View.VISIBLE);
-				holder.text.setText("已添加");
-			}else{
-				holder.text.setVisibility(View.GONE);
-				holder.add.setVisibility(View.VISIBLE);
-				holder.add.setBackgroundResource(R.drawable.btn_blue_bg);
-				holder.add.setText("添加");
-				isEventer=true;
-			}
-			String avatar=u.getAvatar();
-			showUserAvatar(holder.avatar, avatar);
-			final boolean isTrue=isEventer;
-			final UserInfo temp_user=u;
-			holder.add.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if(isTrue){
-						Intent intent=new Intent();
-						intent.setClass(context, Activity_Friends_Add.class);
-						intent.putExtra("id", temp_user.getUsername());
-						intent.putExtra("avatar", temp_user.getAvatar());
-						intent.putExtra("nick", temp_user.getNick());
-						context.startActivity(intent);
-					}
-				}
-			});
-			return convertView;
-		}
+	private void getContactList() {
+		SourceData.clear();
+		mData.clear();
+		Contact contact=new Contact(context);
+		SourceData=contact.getPhoneContactsList();
+		handleTel(SourceData);
 	}
-	public final class ViewHolder {
-		TextView name;
-		TextView phone;
-		ImageView avatar;
-		Button add;
-		TextView text;
-	}
+
+
+
 	// 刷新ui
 	public void refresh() {
 		try {
@@ -321,22 +189,10 @@ public class LocalContactActivity extends SwipeBackActivity {
 	}
 
 
-	/**
-	 * 获取联系人列表序
-	 */
-	private void getContactList() {
-		SourceData.clear();
-		mData.clear();
-		Contact contact=new Contact(context);
-		SourceData=contact.getPhoneContactsList();
-		handleTel(SourceData);
-		// 获取本地好友列表
-
-	}
 
 	/**
 	 * 执行异步任务
-	 *
+	 * 遍历通讯录中的手机列表，判断该手机号是否注册
 	 *
 	 */
 	public void handleTel(final Object... params) {
@@ -344,31 +200,30 @@ public class LocalContactActivity extends SwipeBackActivity {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Boolean doInBackground(Object... params) {
-				Boolean result=true;
 				try {
-					List<Map<String, String>> list=(List<Map<String, String>>) params[0];
-					Map<String,UserInfo> user=MyApplication.getInstance().getUserList();
-					PhoneDao dao=new PhoneDao(context);
+					List<Map<String, String>> list = (List<Map<String, String>>) params[0];
+					Map<String,UserInfo> user = MyApplication.getInstance().getUserList();
+					PhoneDao dao = new PhoneDao(context);
 					for (Map<String, String> map1 : list) {
-						String string=map1.get("phone");
-						String realname=map1.get("name");
+						String string = map1.get("phone");
+						String realname = map1.get("name");
 						if(!isExist.containsKey(string)){
-							Map<String,String> map=new HashMap<>();
+							Map<String,String> map = new HashMap<>();
 							map.put("search_name", string);
 							map.put("uid", Constant.UID+"");
 							map.put("token", Constant.TOKEN);
-							Map<String,Object> info=HttpUnit.sendSerachFriendRequest(map);
-							int status=(int) info.get("status");
-							if(status==0){
-								String s=(String) info.get("info");
-								JSONObject jsonObject= new  JSONObject(s);
-								String uid=jsonObject.getString("id");
-								String avatar=jsonObject.getString("avatar");
-								String name=jsonObject.getString("name");
-								if(user.containsKey(uid)){
-									UserInfo userinfo=user.get(uid);
+							Map<String,Object> info = HttpUnit.sendSerachFriendRequest(map);
+							int status = (int) info.get("status");
+							if(status == 0) {
+								String s = (String) info.get("info");
+								JSONObject jsonObject = new  JSONObject(s);
+								String uid = jsonObject.getString("id");
+								String avatar = jsonObject.getString("avatar");
+								String name = jsonObject.getString("name");
+								if(user.containsKey(uid)) {
+									UserInfo userinfo = user.get(uid);
 									isExist.put(string, userinfo);
-								}else{
+								} else {
 									UserInfo userinfo=new UserInfo();
 									userinfo.setAvatar(avatar);
 									userinfo.setNick(name);
@@ -390,10 +245,9 @@ public class LocalContactActivity extends SwipeBackActivity {
 							}
 						}
 					}
-					return result;
+					return true;
 				} catch (Throwable e) {
-					// TODO Auto-generated catch block
-					Log.e("1", e.toString());
+					e.printStackTrace();
 					return false;
 				}
 			}
@@ -412,18 +266,117 @@ public class LocalContactActivity extends SwipeBackActivity {
 		}.execute(params);}
 
 
-	@SuppressLint("DefaultLocale")
+	/***
+	 * 手机通讯录的适配器
+	 * @author LiuNana
+	 *
+	 */
+	public class MyAdapter extends BaseAdapter {
+
+		private LayoutInflater mInflater;
+
+		public MyAdapter(Context context) {
+			this.mInflater = LayoutInflater.from(context);
+		}
+
+		@Override
+		public int getCount() {
+			return mData.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mData.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@SuppressLint("ViewHolder")
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			if (convertView == null) {
+				holder=new ViewHolder();
+				//可以理解为从vlist获取view  之后把view返回给ListView
+				convertView = mInflater.inflate(R.layout.item_phone_contact_list, parent ,false);
+				holder.name = (TextView)convertView.findViewById(R.id.tv_name);
+				holder.phone = (TextView)convertView.findViewById(R.id.tv_eventer_id);
+				holder.avatar=(ImageView)convertView.findViewById(R.id.iv_avatar);
+				holder.add=(Button)convertView.findViewById(R.id.tv_add);
+				holder.text=(TextView)convertView.findViewById(R.id.tv_text);
+				convertView.setTag(holder);
+			}else {
+				holder = (ViewHolder)convertView.getTag();
+			}
+			holder.name.setText("");
+			holder.add.setText("");
+			holder.phone.setText("");
+			holder.avatar.setImageResource(R.drawable.default_avatar);
+			holder.text.setText("");
+			String phone=mData.get(position).getTel();
+			String name=mData.get(position).getRelName();
+			holder.name.setText(name);
+			holder.phone.setText(phone+"");
+			boolean isEventer=false;
+			UserInfo u;
+			u=isExist.get(phone);
+			int type=u.getType();
+			if(type==1){
+				holder.add.setVisibility(View.GONE);
+				holder.text.setVisibility(View.VISIBLE);
+				holder.text.setText("已添加");
+			}else{
+				holder.text.setVisibility(View.GONE);
+				holder.add.setVisibility(View.VISIBLE);
+				holder.add.setBackgroundResource(R.drawable.btn_blue_bg);
+				holder.add.setText("添加");
+				isEventer=true;
+			}
+			String avatar=u.getAvatar();
+			showUserAvatar(holder.avatar, avatar);
+			final boolean isTrue=isEventer;
+			final UserInfo temp_user=u;
+			holder.add.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(isTrue){
+						Intent intent=new Intent();
+						intent.setClass(context, Activity_Friends_Add.class);
+						intent.putExtra("id", temp_user.getUsername());
+						intent.putExtra("avatar", temp_user.getAvatar());
+						intent.putExtra("nick", temp_user.getNick());
+						context.startActivity(intent);
+					}
+				}
+			});
+			return convertView;
+		}
+	}
+	public final class ViewHolder {
+		TextView name;
+		TextView phone;
+		ImageView avatar;
+		Button add;
+		TextView text;
+	}
+
+
+	/***
+	 * 通过拼音对用户进行排序
+	 * @author LiuNana
+	 *
+	 */
 	public class FullPinyinComparator implements Comparator<Phone> {
 
-		@SuppressLint("DefaultLocale")
 		@Override
 		public int compare(Phone o1, Phone o2) {
-			// TODO Auto-generated method stub
+
 			String py1 = o1.getRelName();
 			String py2 = o2.getRelName();
 			py1=getPinYin(py1);
 			py2=getPinYin(py2);
-			// Log.e("1",py1+py2+getPinYin("$$#"));
 			// 判断是否为空""
 			if (isEmpty(py1) && isEmpty(py2))
 				return 0;
@@ -461,10 +414,59 @@ public class LocalContactActivity extends SwipeBackActivity {
 		return sb.toString().toLowerCase();
 	}
 
+	Handler mHandler = new Handler(new Handler.Callback() {
+		@Override
+		public boolean handleMessage(Message msg) {
+			switch (msg.what) {
+				case INIT_LIST:
+					PhoneDao dao=new PhoneDao(context);
+					mData=dao.getPhoneList();
+					dao.getTelList();
+					UserDao d=new UserDao(context);
+					if(mData==null||mData.size()==0){
+						loading.setVisibility(View.VISIBLE);
+						refresh();
+						getContactList();
+					}else{
+						loading.setVisibility(View.GONE);
+						for (Phone p: mData) {
+							String user=p.getUserId();
+							if(!TextUtils.isEmpty(user)){
+								UserInfo info=d.getInfo(user);
+								isExist.put(p.getTel()+"", info);
+							}
+							Map<String, String> map=new HashMap<>();
+							map.put("phone", p.getTel());
+							map.put("name", p.getRelName());
+							SourceData.add(map);
+						}
+						refresh();
+						handleTel(SourceData);
+					}
+					break;
+				default:
+					break;
+			}
+			return false;
+		}
+	});
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				mHandler.sendEmptyMessageDelayed(INIT_LIST, 200);
+			}
+		}).start();
 	}
 
 }

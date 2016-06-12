@@ -10,7 +10,27 @@
         <enum name="sans" value="1"/>  
         <enum name="serif" value="2"/>  
         <enum name="monospace" value="3"/>  
-    </attr>  
+    </attr>
+
+    <declare-styleable name="GradientText">
+        <attr name="orientation">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
+        <attr name="startColor" format="color"/>
+        <attr name="middleColor" format="color"/>
+        <attr name="endColor" format="color"/>
+        <attr name="type">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+        <attr name="duration" format="integer"/>
+        <attr name="textStyle">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
+    </declare-styleable>>
     
      <declare-styleable name="SlideBottomPanel">
         <attr name="sbp_background_layout" format="reference"/>

@@ -47,37 +47,7 @@
                      android:textColor="#353535"
                      android:background="@drawable/click_bg"
                      android:textSize="14sp" />
-             <View
-                 android:layout_width="match_parent"
-                 android:layout_height="0.02dp"
-                 android:layout_marginLeft="8dp"
-                 android:layout_marginRight="8dp"
-                 android:background="#DBDBDB" />
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:paddingLeft="18dp"
-                 android:paddingRight="18dp"
-                 android:background="@drawable/click_bg"
-                 >
-                 <TextView
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:paddingTop="13dp"
-                     android:paddingBottom="13dp"
-                     android:text="@string/display_useless_event"
-                     android:textColor="#353535"
-                     android:textSize="14sp" />
-                 <com.zcw.togglebutton.ToggleButton
-                     android:id="@+id/toggle_event"
-                     android:layout_width="55dp"
-                     android:layout_height="30dp"
-                     toggle:onColor="@color/caldroid_holo_blue_light"
-                     android:layout_alignParentRight="true"
-                     android:layout_alignParentEnd="true"
-                     android:layout_centerVertical="true"
-                     />
-             </RelativeLayout>
+
 
          </LinearLayout>
 

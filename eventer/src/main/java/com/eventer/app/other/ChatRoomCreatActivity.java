@@ -12,10 +12,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -74,6 +72,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 	private List<String> addList = new ArrayList<>();
 	private ChatRoom group;
 	private Context context;
+	private List<User> alluserList = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,15 +80,16 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 		setContentView(R.layout.activity_chatroom);
 		context = this;
 		setBaseTitle(R.string.add_group);
-		LocalUserInfo.getInstance(ChatRoomCreatActivity.this)
-				.getUserInfo("hxid");
+		initView();
+		initData();
 
-		progressDialog = new ProgressDialog(this);
+
+
+	}
+
+	private void initData() {
 		groupId = getIntent().getStringExtra("groupId");
 		userId = getIntent().getStringExtra("userId");
-
-		tv_checked = (TextView) this.findViewById(R.id.tv_checked);
-
 		if (groupId != null) {
 			isCreatingNewGroup = false;
 			ChatroomDao dao = new ChatroomDao(context);
@@ -111,7 +111,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 		}
 
 		// 获取好友列表
-		final List<User> alluserList = new ArrayList<>();
+		 alluserList.clear();
 		UserDao dao = new UserDao(context);
 		List<User> users = dao.getFriendList();
 		for (User user : users) {
@@ -121,14 +121,21 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 		// 对list进行排序
 		Collections.sort(alluserList, new PinyinComparator() {
 		});
+	}
 
+	private void initView() {
+		progressDialog = new ProgressDialog(this);
+		tv_checked = (TextView) this.findViewById(R.id.tv_checked);
+		final EditText et_search = (EditText) this.findViewById(R.id.et_search);
+		iv_search = (ImageView) this.findViewById(R.id.iv_search);
 		listView = (ListView) findViewById(R.id.list);
+
 		LayoutInflater layoutInflater = LayoutInflater.from(this);
 		View headerView = layoutInflater.inflate(R.layout.item_chatroom_header,
 				null);
-		TextView tv_header = (TextView) headerView.findViewById(R.id.tv_header);
-		tv_header.setOnClickListener(new OnClickListener() {
 
+		TextView tv_header = (TextView) headerView.findViewById(R.id.tv_header);
+		tv_header.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(ChatRoomCreatActivity.this,
@@ -139,8 +146,6 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 		});
 		menuLinerLayout = (LinearLayout) this
 				.findViewById(R.id.linearLayoutMenu);
-
-		final EditText et_search = (EditText) this.findViewById(R.id.et_search);
 
 		et_search.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -186,7 +191,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 				R.layout.item_contactlist_listview_checkbox, alluserList);
 		listView.setAdapter(contactAdapter);
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -197,7 +202,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 
 			}
 		});
-		tv_checked.setOnClickListener(new OnClickListener() {
+		tv_checked.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -206,7 +211,6 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 
 		});
 
-		iv_search = (ImageView) this.findViewById(R.id.iv_search);
 
 	}
 
@@ -248,6 +252,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 		addList.add(glufineid.getUsername());
 	}
 
+	//被取消选中时的处理
 	private void deleteImage(User glufineid) {
 		View view =  menuLinerLayout.findViewWithTag(glufineid);
 
@@ -265,7 +270,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 
 	/**
 	 * 确认选择的members
-	 *
+	 * 发送创建群组的请求
 	 */
 	public void save() {
 		if (addList.size() == 0) {
@@ -332,7 +337,8 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 						.getUserInfo("nick"));
 			}
 		}
-		if (isCreatingNewGroup) {
+
+		if ( isCreatingNewGroup ) {
 			if (!members.contains(Constant.UID)){
 				members.add(Constant.UID + "");
 				display.add(LocalUserInfo.getInstance(context)
@@ -347,8 +353,8 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			obj.put("action", "join");
 			obj.put("data",
 					 members.toArray(new String[members.size()]));
-			// obj.put("data", new String[]{"3","20"});
-			Log.e("1", obj.toJSONString());
+
+
 			String groupmame = Constant.UID + "@" + System.currentTimeMillis()
 					/ 1000;
 			MainActivity.instance.newMsg("group", groupmame,
@@ -404,7 +410,6 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			try {
 				owner=groupId.split("@")[0];
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			String[] oldmember = group.getMember();
@@ -522,7 +527,7 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 			return bitmaps[position];
 		}
 
-		@SuppressLint("ViewHolder")
+
 		@Override
 		public View getView(final int position, View convertView,
 							ViewGroup parent) {
@@ -644,7 +649,6 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return list.size();
 		}
 
@@ -660,19 +664,17 @@ public class ChatRoomCreatActivity extends SwipeBackActivity {
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 	}
 
-
-	@SuppressLint("DefaultLocale")
+	/***
+	 * 根据好友昵称的拼音对好友进行排序
+	 */
 	public class PinyinComparator implements Comparator<User> {
 
-		@SuppressLint("DefaultLocale")
 		@Override
 		public int compare(User o1, User o2) {
-			// TODO Auto-generated method stub
 			String py1 = o1.getHeader();
 			String py2 = o2.getHeader();
 			// 判断是否为空""

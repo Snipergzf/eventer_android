@@ -1,68 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/load_root"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/login_app" >
-
-    <TextView
-        android:id="@+id/tv_tourist"
-        android:layout_width="wrap_content"
+    android:background="@drawable/login_bg"
+    >
+    <com.eventer.app.view.GradientTextView
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="15dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="14sp"
-        android:visibility="gone"
-        android:textColor="@color/caldroid_holo_blue_light"
-        android:text="@string/tourist"/>
+        android:layout_width="wrap_content"
+        app:orientation="vertical"
+        app:startColor="#33cf0606"
+        app:middleColor="#ff9621be"
+        app:endColor="#3333b5e5"
+        app:textStyle="vertical"
+        app:duration="200"
+        app:type="repeat"
+        android:typeface="monospace"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="35dp"
+        android:layout_margin="45dp"
+        android:text="@string/app_slogan"
+        android:textSize="20sp"
+        />
+    <LinearLayout
+        android:layout_width = "wrap_content"
+        android:layout_height = "45dp"
+        android:layout_marginBottom = "30dp"
+        android:layout_alignParentBottom = "true"
+        android:layout_centerHorizontal = "true"
+        android:orientation = "horizontal">
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_launcher"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/app_name"
+            />
+        <TextView
+            android:id="@+id/tv_app"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:textColor="#45a9ff"
+            android:textSize="20sp"
+            android:text="伊文特"/>
+    </LinearLayout>
 
-   <LinearLayout
-       android:id="@+id/login_ll"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:layout_above="@+id/tv_tourist"
-       android:visibility="gone"
-       android:background="@android:color/transparent"
-       >
 
-       <Button
-           android:id="@+id/btn_login"
-           android:layout_width="0dp"
-           android:layout_height="40dp"
-           android:layout_marginLeft="10dp"
-           android:layout_marginStart="10dp"
-           android:layout_marginRight="5dp"
-           android:layout_marginEnd="5dp"
-           android:layout_weight="1"
-           android:background="@drawable/button_blue"
-           android:gravity="center"
-           android:scaleType="fitXY"
-           android:onClick="login"
-           android:text="@string/login"
-           style="?android:attr/buttonBarButtonStyle"
-           android:textColor="#ffffff" />
-
-       <Button
-           android:id="@+id/btn_register"
-           android:layout_width="0dp"
-           android:layout_height="40dp"
-           android:layout_marginLeft="5dp"
-           android:layout_marginStart="5dp"
-           android:layout_marginRight="10dp"
-           android:layout_marginEnd="10dp"
-           android:layout_weight="1"
-           android:background="@drawable/switch_button_left_chexked"
-           style="?android:attr/buttonBarButtonStyle"
-           android:gravity="center"
-           android:scaleType="fitXY"
-           android:onClick="register"
-           android:text="@string/register"
-           android:textColor="@color/caldroid_holo_blue_light" />
-   </LinearLayout>
-   
-
-   
 
 </RelativeLayout>

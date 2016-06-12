@@ -47,7 +47,7 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Translucent.NoTitleBar" >
+        android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         <activity
             android:name="com.eventer.app.main.MainActivity"
             android:label="@string/app_name"
@@ -76,8 +76,7 @@
         <activity android:name="com.eventer.app.main.CheckPhoneActivity" />
         <activity
             android:name="com.eventer.app.other.Activity_Chat"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Activity_Course_View"
             android:screenOrientation="portrait" />
@@ -99,8 +98,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Activity_Contact"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Activity_Friends_New"
             android:launchMode="singleTask"
@@ -110,13 +108,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Activity_UserInfo"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Activity_Friends_Search"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Activity_Course"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.eventer.app.other.Calendar_AddSchedual"
@@ -127,18 +125,6 @@
         <activity
             android:name="com.eventer.app.other.Activity_Friends_Add"
             android:screenOrientation="portrait" />
-        <!--
-        <activity android:name=".other.AlarmAlert" >
-        </activity>
-        <activity
-            android:name=".other.FriendSearchResult"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".other.AlertDialog"
-            android:screenOrientation="portrait" >
-        </activity>
-        -->
         <activity
             android:name="com.eventer.app.other.MyUserInfoActivity"
             android:screenOrientation="portrait" />
@@ -173,12 +159,8 @@
             android:label="@string/title_activity_activity__event_detail"
             android:theme="@style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="com.eventer.app.main.FillInUserInfoActivity"
-            android:label="@string/title_activity_fill_in_user_info" />
-        <activity
             android:name="com.eventer.app.other.Activity_EventComment"
             android:label="@string/title_activity_event_comment"
-            android:theme="@style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name="com.eventer.app.other.ShareToSingleActivity"
@@ -213,15 +195,7 @@
         <activity
             android:name="com.eventer.app.other.AboutActivity"
             android:label="@string/title_activity_about" />
-        <activity
-            android:name="com.eventer.app.other.OurTeamActivity"
-            android:label="@string/title_activity_our_team" />
-        <!--
-        <activity
-            android:name=".other.ShareEventActivity"
-            android:label="@string/title_activity_share_event" >
-        </activity>
-        -->
+
         <receiver android:name="com.eventer.app.receiver.NetworkReceiver" >
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -254,12 +228,6 @@
         <activity
             android:name="com.eventer.app.other.GroupSchedualActivity"
             android:label="@string/title_activity_group_share" />
-        <!--
-        <activity
-            android:name=".other.ShareSingleShecdualActivity"
-            android:label="@string/title_activity_share_single_shecdual" >
-        </activity>
-        -->
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

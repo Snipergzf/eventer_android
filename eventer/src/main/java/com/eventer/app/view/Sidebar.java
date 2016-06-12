@@ -81,22 +81,19 @@ public class Sidebar extends View{
 
 	private void setHeaderTextAndscroll(MotionEvent event){
 		if (mListView == null) {
-			//check the mListView to avoid NPE. but the mListView shouldn't be null
-			//need to check the call stack later
 			return;
 		}
 		String headerString = sections[sectionForPoint(event.getY())];
 		header.setText(headerString);
 		HeaderViewListAdapter ha = (HeaderViewListAdapter) mListView.getAdapter();
 		ContactAdapter  adapter = (ContactAdapter) ha.getWrappedAdapter();
-//		ContactAdapter adapter = (ContactAdapter) mListView.getAdapter();
+
 		String[] adapterSections = (String[]) adapter.getSections();
 		try {
 			for (int i = adapterSections.length - 1; i > -1; i--) {
 				Log.e("1",adapterSections[i]+"---"+headerString);
 				if(adapterSections[i].equals(headerString)){
 					mListView.setSelection(adapter.getPositionForSection(i));
-
 					break;
 				}
 			}

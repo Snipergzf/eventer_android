@@ -10,7 +10,7 @@ import java.util.Locale;
 import hirondelle.date4j.DateTime;
 
 /**
- * Convenient helper to work with date, JODA DateTime and String
+ * Convenient helper to work with date, DateTime and String
  *
  *
  */
@@ -163,7 +163,6 @@ public class CalendarHelper {
 			date = getDateFromString(dateString, dateFormat);
 			return convertDateToDateTime(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

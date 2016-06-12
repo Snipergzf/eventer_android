@@ -4,7 +4,6 @@
  */
 package com.eventer.app.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +16,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -26,15 +24,12 @@ import android.view.WindowManager;
 import com.eventer.app.R;
 import com.eventer.app.entity.ClassInfo;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import hirondelle.date4j.DateTime;
 
-@SuppressLint("SimpleDateFormat")
-@SuppressWarnings({"UnusedDeclaration"})
 public class CourseView extends View implements OnTouchListener {
 
 	private Paint mPaint; // 画笔,包含了画几何图形、文本等的样式和颜色信息
@@ -43,7 +38,6 @@ public class CourseView extends View implements OnTouchListener {
 	private static final int sidewidth = 80;//左边，上面bar的宽度
 	private static final int sideheight = 95;//左边，上面bar的高度	
 	private static int eachBoxH = 140;//每个格子的高度
-	private static final int week=1;
 	private static int eachBoxW = 120;//每个格子的宽度，后面根据屏幕对它做了均分
 	private int focusX = -1;//当前手指焦点的位置坐标
 	private int focusY = -1;//当前手指焦点的位置坐标
@@ -56,9 +50,7 @@ public class CourseView extends View implements OnTouchListener {
 	private float bmpScale;
 	public static int TEXT_SIZE = 12;
 	private static DateTime StartWeekday,StartCourseDay;
-	private int month;
 	private static int firstWeekday = 0;//每周开始日，1表示周日
-	SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("yyyy-MM-dd");
 
 	// 监听器
 	private OnItemClassClickListener onItemClassClickListener;
@@ -67,9 +59,6 @@ public class CourseView extends View implements OnTouchListener {
 	private List<ClassInfo> classList;
 
 	// 颜色
-	public static final int contentBg = Color.argb(255, 255, 255, 255);
-	public static final int barBg = Color.argb(255, 225, 225, 225);
-	public static final int bayText = Color.argb(255, 150, 150, 150);
 	public static final int barBgHrLine = Color.argb(255, 150, 150, 150);
 	public static final int classBorder = Color.argb(180, 150, 150, 150);
 	public static final int markerBorder = Color.argb(100, 150, 150, 150);
@@ -92,19 +81,6 @@ public class CourseView extends View implements OnTouchListener {
 		WindowManager wm = (WindowManager) getContext()
 				.getSystemService(Context.WINDOW_SERVICE);
 		wm.getDefaultDisplay().getMetrics(dm);
-		int screenWidth = dm.widthPixels;
-		int screenHeight = dm.heightPixels;
-//		BitmapFactory.Options measureOptions = new BitmapFactory.Options();
-//		measureOptions.inJustDecodeBounds = true;
-//		BitmapFactory.decodeResource(
-//				getResources(), R.drawable.course_bg, measureOptions);
-//		int scale = Math.min(measureOptions.outWidth / screenWidth, measureOptions.outHeight / screenHeight);
-//		scale = Math.max(scale, 1);
-//
-//		BitmapFactory.Options options = new BitmapFactory.Options();
-//		options.inPreferredConfig = Bitmap.Config.RGB_565;
-//		options.inJustDecodeBounds = false;
-//		options.inSampleSize = scale;
 		bmp = BitmapFactory.decodeResource(
 				context.getResources(), R.drawable.course_bg);
 		setOnTouchListener(this);
@@ -112,75 +88,45 @@ public class CourseView extends View implements OnTouchListener {
 	}
 
 
-	@SuppressLint("ClickableViewAccessibility")
-	public void setBackgroundRes(Bitmap bmp){
-		this.bmp=bmp;
-	}
-
 	/**
-	 * 将sp值转换为px值，保证文字大小不变
+	 * 绘制课表
 	 *
-
-	 *            （DisplayMetrics类中属性scaledDensity）
-	 * @return int
 	 */
-	public static int spTopx(Context context, float spValue) {
-		final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-		return (int) (spValue * fontScale + 0.5f);
-	}
-
-	/**
-	 * 将dip或dp值转换为px值，保证尺寸大小不变
-	 *
-	 *            （DisplayMetrics类中属性density）
-	 * @return int
-	 */
-	public static int dipTopx(Context context, float dipValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (dipValue * scale + 0.5f);
-	}
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
 		super.onDraw(canvas);
-		//initDate();
-		float scalex=(float)getWidth()/bmp.getWidth();
+		//获取绘制参数
+		float scalex = (float)getWidth()/bmp.getWidth();
 		float scaley=(float)getHeight()/bmp.getHeight();
-		bmpScale=scalex>scaley?scalex:scaley;
+		bmpScale = scalex>scaley?scalex:scaley;
 		eachBoxW = (getWidth() - sidewidth) / 7;
-		int height=eachBoxW*classTotal+sideheight;
-		if(height>getHeight()){
-			eachBoxH=eachBoxW;
+		int height = eachBoxW * classTotal+sideheight;
+		if(height > getHeight()){
+			eachBoxH = eachBoxW;
 		}else{
 			eachBoxH = (getHeight() - sideheight) / classTotal;
 		}
+		//依次绘制课表的各个部分
 		printMarker(canvas);
 		printContent(canvas);
 		printLeftBar(canvas);
 		printTopBar(canvas);
 	}
 
-
-//	private void initDate(){
-//		   
-//		String   time =sDateFormat.format(new   Date());
-//		DateTime Today=new DateTime(time);
-//		int weekday=Today.getWeekDay();
-//		Log.e("1",Today.getWeekIndex()+"");
-//		StartWeekday=Today.minusDays(weekday-1);		
-//	}
-
 	public void setWeek(int week){
-
 		StartWeekday=StartCourseDay.plusDays(7*(week-1));
 	}
 
+	public void setClassList(List<ClassInfo> classList) {
+		this.classList = classList;
+		invalidate();// 刷新页面
+	}
 
 	public void initSetting(Map<String,Object> params){
-		classTotal=(Integer) params.get("classTotal");
-		firstWeekday=(Integer) params.get("startWeekday");
-		String start=(String) params.get("StartDay");
-		StartCourseDay=new DateTime(start);
+		classTotal = (Integer) params.get("classTotal");
+		firstWeekday = (Integer) params.get("startWeekday");
+		String start = (String) params.get("StartDay");
+		StartCourseDay = new DateTime(start);
 	}
 
 	/**
@@ -243,14 +189,13 @@ public class CourseView extends View implements OnTouchListener {
 				RectF oval3 = new RectF(fromX+1, fromY+1, toX - 3, toY - 3);// 设置个新的长方形  
 				canvas.drawRoundRect(oval3, 15, 15, mPaint);//第二个参数是x半径，第三个参数是y半径
 
-//				canvas.drawRect(fromX, fromY, toX - 2, toY - 2, mPaint);
 				// 画文字
 				mPaint.setColor(Color.WHITE);
 
 				String className = classInfo.getClassname();
-				String croom=classInfo.getClassRoom();
-				if(croom!=null&&croom.trim().length()!=0){
-					className+="@"+ classInfo.getClassRoom();
+				String croom = classInfo.getClassRoom();
+				if(croom != null && croom.trim().length() != 0){
+					className += "@" + classInfo.getClassRoom();
 				}
 				Rect textRect1 = new Rect();
 				mPaint.getTextBounds(className, 0, className.length(),
@@ -260,33 +205,11 @@ public class CourseView extends View implements OnTouchListener {
 
 
 				int th = textRect1.bottom - textRect1.top;
-				int tw = textRect1.right - textRect1.left;
+
 				//计算行数
+				int col= (int) Math.floor((float) ( eachBoxH * classInfo.getClassNumLen() - 8 ) / height );
 
-
-				int col= (int)Math.floor((float)(eachBoxH*classInfo.getClassNumLen()-8)/height);
-
-//				int classHeight=eachBoxH*classInfo.getClassNumLen()-6;
-//				TextPaint textPaint = new TextPaint();
-//				textPaint.setARGB(0xFF, 0xFF, 0xFF, 0xFF);
-//				textPaint.setTextSize(TEXT_SIZE);	
-//				int lay_height;
-//				StaticLayout layout = new StaticLayout(className,textPaint,eachBoxW-6,Alignment.ALIGN_CENTER,1.0F,0.0F,true);
-//				lay_height=layout.getHeight();
-//				int len=className.length();
-//				while(lay_height>classHeight){
-//					len--;
-//					layout=new StaticLayout(className, 0, len, textPaint,eachBoxW-6,Alignment.ALIGN_CENTER,1.0F,0.0F,true);
-//					lay_height=layout.getHeight();
-//				}
-//				canvas.translate(fromX,fromY);
-//				layout.draw(canvas);
-//				canvas.translate(-fromX,-fromY);
-
-
-
-
-				List<Integer> lenlist=getStrLenlist(className);
+				List<Integer> lenlist = getStrLenlist(className);
 				String str=className.substring(lenlist.get(0),lenlist.get(1));
 				float width1=mPaint.measureText(str);//文字的宽度
 				canvas.drawText(className, lenlist.get(0), lenlist.get(1),
@@ -304,56 +227,8 @@ public class CourseView extends View implements OnTouchListener {
 				mPaint.setColor(classBorder);
 				mPaint.setStyle(Style.STROKE);
 
-//				p.setStyle(Paint.Style.FILL);//充满  
-
-//		        p.setAntiAlias(true);// 设置画笔的锯齿效果  
-
-
-				//canvas.drawRoundRect(oval3, 10, 10, mPaint);//第二个参数是x半径，第三个参数是y半径
-//				canvas.drawRect(fromX, fromY, toX - 2, toY - 2, mPaint);
 			}
 		}
-	}
-
-
-	private List<Integer> getStrLenlist(String className){
-		List<Integer> lenlist=new ArrayList<>();
-		int j=0;
-		lenlist.add(0);
-		for(int i=0;i<className.length()+1;i++){
-			String temp=className.substring(j, i);
-			float width1=mPaint.measureText(temp);
-			if((float)(eachBoxW-4)<width1){
-				lenlist.add(i-1);
-				j=i-1;
-			}
-
-		}
-		if(!lenlist.contains(className.length())){
-			lenlist.add(className.length());
-		}
-		return lenlist;
-	}
-
-	private int getByteLength(String str){
-		int len=0;
-		for(int i = 0 ;i<str.length();i++){
-			char ch = str.charAt(i);
-			if(checkChar(ch)){
-				len+=2;
-			}
-			else{
-				len++;
-			}
-
-		}
-		len=Math.round((float)len/2);
-		return len;
-	}
-
-	private boolean checkChar(char oneChar){
-		String str=oneChar+"";
-		return str.getBytes().length>=2;
 	}
 
 	/**
@@ -392,12 +267,6 @@ public class CourseView extends View implements OnTouchListener {
 		mPaint.setColor(barBgHrLine);
 		canvas.drawRect(sidewidth-1, startY,
 				sidewidth,  eachBoxH *classTotal + sideheight, mPaint);
-//		canvas.drawRect(0, startY + sideheight-1,
-//				sidewidth, startY  + sidewidth, mPaint);
-//		mPaint.setStyle(Style.STROKE);
-//		canvas.drawRect(0, 0, sidewidth, sidewidth, mPaint);
-
-
 	}
 
 	/**
@@ -406,11 +275,6 @@ public class CourseView extends View implements OnTouchListener {
 	 */
 	private void printTopBar(Canvas canvas) {
 		// =================画顶部星期栏==================
-//		mPaint.setColor(Color.parseColor("")));
-//		mPaint.setStyle(Style.FILL);
-//		// 星期栏背景
-//		canvas.drawRect(startX, 0, sidewidth + startX + eachBoxW
-//				* dayTotal, sideheight, mPaint);
 		Matrix matrix=new Matrix();
 		matrix.postScale(bmpScale, bmpScale);
 		Bitmap dstbmp=Bitmap.createBitmap(bmp,0,0,bmp.getWidth(),
@@ -465,6 +329,11 @@ public class CourseView extends View implements OnTouchListener {
 		}
 	}
 
+
+	/**
+	 * 处理控件的滑动，以及点击事件
+	 *
+	 */
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -498,7 +367,7 @@ public class CourseView extends View implements OnTouchListener {
 			if (!isMove) {
 				int focusX = (int) event.getX();
 				int focusY = (int) event.getY();
-				// 是点击效果，遍历是哪个课程的点击效果
+				// 是点击效果，判断是哪个课程的点击效果
 				List<ClassInfo> list = new ArrayList<>();
 				for (int i = 0; i < classList.size(); i++) {
 					ClassInfo classInfo = classList.get(i);
@@ -506,11 +375,10 @@ public class CourseView extends View implements OnTouchListener {
 							&& focusX < classInfo.getToX()
 							&& focusY > classInfo.getFromY()
 							&& focusY < classInfo.getToY()) {
-						Log.e("course_onclick",classInfo.getClassname());
 						list.add(classInfo);
 					}
 				}
-				if(onItemClassClickListener != null && list.size()>0){
+				if(onItemClassClickListener != null && list.size() > 0){
 					onItemClassClickListener.onClick(list);
 				}
 
@@ -519,26 +387,52 @@ public class CourseView extends View implements OnTouchListener {
 		return true;
 	}
 
+	//课程的格子点击事件的接口
 	public interface OnItemClassClickListener {
 		 void onClick(List<ClassInfo> classInfo);
 	}
 
-	public OnItemClassClickListener getOnItemClassClickListener() {
-		return onItemClassClickListener;
-	}
 
 	public void setOnItemClassClickListener(
 			OnItemClassClickListener onItemClassClickListener) {
 		this.onItemClassClickListener = onItemClassClickListener;
 	}
 
-	public List<ClassInfo> getClassList() {
-		return classList;
+
+	/**
+	 * 获取字符串每个字符的长度
+	 *
+	 */
+	private List<Integer> getStrLenlist(String className){
+		List<Integer> lenlist = new ArrayList<>();
+		int j = 0;
+		lenlist.add(0);
+		for(int i = 0;i < className.length() + 1; i++){
+			String temp = className.substring(j, i);
+			float width1 = mPaint.measureText(temp);
+			if( (float) ( eachBoxW - 4 ) < width1 ) {
+				lenlist.add(i - 1);
+				j = i - 1;
+			}
+
+		}
+		if(!lenlist.contains(className.length())){
+			lenlist.add(className.length());
+		}
+		return lenlist;
 	}
 
-	public void setClassList(List<ClassInfo> classList) {
-		this.classList = classList;
-		invalidate();// 刷新页面
+	/**
+	 * 将sp值转换为px值，保证文字大小不变
+	 *
+
+	 *            （DisplayMetrics类中属性scaledDensity）
+	 * @return int
+	 */
+	public static int spTopx(Context context, float spValue) {
+		final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+		return (int) (spValue * fontScale + 0.5f);
 	}
+
 
 }

@@ -118,6 +118,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="#DBDBDB" />
+                <!--
                 <RelativeLayout
                     android:id="@+id/re_course"
                     android:layout_width="match_parent"
@@ -163,7 +164,7 @@
                     android:layout_height="0.02dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="#DBDBDB" />
+                    android:background="#DBDBDB" />-->
                 <RelativeLayout   
                     android:id="@+id/re_history" 
                     android:layout_width="match_parent"

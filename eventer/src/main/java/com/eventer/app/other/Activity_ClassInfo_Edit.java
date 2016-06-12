@@ -17,10 +17,11 @@ import com.eventer.app.Constant;
 import com.eventer.app.R;
 import com.eventer.app.db.MajorDao;
 import com.eventer.app.http.LoadDataFromHTTP;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.AbstractSpinerAdapter;
+import com.eventer.app.view.MyToast;
 import com.eventer.app.view.SpinerPopWindow;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.OnClickListener
+public class Activity_ClassInfo_Edit extends BaseActivity implements View.OnClickListener
         , AbstractSpinerAdapter.IOnItemSelectListener {
     private TextView  tv_year,tv_school,tv_major,tv_class;
     private TextView[] tv_list;
@@ -50,10 +51,37 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
         setBaseTitle(getString(R.string.edit_class_info));
         context=this;
         dao = new MajorDao(context);
-        initData();
         initView();
+        initData();
+
     }
 
+
+    /***
+     * 初始化控件，给控件添加事件响应
+     */
+    private void initView() {
+        tv_class=(TextView)findViewById(R.id.tv_class);
+        tv_major=(TextView)findViewById(R.id.tv_major);
+        tv_school=(TextView)findViewById(R.id.tv_school);
+        tv_year=(TextView)findViewById(R.id.tv_year);
+        tv_list=new TextView[]{tv_year,tv_school,tv_major,tv_class};
+        btn_commit=(Button)findViewById(R.id.btn_commit);
+        tv_class.setOnClickListener(this);
+        tv_major.setOnClickListener(this);
+        tv_school.setOnClickListener(this);
+        tv_year.setOnClickListener(this);
+        btn_commit.setOnClickListener(this);
+
+        String[] grade = getResources().getStringArray(R.array.grade);
+        Collections.addAll(yearList, grade);
+        mSpinerPopWindow = new SpinerPopWindow(this);
+        mSpinerPopWindow.refreshData(valueList, 0);
+        mSpinerPopWindow.setItemListener(this);
+    }
+    /***
+     * 加载数据
+     */
     private void initData() {
         LocalUserInfo userInfo = LocalUserInfo.getInstance(context);
         year = userInfo.getUserInfo("grade");
@@ -72,32 +100,16 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
         if(TextUtils.isEmpty(mclass)){
             mclass="";
         }
-    }
 
-
-    private void initView() {
-        tv_class=(TextView)findViewById(R.id.tv_class);
-        tv_major=(TextView)findViewById(R.id.tv_major);
-        tv_school=(TextView)findViewById(R.id.tv_school);
-        tv_year=(TextView)findViewById(R.id.tv_year);
-        tv_list=new TextView[]{tv_year,tv_school,tv_major,tv_class};
-        btn_commit=(Button)findViewById(R.id.btn_commit);
-        tv_class.setOnClickListener(this);
-        tv_major.setOnClickListener(this);
-        tv_school.setOnClickListener(this);
-        tv_year.setOnClickListener(this);
-        btn_commit.setOnClickListener(this);
         tv_class.setText(mclass);
         tv_major.setText(major);
         tv_school.setText(school);
         tv_year.setText(year);
-        String[] grade = getResources().getStringArray(R.array.grade);
-        Collections.addAll(yearList, grade);
-        mSpinerPopWindow = new SpinerPopWindow(this);
-        mSpinerPopWindow.refreshData(valueList, 0);
-        mSpinerPopWindow.setItemListener(this);
     }
 
+    /**
+     * 页面控件的点击事件
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -113,7 +125,7 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                     mSpinerPopWindow.refreshData(valueList, 0);
                     index = 1;
                 } else {
-                    Toast.makeText(context, "请先选择年级~", Toast.LENGTH_SHORT).show();
+                     MyToast.makeText(context, "请先选择年级~", Toast.LENGTH_SHORT).show();
                     index = -1;
                 }
 
@@ -127,7 +139,7 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                     mSpinerPopWindow.refreshData(valueList, 0);
                     index=2;
                 }  else {
-                    Toast.makeText(context, "请先选择年级和学院~", Toast.LENGTH_SHORT).show();
+                     MyToast.makeText(context, "请先选择年级和学院~", Toast.LENGTH_SHORT).show();
                     index=-1;
                 }
                 break;
@@ -141,7 +153,7 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                     mSpinerPopWindow.refreshData(valueList, 0);
                     index=3;
                 }  else {
-                    Toast.makeText(context, "请先选择年级、学院和专业~", Toast.LENGTH_SHORT).show();
+                     MyToast.makeText(context, "请先选择年级、学院和专业~", Toast.LENGTH_SHORT).show();
                     index=-1;
                 }
                 break;
@@ -155,7 +167,7 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                 if(!TextUtils.isEmpty(year)&&!TextUtils.isEmpty(school)&&!TextUtils.isEmpty(major)&&!TextUtils.isEmpty(mclass)){
                     updateClassInfo();
                 }else{
-                    Toast.makeText(context, "请完善班级信息！", Toast.LENGTH_LONG).show();
+                     MyToast.makeText(context, "请完善班级信息！", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -166,6 +178,7 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
             showSpinWindow();
         }
     }
+    
     private SpinerPopWindow mSpinerPopWindow;
     private void showSpinWindow(){
         Log.e("", "showSpinWindow");
@@ -174,7 +187,6 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
         mSpinerPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                // TODO Auto-generated method stub
                 tv_list[index].setSelected(false);
             }
         });
@@ -188,6 +200,9 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
         }
     }
 
+    /**
+     * 将修改好的信息上传至服务器
+     */
     public void updateClassInfo() {
         Map<String, String> map = new HashMap<>();
 
@@ -212,7 +227,7 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                 try {
                     int code = data.getInteger("status");
                     if (code == 0) {
-                        Toast.makeText(context, "班级信息修改成功~",
+                         MyToast.makeText(context, "班级信息修改成功~",
                                 Toast.LENGTH_SHORT).show();
                         LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("grade", year);
                         LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("school", school);
@@ -221,14 +236,14 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                         setResult(MyUserInfoActivity.EDIT_CLASS,new Intent().putExtra("isEdit",true));
                         finish();
                     } else if (code == 17) {
-                        Toast.makeText(context, "更新失败,请稍后重试！",
+                         MyToast.makeText(context, "更新失败,请稍后重试！",
                                 Toast.LENGTH_SHORT).show();
                     } else {
 
                         if(!Constant.isConnectNet){
-                            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+                             MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(context, "服务器繁忙请重试...",
+                             MyToast.makeText(context, "服务器繁忙请重试...",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -236,9 +251,9 @@ public class Activity_ClassInfo_Edit extends SwipeBackActivity implements View.O
                 }catch (Exception e) {
                     // TODO: handle exception
                     if(!Constant.isConnectNet){
-                        Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+                         MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(context, "服务器繁忙请重试...",
+                         MyToast.makeText(context, "服务器繁忙请重试...",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }

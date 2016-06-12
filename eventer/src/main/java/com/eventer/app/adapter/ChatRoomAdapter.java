@@ -59,7 +59,6 @@ public class ChatRoomAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
@@ -79,25 +78,7 @@ public class ChatRoomAdapter extends BaseAdapter {
         membersNum = members.length;
         convertView = creatConvertView(membersNum);
         final View view=convertView;
-//        String groupName_temp2 = "";
-//        String[] displayName=group.getDisplayname();
-//        for (int i = 0; i < membersNum; i++) {
-//            if (i == 0) {
-//                groupName_temp2 = displayName[i];
-//            } else if (i < 4) {
-//                groupName_temp2 += "、" + displayName[i];
-//
-//            } else if (i == 4) {
-//                groupName_temp2 += "...("+membersNum+")";
-//            }
-//        }
 
-//        if (groupName==null||groupName.equals("")) {
-//            groupName = groupName_temp2;
-//        }
-//        if (TextUtils.isEmpty(groupName)) {
-//            groupName = "群组";
-//        }
         holder.tv_name = (TextView)view.findViewById(R.id.tv_name);
         holder.tv_name.setText(groupName);
         final int[] avatar_id=new int[]{R.id.iv_avatar1,R.id.iv_avatar2,R.id.iv_avatar3,R.id.iv_avatar4};
@@ -125,7 +106,6 @@ public class ChatRoomAdapter extends BaseAdapter {
                 task.getData(new DataCallBack() {
                     @Override
                     public void onDataCallBack(JSONObject data) {
-                        // TODO Auto-generated method stub
                         if(data!=null){
                             int status=data.getInteger("status");
                             switch (status) {

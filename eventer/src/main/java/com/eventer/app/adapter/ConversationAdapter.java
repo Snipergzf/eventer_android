@@ -58,26 +58,19 @@ public class ConversationAdapter extends BaseAdapter {
 		this.listItems = listItems;
 	}
 
-	public void addItem(ChatEntity item){
-		listItems.add(item);
-	}
-
 
 	@Override
 	public int getCount() {
-		// TODO 自动生成的方法存根
 		return  listItems.size();
 	}
 
 	@Override
 	public ChatEntity getItem(int position) {
-		// TODO 自动生成的方法存根
 		return listItems.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO 自动生成的方法存根
 		return position;
 	}
 	//提取出来方便点
@@ -94,7 +87,6 @@ public class ConversationAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO 自动生成的方法存根
 		ViewHolder holder;
 		ChatEntity item =  listItems.get(position);
 		ChatRoom room=new ChatRoom();
@@ -179,7 +171,6 @@ public class ConversationAdapter extends BaseAdapter {
 							task.getData(new DataCallBack() {
 								@Override
 								public void onDataCallBack(JSONObject data) {
-									// TODO Auto-generated method stub
 									try {
 										int status=data.getInteger("status");
 										switch (status) {
@@ -201,7 +192,6 @@ public class ConversationAdapter extends BaseAdapter {
 												break;
 										}
 									} catch (Exception e) {
-										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 								}
@@ -273,7 +263,6 @@ public class ConversationAdapter extends BaseAdapter {
 						task.getData(new DataCallBack() {
 							@Override
 							public void onDataCallBack(JSONObject data) {
-								// TODO Auto-generated method stub
 								try {
 									int status=data.getInteger("status");
 									switch (status) {
@@ -295,7 +284,6 @@ public class ConversationAdapter extends BaseAdapter {
 											break;
 									}
 								} catch (Exception e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}

@@ -130,6 +130,7 @@
     <string name="new_friend">新的朋友</string>
     <string name="search_result">搜索结果</string>
     <string name="send_request">发送申请</string>
+    <string name="update_nick">修改昵称</string>
     <string name="location_recv">[%1$s的位置]</string>
     <string name="location_message">位置信息</string>
     <string name="recording_video">录制视频</string>
@@ -259,7 +260,7 @@
     <string name="todo_detail">待办事件详情</string>
     <string name="search_f">搜索:</string>
     <string name="chatgroup">群聊</string>
-    <string name="no_network">当前网络不稳定？！</string>
+    <string name="no_network">亲，您的网断了~请检查网络设置！</string>
     <string name="no_net_info">当前网络不可用</string>
     <string name="empty">空</string>
     <string name="load_contact">正在刷新联系人…</string>
@@ -293,6 +294,11 @@
     <string name="share_event">日程分享</string>
     <string name="tourist"><![CDATA[游客模式>>]]></string>
     <string name="not_login">未登录</string>
+    <string name="app_slogan">有活动，要参加</string>
+    <string name="event_tag">标签</string>
+    <string name="click_num">点击量</string>
+    <string name="begin_time">开始时间</string>
+    <string name="end_time">结束时间</string>
 
 </resources>
 

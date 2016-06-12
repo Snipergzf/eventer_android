@@ -540,6 +540,7 @@
     <declare-styleable name="CompoundButton"><attr name="android:button"/><attr format="color" name="buttonTint"/><attr name="buttonTintMode"><enum name="src_over" value="3"/><enum name="src_in" value="5"/><enum name="src_atop" value="9"/><enum name="multiply" value="14"/><enum name="screen" value="15"/></attr></declare-styleable>
     <declare-styleable name="CropImageView"><attr format="reference|color" name="highlightColor"/><attr format="boolean" name="showThirds"/><attr format="boolean" name="showCircle"/><attr name="showHandles"><enum name="changing" value="0"/><enum name="always" value="1"/><enum name="never" value="2"/></attr></declare-styleable>
     <declare-styleable name="DrawerArrowToggle"><attr format="color" name="color"/><attr format="boolean" name="spinBars"/><attr format="dimension" name="drawableSize"/><attr format="dimension" name="gapBetweenBars"/><attr format="dimension" name="arrowHeadLength"/><attr format="dimension" name="arrowShaftLength"/><attr format="dimension" name="barLength"/><attr format="dimension" name="thickness"/></declare-styleable>
+    <declare-styleable name="GradientText"><attr name="orientation"><enum name="vertical" value="0"/><enum name="horizontal" value="1"/></attr><attr format="color" name="startColor"/><attr format="color" name="middleColor"/><attr format="color" name="endColor"/><attr name="type"><enum name="clamp" value="0"/><enum name="repeat" value="1"/><enum name="mirror" value="2"/></attr><attr format="integer" name="duration"/><attr name="textStyle"><enum name="vertical" value="0"/><enum name="horizontal" value="1"/></attr></declare-styleable>
     <declare-styleable name="LinearLayoutCompat"><attr name="android:orientation"/><attr name="android:gravity"/><attr name="android:baselineAligned"/><attr name="android:baselineAlignedChildIndex"/><attr name="android:weightSum"/><attr format="boolean" name="measureWithLargestChild"/><attr name="divider"/><attr name="showDividers"><flag name="none" value="0"/><flag name="beginning" value="1"/><flag name="middle" value="2"/><flag name="end" value="4"/></attr><attr format="dimension" name="dividerPadding"/></declare-styleable>
     <declare-styleable name="LinearLayoutCompat_Layout"><attr name="android:layout_width"/><attr name="android:layout_height"/><attr name="android:layout_weight"/><attr name="android:layout_gravity"/></declare-styleable>
     <declare-styleable name="ListPopupWindow"><attr name="android:dropDownVerticalOffset"/><attr name="android:dropDownHorizontalOffset"/></declare-styleable>
@@ -725,6 +726,7 @@
     <string name="addtocourse">加入课程</string>
     <string name="advancereminder">提前提醒</string>
     <string name="app_name">伊文特</string>
+    <string name="app_slogan">有活动，要参加</string>
     <string name="assist">辅助功能</string>
     <string name="attach_file">文件</string>
     <string name="attach_location">位置</string>
@@ -733,6 +735,7 @@
     <string name="attach_voice_call">语音电话</string>
     <string name="avatar">头像</string>
     <string name="back">返回</string>
+    <string name="begin_time">开始时间</string>
     <string name="boy">男</string>
     <string name="browser_history">浏览历史</string>
     <string name="button_pushtotalk">按住说话</string>
@@ -759,6 +762,7 @@
     <string name="clear_mag">清空聊天记录</string>
     <string name="clear_msg">清空聊天记录</string>
     <string name="clear_useless_event">清除过期活动</string>
+    <string name="click_num">点击量</string>
     <string name="collect">参加</string>
     <string name="comment">评论</string>
     <string name="comment_et">你怎么看</string>
@@ -796,9 +800,11 @@
     <string name="email_hint">填写您的邮箱地址</string>
     <string name="empty">空</string>
     <string name="empty_msg"><font color="#F89012">未填写</font></string>
+    <string name="end_time">结束时间</string>
     <string name="enter">收藏到个人事项中</string>
     <string name="entertainmentview">娱乐</string>
     <string name="event_detail">活动详情</string>
+    <string name="event_tag">标签</string>
     <string name="eventalarm">提醒</string>
     <string name="eventcrash">检查冲突</string>
     <string name="eventdetail">详情</string>
@@ -878,7 +884,7 @@
     <string name="no_group">_(:з」∠)_您还未加入任何群组…</string>
     <string name="no_name">未命名</string>
     <string name="no_net_info">当前网络不可用</string>
-    <string name="no_network">当前网络不稳定？！</string>
+    <string name="no_network">亲，您的网断了~请检查网络设置！</string>
     <string name="no_new_friend">_(:з」∠)_您还没有关于添加新伙伴的消息…</string>
     <string name="no_search_class">_(:з」∠)_没有符合条件的课程…</string>
     <string name="not_friend_hint">你们还不是好友，是否添加该好友?</string>
@@ -1161,6 +1167,7 @@
     <string name="umeng_fb_time_this_year_format">MM/dd HH:mm:ss</string>
     <string name="umeng_fb_title">Feedback</string>
     <string name="umeng_fb_write_contact_title">Write contact Info</string>
+    <string name="update_nick">修改昵称</string>
     <string name="uploading">我们正在努力上传中…</string>
     <string name="user_res">用户资料</string>
     <string name="version_info">检查更新</string>

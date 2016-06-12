@@ -62,8 +62,7 @@ public class Constant {
 	  public static final String URL_GET_USERINFO = WEB_SERVICE_URL + "v1/user/get_info";
 	  public static final String URL_GET_SELFINFO= WEB_SERVICE_URL + "v1/user/search";
 	  public static final String URL_UPDATE_SELFINFO= WEB_SERVICE_URL + "v1/user/update";
-	  
-//	  public static final String URL_Avatar = WEB_SERVICE_URL+"images/avatar";
+
 	  public static final String URL_GET_FRIENDLIST= WEB_SERVICE_URL + "v1/friend/update";
 	  public static final String URL_GET_FRIENDINFO= WEB_SERVICE_URL + "v1/friend/search";
 	  public static final String URL_DEL_FRIEND= WEB_SERVICE_URL + "v1/friend/delete";
@@ -75,6 +74,8 @@ public class Constant {
 	  public static final String URL_GET_EVENT = WEB_SERVICE_URL + "v1/event/search";
 	  public static final String URL_GET_EVENTLIST = WEB_SERVICE_URL + "v1/event/getEvent";
 
+	  public static final String URL_GET_TOURISTEVENTLIST = WEB_SERVICE_URL + "v1/event/getEvents2";
+	  public static final String URL_GET_USERTEVENTLIST = WEB_SERVICE_URL + "v1/event/getUserEvents";
 	  
 	  public static final String URL_SEND_EVENT_FEEDBACK = WEB_SERVICE_URL + "v1/event/feedback_add";
 	  public static final String URL_DEL_EVENT_FEEDBACK = WEB_SERVICE_URL + "v1/event/feedback_del";

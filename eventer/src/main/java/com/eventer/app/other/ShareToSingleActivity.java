@@ -12,9 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,9 +37,10 @@ import com.eventer.app.entity.User;
 import com.eventer.app.http.HttpParamUnit;
 import com.eventer.app.http.LoadDataFromHTTP;
 import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
+import com.eventer.app.main.BaseActivity;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.util.LocalUserInfo;
-import com.eventer.app.view.swipeback.SwipeBackActivity;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class ShareToSingleActivity extends SwipeBackActivity {
+public class ShareToSingleActivity extends BaseActivity {
     private ImageView iv_search;
     private TextView tv_checked;
     private ListView listView;
@@ -74,6 +73,7 @@ public class ShareToSingleActivity extends SwipeBackActivity {
     public static int SHARE_EVENT=2;
     public static int SHARE_SCHEDUAL=3;
     public static ShareToSingleActivity instance;
+    private List<User> alluserList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,51 +82,19 @@ public class ShareToSingleActivity extends SwipeBackActivity {
         setBaseTitle(R.string.share_activity);
         context=this;
         instance=this;
+        initView();
+        initData();
+    }
+
+
+
+    /***
+     * 初始化控件，给控件添加事件响应
+     */
+    private void initView() {
         progressDialog = new ProgressDialog(this);
-        shareType=getIntent().getIntExtra("sharetype", 0);
-        Log.e("type",shareType+"");
-        if(shareType == SHARE_EVENT){
-            eid=getIntent().getStringExtra("event_id");
-            if(!TextUtils.isEmpty(eid)){
-                EventDao d=new EventDao(context);
-                event=d.getEvent(eid);
-            }
-            if(event==null)
-                finish();
-        }
-        else if(shareType == SHARE_SCHEDUAL){
-
-            sid=getIntent().getStringExtra("schedual_id");
-            Log.e("id",sid);
-            if(!TextUtils.isEmpty(sid)){
-                SchedualDao dao=new SchedualDao(context);
-                schedual = dao.getSchedualById(sid);
-            }
-            if(schedual==null)
-            {
-                Toast.makeText(context, "日程不存在或者已过期~", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-        }else{
-            finish();
-        }
-
         tv_checked = (TextView) this.findViewById(R.id.tv_checked);
-        // 获取好友列表
-        final List<User> alluserList = new ArrayList<>();
-        UserDao dao=new UserDao(context);
-        List<User> users=dao.getFriendList();
-        for (User user : users) {
-            alluserList.add(user);
-        }
-
-        // 对list进行排序
-        Collections.sort(alluserList, new PinyinComparator() {
-        });
-
         listView = (ListView) findViewById(R.id.list);
-
         menuLinerLayout = (LinearLayout) this
                 .findViewById(R.id.linearLayoutMenu);
 
@@ -173,7 +141,7 @@ public class ShareToSingleActivity extends SwipeBackActivity {
                 R.layout.item_contactlist_listview_checkbox, alluserList);
         listView.setAdapter(contactAdapter);
 
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -184,7 +152,7 @@ public class ShareToSingleActivity extends SwipeBackActivity {
 
             }
         });
-        tv_checked.setOnClickListener(new OnClickListener() {
+        tv_checked.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -192,12 +160,54 @@ public class ShareToSingleActivity extends SwipeBackActivity {
             }
 
         });
-
         iv_search = (ImageView) this.findViewById(R.id.iv_search);
     }
 
-    // 即时显示被选中用户的头像和昵称。
+    /***
+     * 初始化页面的数据
+     */
+    private void initData() {
+        //获得需要分享的数据
+        shareType = getIntent().getIntExtra("sharetype", 0);
+        if(shareType == SHARE_EVENT){
+            eid = getIntent().getStringExtra("event_id");
+            if(!TextUtils.isEmpty(eid)){
+                EventDao d = new EventDao(context);
+                event = d.getEvent(eid);
+            }
+            if(event == null)
+                finish();
+        } else if(shareType == SHARE_SCHEDUAL){
+            sid = getIntent().getStringExtra("schedual_id");
 
+            if( !TextUtils.isEmpty(sid) ){
+                SchedualDao dao = new SchedualDao(context);
+                schedual = dao.getSchedualById(sid);
+            }
+            if(schedual == null)
+            {
+                MyToast.makeText(context, "日程不存在或者已过期~", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        }else{
+            finish();
+        }
+
+        // 获取好友列表
+        alluserList.clear();
+        UserDao dao=new UserDao(context);
+        List<User> users = dao.getFriendList();
+        for (User user : users) {
+            alluserList.add(user);
+        }
+
+        // 对list进行排序
+        Collections.sort(alluserList, new PinyinComparator() {
+        });
+    }
+
+    // 即时显示被选中用户的头像和昵称。
     public void showCheckImage(Bitmap bitmap, User glufineid) {
         if (exitingMembers.contains(glufineid.getUsername())) {
             return;
@@ -234,6 +244,7 @@ public class ShareToSingleActivity extends SwipeBackActivity {
         addList.add(glufineid.getUsername());
     }
 
+    //被取消选中时的处理
     public void deleteImage(User glufineid) {
         View view =  menuLinerLayout.findViewWithTag(glufineid);
         menuLinerLayout.removeView(view);
@@ -249,16 +260,16 @@ public class ShareToSingleActivity extends SwipeBackActivity {
 
     /**
      * 确认选择的members
-     *
+     * 并向选中的好友分享数据
      */
     public void save() {
         if (addList.size() == 0) {
-            Toast.makeText(context, "请选择用户",
+            MyToast.makeText(context, "请选择用户",
                     Toast.LENGTH_LONG).show();
             return;
         }
         if (!Constant.isConnectNet) {
-            Toast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
+            MyToast.makeText(context, getText(R.string.no_network), Toast.LENGTH_SHORT).show();
             return;
         }
         String shareTo = null;
@@ -297,12 +308,11 @@ public class ShareToSingleActivity extends SwipeBackActivity {
                     MainActivity.instance.newMsg("1", user, body, 17);
 
 
-                shareTo = user;
+                    shareTo = user;
 
-            }catch(JSONException e){
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
 
             }
             startActivity(new Intent().setClass(context, Activity_Chat.class)
@@ -310,15 +320,18 @@ public class ShareToSingleActivity extends SwipeBackActivity {
             finish();
         }else if (shareType == SHARE_SCHEDUAL) {
             if(TextUtils.isEmpty(schedual.getShareId())){
-                creatGroupSchedual(schedual);
+                creatSchedual(schedual);
             }else{
-                shareGroupSchedual(schedual.getShareId());
+                shareSchedual(schedual.getShareId());
             }
         }
 
     }
 
-    private void shareGroupSchedual(String a_id) {
+    /**
+     * 分享日程
+     */
+    private void shareSchedual(String a_id) {
         String shareTo = null;
         for (String room : addList) {
             JSONObject content_json = new JSONObject();
@@ -353,13 +366,15 @@ public class ShareToSingleActivity extends SwipeBackActivity {
         }
     }
 
-    private void creatGroupSchedual(final Schedual schedual){
+    /**
+     * 创建可分享的日程
+     */
+    private void creatSchedual(final Schedual schedual){
         Map<String,String> map= HttpParamUnit.activityCreate(schedual);
         LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_ACTIVITY_CREATE, map);
         task.getData(new DataCallBack() {
             @Override
             public void onDataCallBack(JSONObject data) {
-                // TODO Auto-generated method stub
                 try {
                     int status = data.getInteger("status");
                     if (status == 0) {
@@ -373,28 +388,28 @@ public class ShareToSingleActivity extends SwipeBackActivity {
                         s.setSharer(Constant.UID);
                         SchedualDao dao=new SchedualDao(context);
                         dao.saveSchedual(s);
-                        shareGroupSchedual(a_id);
+                        shareSchedual(a_id);
                     }else if(status == 34){
-                        Toast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
+                        MyToast.makeText(context, "分享失败", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
+                        MyToast.makeText(context, "发生异常~", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    // TODO: handle exception
-                    Toast.makeText(context, "error~", Toast.LENGTH_SHORT).show();
+                   e.printStackTrace();
                 }
             }
         });
     }
 
-
+    /***
+     * 向服务器发送统计数据，用户分享了该活动
+     */
     private void ShareFeedBack(){
         Map<String,String> map= HttpParamUnit.eventAddFeedback(eid, "1", "", "");
         LoadDataFromHTTP task=new LoadDataFromHTTP(context, Constant.URL_SEND_EVENT_FEEDBACK, map);
         task.getData(new DataCallBack() {
             @Override
             public void onDataCallBack(JSONObject data) {
-                // TODO Auto-generated method stub
                 try {
                     int status = data.getInteger("status");
                     if (status == 0) {
@@ -402,13 +417,15 @@ public class ShareToSingleActivity extends SwipeBackActivity {
                     }
 
                 } catch (Exception e) {
-                    // TODO: handle exception
+                    e.printStackTrace();
                 }
             }
         });
     }
 
-
+    /***
+     * 根据好友昵称的拼音对好友进行排序
+     */
     @SuppressLint("DefaultLocale")
     public class PinyinComparator implements Comparator<User> {
 

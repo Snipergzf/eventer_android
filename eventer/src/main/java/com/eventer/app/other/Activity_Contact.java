@@ -7,10 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,14 +27,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 @SuppressLint({"SimpleDateFormat","SetTextI18n"})
-public class Activity_Contact extends BaseActivity implements OnClickListener{
+public class Activity_Contact extends BaseActivity{
 
     private ContactAdapter adapter;
-    private List<User> contactList;
+    private List<User> contactList = new ArrayList<>();
     ListView listView;
-
     Sidebar sidebar;
-    ImageView iv_back;
     private TextView tv_total;
     LayoutInflater infalter;
     public Context context;
@@ -47,34 +42,42 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_contactlist);
-        context=this;
+        context = this;
         setBaseTitle(R.string.contact);
+        initView();
+        initData();
+
+    }
+
+
+
+    /***
+     * 初始化控件，给控件添加事件响应
+     */
+    private void initView() {
+
         listView = (ListView) findViewById(R.id.list);
-        iv_back=(ImageView)findViewById(R.id.iv_back);
-        iv_back.setOnClickListener(this);
 
-        // 黑名单列表
-        // blackList = EMContactManager.getInstance().getBlackListUsernames();
-
-        contactList = new ArrayList<>();
-        // 获取设置contactlist
-        getContactList();
         infalter=LayoutInflater.from(this);
         View headView = infalter.inflate(R.layout.item_contact_list_header,
                 listView, false);
         listView.addHeaderView(headView);
+
         View footerView = infalter.inflate(R.layout.item_contact_list_footer,
                 listView, false);
         listView.addFooterView(footerView);
+        tv_total = (TextView) footerView.findViewById(R.id.tv_total);
+
+
         sidebar = (Sidebar) findViewById(R.id.sidebar);
         sidebar.setListView(listView);
 
-        tv_total = (TextView) footerView.findViewById(R.id.tv_total);
         // 设置通讯录的adapter
         adapter = new ContactAdapter(this, R.layout.item_contact_list,
                 contactList);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -86,18 +89,16 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
                     intent.putExtra("user", user.getUsername());
                     startActivity(intent);
                 }
-
-
             }
         });
 
-        tv_total.setText(String.valueOf(contactList.size())+"位联系人");
+
 
         RelativeLayout re_newfriends = (RelativeLayout) headView.findViewById(R.id.re_newfriends);
         RelativeLayout re_chatroom = (RelativeLayout) headView.findViewById(R.id.re_chatroom);
         RelativeLayout re_phone = (RelativeLayout) headView.findViewById(R.id.re_phone);
         RelativeLayout re_search = (RelativeLayout) headView.findViewById(R.id.re_search);
-        re_newfriends.setOnClickListener(new OnClickListener(){
+        re_newfriends.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -106,7 +107,7 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
             }
 
         });
-        re_chatroom.setOnClickListener(new OnClickListener(){
+        re_chatroom.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -114,7 +115,7 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
             }
 
         });
-        re_phone.setOnClickListener(new OnClickListener(){
+        re_phone.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -122,7 +123,7 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
             }
 
         });
-        re_search.setOnClickListener(new OnClickListener(){
+        re_search.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -130,39 +131,19 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
             }
 
         });
-
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-
-        refresh();
-
-    }
-
-
-
-    // 刷新ui
-    public void refresh() {
-        try {
-            // 可能会在子线程中调到这方法
-            this.runOnUiThread(new Runnable() {
-                public void run() {
-                    getContactList();
-                    adapter.notifyDataSetChanged();
-                    tv_total.setText(String.valueOf(contactList.size())+"位联系人");
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /***
+     * 加载数据
+     */
+    private void initData() {
+        getContactList();
+        adapter.notifyDataSetChanged();
+        tv_total.setText(String.valueOf(contactList.size()) + "位联系人");
     }
 
     /**
-     * 获取联系人列表，并过滤掉黑名单和排序
+     * 获取联系人列表，并排序
      */
     private void getContactList() {
         contactList.clear();
@@ -182,13 +163,10 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
      * @author LiuNana
      *
      */
-    @SuppressLint("DefaultLocale")
     public class FullPinyinComparator implements Comparator<User> {
 
-        @SuppressLint("DefaultLocale")
         @Override
         public int compare(User o1, User o2) {
-            // TODO Auto-generated method stub
             String py1 = o1.getNick();
             String py2 = o2.getNick();
             py1=getPinYin(py1);
@@ -234,23 +212,20 @@ public class Activity_Contact extends BaseActivity implements OnClickListener{
         return sb.toString().toLowerCase();
     }
 
-    @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
-        switch (v.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
 
-            default:
-                break;
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+        initData();
     }
 
 }

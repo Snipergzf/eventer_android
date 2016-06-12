@@ -1,6 +1,7 @@
 package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,7 +38,6 @@ import com.eventer.app.http.LoadDataFromHTTP.DataCallBack;
 import com.eventer.app.main.MainActivity;
 import com.eventer.app.task.LoadImage;
 import com.eventer.app.task.LoadImage.ImageDownloadedCallBack;
-import com.eventer.app.main.BaseFragmentActivity;
 import com.eventer.app.util.FileUtil;
 import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.view.ExpandGridView;
@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @SuppressLint("SetTextI18n")
-public class ChatRoomSettingActivity extends BaseFragmentActivity implements
+public class ChatRoomSettingActivity extends Activity implements
 		OnClickListener {
 	private TextView tv_groupname;
 	// 成员总数

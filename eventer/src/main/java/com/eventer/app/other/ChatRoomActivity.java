@@ -1,7 +1,6 @@
 package com.eventer.app.other;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,12 +21,6 @@ import java.util.List;
 
 @SuppressLint({"InflateParams","SetTextI18n"})
 public class ChatRoomActivity extends SwipeBackActivity {
-    ListView groupListView;
-    protected List<ChatRoom> grouplist;
-    ChatRoomAdapter groupAdapter;
-    TextView tv_total;
-    public static ChatRoomActivity instance;
-    private Context context;
 
 
     @Override
@@ -35,32 +28,37 @@ public class ChatRoomActivity extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mychatroom);
         setBaseTitle(R.string.chatgroup);
-        context=this;
-        instance = this;
-        ChatroomDao dao=new ChatroomDao(context);
-        grouplist = dao.getRoomList();
+        initView();
+    }
 
-        groupListView = (ListView) findViewById(R.id.groupListView);
+    private void initView() {
+        ChatroomDao dao = new ChatroomDao(this);
+        List<ChatRoom> grouplist = dao.getRoomList();
+
+        ListView groupListView = (ListView) findViewById(R.id.groupListView);
+
         View footerView = LayoutInflater.from(this).inflate(
                 R.layout.item_mychatroom_footer, null);
-        tv_total = (TextView) footerView.findViewById(R.id.tv_total);
-        tv_total.setText(String.valueOf(grouplist.size()) + "个群聊");
-        groupAdapter = new ChatRoomAdapter(this, grouplist);
+        TextView tv_total = (TextView) footerView.findViewById(R.id.tv_total);
+        tv_total.setText(
+                String.valueOf(grouplist.size()) + "个群聊");
+
+        ChatRoomAdapter groupAdapter = new ChatRoomAdapter(this, grouplist);
+
         groupListView.addFooterView(footerView);
         groupListView.setAdapter(groupAdapter);
         groupListView.setEmptyView(findViewById(R.id.tv_empty));
 
-        final ImageView iv_add = (ImageView) this.findViewById(R.id.iv_add);
-        //ImageView iv_search = (ImageView) this.findViewById(R.id.iv_search);
+        ImageView iv_add = (ImageView) this.findViewById(R.id.iv_add);
         iv_add.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context,ChatRoomCreatActivity.class));
+                startActivity(new Intent(ChatRoomActivity.this,
+                        ChatRoomCreatActivity.class));
             }
 
         });
-
     }
 
     @Override
@@ -78,7 +76,6 @@ public class ChatRoomActivity extends SwipeBackActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        instance = null;
     }
 
 

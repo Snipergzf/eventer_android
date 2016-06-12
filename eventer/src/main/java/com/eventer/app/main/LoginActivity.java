@@ -1,6 +1,7 @@
 package com.eventer.app.main;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,13 +31,14 @@ import com.eventer.app.util.LocalUserInfo;
 import com.eventer.app.util.MD5Util;
 import com.eventer.app.util.PreferenceUtils;
 import com.eventer.app.view.CircleProgressBar;
+import com.eventer.app.view.MyToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class LoginActivity extends BaseFragmentActivity implements OnClickListener {
+public class LoginActivity extends Activity implements OnClickListener {
 
 	Button btn_login;
 	private ImageButton btn_user_clear,btn_pwd_clear;
@@ -54,10 +56,12 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		isActive=true;
 		context=this;
 		Constant.isExist=false;
-//		SMSSDK.initSDK(LoginActivity.this, Constant.APPKEY, Constant.APPSECRET);
 		initView();
 	}
 
+	/***
+	 * 初始化控件，给控件添加事件响应
+	 */
 	private void initView() {
 		btn_login = (Button)findViewById(R.id.btn_login);
 		btn_pwd_clear = (ImageButton)findViewById(R.id.btn_pwd_clear);
@@ -67,6 +71,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		tv_login_help =(TextView)findViewById(R.id.tv_login_help);
 		tv_newuser =(TextView)findViewById(R.id.tv_login_newuser);
 		TextView tv_tourist = (TextView) findViewById(R.id.tv_tourist);
+		//为textView添加下划线
 		tv_tourist.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		tv_tourist.getPaint().setAntiAlias(true);
 
@@ -161,6 +166,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+			//“登录”按钮
 			case R.id.btn_login:
 				if(!TextUtils.isEmpty(edit_user.getText())&&!TextUtils.isEmpty(edit_pwd.getText())){
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -168,7 +174,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 					showDialog();
 					UserLogin();
 				}else{
-					Toast.makeText(context, "请完善登录信息！", Toast.LENGTH_SHORT).show();
+					MyToast.makeText(context, "请完善登录信息！", Toast.LENGTH_SHORT).show();
 				}
 				break;
 			//清除密码输入框
@@ -190,6 +196,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				intent1.setClass(context, RegisterActivity.class);
 				startActivity(intent1);
 				break;
+			//"游客模式"按钮，以游客身份进入系统
 			case R.id.tv_tourist:
 				Intent intent = new Intent();
 				intent.setClass(context, MainActivity.class);
@@ -210,9 +217,8 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	 */
 	public void UserLogin() {
 		pwd=edit_pwd.getText().toString();
-
 		if(TextUtils.isEmpty(pwd)){
-			Toast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
+			MyToast.makeText(context, "请填写密码~", Toast.LENGTH_SHORT).show();
 			return;
 		}else{
 			pwd = MD5Util.getMD5(pwd);
@@ -232,7 +238,6 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 					int code = data.getInteger("status");
 					switch (code) {
 						case 0:
-							Log.e("1", "登录成功！");
 							PreferenceUtils.getInstance().setLoginUser(edit_user.getText().toString());
 							PreferenceUtils.getInstance().setLoginPwd(pwd);
 							Constant.isLogin = true;
@@ -240,7 +245,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 							JSONObject jsonLogin = data.getJSONObject("user_action");
 							Constant.UID = jsonLogin.getInteger("uid") + "";
 							PreferenceUtils.getInstance().setUserId(Constant.UID);
-							Log.e("1", Constant.UID + "---" + PreferenceUtils.getInstance().getUserId());
+							Log.e("login_suc", Constant.UID + "---" + PreferenceUtils.getInstance().getUserId());
 							Constant.TOKEN = jsonLogin.getString("token");
 							initSelfInfo();
 							MobclickAgent.onProfileSignIn(Constant.UID);
@@ -248,38 +253,34 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 						case 1:
 							if(dialog!=null)
 								dialog.cancel();
-							Toast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "不存在该用户", Toast.LENGTH_LONG)
 									.show();
 							break;
 						case 2:
 							if(dialog!=null)
 								dialog.cancel();
-							Toast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "密码错误！", Toast.LENGTH_LONG)
 									.show();
 						case 23:
 							if(dialog!=null)
 								dialog.cancel();
-							Toast toast = Toast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG);
-							//toast.setGravity(Gravity.CENTER, 0, 0);
-							toast.show();
+							MyToast.makeText(context, "登录失败！该用户已经在其他设备登录！", Toast.LENGTH_LONG).show();
 							break;
 						case -1:
 							if(dialog!=null)
 								dialog.cancel();
-							Toast.makeText(context, "登录失败", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "登录失败", Toast.LENGTH_LONG)
 									.show();
 							break;
 						default:
 							if(dialog!=null)
 								dialog.cancel();
-							Toast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
+							MyToast.makeText(context, "登录失败，请稍后重试！！", Toast.LENGTH_LONG)
 									.show();
 					}
 
 				} catch (JSONException e) {
 
-					Toast.makeText(context, "数据解析错误...",
-							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 					if(dialog!=null)
 						dialog.cancel();
@@ -310,12 +311,12 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 			public void onDataCallBack(JSONObject data) {
 				try {
 					int code = data.getInteger("status");
-					Log.e("1", code+"");
 					if (code == 0) {
 						JSONObject json=data.getJSONObject("user_action");
 						JSONObject info=json.getJSONObject("info");
 						String name=info.getString("name");
 						if(name!=null&& !name.equals("")){
+							//将个人信息存入本地个人SharePerference中
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("nick", name);
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("sex", info.getString("sex"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("email", info.getString("email"));
@@ -325,37 +326,24 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("class", info.getString("class"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("major", info.getString("major"));
 							LocalUserInfo.getInstance(getApplicationContext()).setUserInfo("avatar", info.getString("avatar"));
-
-							Intent intent = new Intent();
-							intent.setClass(context, MainActivity.class);
-							startActivity(intent);
-							finish();
-						}else{
-							Toast.makeText(context, "您尚未完善个人信息，请完善个人信息！",
-									Toast.LENGTH_SHORT).show();
-							Intent intent = new Intent();
-							intent.setClass(context, FillInUserInfoActivity.class);
-							startActivity(intent);
-							finish();
 						}
-
 					}  else {
                        if(!Constant.isConnectNet){
-						   Toast.makeText(context, getText(R.string.no_network),
+						   MyToast.makeText(context, getText(R.string.no_network),
 								   Toast.LENGTH_SHORT).show();
 					   }else{
-						   Toast.makeText(context, "服务器繁忙请重试...",
+						   MyToast.makeText(context, "服务器繁忙请重试...",
 								   Toast.LENGTH_SHORT).show();
 					   }
 					}
 
-				}catch (JSONException e) {
-
-					Toast.makeText(context, "数据解析错误...",
-							Toast.LENGTH_SHORT).show();
-					e.printStackTrace();
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
+				} finally {
+					Intent intent = new Intent();
+					intent.setClass(context, MainActivity.class);
+					startActivity(intent);
+					finish();
 				}
 
 			}
@@ -364,9 +352,11 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 
 	}
 
+
+
+
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		if(dialog!=null)
 			dialog.cancel();
